@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Building a home SOC from scratch with AI tooling.">
+  <title>Building a Home SOC from Scratch — Project AEGIS // matlock.ca</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/">MATLOCK<span class="dot">.</span>CA</a>
+  <nav class="primary">
+    <a href="/">Home</a>
+    <a href="/claudeblog/">Walkthroughs</a>
+    <a href="/cybersecnews/index.html">Threat Intel</a>
+    <a href="/blog/" class="current">Blog</a>
+    <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="/cybersecnews/feed.xml">RSS</a>
+  </nav>
+</header>
+
+<main class="container">
+  <div class="section">
+    <div class="section-label">// BLOG</div>
+    <h2 class="section-title">Building a Home SOC from Scratch — Project AEGIS</h2>
+    <div class="card-meta" style="margin-bottom:32px">
+      <time>2026-04-23</time>
+      <div class="card-badges"><span class="badge badge-platform">homelab</span><span class="badge badge-platform">soc</span><span class="badge badge-platform">security</span><span class="badge badge-platform">infosec</span><span class="badge badge-platform">ai</span><span class="badge badge-platform">tooling</span></div>
+    </div>
+    <div class="report-body">
+<p>What started as "let me see what's actually on my network" turned into a proper security engineering exercise.</p>
+<p>Post-AtlSecCon, a conversation with a friend pointed me toward AI tooling. Claude was the recommendation. What followed was a full audit, hardening, and monitoring initiative on my home network. </p>
+<p>The speed of implementation genuinely surprised me.</p>
+<p>The environment: segmented multi-VLAN network behind a FortiGate, with a dedicated DMZ, media segment, and management LAN.</p>
+<p>What I built with Claude Code:</p>
+<p>► SIEM — Grafana + Loki + Promtail in Docker, ingesting Suricata IDS, fail2ban, FortiGate UTM, auth logs, and Windows Sysmon telemetry. Five dashboards: SSH threat activity, IDS alerts, network traffic by segment, app visibility, and Windows endpoint behaviour.</p>
+<p>► Endpoint detection — Sysmon with the olafhartong modular config on Windows hosts, forwarded via NXLog with MITRE ATT&amp;CK technique tagging.</p>
+<p>► Active threat response — Documented an ongoing distributed SSH brute force campaign across multiple ASNs. Deployed fail2ban with a recidive jail (3 bans in 24h = week-long all-ports block). Hardened SSH to key-only auth globally.</p>
+<p>► Vulnerability management — Greenbone/OpenVAS credentialed scans across all four /24 subnets weekly. 95,000+ NVT signatures feeding a live remediation backlog.</p>
+<p>► Firewall review — Full FortiOS policy and VIP audit. Found over-permissive NAT, stale VIP objects, and segmentation gaps. Remediated and documented the complete policy matrix.</p>
+<p>► DNS visibility — Pi-hole as the network-wide resolver with full query logging into the SIEM. Identified and closed segments bypassing DNS filtering.</p>
+<p>What turned up: active botnet brute force campaigns, stale firewall objects, EOL software on internal hosts, cleartext management interfaces on trusted segments, unknown hosts on the management LAN.</p>
+<p>None of this is exotic. It's the same discipline as a production environment: asset inventory, segmentation enforcement, log pipeline architecture, detection tuning, continuous remediation. The tooling is all human-doable. The AI just collapsed the implementation timeline dramatically.</p>
+<p>The network is never done.</p>
+<p>Tools: FortiOS · Suricata · Grafana · Loki · Promtail · Greenbone/OpenVAS · fail2ban · Sysmon · NXLog · Pi-hole · Kali · Docker</p>
+<p>Image is the prompt I use for the PERSONALITY 😉</p>
+<p><img alt="WINTERMUTE Prompt" src="/blog/images/prompt.jpg" /></p>
+    </div>
+    <div style="margin-top:48px;padding-top:24px;border-top:1px solid var(--faint)">
+      <a href="/blog/" style="color:var(--accent);text-decoration:none;font-size:11px;letter-spacing:2px;text-transform:uppercase">&larr; Back to blog</a>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div>matlock.ca // blog<span class="blink"></span></div>
+</footer>
+</body>
+</html>
