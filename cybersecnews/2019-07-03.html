@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>matlock.ca // THREAT INTELLIGENCE — 2019-07-03</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/">MATLOCK<span class="dot">.</span>CA</a>
+  <nav class="primary">
+    <a href="/">Home</a>
+    <a href="/claudeblog/">Walkthroughs</a>
+    <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="/cybersecnews/feed.xml">RSS</a>
+  </nav>
+</header>
+
+<nav class="subnav">
+  <span class="nav-label">// JUMP</span>
+<a href="archive.html">Archive</a>
+<a href="index.html">Today</a>
+<a href="2026-04-24.html">2026-04-24</a>
+<a href="2026-04-23.html">2026-04-23</a>
+<a href="2026-04-22.html">2026-04-22</a>
+<a href="2026-04-21.html">2026-04-21</a>
+<a href="2026-04-20.html">2026-04-20</a>
+<a href="2026-04-19.html">2026-04-19</a>
+
+</nav>
+<main class="container wide">
+
+    <div class="stats-bar">
+      <div class="stat"><span class="stat-value">3</span><span class="stat-label">Articles</span></div>
+      <div class="stat"><span class="stat-value">1</span><span class="stat-label">Categories</span></div>
+      <div class="stat"><span class="stat-value">2019-07-03</span><span class="stat-label">Date</span></div>
+    </div>
+    <div class="filter-bar">
+<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">3</span></button>
+<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">3</span></button>
+    </div>
+    <div class="articles-list">
+<div class="article-row" data-cat="Infosec News" data-date="2019-07-03"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.f5.com/labs/articles/cisotociso/what-to-do-when-your-company-tells-you-they-re-making-a-mobile-app-part-3" target="_blank" rel="noopener">What To Do When Your Company Tells You They're Making a Mobile App, Part 3</a></div><span class="article-meta">F5.COM &mdash; 03 Jul 2019</span></div>
+<div class="article-row" data-cat="Infosec News" data-date="2019-07-03"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.f5.com/labs/labs/articles/what-to-do-when-your-company-tells-you-they-re-making-a-mobile-app-part-3" target="_blank" rel="noopener">What To Do When Your Company Tells You They're Making a Mobile App, Part 3</a></div><span class="article-meta">F5.COM &mdash; 03 Jul 2019</span></div>
+<div class="article-row" data-cat="Infosec News" data-date="2019-07-03"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.f5.com/labs/articles/what-to-do-when-your-company-tells-you-they-re-making-a-mobile-app-part-3" target="_blank" rel="noopener">What To Do When Your Company Tells You They're Making a Mobile App, Part 3</a></div><span class="article-meta">F5.COM &mdash; 03 Jul 2019</span></div>
+    </div>
+
+<script>
+  const _activeCats = new Set();
+  let _activeHours = null;
+
+  function applyFilters() {
+    const now = Date.now();
+    document.querySelectorAll('.article-row').forEach(row => {
+      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
+      let   timeOk = true;
+      if (_activeHours) {
+        const d = row.dataset.date;
+        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
+      }
+      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
+    });
+  }
+
+  function filterCat(cat, btn) {
+    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
+    if (cat === 'all') {
+      _activeCats.clear();
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      allBtn.classList.add('active');
+    } else {
+      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
+      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
+      allBtn.classList.remove('active');
+      if (_activeCats.size === 0) allBtn.classList.add('active');
+    }
+    applyFilters();
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+</script>
+</main>
+<footer class="site-footer">
+  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+</footer>
+</body>
+</html>

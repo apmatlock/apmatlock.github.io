@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>matlock.ca // THREAT INTELLIGENCE — 2026-01-12</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/">MATLOCK<span class="dot">.</span>CA</a>
+  <nav class="primary">
+    <a href="/">Home</a>
+    <a href="/claudeblog/">Walkthroughs</a>
+    <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="/cybersecnews/feed.xml">RSS</a>
+  </nav>
+</header>
+
+<nav class="subnav">
+  <span class="nav-label">// JUMP</span>
+<a href="archive.html">Archive</a>
+<a href="index.html">Today</a>
+<a href="2026-04-24.html">2026-04-24</a>
+<a href="2026-04-23.html">2026-04-23</a>
+<a href="2026-04-22.html">2026-04-22</a>
+<a href="2026-04-21.html">2026-04-21</a>
+<a href="2026-04-20.html">2026-04-20</a>
+<a href="2026-04-19.html">2026-04-19</a>
+
+</nav>
+<main class="container wide">
+
+    <div class="stats-bar">
+      <div class="stat"><span class="stat-value">4</span><span class="stat-label">Articles</span></div>
+      <div class="stat"><span class="stat-value">3</span><span class="stat-label">Categories</span></div>
+      <div class="stat"><span class="stat-value">2026-01-12</span><span class="stat-label">Date</span></div>
+    </div>
+    <div class="filter-bar">
+<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">4</span></button>
+<button class="filter-btn" data-cat="CISA KEV" onclick="filterCat('CISA KEV', this)">CISA KEV <span class="filter-count">1</span></button>
+<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">2</span></button>
+<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
+    </div>
+    <div class="articles-list">
+<div class="article-row" data-cat="CISA KEV" data-date="2026-01-12"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2026/01/12/cisa-adds-one-known-exploited-vulnerability-catalog" target="_blank" rel="noopener">CISA Adds One Known Exploited Vulnerability to Catalog</a><span class="article-summary">CISA has added&nbsp;one&nbsp;new vulnerability&nbsp;to its&nbsp; Known Exploited Vulnerabilities (KEV) Catalog , based on evidence of active exploitation.&nbsp; CVE-2025-8110 &nbsp;Gogs&nbsp;Path Traversal Vulnerability&nbsp; This&nbsp;type of vulnerability is&nbsp;a&nbsp;frequen…</span></div><span class="kev-badge">KEV</span><span class="article-meta">CISA.GOV &mdash; Mon, 12 Jan 26 1</span></div>
+<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-01-12"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/26/a/analyzing-a-a-multi-stage-asyncrat-campaign-via-mdr.html" target="_blank" rel="noopener">Analyzing a Multi-Stage AsyncRAT Campaign via Managed Detection and Response</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 12 Jan 2026</span></div>
+<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-01-12"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cloud.google.com/blog/topics/threat-intelligence/auditing-salesforce-aura-data-exposure/" target="_blank" rel="noopener">AuraInspector: Auditing Salesforce Aura for Data Exposure</a></div><span class="article-meta">CLOUD.GOOGLE.COM &mdash; 12 Jan 2026</span></div>
+<div class="article-row" data-cat="Security Advisories" data-date="2026-01-12"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/fbi-warns-of-qr-code-phishing-europols-major-cybercrime-crackdown-cst-monday-jan-12-2026" target="_blank" rel="noopener">FBI Warns of QR Code Phishing &amp; Europol's Major Cybercrime Crackdown CST Monday Jan 12 2026</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 12 Jan 2026</span></div>
+    </div>
+
+<script>
+  const _activeCats = new Set();
+  let _activeHours = null;
+
+  function applyFilters() {
+    const now = Date.now();
+    document.querySelectorAll('.article-row').forEach(row => {
+      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
+      let   timeOk = true;
+      if (_activeHours) {
+        const d = row.dataset.date;
+        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
+      }
+      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
+    });
+  }
+
+  function filterCat(cat, btn) {
+    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
+    if (cat === 'all') {
+      _activeCats.clear();
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      allBtn.classList.add('active');
+    } else {
+      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
+      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
+      allBtn.classList.remove('active');
+      if (_activeCats.size === 0) allBtn.classList.add('active');
+    }
+    applyFilters();
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+</script>
+</main>
+<footer class="site-footer">
+  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+</footer>
+</body>
+</html>
