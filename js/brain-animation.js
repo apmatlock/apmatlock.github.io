@@ -72,13 +72,13 @@ var t3=document.getElementById("wm-s1");
 var t4=document.getElementById("wm-s2");
 var t5=document.getElementById("wm-ft");
 if(!t1)return;
-t1.innerHTML="  "+col(P.title,"WINTERMUTE")+" "+col(P.dim,"::")+" "+col(P.brand,"ollama brain")+" "+col(P.dim,"::")+" "+col(P.value,elapsed)+col(P.warn," [SIMULATED]")+banner;
+t1.innerHTML="  "+col(P.title,"OllamaBrain")+" "+col(P.dim,"::")+" "+col(P.brand,"ollama brain")+" "+col(P.dim,"::")+" "+col(P.value,elapsed)+col(P.warn," [SIMULATED]")+banner;
 t2.innerHTML=renderBrain(al,frame);
 var cc2=cpuC(cpu),ac=actC(al);
-t3.innerHTML="  "+col(P.label,"model: ")+col(P.brand,"qwen2.5:7b")+col(P.label," (Q4_K-M) | cpu ")+col(cc2,cpu.toFixed(1)+"%")+" "+bar(cpu/100,12,cc2)+" "+col(P.label,"| ")+col(ac,actL(al))+" "+bar(al/100,16,ac);
+t3.innerHTML="  "+col(P.label,"model: ")+col(P.brand,"llama3.2")+col(P.label," (Q4_K-M) | cpu ")+col(cc2,cpu.toFixed(1)+"%")+" "+bar(cpu/100,12,cc2)+" "+col(P.label,"| ")+col(ac,actL(al))+" "+bar(al/100,16,ac);
 var ago=slast>0?((Date.now()-slast)/1000).toFixed(0)+"s ago":"never";
-t4.innerHTML="  "+col(P.label,"inferences: ")+col(P.value,sinf+" ok")+col(P.label," | last: ")+col(P.value,ago)+col(P.label," | ram: ")+col(P.value,"4892 MB")+col(P.label," | sys: ")+col(P.value,"21.7")+col(P.label,"/31.9 GiB free");
-t5.innerHTML="  log: C:\\Users\\paulm\\AppData\\Local\\Ollama\\server.log  [watching] | frame: "+frame;
+t4.innerHTML="  "+col(P.label,"inferences: ")+col(P.value,sinf+" ok")+col(P.label," | last: ")+col(P.value,ago)+col(P.label," | ram: ")+col(P.value,"3840 MB")+col(P.label," | sys: ")+col(P.value,"18.4")+col(P.label,"/32.0 GiB free");
+t5.innerHTML="  log: %LOCALAPPDATA%\\Ollama\\server.log  [watching] | frame: "+frame;
 phase+=0.18;frame++;}
 function restart(){
 if(iid)clearInterval(iid);
