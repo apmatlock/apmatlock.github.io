@@ -23,24 +23,27 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html" class="active">Archive</a>
-<a href="2026-05-21.html">2026-05-21</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-05-18.html">2026-05-18</a>
-<a href="2026-05-17.html">2026-05-17</a>
-<a href="2026-05-16.html">2026-05-16</a>
-<a href="2026-05-15.html">2026-05-15</a>
-<a href="2026-05-14.html">2026-05-14</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
 
     <div class="stats-bar">
-      <div class="stat"><span class="stat-value">2122</span><span class="stat-label">Days Archived</span></div>
-      <div class="stat"><span class="stat-value">71,060</span><span class="stat-label">Total Articles</span></div>
+      <div class="stat"><span class="stat-value">2125</span><span class="stat-label">Days Archived</span></div>
+      <div class="stat"><span class="stat-value">71,494</span><span class="stat-label">Total Articles</span></div>
       <div class="stat"><span class="stat-value">94</span><span class="stat-label">Active Feeds</span></div>
     </div>
-    <div class="index-grid"><a class="day-card" href="2026-05-21.html"><span class="day-date">2026-05-21</span><span class="day-count">1 ARTICLES</span></a>
-<a class="day-card" href="index.html"><span class="day-date">2026-05-19 (TODAY)</span><span class="day-count">56 ARTICLES</span></a>
+    <div class="index-grid"><a class="day-card" href="2026-05-23.html"><span class="day-date">2026-05-23</span><span class="day-count">1 ARTICLES</span></a>
+<a class="day-card" href="index.html"><span class="day-date">2026-05-22 (TODAY)</span><span class="day-count">82 ARTICLES</span></a>
+<a class="day-card" href="2026-05-21.html"><span class="day-date">2026-05-21</span><span class="day-count">151 ARTICLES</span></a>
+<a class="day-card" href="2026-05-20.html"><span class="day-date">2026-05-20</span><span class="day-count">121 ARTICLES</span></a>
+<a class="day-card" href="2026-05-19.html"><span class="day-date">2026-05-19</span><span class="day-count">136 ARTICLES</span></a>
 <a class="day-card" href="2026-05-18.html"><span class="day-date">2026-05-18</span><span class="day-count">106 ARTICLES</span></a>
 <a class="day-card" href="2026-05-17.html"><span class="day-date">2026-05-17</span><span class="day-count">16 ARTICLES</span></a>
 <a class="day-card" href="2026-05-16.html"><span class="day-date">2026-05-16</span><span class="day-count">31 ARTICLES</span></a>
@@ -2163,8 +2166,79 @@
 <a class="day-card" href="2004-01-28.html"><span class="day-date">2004-01-28</span><span class="day-count">1 ARTICLES</span></a>
 </div>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-05-19 08:01<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 13:57<span class="blink"></span>
 </footer>
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </body>
 </html>
