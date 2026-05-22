@@ -127,7 +127,7 @@ main.container {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     grid-template-areas:
         "blog threatintel"
-        "photos photos"
+        ". photos"
         "destinations destinations";
     gap: 24px 28px;
     align-items: start;
