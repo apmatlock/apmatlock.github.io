@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-04-01</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,70 +109,53 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-04-01</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">11</span></button>
-<button class="filter-btn" data-cat="CISA KEV" onclick="filterCat('CISA KEV', this)">CISA KEV <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="CISA KEV" data-date="2025-04-01"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2025/04/01/cisa-adds-one-known-exploited-vulnerability-catalog" target="_blank" rel="noopener">CISA Adds One Known Exploited Vulnerability to Catalog</a><span class="article-summary">CISA has added one new vulnerability to its&nbsp; Known Exploited Vulnerabilities Catalog , based on evidence of active exploitation. CVE-2025-24813 Apache Tomcat Path Equivalence Vulnerability These types of vulnerabilities are frequent attack vectors for malicious cyber actors …</span></div><span class="kev-badge">KEV</span><span class="article-meta">CISA.GOV &mdash; Tue, 01 Apr 25 1</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-093a" target="_blank" rel="noopener">Fast Flux: A National Security Threat</a></div><span class="article-meta">CISA.GOV &mdash; 01 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://darknetdiaries.com/episode/157/" target="_blank" rel="noopener">157: Grifter</a></div><span class="article-meta">DARKNETDIARIES.COM &mdash; 01 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2025/04/01/cisa-releases-two-industrial-control-systems-advisories" target="_blank" rel="noopener">CISA Releases Two Industrial Control Systems Advisories</a></div><span class="article-meta">CISA.GOV &mdash; Tue, 01 Apr 25 1</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bitdefender.com/en-us/blog/hotforsecurity/hackers-exploit-little-known-wordpress-mu-plugins-feature-to-hide-malware" target="_blank" rel="noopener">Hackers exploit little-known WordPress MU-plugins feature to hide malware</a></div><span class="article-meta">BITDEFENDER.COM &mdash; 01 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-01"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.paloaltonetworks.com/blog/2025/04/platformization-maximizes-security-efficacy-it-operations-efficiency/" target="_blank" rel="noopener">Platformization Maximizes Security Efficacy &amp; IT Operations Efficiency</a></div><span class="article-meta">PALOALTONETWORKS.COM &mdash; 01 Apr 2025</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-04-01"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.cisa.gov/news-events/news/building-resilient-ict-supply-chains-8th-annual-supply-chain-integrity-month" target="_blank" rel="noopener">Building Resilient ICT Supply Chains:  8th Annual Supply Chain Integrity Month</a></div><span class="article-meta">CISA.GOV &mdash; Tue, 01 Apr 25 1</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-04-01"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://grahamcluley.com/the-ai-fix-44/" target="_blank" rel="noopener">The AI Fix #44: AI-generated malware, and a stunning AI breakthrough</a></div><span class="article-meta">GRAHAMCLULEY.COM &mdash; 01 Apr 2025</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-04-01"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.kaspersky.com/blog/tarot-and-cyber-threats/53256/" target="_blank" rel="noopener">Trojan.Arcanum — a new trojan targeting tarot experts, esotericists, and magicians | Kaspersky official blog</a></div><span class="article-meta">KASPERSKY.COM &mdash; 01 Apr 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-04-01"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.cisa.gov/news-events/news/april-emergency-communications-month-0" target="_blank" rel="noopener">April is Emergency Communications Month!</a></div><span class="article-meta">CISA.GOV &mdash; Tue, 01 Apr 25 1</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-04-01"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://news.sophos.com/en-us/2025/04/01/sophos-mdr-tracks-ongoing-campaign-by-qilin-affiliates-targeting-screenconnect/" target="_blank" rel="noopener">Qilin affiliates spear-phish MSP ScreenConnect admin, targeting customers downstream</a></div><span class="article-meta">SOPHOS.COM &mdash; 01 Apr 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa adds one known exploited vulnerability to catalog" data-date="2025-04-01"><span class="headline-date">1 Apr <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2025/04/01/cisa-adds-one-known-exploited-vulnerability-catalog" target="_blank" rel="noopener">CISA Adds One Known Exploited Vulnerability to Catalog</a><span class="article-summary">CISA has added one new vulnerability to its&nbsp; Known Exploited Vulnerabilities Catalog , based on evidence of active exploitation. CVE-2025-24813 Apache Tomcat Path Equivalence Vulnerability These types of vulnerabilities are frequent attack vectors for malicious cyber actors …</span></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="fast flux: a national security threat" data-date="2025-04-01"><span class="headline-date">1 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-093a" target="_blank" rel="noopener">Fast Flux: A National Security Threat</a><span class="article-summary">Executive summary Many networks have a gap in their defenses for detecting and blocking a malicious technique known as “fast flux.” This technique poses a significant threat to national security, enabling malicious cyber actors to consistently evade detection. Malicious cyber act…</span></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="157: grifter" data-date="2025-04-01"><span class="headline-date">1 Apr</span><span class="headline-body"><a class="headline-title" href="https://darknetdiaries.com/episode/157/" target="_blank" rel="noopener">157: Grifter</a><span class="article-summary">Grifter is a longtime hacker, DEF CON organizer, and respected voice in the infosec community. From his early days exploring networks to helping shape one of the largest hacker conferences in the world, Grifter has built a reputation for blending deep technical insight with a sha…</span></span><span class="headline-source">DARKNETDIARIES.COM</span></div>
+<div class="headline" data-title="cisa releases two industrial control systems advisories" data-date="2025-04-01"><span class="headline-date">1 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2025/04/01/cisa-releases-two-industrial-control-systems-advisories" target="_blank" rel="noopener">CISA Releases Two Industrial Control Systems Advisories</a><span class="article-summary">CISA released two Industrial Control Systems (ICS) advisories on April 1, 2025. These advisories provide timely information about current security issues, vulnerabilities, and exploits surrounding ICS. ICSA-25-091-01 Rockwell Automation Lifecycle Services with Veeam Backup and Re…</span></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="hackers exploit little-known wordpress mu-plugins feature to hide malware" data-date="2025-04-01"><span class="headline-date">1 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.bitdefender.com/en-us/blog/hotforsecurity/hackers-exploit-little-known-wordpress-mu-plugins-feature-to-hide-malware" target="_blank" rel="noopener">Hackers exploit little-known WordPress MU-plugins feature to hide malware</a><span class="article-summary">A new security issue is putting WordPress-powered websites at risk. Hackers are abusing the “Must-Use” plugins (MU-plugins) feature to hide malicious code and maintain long-term access on hacked websites. Read more in my article on the Hot for Security blog.</span></span><span class="headline-source">BITDEFENDER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="platformization maximizes security efficacy &amp; it operations efficiency" data-date="2025-04-01"><span class="headline-date">1 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.paloaltonetworks.com/blog/2025/04/platformization-maximizes-security-efficacy-it-operations-efficiency/" target="_blank" rel="noopener">Platformization Maximizes Security Efficacy &amp; IT Operations Efficiency</a><span class="article-summary">Enhance defenses and resilience by integrating security, development, and cloud ops teams. Embrace platformization for improved cybersecurity. The post Platformization Maximizes Security Efficacy &#038; IT Operations Efficiency appeared first on Palo Alto Networks Blog .</span></span><span class="headline-source">PALOALTONETWORKS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="building resilient ict supply chains:  8th annual supply chain integrity month" data-date="2025-04-01"><span class="headline-date">1 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/news/building-resilient-ict-supply-chains-8th-annual-supply-chain-integrity-month" target="_blank" rel="noopener">Building Resilient ICT Supply Chains:  8th Annual Supply Chain Integrity Month</a></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="the ai fix #44: ai-generated malware, and a stunning ai breakthrough" data-date="2025-04-01"><span class="headline-date">1 Apr</span><span class="headline-body"><a class="headline-title" href="https://grahamcluley.com/the-ai-fix-44/" target="_blank" rel="noopener">The AI Fix #44: AI-generated malware, and a stunning AI breakthrough</a><span class="article-summary">In episode 44 of The AI Fix, ChatGPT won’t build a crystal meth lab, GPT-4o improves the show’s podcast art, some students manage to screw in a lightbulb, Google releases Gemini 2.5 Pro Experimental and nobody notices, and Mark invents a clock for measuring AI time. Graham explai…</span></span><span class="headline-source">GRAHAMCLULEY.COM</span></div>
+<div class="headline" data-title="trojan.arcanum — a new trojan targeting tarot experts, esotericists, and magicians | kaspersky official blog" data-date="2025-04-01"><span class="headline-date">1 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.kaspersky.com/blog/tarot-and-cyber-threats/53256/" target="_blank" rel="noopener">Trojan.Arcanum — a new trojan targeting tarot experts, esotericists, and magicians | Kaspersky official blog</a><span class="article-summary">Kaspersky experts have discovered a new Trojan using an original virus detection technology.</span></span><span class="headline-source">KASPERSKY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="april is emergency communications month!" data-date="2025-04-01"><span class="headline-date">1 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/news/april-emergency-communications-month-0" target="_blank" rel="noopener">April is Emergency Communications Month!</a></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="qilin affiliates spear-phish msp screenconnect admin, targeting customers downstream" data-date="2025-04-01"><span class="headline-date">1 Apr</span><span class="headline-body"><a class="headline-title" href="https://news.sophos.com/en-us/2025/04/01/sophos-mdr-tracks-ongoing-campaign-by-qilin-affiliates-targeting-screenconnect/" target="_blank" rel="noopener">Qilin affiliates spear-phish MSP ScreenConnect admin, targeting customers downstream</a><span class="article-summary">Attack matches three-year long pattern of ScreenConnect attacks tracked by Sophos MDR as STAC4365.</span></span><span class="headline-source">SOPHOS.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

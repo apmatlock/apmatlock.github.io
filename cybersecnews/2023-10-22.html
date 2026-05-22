@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2023-10-22</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,69 +109,52 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2023-10-22</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">10</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-10-22"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/656775/the-rise-of-the-cybersecurity-insurance-market.html" target="_blank" rel="noopener">The rise of the cybersecurity insurance market</a></div><span class="article-meta">CSOONLINE.COM &mdash; 22 Oct 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-10-22"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/number-of-hacked-cisco-ios-xe-devices-plummets-from-50k-to-hundreds/" target="_blank" rel="noopener">Number of hacked Cisco IOS XE devices plummets from 50K to hundreds</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 22 Oct 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-10-22"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/new-tetrisphantom-hackers-steal-data-from-secure-usb-drives-on-govt-systems/" target="_blank" rel="noopener">New TetrisPhantom hackers steal data from secure USB drives on govt systems</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 22 Oct 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-10-22"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://slashnext.com/blog/exploring-the-malicious-usage-of-qr-codes/" target="_blank" rel="noopener">Exploring The Malicious Usage of QR Codes</a></div><span class="article-meta">SLASHNEXT.COM &mdash; 22 Oct 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-10-22"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/30332" target="_blank" rel="noopener">base64dump.py Handles More Encodings Than Just BASE64, (Sun, Oct 22nd)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 22 Oct 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-10-22"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://ctf.hackthebox.com/event/details/hack-the-boo-2023-competition-1238" target="_blank" rel="noopener">HackTheBox halloween themed online CTF event. October 26, 27 &amp;amp; 28.</a></div><span class="article-meta">CTF.HACKTHEBOX.COM &mdash; 22 Oct 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-10-22"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://voidstarsec.com/hw-hacking-lab/vss-lab-guide" target="_blank" rel="noopener">Blog Post: How to build your first hardware hacking lab</a></div><span class="article-meta">VOIDSTARSEC.COM &mdash; 22 Oct 2023</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2023-10-22"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/hackers-update-cisco-ios-xe-backdoor-to-hide-infected-devices/" target="_blank" rel="noopener">Hackers update Cisco IOS XE backdoor to hide infected devices</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 22 Oct 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-10-22"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/microsoft/microsoft-announces-security-copilot-early-access-program/" target="_blank" rel="noopener">Microsoft announces Security Copilot early access program</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 22 Oct 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-10-22"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/google/google-chromes-new-ip-protection-will-hide-users-ip-addresses/" target="_blank" rel="noopener">Google Chrome's new "IP Protection" will hide users' IP addresses</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 22 Oct 2023</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the rise of the cybersecurity insurance market" data-date="2023-10-22"><span class="headline-date">22 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/656775/the-rise-of-the-cybersecurity-insurance-market.html" target="_blank" rel="noopener">The rise of the cybersecurity insurance market</a><span class="article-summary">From a cybersecurity perspective, there are only two types of companies: those that have been hacked and those that will be hacked. If all defenses fail, cybersecurity insurance can be used to cover losses, as it also aids organizations in disaster recovery. Cybersecurity insuran…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="number of hacked cisco ios xe devices plummets from 50k to hundreds" data-date="2023-10-22"><span class="headline-date">22 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/number-of-hacked-cisco-ios-xe-devices-plummets-from-50k-to-hundreds/" target="_blank" rel="noopener">Number of hacked Cisco IOS XE devices plummets from 50K to hundreds</a><span class="article-summary">The number of Cisco IOS XE devices hacked with a malicious backdoor implant has mysteriously plummeted from over 50,000 impacted devices to only a few hundred, with researchers unsure what is causing the sharp decline. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="new tetrisphantom hackers steal data from secure usb drives on govt systems" data-date="2023-10-22"><span class="headline-date">22 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/new-tetrisphantom-hackers-steal-data-from-secure-usb-drives-on-govt-systems/" target="_blank" rel="noopener">New TetrisPhantom hackers steal data from secure USB drives on govt systems</a><span class="article-summary">A new sophisticated threat tracked as 'TetrisPhantom' has been using compromised secure USB drives to target government systems in the Asia-Pacific region. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="exploring the malicious usage of qr codes" data-date="2023-10-22"><span class="headline-date">22 Oct</span><span class="headline-body"><a class="headline-title" href="https://slashnext.com/blog/exploring-the-malicious-usage-of-qr-codes/" target="_blank" rel="noopener">Exploring The Malicious Usage of QR Codes</a><span class="article-summary">submitted by throws_lemy to cybersecurity 3 points | 1 comments https://slashnext.com/blog/exploring-the-malicious-usage-of-qr-codes/</span></span><span class="headline-source">SLASHNEXT.COM</span></div>
+<div class="headline" data-title="base64dump.py handles more encodings than just base64, (sun, oct 22nd)" data-date="2023-10-22"><span class="headline-date">22 Oct</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/30332" target="_blank" rel="noopener">base64dump.py Handles More Encodings Than Just BASE64, (Sun, Oct 22nd)</a><span class="article-summary">My tool base64dump.py takes any input and searches for encoded data. By default, it searches for base64 encoding, but I implemented several encodings (like vaious hexadecimal formats): &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="hackthebox halloween themed online ctf event. october 26, 27 &amp;amp; 28." data-date="2023-10-22"><span class="headline-date">22 Oct</span><span class="headline-body"><a class="headline-title" href="https://ctf.hackthebox.com/event/details/hack-the-boo-2023-competition-1238" target="_blank" rel="noopener">HackTheBox halloween themed online CTF event. October 26, 27 &amp;amp; 28.</a><span class="article-summary">submitted by abbadon420 to cybersecurity 1 points | 0 comments https://ctf.hackthebox.com/event/details/hack-the-boo-2023-competition-1238 There’s also a halloween themed practice event this entire week.</span></span><span class="headline-source">CTF.HACKTHEBOX.COM</span></div>
+<div class="headline" data-title="blog post: how to build your first hardware hacking lab" data-date="2023-10-22"><span class="headline-date">22 Oct</span><span class="headline-body"><a class="headline-title" href="https://voidstarsec.com/hw-hacking-lab/vss-lab-guide" target="_blank" rel="noopener">Blog Post: How to build your first hardware hacking lab</a><span class="article-summary">submitted by L4s to secops 1 points | 0 comments https://voidstarsec.com/hw-hacking-lab/vss-lab-guide Blog Post: How to build your first hardware hacking lab::VSS Hardware Hacking Wiki and Blog Entries</span></span><span class="headline-source">VOIDSTARSEC.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="hackers update cisco ios xe backdoor to hide infected devices" data-date="2023-10-22"><span class="headline-date">22 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/hackers-update-cisco-ios-xe-backdoor-to-hide-infected-devices/" target="_blank" rel="noopener">Hackers update Cisco IOS XE backdoor to hide infected devices</a><span class="article-summary">The number of Cisco IOS XE devices detected with a malicious backdoor implant has plummeted from over 50,000 impacted devices to only a few hundred after the attackers updated the backdoor to hide infected systems from scans. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="microsoft announces security copilot early access program" data-date="2023-10-22"><span class="headline-date">22 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/microsoft/microsoft-announces-security-copilot-early-access-program/" target="_blank" rel="noopener">Microsoft announces Security Copilot early access program</a><span class="article-summary">Microsoft announced this week that its ChatGPT-like Security Copilot AI assistant is now available in early access for some customers. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="google chrome's new &quot;ip protection&quot; will hide users' ip addresses" data-date="2023-10-22"><span class="headline-date">22 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/google/google-chromes-new-ip-protection-will-hide-users-ip-addresses/" target="_blank" rel="noopener">Google Chrome's new "IP Protection" will hide users' IP addresses</a><span class="article-summary">Google is getting ready to test a new "IP Protection" feature for the Chrome browser that enhances users' privacy by masking their IP addresses using proxy servers. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

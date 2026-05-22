@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-02-17</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,72 +109,59 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-02-17</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">12</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-02-17"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2024/02/cisa-warning-akira-ransomware.html?&web_view=true" target="_blank" rel="noopener">CISA Warns of Akira Ransomware Exploiting Cisco ASA/FTD Vulnerability</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 17 Feb 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-02-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/02/google-open-sources-magika-ai-powered.html" target="_blank" rel="noopener">Google Open Sources Magika: AI-Powered File Identification Tool</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 17 Feb 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-02-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/keytrap-attack-internet-access-disrupted-with-one-dns-packet/" target="_blank" rel="noopener">KeyTrap attack: Internet access disrupted with one DNS packet</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 17 Feb 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-02-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://symantec-enterprise-blogs.security.com/blogs/threat-intelligence/alpha-netwalker-ransomware?&web_view=true" target="_blank" rel="noopener">Alpha Ransomware Emerges From NetWalker Ashes</a></div><span class="article-meta">SYMANTEC-ENTERPRISE-BLOGS.SECURITY.COM &mdash; 17 Feb 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-02-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2024/02/17/why-ransomware-makes-so-much-money/" target="_blank" rel="noopener">Why are ransomware gangs making so much money?</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 17 Feb 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-02-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://infosec.pub/pictrs/image/ac87c21b-c7c5-4575-9e1e-cfac573aa5c6.png" target="_blank" rel="noopener">Defense in Depth podcast - Tracking Anomalous Behaviors of Legitimate Identities - 34 minutes</a></div><span class="article-meta">INFOSEC.PUB &mdash; 17 Feb 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-02-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://sh.itjust.works/post/14743177" target="_blank" rel="noopener">create fake password manager export</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 17 Feb 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-02-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/north-korean-hackers-now-launder-stolen-crypto-via-yomix-tumbler/?&web_view=true" target="_blank" rel="noopener">North Korean Hackers Now Launder Stolen Crypto via YoMix Tumbler</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 17 Feb 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-02-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/pictrs/image/4581911d-eea9-455c-97e1-7ca0adc86248.png" target="_blank" rel="noopener">FIRSTCTI23 - FIRST Cyber Threat Intelligence Conference - 15 talks</a></div><span class="article-meta">INFOSEC.PUB &mdash; 17 Feb 2024</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2024-02-17"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.hackread.com/spynote-android-spyware-legit-crypto-wallets/?&web_view=true" target="_blank" rel="noopener">SpyNote Android Spyware Poses as Legit Crypto Wallets, Steals Funds</a></div><span class="article-meta">HACKREAD.COM &mdash; 17 Feb 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-02-17"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2024/02/how-businesses-can-safeguard-their.html" target="_blank" rel="noopener">How Businesses Can Safeguard Their Communication Channels Against Hackers</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 17 Feb 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-02-17"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/google/new-google-chrome-feature-blocks-attacks-against-home-networks/" target="_blank" rel="noopener">New Google Chrome feature blocks attacks against home networks</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 17 Feb 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa warns of akira ransomware exploiting cisco asa/ftd vulnerability" data-date="2024-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/02/cisa-warning-akira-ransomware.html?&web_view=true" target="_blank" rel="noopener">CISA Warns of Akira Ransomware Exploiting Cisco ASA/FTD Vulnerability</a><span class="article-summary">The information disclosure vulnerability, known as CVE-2020-3259, is being exploited by the Akira ransomware group to compromise susceptible Cisco Anyconnect SSL VPN appliances.</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="google open sources magika: ai-powered file identification tool" data-date="2024-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/02/google-open-sources-magika-ai-powered.html" target="_blank" rel="noopener">Google Open Sources Magika: AI-Powered File Identification Tool</a><span class="article-summary">Google has announced that it's open-sourcing&nbsp;Magika, an artificial intelligence (AI)-powered tool to identify file types, to help defenders accurately detect binary and textual file types. "Magika outperforms conventional file identification methods providing an overall 30% …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="keytrap attack: internet access disrupted with one dns packet" data-date="2024-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/keytrap-attack-internet-access-disrupted-with-one-dns-packet/" target="_blank" rel="noopener">KeyTrap attack: Internet access disrupted with one DNS packet</a><span class="article-summary">A serious vulnerability named KeyTrap in the Domain Name System Security Extensions (DNSSEC) feature could be exploited to deny internet access to applications for an extended period. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="alpha ransomware emerges from netwalker ashes" data-date="2024-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://symantec-enterprise-blogs.security.com/blogs/threat-intelligence/alpha-netwalker-ransomware?&web_view=true" target="_blank" rel="noopener">Alpha Ransomware Emerges From NetWalker Ashes</a><span class="article-summary">The Alpha ransomware operation appears to be linked to the previously inactive NetWalker ransomware, suggesting a potential revival or acquisition of the original payload.</span></span><span class="headline-source">SYMANTEC-ENTERPRISE-BLOGS.SECURITY.COM</span></div>
+<div class="headline" data-title="why are ransomware gangs making so much money?" data-date="2024-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/02/17/why-ransomware-makes-so-much-money/" target="_blank" rel="noopener">Why are ransomware gangs making so much money?</a><span class="article-summary">For many organizations and startups, 2023 was a rough year financially, with companies struggling to raise money and others making cuts to survive. Ransomware and extortion gangs, on the other hand, had a record-breaking year in earnings, if recent reports are anything to go by. …</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="defense in depth podcast - tracking anomalous behaviors of legitimate identities - 34 minutes" data-date="2024-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/pictrs/image/ac87c21b-c7c5-4575-9e1e-cfac573aa5c6.png" target="_blank" rel="noopener">Defense in Depth podcast - Tracking Anomalous Behaviors of Legitimate Identities - 34 minutes</a><span class="article-summary">submitted by ashar to security_cpe 1 points | 0 comments https://infosec.pub/pictrs/image/ac87c21b-c7c5-4575-9e1e-cfac573aa5c6.png Defense in Depth podcast - Tracking Anomalous Behaviors of Legitimate Identities The Verizon DBIR found that about half of all breaches involved legi…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="create fake password manager export" data-date="2024-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/14743177" target="_blank" rel="noopener">create fake password manager export</a><span class="article-summary">submitted by birdcat to cybersecurity 1 points | 0 comments Im looking to create a real looking .cvs or .json file as if it was exported from a password manager. E-Mail (username) should always be the same and of my choice. Websites should be real, random standard websites like f…</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="north korean hackers now launder stolen crypto via yomix tumbler" data-date="2024-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/north-korean-hackers-now-launder-stolen-crypto-via-yomix-tumbler/?&web_view=true" target="_blank" rel="noopener">North Korean Hackers Now Launder Stolen Crypto via YoMix Tumbler</a><span class="article-summary">YoMix saw a significant increase in funds in 2023, with about one-third of inflows originating from wallets associated with crypto hacks, demonstrating the adaptability of sophisticated threat actors.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="firstcti23 - first cyber threat intelligence conference - 15 talks" data-date="2024-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/pictrs/image/4581911d-eea9-455c-97e1-7ca0adc86248.png" target="_blank" rel="noopener">FIRSTCTI23 - FIRST Cyber Threat Intelligence Conference - 15 talks</a><span class="article-summary">submitted by ashar to security_cpe 1 points | 0 comments https://infosec.pub/pictrs/image/4581911d-eea9-455c-97e1-7ca0adc86248.png FIRST Cyber Threat Intelligence Conference 2023 playlist Program The conference provides a gathering place for experts in the field to share knowledg…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="spynote android spyware poses as legit crypto wallets, steals funds" data-date="2024-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.hackread.com/spynote-android-spyware-legit-crypto-wallets/?&web_view=true" target="_blank" rel="noopener">SpyNote Android Spyware Poses as Legit Crypto Wallets, Steals Funds</a><span class="article-summary">Android users are advised to be cautious of applications requesting Accessibility API access, particularly those claiming to be crypto wallets, PDF readers, and video players.</span></span><span class="headline-source">HACKREAD.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="how businesses can safeguard their communication channels against hackers" data-date="2024-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/02/how-businesses-can-safeguard-their.html" target="_blank" rel="noopener">How Businesses Can Safeguard Their Communication Channels Against Hackers</a><span class="article-summary">Efficient communication is a cornerstone of business success. Internally, making sure your team communicates seamlessly helps you avoid friction losses, misunderstandings, delays, and overlaps. Externally, frustration-free customer communication is directly correlated to a positi…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="new google chrome feature blocks attacks against home networks" data-date="2024-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/google/new-google-chrome-feature-blocks-attacks-against-home-networks/" target="_blank" rel="noopener">New Google Chrome feature blocks attacks against home networks</a><span class="article-summary">Google is testing a new feature to prevent malicious public websites from pivoting through a user's browser to attack devices and services on internal, private networks. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

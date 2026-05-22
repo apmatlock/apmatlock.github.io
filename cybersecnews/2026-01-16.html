@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2026-01-16</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,77 +109,60 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2026-01-16</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">18</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">12</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-01-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.f5.com/labs/articles/analyzing-react2shell-threat-actors" target="_blank" rel="noopener">Analyzing React2Shell Threat Actors</a></div><span class="article-meta">F5.COM &mdash; 16 Jan 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-01-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-0907" target="_blank" rel="noopener">Chromium: CVE-2026-0907 Incorrect security UI in Split View</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 Jan 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-01-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-0906" target="_blank" rel="noopener">Chromium: CVE-2026-0906 Incorrect security UI</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 Jan 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-01-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-0905" target="_blank" rel="noopener">Chromium: CVE-2026-0905 Insufficient policy enforcement in Network</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 Jan 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-01-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-0904" target="_blank" rel="noopener">Chromium: CVE-2026-0904 Incorrect security UI in Digital Credentials</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 Jan 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-01-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-0903" target="_blank" rel="noopener">Chromium: CVE-2026-0903 Insufficient validation of untrusted input in Downloads</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 Jan 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-01-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-0901" target="_blank" rel="noopener">Chromium: CVE-2026-0901 Inappropriate implementation in Blink</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 Jan 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-01-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-0899" target="_blank" rel="noopener">Chromium: CVE-2026-0899 Out of bounds memory access in V8</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 Jan 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-01-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-21223" target="_blank" rel="noopener">CVE-2026-21223 Microsoft Edge (Chromium-based) Security Feature Bypass Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 Jan 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-01-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-0908" target="_blank" rel="noopener">Chromium: CVE-2026-0908 Use after free in ANGLE</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 Jan 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-01-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-0900" target="_blank" rel="noopener">Chromium: CVE-2026-0900 Inappropriate implementation in V8</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 Jan 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-01-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-0902" target="_blank" rel="noopener">Chromium: CVE-2026-0902 Inappropriate implementation in V8</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 Jan 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-01-16"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/staples-slips-up-on-data-removal" target="_blank" rel="noopener">Staples Slips Up On Data Removal</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 16 Jan 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-01-16"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.recordedfuture.com/blog/threat-and-vulnerability-management" target="_blank" rel="noopener">Threat and Vulnerability Management in 2026</a></div><span class="article-meta">RECORDEDFUTURE.COM &mdash; 16 Jan 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-01-16"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.troyhunt.com/weekly-update-486/" target="_blank" rel="noopener">Weekly Update 486</a></div><span class="article-meta">TROYHUNT.COM &mdash; 16 Jan 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-01-16"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.welivesecurity.com/en/social-media/linkedin-hunting-ground-threat-actors-how-protect-yourself/" target="_blank" rel="noopener">Why LinkedIn is a hunting ground for threat actors – and how to protect yourself</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 16 Jan 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-01-16"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/26/a/your-100-billion-parameter-behemoth-is-a-liability.html" target="_blank" rel="noopener">Your 100 Billion Parameter Behemoth is a Liability</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 16 Jan 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-01-16"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://blog.cloudflare.com/astro-joins-cloudflare/" target="_blank" rel="noopener">Astro is joining Cloudflare</a></div><span class="article-meta">CLOUDFLARE.COM &mdash; 16 Jan 2026</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">12</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="analyzing react2shell threat actors" data-date="2026-01-16"><span class="headline-date">16 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.f5.com/labs/articles/analyzing-react2shell-threat-actors" target="_blank" rel="noopener">Analyzing React2Shell Threat Actors</a><span class="article-summary">Sensor Intel Series: December CVE-2025-55182 Trends</span></span><span class="headline-source">F5.COM</span></div>
+<div class="headline" data-title="chromium: cve-2026-0907 incorrect security ui in split view" data-date="2026-01-16"><span class="headline-date">16 Jan</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-0907" target="_blank" rel="noopener">Chromium: CVE-2026-0907 Incorrect security UI in Split View</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2026-0906 incorrect security ui" data-date="2026-01-16"><span class="headline-date">16 Jan</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-0906" target="_blank" rel="noopener">Chromium: CVE-2026-0906 Incorrect security UI</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2026-0905 insufficient policy enforcement in network" data-date="2026-01-16"><span class="headline-date">16 Jan</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-0905" target="_blank" rel="noopener">Chromium: CVE-2026-0905 Insufficient policy enforcement in Network</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2026-0904 incorrect security ui in digital credentials" data-date="2026-01-16"><span class="headline-date">16 Jan</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-0904" target="_blank" rel="noopener">Chromium: CVE-2026-0904 Incorrect security UI in Digital Credentials</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2026-0903 insufficient validation of untrusted input in downloads" data-date="2026-01-16"><span class="headline-date">16 Jan</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-0903" target="_blank" rel="noopener">Chromium: CVE-2026-0903 Insufficient validation of untrusted input in Downloads</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2026-0901 inappropriate implementation in blink" data-date="2026-01-16"><span class="headline-date">16 Jan</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-0901" target="_blank" rel="noopener">Chromium: CVE-2026-0901 Inappropriate implementation in Blink</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2026-0899 out of bounds memory access in v8" data-date="2026-01-16"><span class="headline-date">16 Jan</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-0899" target="_blank" rel="noopener">Chromium: CVE-2026-0899 Out of bounds memory access in V8</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-21223 microsoft edge (chromium-based) security feature bypass vulnerability" data-date="2026-01-16"><span class="headline-date">16 Jan</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-21223" target="_blank" rel="noopener">CVE-2026-21223 Microsoft Edge (Chromium-based) Security Feature Bypass Vulnerability</a><span class="article-summary">Microsoft Edge Elevation Service exposes a privileged COM interface that inadequately validates the privileges of the calling process. A standard (non‑administrator) local user can invoke the IElevatorEdge interface method LaunchUpdateCmdElevatedAndWait, causing the service to ex…</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2026-0908 use after free in angle" data-date="2026-01-16"><span class="headline-date">16 Jan</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-0908" target="_blank" rel="noopener">Chromium: CVE-2026-0908 Use after free in ANGLE</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2026-0900 inappropriate implementation in v8" data-date="2026-01-16"><span class="headline-date">16 Jan</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-0900" target="_blank" rel="noopener">Chromium: CVE-2026-0900 Inappropriate implementation in V8</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2026-0902 inappropriate implementation in v8" data-date="2026-01-16"><span class="headline-date">16 Jan</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-0902" target="_blank" rel="noopener">Chromium: CVE-2026-0902 Inappropriate implementation in V8</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="staples slips up on data removal" data-date="2026-01-16"><span class="headline-date">16 Jan</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/staples-slips-up-on-data-removal" target="_blank" rel="noopener">Staples Slips Up On Data Removal</a><span class="article-summary">Cybersecurity Challenges: Data Privacy Failures, AI Risks, and New Malware Threats In this episode of Cybersecurity Today, host David Shipley covers a range of pressing issues. The discussion kicks off with Staples Canada reselling laptops without wiping customer data, highlighti…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="threat and vulnerability management in 2026" data-date="2026-01-16"><span class="headline-date">16 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.recordedfuture.com/blog/threat-and-vulnerability-management" target="_blank" rel="noopener">Threat and Vulnerability Management in 2026</a><span class="article-summary">Understand the future of threat and vulnerability management (TVM). Learn what TVM is, why traditional tools fail, and how intelligence is essential in today’s landscape.</span></span><span class="headline-source">RECORDEDFUTURE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="weekly update 486" data-date="2026-01-16"><span class="headline-date">16 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.troyhunt.com/weekly-update-486/" target="_blank" rel="noopener">Weekly Update 486</a><span class="article-summary">Presently sponsored by: Report URI: Guarding you from rogue JavaScript! Don’t get pwned; get real-time alerts & prevent breaches #SecureYourSite I&#x2019;m in Oslo! Flighty is telling me I&#x2019;ve flown in or out of here 43 times since a visit in 2014 set me on a new path profe…</span></span><span class="headline-source">TROYHUNT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="why linkedin is a hunting ground for threat actors – and how to protect yourself" data-date="2026-01-16"><span class="headline-date">16 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/en/social-media/linkedin-hunting-ground-threat-actors-how-protect-yourself/" target="_blank" rel="noopener">Why LinkedIn is a hunting ground for threat actors – and how to protect yourself</a><span class="article-summary">The business social networking site is a vast, publicly accessible database of corporate information. Don’t believe everyone on the site is who they say they are.</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="your 100 billion parameter behemoth is a liability" data-date="2026-01-16"><span class="headline-date">16 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/26/a/your-100-billion-parameter-behemoth-is-a-liability.html" target="_blank" rel="noopener">Your 100 Billion Parameter Behemoth is a Liability</a><span class="article-summary">The "bigger is better" era of AI is hitting a wall. We are in an LLM bubble, characterized by ruinous inference costs and diminishing returns. The future belongs to Agentic AI powered by specialized Small Language Models (SLMs). Think of it as a shift from hiring a single expensi…</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+<div class="headline" data-title="astro is joining cloudflare" data-date="2026-01-16"><span class="headline-date">16 Jan</span><span class="headline-body"><a class="headline-title" href="https://blog.cloudflare.com/astro-joins-cloudflare/" target="_blank" rel="noopener">Astro is joining Cloudflare</a><span class="article-summary">The Astro Technology Company team — the creators of the Astro web framework — is joining Cloudflare. We’re doubling down on making Astro the best framework for content-driven websites, today and in the years to come.</span></span><span class="headline-source">CLOUDFLARE.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

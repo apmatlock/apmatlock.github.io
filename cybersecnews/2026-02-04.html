@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2026-02-04</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,76 +109,59 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2026-02-04</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">17</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">4</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-04"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="http://www.zerodayinitiative.com/advisories/ZDI-26-061/" target="_blank" rel="noopener">ZDI-26-061: NVIDIA Triton Inference Server EVBufferToJson Uncaught Exception Denial-of-Service Vulnerability</a></div><span class="article-meta">ZERODAYINITIATIVE.COM &mdash; 04 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-04"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="http://www.zerodayinitiative.com/advisories/ZDI-26-060/" target="_blank" rel="noopener">ZDI-26-060: NVIDIA Megatron-LM load_base_checkpoint Deserialization of Untrusted Data Remote Code Execution Vulnerability</a></div><span class="article-meta">ZERODAYINITIATIVE.COM &mdash; 04 Feb 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-02-04"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/critical-cybersecurity-updates-fortinet-docker-and-android-malware" target="_blank" rel="noopener">Critical Cybersecurity Updates: Fortinet, Docker, and Android Malware</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 04 Feb 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-02-04"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.welivesecurity.com/en/scams/offerup-scammers-out-force-heres-what-you-should-know/" target="_blank" rel="noopener">OfferUp scammers are out in force: Here’s what you should know</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 04 Feb 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-02-04"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.exploit-db.com/exploits/52477" target="_blank" rel="noopener">[remote] Redis 8.0.2 - RCE</a></div><span class="article-meta">EXPLOIT-DB.COM &mdash; 04 Feb 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-02-04"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.exploit-db.com/exploits/52475" target="_blank" rel="noopener">[remote] Ingress-NGINX Admission Controller v1.11.1 - FD Injection to RCE</a></div><span class="article-meta">EXPLOIT-DB.COM &mdash; 04 Feb 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-02-04"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.exploit-db.com/exploits/52474" target="_blank" rel="noopener">[webapps] aiohttp 3.9.1 - directory traversal PoC</a></div><span class="article-meta">EXPLOIT-DB.COM &mdash; 04 Feb 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-02-04"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.exploit-db.com/exploits/52473" target="_blank" rel="noopener">[webapps] FortiWeb Fabric Connector 7.6.x - SQL Injection to Remote Code Execution</a></div><span class="article-meta">EXPLOIT-DB.COM &mdash; 04 Feb 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-02-04"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://risky.biz/RB823/" target="_blank" rel="noopener">Risky Business #823 -- Humans impersonate clawdbots impersonating humans</a></div><span class="article-meta">RISKY.BIZ &mdash; 04 Feb 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-02-04"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.troyhunt.com/weekly-update-489/" target="_blank" rel="noopener">Weekly Update 489</a></div><span class="article-meta">TROYHUNT.COM &mdash; 04 Feb 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-02-04"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.lastwatchdog.com/news-alert-momentproof-brings-cryptographic-proof-to-insurance-claims-as-ai-manipulation-rises/" target="_blank" rel="noopener">News alert: MomentProof brings cryptographic proof to insurance claims as AI manipulation rises</a></div><span class="article-meta">LASTWATCHDOG.COM &mdash; 04 Feb 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-02-04"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.lastwatchdog.com/news-alert-one-identity-brings-in-new-cto-to-modernize-legacy-platforms-for-saas-first-customers/" target="_blank" rel="noopener">News alert: One Identity brings in new CTO to modernize legacy platforms for SaaS-first customers</a></div><span class="article-meta">LASTWATCHDOG.COM &mdash; 04 Feb 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-02-04"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.paloaltonetworks.com/blog/2026/02/new-year-new-program-new-opportunities/" target="_blank" rel="noopener">New Year, New Program, New Opportunities</a></div><span class="article-meta">PALOALTONETWORKS.COM &mdash; 04 Feb 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-02-04"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.recordedfuture.com/research/rublevka-team-anatomy-russian-crypto-drainer-operation" target="_blank" rel="noopener">Rublevka Team: Anatomy of a Russian Crypto Drainer Operation</a></div><span class="article-meta">RECORDEDFUTURE.COM &mdash; 04 Feb 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-02-04"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.exploit-db.com/exploits/52478" target="_blank" rel="noopener">[remote] windows 10/11 - NTLM Hash Disclosure Spoofing</a></div><span class="article-meta">EXPLOIT-DB.COM &mdash; 04 Feb 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-02-04"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.exploit-db.com/exploits/52476" target="_blank" rel="noopener">[webapps] OctoPrint 1.11.2 - File Upload</a></div><span class="article-meta">EXPLOIT-DB.COM &mdash; 04 Feb 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-02-04"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.exploit-db.com/exploits/52472" target="_blank" rel="noopener">[local] Docker Desktop 4.44.3 - Unauthenticated  API Exposure</a></div><span class="article-meta">EXPLOIT-DB.COM &mdash; 04 Feb 2026</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="zdi-26-061: nvidia triton inference server evbuffertojson uncaught exception denial-of-service vulnerability" data-date="2026-02-04"><span class="headline-date">4 Feb</span><span class="headline-body"><a class="headline-title" href="http://www.zerodayinitiative.com/advisories/ZDI-26-061/" target="_blank" rel="noopener">ZDI-26-061: NVIDIA Triton Inference Server EVBufferToJson Uncaught Exception Denial-of-Service Vulnerability</a><span class="article-summary">This vulnerability allows remote attackers to create a denial-of-service condition on affected installations of NVIDIA Triton Inference Server. Authentication is not required to exploit this vulnerability. The ZDI has assigned a CVSS rating of 7.5. The following CVEs are assigned…</span></span><span class="headline-source">ZERODAYINITIATIVE.COM</span></div>
+<div class="headline" data-title="zdi-26-060: nvidia megatron-lm load_base_checkpoint deserialization of untrusted data remote code execution vulnerability" data-date="2026-02-04"><span class="headline-date">4 Feb</span><span class="headline-body"><a class="headline-title" href="http://www.zerodayinitiative.com/advisories/ZDI-26-060/" target="_blank" rel="noopener">ZDI-26-060: NVIDIA Megatron-LM load_base_checkpoint Deserialization of Untrusted Data Remote Code Execution Vulnerability</a><span class="article-summary">This vulnerability allows remote attackers to execute arbitrary code on affected installations of NVIDIA Megatron-LM. User interaction is required to exploit this vulnerability in that the target must visit a malicious page or open a malicious file. The ZDI has assigned a CVSS ra…</span></span><span class="headline-source">ZERODAYINITIATIVE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="critical cybersecurity updates: fortinet, docker, and android malware" data-date="2026-02-04"><span class="headline-date">4 Feb</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/critical-cybersecurity-updates-fortinet-docker-and-android-malware" target="_blank" rel="noopener">Critical Cybersecurity Updates: Fortinet, Docker, and Android Malware</a><span class="article-summary">In this episode of Cybersecurity Today, Jim Love covers major vulnerabilities and security threats, including the exposure of over 3 million Fortinet devices, a critical flaw in Docker's AI assistant, and a sophisticated Android malware campaign using Hugging Face repositories. D…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="offerup scammers are out in force: here’s what you should know" data-date="2026-02-04"><span class="headline-date">4 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/en/scams/offerup-scammers-out-force-heres-what-you-should-know/" target="_blank" rel="noopener">OfferUp scammers are out in force: Here’s what you should know</a><span class="article-summary">The mobile marketplace app has a growing number of users, but not all of them are genuine. Watch out for these common scams.</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+<div class="headline" data-title="[remote] redis 8.0.2 - rce" data-date="2026-02-04"><span class="headline-date">4 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.exploit-db.com/exploits/52477" target="_blank" rel="noopener">[remote] Redis 8.0.2 - RCE</a><span class="article-summary">Redis 8.0.2 - RCE</span></span><span class="headline-source">EXPLOIT-DB.COM</span></div>
+<div class="headline" data-title="[remote] ingress-nginx admission controller v1.11.1 - fd injection to rce" data-date="2026-02-04"><span class="headline-date">4 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.exploit-db.com/exploits/52475" target="_blank" rel="noopener">[remote] Ingress-NGINX Admission Controller v1.11.1 - FD Injection to RCE</a><span class="article-summary">Ingress-NGINX Admission Controller v1.11.1 - FD Injection to RCE</span></span><span class="headline-source">EXPLOIT-DB.COM</span></div>
+<div class="headline" data-title="[webapps] aiohttp 3.9.1 - directory traversal poc" data-date="2026-02-04"><span class="headline-date">4 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.exploit-db.com/exploits/52474" target="_blank" rel="noopener">[webapps] aiohttp 3.9.1 - directory traversal PoC</a><span class="article-summary">aiohttp 3.9.1 - directory traversal PoC</span></span><span class="headline-source">EXPLOIT-DB.COM</span></div>
+<div class="headline" data-title="[webapps] fortiweb fabric connector 7.6.x - sql injection to remote code execution" data-date="2026-02-04"><span class="headline-date">4 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.exploit-db.com/exploits/52473" target="_blank" rel="noopener">[webapps] FortiWeb Fabric Connector 7.6.x - SQL Injection to Remote Code Execution</a><span class="article-summary">FortiWeb Fabric Connector 7.6.x - SQL Injection to Remote Code Execution</span></span><span class="headline-source">EXPLOIT-DB.COM</span></div>
+<div class="headline" data-title="risky business #823 -- humans impersonate clawdbots impersonating humans" data-date="2026-02-04"><span class="headline-date">4 Feb</span><span class="headline-body"><a class="headline-title" href="https://risky.biz/RB823/" target="_blank" rel="noopener">Risky Business #823 -- Humans impersonate clawdbots impersonating humans</a><span class="article-summary">Patrick Gray and Adam Boileau are joined by the newest guy on the Risky Business Media team, James WIlson. They discuss the week’s cybersecurity news, including: Notepad++ update supply chain attack has been attributed to China The AI agent future is even more stupid than expecte…</span></span><span class="headline-source">RISKY.BIZ</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="weekly update 489" data-date="2026-02-04"><span class="headline-date">4 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.troyhunt.com/weekly-update-489/" target="_blank" rel="noopener">Weekly Update 489</a><span class="article-summary">Presently sponsored by: Report URI: Guarding you from rogue JavaScript! Don’t get pwned; get real-time alerts & prevent breaches #SecureYourSite This week I&apos;m in Hong Kong, and the day after recording, I gave the talk shown in the image above at INTERPOL&apos;s Cybercrime Ex…</span></span><span class="headline-source">TROYHUNT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="news alert: momentproof brings cryptographic proof to insurance claims as ai manipulation rises" data-date="2026-02-04"><span class="headline-date">4 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.lastwatchdog.com/news-alert-momentproof-brings-cryptographic-proof-to-insurance-claims-as-ai-manipulation-rises/" target="_blank" rel="noopener">News alert: MomentProof brings cryptographic proof to insurance claims as AI manipulation rises</a><span class="article-summary">WASHINGTON, Feb. 4, 2026, CyberNewswire — MomentProofShow us, Inc., a provider of AI-resilient digital asset certification and verification technology, today announced the successful deployment of MomentProof Enterprise for AXA, enabling cryptographically authentic, tamper-proof …</span></span><span class="headline-source">LASTWATCHDOG.COM</span></div>
+<div class="headline" data-title="news alert: one identity brings in new cto to modernize legacy platforms for saas-first customers" data-date="2026-02-04"><span class="headline-date">4 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.lastwatchdog.com/news-alert-one-identity-brings-in-new-cto-to-modernize-legacy-platforms-for-saas-first-customers/" target="_blank" rel="noopener">News alert: One Identity brings in new CTO to modernize legacy platforms for SaaS-first customers</a><span class="article-summary">ALISA VIEJO, Calif., Feb. 4, 2026, CyberNewswire — One Identity , a leader in unified identity security , today announced the appointment of Gihan Munasinghe as Chief Technology Officer. Munasinghe brings more than 15 years of experience leading global engineering &#8230; (more…)…</span></span><span class="headline-source">LASTWATCHDOG.COM</span></div>
+<div class="headline" data-title="new year, new program, new opportunities" data-date="2026-02-04"><span class="headline-date">4 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.paloaltonetworks.com/blog/2026/02/new-year-new-program-new-opportunities/" target="_blank" rel="noopener">New Year, New Program, New Opportunities</a><span class="article-summary">Palo Alto Networks is evolving its NextWave Partner Program in 2026, unifying it with the value exchange framework for clearer, more scalable growth. The post New Year, New Program, New Opportunities appeared first on Palo Alto Networks Blog .</span></span><span class="headline-source">PALOALTONETWORKS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="rublevka team: anatomy of a russian crypto drainer operation" data-date="2026-02-04"><span class="headline-date">4 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.recordedfuture.com/research/rublevka-team-anatomy-russian-crypto-drainer-operation" target="_blank" rel="noopener">Rublevka Team: Anatomy of a Russian Crypto Drainer Operation</a><span class="article-summary">Rublevka Team exemplifies the industrialization of crypto scams. Learn how traffer teams and wallet drainers enable high-volume theft.</span></span><span class="headline-source">RECORDEDFUTURE.COM</span></div>
+<div class="headline" data-title="[remote] windows 10/11 - ntlm hash disclosure spoofing" data-date="2026-02-04"><span class="headline-date">4 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.exploit-db.com/exploits/52478" target="_blank" rel="noopener">[remote] windows 10/11 - NTLM Hash Disclosure Spoofing</a><span class="article-summary">windows 10/11 - NTLM Hash Disclosure Spoofing</span></span><span class="headline-source">EXPLOIT-DB.COM</span></div>
+<div class="headline" data-title="[webapps] octoprint 1.11.2 - file upload" data-date="2026-02-04"><span class="headline-date">4 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.exploit-db.com/exploits/52476" target="_blank" rel="noopener">[webapps] OctoPrint 1.11.2 - File Upload</a><span class="article-summary">OctoPrint 1.11.2 - File Upload</span></span><span class="headline-source">EXPLOIT-DB.COM</span></div>
+<div class="headline" data-title="[local] docker desktop 4.44.3 - unauthenticated  api exposure" data-date="2026-02-04"><span class="headline-date">4 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.exploit-db.com/exploits/52472" target="_blank" rel="noopener">[local] Docker Desktop 4.44.3 - Unauthenticated  API Exposure</a><span class="article-summary">Docker Desktop 4.44.3 - Unauthenticated API Exposure</span></span><span class="headline-source">EXPLOIT-DB.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

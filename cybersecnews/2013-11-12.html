@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2013-11-12</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,65 +109,48 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2013-11-12</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Security Bulletins" onclick="filterCat('Security Bulletins', this)">SECURITY BULLETINS <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2013-11-12"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/blog/2013/11/technical-details-of-the-targeted-attack-using-ie-vulnerability-cve-2013-3918/" target="_blank" rel="noopener">Technical details of the targeted attack using IE vulnerability CVE-2013-3918</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 12 Nov 2013</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2013-11-12"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://msrc.microsoft.com/blog/2013/11/assessing-risk-for-the-november-2013-security-updates/" target="_blank" rel="noopener">Assessing risk for the November 2013 security updates</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 12 Nov 2013</span></div>
-<div class="article-row" data-cat="Security Bulletins" data-date="2013-11-12"><span class="cat-badge" style="border:1px solid rgba(255,170,0,0.5);background:rgba(255,170,0,0.10);" title="Security Bulletins">📋</span><div class="article-body"><a href="https://msrc.microsoft.com/blog/2013/11/authenticity-and-the-november-2013-security-updates/" target="_blank" rel="noopener">Authenticity and the November 2013 Security Updates</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 12 Nov 2013</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2013-11-12"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://msrc.microsoft.com/blog/2013/11/security-advisory-2868725-recommendation-to-disable-rc4/" target="_blank" rel="noopener">Security Advisory 2868725: Recommendation to disable RC4</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 12 Nov 2013</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2013-11-12"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://msrc.microsoft.com/blog/2013/11/security-advisory-2880823-recommendation-to-discontinue-use-of-sha-1/" target="_blank" rel="noopener">Security Advisory 2880823:  Recommendation to discontinue use of SHA-1</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 12 Nov 2013</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2013-11-12"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://msrc.microsoft.com/blog/2013/11/introducing-enhanced-mitigation-experience-toolkit-emet-4-1/" target="_blank" rel="noopener">Introducing Enhanced Mitigation Experience Toolkit (EMET) 4.1</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 12 Nov 2013</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="technical details of the targeted attack using ie vulnerability cve-2013-3918" data-date="2013-11-12"><span class="headline-date">12 Nov</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/blog/2013/11/technical-details-of-the-targeted-attack-using-ie-vulnerability-cve-2013-3918/" target="_blank" rel="noopener">Technical details of the targeted attack using IE vulnerability CVE-2013-3918</a><span class="article-summary">Over the weekend we became aware of an active attack relying on an unknown remote code execution vulnerability of a legacy ActiveX component used by Internet Explorer. We are releasing this blog to confirm one more time that the code execution vulnerability will be fixed in today…</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="assessing risk for the november 2013 security updates" data-date="2013-11-12"><span class="headline-date">12 Nov</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/blog/2013/11/assessing-risk-for-the-november-2013-security-updates/" target="_blank" rel="noopener">Assessing risk for the November 2013 security updates</a><span class="article-summary">Today we released eight security bulletins addressing 19 CVE’s. Three bulletins have a maximum severity rating of Critical while the other five have a maximum severity rating of Important. We hope that the table below helps you prioritize the deployment of the updates appropriate…</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-bulletins">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,170,0,0.5);" onclick="toggleSection(this)">📋 SECURITY BULLETINS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="authenticity and the november 2013 security updates" data-date="2013-11-12"><span class="headline-date">12 Nov</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/blog/2013/11/authenticity-and-the-november-2013-security-updates/" target="_blank" rel="noopener">Authenticity and the November 2013 Security Updates</a><span class="article-summary">If you haven&rsquo;t had a chance to see the movie Gravity, I highly recommend you take the time to check it out. The plot moves a bit slowly at times, but director Alfonso Cuaron&rsquo;s work portrayal of zero gravity is worth the ticket price alone. Add in stellar acting and yo…</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="security advisory 2868725: recommendation to disable rc4" data-date="2013-11-12"><span class="headline-date">12 Nov</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/blog/2013/11/security-advisory-2868725-recommendation-to-disable-rc4/" target="_blank" rel="noopener">Security Advisory 2868725: Recommendation to disable RC4</a><span class="article-summary">In light of recent research into practical attacks on biases in the RC4 stream cipher, Microsoft is recommending that customers enable TLS1.2 in their services and take steps to retire and deprecate RC4 as used in their TLS implementations. Microsoft recommends TLS1.2 with AES-GC…</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="security advisory 2880823:  recommendation to discontinue use of sha-1" data-date="2013-11-12"><span class="headline-date">12 Nov</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/blog/2013/11/security-advisory-2880823-recommendation-to-discontinue-use-of-sha-1/" target="_blank" rel="noopener">Security Advisory 2880823:  Recommendation to discontinue use of SHA-1</a><span class="article-summary">Microsoft is recommending that customers and CA’s stop using SHA-1 for cryptographic applications, including use in SSL/TLS and code signing. Microsoft Security Advisory 2880823 has been released along with the policy announcement that Microsoft will stop recognizing the validity…</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="introducing enhanced mitigation experience toolkit (emet) 4.1" data-date="2013-11-12"><span class="headline-date">12 Nov</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/blog/2013/11/introducing-enhanced-mitigation-experience-toolkit-emet-4-1/" target="_blank" rel="noopener">Introducing Enhanced Mitigation Experience Toolkit (EMET) 4.1</a><span class="article-summary">In June 2013, we released EMET 4.0 and customer response has been fantastic. Many customers across the world now include EMET as part of their defense-in-depth strategy and appreciate how EMET helps businesses prevent attackers from gaining access to computers systems. Today, we’…</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

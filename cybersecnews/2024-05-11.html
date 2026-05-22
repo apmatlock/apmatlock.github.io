@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-05-11</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,74 +109,61 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-05-11</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">14</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-05-11"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://gbhackers.com/putty-private-key-poc-released/" target="_blank" rel="noopener">PoC Released for Critical PuTTY Private Key Recovery Vulnerability</a></div><span class="article-meta">GBHACKERS.COM &mdash; 11 May 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-05-11"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.first.org/_/e/_logos/sponsor-cve_r-wd.svg" target="_blank" rel="noopener">CVE/FIRST VulnCon 2024 - 44 talks</a></div><span class="article-meta">FIRST.ORG &mdash; 11 May 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-05-11"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://framerusercontent.com/images/ScOp3CAXGVIpa2GvcCOgS3AffZw.svg" target="_blank" rel="noopener">Hardly Strictly Security</a></div><span class="article-meta">FRAMERUSERCONTENT.COM &mdash; 11 May 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-05-11"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.theregister.com/2024/05/10/baidu_apollo_hack/?&web_view=true" target="_blank" rel="noopener">Attack Makes Autonomous Vehicle Tech Ignore Road Signs</a></div><span class="article-meta">THEREGISTER.COM &mdash; 11 May 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-05-11"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/europol-confirms-web-portal-breach-says-no-operational-data-stolen/" target="_blank" rel="noopener">Europol confirms web portal breach, says no operational data stolen</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 11 May 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-05-11"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/12161616" target="_blank" rel="noopener">RSA Conference 2024 - 14 Keynotes</a></div><span class="article-meta">INFOSEC.PUB &mdash; 11 May 2024</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-05-11"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.bsideslancashire.org/wp-content/uploads/2022/11/LancsLogo.png" target="_blank" rel="noopener">BSides Lancashire 2024 - 19 talks</a></div><span class="article-meta">BSIDESLANCASHIRE.ORG &mdash; 11 May 2024</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-05-11"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/cisa-black-basta-ransomware-breached-over-500-orgs-worldwide/" target="_blank" rel="noopener">CISA: Black Basta ransomware breached over 500 orgs worldwide</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 11 May 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-05-11"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thecyberexpress.com/lockbitsupp-denies-being-dmitry-khoroshev/" target="_blank" rel="noopener">LockBitSupp Denies Identification of Group ‘Admin’, Opens Contest to Find Named Dmitry Yuryevich</a></div><span class="article-meta">THECYBEREXPRESS.COM &mdash; 11 May 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-05-11"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/the-post-millennial-hack-leaked-data-impacting-26-million-people/" target="_blank" rel="noopener">The Post Millennial hack leaked data impacting 26 million people</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 11 May 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-05-11"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/hackcar-automotive-cybersecurity-playground/" target="_blank" rel="noopener">HackCar – Attack AND Defense Playground For Automotive System</a></div><span class="article-meta">GBHACKERS.COM &mdash; 11 May 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-05-11"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.darkreading.com/cyberattacks-data-breaches/-the-mask-espionage-group-resurfaces-after-10-year-hiatus?&web_view=true" target="_blank" rel="noopener">'The Mask' Espionage Group Resurfaces After 10-Year Hiatus</a></div><span class="article-meta">DARKREADING.COM &mdash; 11 May 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-05-11"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2024/05/fin7-hacker-group-leverages-malicious.html" target="_blank" rel="noopener">FIN7 Hacker Group Leverages Malicious Google Ads to Deliver NetSupport RAT</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 11 May 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-05-11"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2024/05/10/scammers-found-planting-online-betting-ads-on-indian-government-websites/" target="_blank" rel="noopener">Scammers found planting online betting ads on Indian government websites</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 11 May 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="poc released for critical putty private key recovery vulnerability" data-date="2024-05-11"><span class="headline-date">11 May</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/putty-private-key-poc-released/" target="_blank" rel="noopener">PoC Released for Critical PuTTY Private Key Recovery Vulnerability</a><span class="article-summary">Security researchers have published a Proof-of-Concept (PoC) exploit for a critical vulnerability in the widely used PuTTY SSH and Telnet client. The flaw, CVE-2024-31497, allows attackers to recover private keys generated with the NIST P-521 elliptic curve in PuTTY versions 0.68…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cve/first vulncon 2024 - 44 talks" data-date="2024-05-11"><span class="headline-date">11 May</span><span class="headline-body"><a class="headline-title" href="https://www.first.org/_/e/_logos/sponsor-cve_r-wd.svg" target="_blank" rel="noopener">CVE/FIRST VulnCon 2024 - 44 talks</a><span class="article-summary">submitted by ashar to security_cpe 1 points | 0 comments https://www.first.org/_/e/_logos/sponsor-cve_r-wd.svg The purpose of the conference is to collaborate with various vulnerability management and cybersecurity professionals to develop forward leaning ideas that can be taken …</span></span><span class="headline-source">FIRST.ORG</span></div>
+<div class="headline" data-title="hardly strictly security" data-date="2024-05-11"><span class="headline-date">11 May</span><span class="headline-body"><a class="headline-title" href="https://framerusercontent.com/images/ScOp3CAXGVIpa2GvcCOgS3AffZw.svg" target="_blank" rel="noopener">Hardly Strictly Security</a><span class="article-summary">submitted by ashar to security_cpe 1 points | 0 comments https://framerusercontent.com/images/ScOp3CAXGVIpa2GvcCOgS3AffZw.svg Hardly Strictly Security is the only cybersecurity conference focused on leveraging the power of open source. This one day, single track virtual event wil…</span></span><span class="headline-source">FRAMERUSERCONTENT.COM</span></div>
+<div class="headline" data-title="attack makes autonomous vehicle tech ignore road signs" data-date="2024-05-11"><span class="headline-date">11 May</span><span class="headline-body"><a class="headline-title" href="https://www.theregister.com/2024/05/10/baidu_apollo_hack/?&web_view=true" target="_blank" rel="noopener">Attack Makes Autonomous Vehicle Tech Ignore Road Signs</a><span class="article-summary">Researchers have developed a technique called "GhostStripe" that can exploit the camera-based computer vision systems of autonomous vehicles, causing them to fail to recognize road signs, making it very risky for Tesla and Baidu Apollo vehicles.</span></span><span class="headline-source">THEREGISTER.COM</span></div>
+<div class="headline" data-title="europol confirms web portal breach, says no operational data stolen" data-date="2024-05-11"><span class="headline-date">11 May</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/europol-confirms-web-portal-breach-says-no-operational-data-stolen/" target="_blank" rel="noopener">Europol confirms web portal breach, says no operational data stolen</a><span class="article-summary">​Europol, the European Union's law enforcement agency, confirmed that its Europol Platform for Experts (EPE) portal was breached and is now investigating the incident after a threat actor claimed they stole For Official Use Only (FOUO) documents containing classified data. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="rsa conference 2024 - 14 keynotes" data-date="2024-05-11"><span class="headline-date">11 May</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/12161616" target="_blank" rel="noopener">RSA Conference 2024 - 14 Keynotes</a><span class="article-summary">submitted by ashar to security_cpe 1 points | 0 comments RSAC 2024 West Stage Keynotes</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="bsides lancashire 2024 - 19 talks" data-date="2024-05-11"><span class="headline-date">11 May</span><span class="headline-body"><a class="headline-title" href="https://www.bsideslancashire.org/wp-content/uploads/2022/11/LancsLogo.png" target="_blank" rel="noopener">BSides Lancashire 2024 - 19 talks</a><span class="article-summary">submitted by ashar to security_cpe 2 points | 0 comments https://www.bsideslancashire.org/wp-content/uploads/2022/11/LancsLogo.png BSides Lancashire 2024 Schedule The talk videos from BSides Lancashire 2024</span></span><span class="headline-source">BSIDESLANCASHIRE.ORG</span></div>
+<div class="headline" data-title="cisa: black basta ransomware breached over 500 orgs worldwide" data-date="2024-05-11"><span class="headline-date">11 May</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/cisa-black-basta-ransomware-breached-over-500-orgs-worldwide/" target="_blank" rel="noopener">CISA: Black Basta ransomware breached over 500 orgs worldwide</a><span class="article-summary">​CISA and the FBI said today that Black Basta ransomware affiliates breached over 500 organizations between April 2022 and May 2024. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="lockbitsupp denies identification of group ‘admin’, opens contest to find named dmitry yuryevich" data-date="2024-05-11"><span class="headline-date">11 May</span><span class="headline-body"><a class="headline-title" href="https://thecyberexpress.com/lockbitsupp-denies-being-dmitry-khoroshev/" target="_blank" rel="noopener">LockBitSupp Denies Identification of Group ‘Admin’, Opens Contest to Find Named Dmitry Yuryevich</a><span class="article-summary">submitted by 0nekoneko7 to securitynews 1 points | 0 comments https://thecyberexpress.com/lockbitsupp-denies-being-dmitry-khoroshev/</span></span><span class="headline-source">THECYBEREXPRESS.COM</span></div>
+<div class="headline" data-title="the post millennial hack leaked data impacting 26 million people" data-date="2024-05-11"><span class="headline-date">11 May</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/the-post-millennial-hack-leaked-data-impacting-26-million-people/" target="_blank" rel="noopener">The Post Millennial hack leaked data impacting 26 million people</a><span class="article-summary">Have I Been Pwned has added the information for 26,818,266 people whose data was leaked in a recent hack of The Post Millennial conservative news website. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="hackcar – attack and defense playground for automotive system" data-date="2024-05-11"><span class="headline-date">11 May</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/hackcar-automotive-cybersecurity-playground/" target="_blank" rel="noopener">HackCar – Attack AND Defense Playground For Automotive System</a><span class="article-summary">Modern cars have microcontrollers that use the Controller Area Network (CAN) to perform safety and luxury functions.&#160; However, vehicle hijacking can occur through message injection attacks because the CAN network lacks the security of drive-by-wire systems such as speed cont…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="'the mask' espionage group resurfaces after 10-year hiatus" data-date="2024-05-11"><span class="headline-date">11 May</span><span class="headline-body"><a class="headline-title" href="https://www.darkreading.com/cyberattacks-data-breaches/-the-mask-espionage-group-resurfaces-after-10-year-hiatus?&web_view=true" target="_blank" rel="noopener">'The Mask' Espionage Group Resurfaces After 10-Year Hiatus</a><span class="article-summary">An advanced persistent threat (APT) group that has been missing in action for more than a decade has suddenly resurfaced in a cyber-espionage campaign targeting organizations in Latin America and Central Africa.</span></span><span class="headline-source">DARKREADING.COM</span></div>
+<div class="headline" data-title="fin7 hacker group leverages malicious google ads to deliver netsupport rat" data-date="2024-05-11"><span class="headline-date">11 May</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/05/fin7-hacker-group-leverages-malicious.html" target="_blank" rel="noopener">FIN7 Hacker Group Leverages Malicious Google Ads to Deliver NetSupport RAT</a><span class="article-summary">The financially motivated threat actor known as&nbsp;FIN7&nbsp;has&nbsp;been observed&nbsp;leveraging malicious Google ads spoofing legitimate brands&nbsp;as a means&nbsp;to deliver MSIX installers that culminate in the deployment of&nbsp;NetSupport RAT. "The threat actors used m…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="scammers found planting online betting ads on indian government websites" data-date="2024-05-11"><span class="headline-date">11 May</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/05/10/scammers-found-planting-online-betting-ads-on-indian-government-websites/" target="_blank" rel="noopener">Scammers found planting online betting ads on Indian government websites</a><span class="article-summary">Some Indian government websites have allowed scammers to plant advertisements capable of redirecting visitors to online betting platforms. TechCrunch discovered around four dozen &#8220;gov.in&#8221; website links associated with Indian states, including Bihar, Goa, Karnataka, Ke…</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

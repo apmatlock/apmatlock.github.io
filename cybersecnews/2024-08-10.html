@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-08-10</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,80 +109,71 @@
       <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-08-10</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">19</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-08-10"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.csoonline.com/article/3485314/amd-cpus-impacted-by-18-year-old-smm-flaw-that-enables-firmware-implants.html" target="_blank" rel="noopener">AMD CPUs impacted by 18-year-old SMM flaw that enables firmware implants</a></div><span class="article-meta">CSOONLINE.COM &mdash; 10 Aug 2024</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-08-10"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2024/08/microsoft-warns-of-unpatched-office.html" target="_blank" rel="noopener">Microsoft Warns of Unpatched Office Vulnerability Leading to Data Breaches</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 10 Aug 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-08-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/08/experts-uncover-severe-aws-flaws.html" target="_blank" rel="noopener">Experts Uncover Severe AWS Flaws Leading to RCE, Data Theft, and Full-Service Takeovers</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 10 Aug 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-08-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/cisa-warns-of-hackers-abusing-cisco-smart-install-feature/?&web_view=true" target="_blank" rel="noopener">CISA Warns of Hackers Abusing Cisco Smart Install Feature</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 10 Aug 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-08-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/cisco-warns-of-critical-rce-zero-days-in-end-of-life-ip-phones/?&web_view=true" target="_blank" rel="noopener">Cisco Warns of Critical RCE Zero-Days in End of Life IP Phones</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 10 Aug 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-08-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.darkreading.com/cyberattacks-data-breaches/0000-day-flaw-puts-chrome-firefox-mozilla-browsers-at-rce-risk?&web_view=true" target="_blank" rel="noopener">'0.0.0.0 Day' Flaw Puts Chrome, Firefox, Mozilla Browsers at RCE Risk</a></div><span class="article-meta">DARKREADING.COM &mdash; 10 Aug 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-08-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/legal/wwh-club-credit-card-market-admins-arrested-after-cash-spending-spree/" target="_blank" rel="noopener">WWH-Club credit card market admins arrested after cash spending spree</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 10 Aug 2024</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-08-10"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.darkreading.com/application-security/hazy-issue-entra-id-privileged-users-become-global-admins?&web_view=true" target="_blank" rel="noopener">Hazy Issue in Entra ID Allows Privileged Users to Become Global Admins</a></div><span class="article-meta">DARKREADING.COM &mdash; 10 Aug 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-08-10"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2024/08/09/student-raised-security-concerns-in-mobile-guardian-mdm-weeks-before-cyberattack/" target="_blank" rel="noopener">Student raised security concerns in Mobile Guardian MDM weeks before cyberattack</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 10 Aug 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-08-10"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://therecord.media/russia-hack-uk-government-home-office-microsoft?&web_view=true" target="_blank" rel="noopener">Russian Spies Hacked UK Government Systems Earlier This Year, Stole Data and Emails</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 10 Aug 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-08-10"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2024/08/10/csc-serviceworks-reveals-2023-data-breach-affecting-thousands-of-people/" target="_blank" rel="noopener">CSC ServiceWorks reveals 2023 data breach affecting thousands of people</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 10 Aug 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-08-10"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.pcmag.com/news/signal-developer-explains-why-early-encrypted-messaging-tools-flopped" target="_blank" rel="noopener">Signal Developer Explains Why Early Encrypted Messaging Tools Flopped</a></div><span class="article-meta">PCMAG.COM &mdash; 10 Aug 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-08-10"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/cyber-security-today-week-in-review-august-10-2024" target="_blank" rel="noopener">Cyber Security Today - Week In Review: August 10, 2024</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 10 Aug 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-08-10"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.infosecurity-magazine.com/news/north-korea-kimsuky-phishing/?&web_view=true" target="_blank" rel="noopener">North Korea Kimsuky Launch Phishing Attacks on Universities</a></div><span class="article-meta">INFOSECURITY-MAGAZINE.COM &mdash; 10 Aug 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-08-10"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.wired.com/story/google-android-red-team-qualcomm-gpu-flaws/" target="_blank" rel="noopener">Google Researchers Found Nearly a Dozen Flaws in Popular Qualcomm Software for Mobile GPUs</a></div><span class="article-meta">WIRED.COM &mdash; 10 Aug 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-08-10"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.theguardian.com/environment/article/2024/aug/09/what-lies-beneath-the-growing-threat-to-the-hidden-network-of-cables-that-power-the-internet" target="_blank" rel="noopener">What lies beneath: the growing threat to the hidden network of cables that power the internet</a></div><span class="article-meta">THEGUARDIAN.COM &mdash; 10 Aug 2024</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2024-08-10"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://thehackernews.com/2024/08/new-malware-hits-300000-users-with.html" target="_blank" rel="noopener">New Malware Hits 300,000 Users with Rogue Chrome and Edge Extensions</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 10 Aug 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-08-10"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2024/08/10/after-global-it-meltdown-crowdstrike-courts-hackers-with-action-figures-and-gratitude/" target="_blank" rel="noopener">After global IT meltdown, CrowdStrike courts hackers with action figures and gratitude</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 10 Aug 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-08-10"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/microsoft/microsoft-windows-11-22h2-reaches-end-of-support-in-60-days/" target="_blank" rel="noopener">Microsoft: Windows 11 22H2 reaches end of support in 60 days</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 10 Aug 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="amd cpus impacted by 18-year-old smm flaw that enables firmware implants" data-date="2024-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/3485314/amd-cpus-impacted-by-18-year-old-smm-flaw-that-enables-firmware-implants.html" target="_blank" rel="noopener">AMD CPUs impacted by 18-year-old SMM flaw that enables firmware implants</a><span class="article-summary">AMD has issued microcode updates for a wide range of server and desktop CPUs to address a vulnerability that could allow attackers to bypass protections for the System Management Mode (SMM) and execute malicious code in the low-level firmware outside of the OS. The flaw could be …</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="microsoft warns of unpatched office vulnerability leading to data breaches" data-date="2024-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/08/microsoft-warns-of-unpatched-office.html" target="_blank" rel="noopener">Microsoft Warns of Unpatched Office Vulnerability Leading to Data Breaches</a><span class="article-summary">Microsoft has disclosed an unpatched zero-day in Office that, if successfully exploited, could result in unauthorized disclosure of sensitive information to malicious actors. The vulnerability, tracked as CVE-2024-38200 (CVSS score: 7.5), has been described as a spoofing flaw tha…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="experts uncover severe aws flaws leading to rce, data theft, and full-service takeovers" data-date="2024-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/08/experts-uncover-severe-aws-flaws.html" target="_blank" rel="noopener">Experts Uncover Severe AWS Flaws Leading to RCE, Data Theft, and Full-Service Takeovers</a><span class="article-summary">Cybersecurity researchers have discovered multiple critical flaws in Amazon Web Services (AWS) offerings that, if successfully exploited, could result in serious consequences. "The impact of these vulnerabilities range between remote code execution (RCE), full-service user takeov…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="cisa warns of hackers abusing cisco smart install feature" data-date="2024-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/cisa-warns-of-hackers-abusing-cisco-smart-install-feature/?&web_view=true" target="_blank" rel="noopener">CISA Warns of Hackers Abusing Cisco Smart Install Feature</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) has advised organizations to disable the legacy Cisco Smart Install (SMI) feature due to recent attacks exploiting it.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="cisco warns of critical rce zero-days in end of life ip phones" data-date="2024-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/cisco-warns-of-critical-rce-zero-days-in-end-of-life-ip-phones/?&web_view=true" target="_blank" rel="noopener">Cisco Warns of Critical RCE Zero-Days in End of Life IP Phones</a><span class="article-summary">Cisco has issued a warning about critical remote code execution zero-days affecting the web-based management interface of the Small Business SPA 300 and SPA 500 series IP phones, which are no longer supported.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="'0.0.0.0 day' flaw puts chrome, firefox, mozilla browsers at rce risk" data-date="2024-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.darkreading.com/cyberattacks-data-breaches/0000-day-flaw-puts-chrome-firefox-mozilla-browsers-at-rce-risk?&web_view=true" target="_blank" rel="noopener">'0.0.0.0 Day' Flaw Puts Chrome, Firefox, Mozilla Browsers at RCE Risk</a><span class="article-summary">An open source security firm, Oligo Security, has discovered a vulnerability called "0.0.0.0 Day" that allows attackers to execute code on web browsers like Chrome, Safari, and Firefox, potentially leading to data theft and malware.</span></span><span class="headline-source">DARKREADING.COM</span></div>
+<div class="headline" data-title="wwh-club credit card market admins arrested after cash spending spree" data-date="2024-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/legal/wwh-club-credit-card-market-admins-arrested-after-cash-spending-spree/" target="_blank" rel="noopener">WWH-Club credit card market admins arrested after cash spending spree</a><span class="article-summary">U.S. law enforcement has arrested two suspected admins of the WWH-Club stolen credit card marketplace after they went on a cash spending spree in Florida. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="hazy issue in entra id allows privileged users to become global admins" data-date="2024-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.darkreading.com/application-security/hazy-issue-entra-id-privileged-users-become-global-admins?&web_view=true" target="_blank" rel="noopener">Hazy Issue in Entra ID Allows Privileged Users to Become Global Admins</a><span class="article-summary">An issue with Microsoft's Entra ID identity and access management service could allow a hacker with admin-level access to gain global administrator privileges within an organization's cloud environment.</span></span><span class="headline-source">DARKREADING.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="student raised security concerns in mobile guardian mdm weeks before cyberattack" data-date="2024-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/08/09/student-raised-security-concerns-in-mobile-guardian-mdm-weeks-before-cyberattack/" target="_blank" rel="noopener">Student raised security concerns in Mobile Guardian MDM weeks before cyberattack</a><span class="article-summary">This is the second cyberattack targeting the school device management service Mobile Guardian this year. © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="russian spies hacked uk government systems earlier this year, stole data and emails" data-date="2024-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/russia-hack-uk-government-home-office-microsoft?&web_view=true" target="_blank" rel="noopener">Russian Spies Hacked UK Government Systems Earlier This Year, Stole Data and Emails</a><span class="article-summary">Russian spies hacked UK government systems earlier this year, stealing data and emails in a nation-state attack. The breach targeted the Home Office's systems, which had not been previously reported.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="csc serviceworks reveals 2023 data breach affecting thousands of people" data-date="2024-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/08/10/csc-serviceworks-reveals-2023-data-breach-affecting-thousands-of-people/" target="_blank" rel="noopener">CSC ServiceWorks reveals 2023 data breach affecting thousands of people</a><span class="article-summary">The data breach is the latest security issue to beset CSC ServiceWorks over the past year, after multiple researchers found security bugs. © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="signal developer explains why early encrypted messaging tools flopped" data-date="2024-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.pcmag.com/news/signal-developer-explains-why-early-encrypted-messaging-tools-flopped" target="_blank" rel="noopener">Signal Developer Explains Why Early Encrypted Messaging Tools Flopped</a><span class="article-summary">submitted by BrikoX to cybersecurity 1 points | 0 comments https://www.pcmag.com/news/signal-developer-explains-why-early-encrypted-messaging-tools-flopped ‘The intuition was to take the complexity and push it onto the user,’ Moxie Marlinspike says at Black Hat. ‘We were just wro…</span></span><span class="headline-source">PCMAG.COM</span></div>
+<div class="headline" data-title="cyber security today - week in review: august 10, 2024" data-date="2024-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/cyber-security-today-week-in-review-august-10-2024" target="_blank" rel="noopener">Cyber Security Today - Week In Review: August 10, 2024</a><span class="article-summary">Cybersecurity Insights: Malvertising, Phishing Trends, and North Korean Hackers In this weekend edition of 'Cybersecurity Today,' host Jim Love brings together experts Terry Cutler from Cyology Labs, David Shipley from Beauceron Security, and Greg Monson from Trustwave. The panel…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="north korea kimsuky launch phishing attacks on universities" data-date="2024-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.infosecurity-magazine.com/news/north-korea-kimsuky-phishing/?&web_view=true" target="_blank" rel="noopener">North Korea Kimsuky Launch Phishing Attacks on Universities</a><span class="article-summary">Cybersecurity analysts have uncovered critical details about the North Korean advanced persistent threat (APT) group Kimsuky, which has been targeting universities as part of its global espionage operations.</span></span><span class="headline-source">INFOSECURITY-MAGAZINE.COM</span></div>
+<div class="headline" data-title="google researchers found nearly a dozen flaws in popular qualcomm software for mobile gpus" data-date="2024-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.wired.com/story/google-android-red-team-qualcomm-gpu-flaws/" target="_blank" rel="noopener">Google Researchers Found Nearly a Dozen Flaws in Popular Qualcomm Software for Mobile GPUs</a><span class="article-summary">submitted by BrikoX to cybersecurity 1 points | 0 comments https://www.wired.com/story/google-android-red-team-qualcomm-gpu-flaws/ The vulnerabilities, which have been patched, may have novel appeal to attackers as an avenue to compromising phones.</span></span><span class="headline-source">WIRED.COM</span></div>
+<div class="headline" data-title="what lies beneath: the growing threat to the hidden network of cables that power the internet" data-date="2024-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.theguardian.com/environment/article/2024/aug/09/what-lies-beneath-the-growing-threat-to-the-hidden-network-of-cables-that-power-the-internet" target="_blank" rel="noopener">What lies beneath: the growing threat to the hidden network of cables that power the internet</a><span class="article-summary">submitted by gytrash to cybersecurity 2 points | 1 comments https://www.theguardian.com/environment/article/2024/aug/09/what-lies-beneath-the-growing-threat-to-the-hidden-network-of-cables-that-power-the-internet “Modern consumers have come to imagine the internet as something un…</span></span><span class="headline-source">THEGUARDIAN.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new malware hits 300,000 users with rogue chrome and edge extensions" data-date="2024-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/08/new-malware-hits-300000-users-with.html" target="_blank" rel="noopener">New Malware Hits 300,000 Users with Rogue Chrome and Edge Extensions</a><span class="article-summary">An ongoing, widespread malware campaign has been observed installing rogue Google Chrome and Microsoft Edge extensions via a trojan distributed via fake websites masquerading as popular software. "The trojan malware contains different deliverables ranging from simple adware exten…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="after global it meltdown, crowdstrike courts hackers with action figures and gratitude" data-date="2024-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/08/10/after-global-it-meltdown-crowdstrike-courts-hackers-with-action-figures-and-gratitude/" target="_blank" rel="noopener">After global IT meltdown, CrowdStrike courts hackers with action figures and gratitude</a><span class="article-summary">CrowdStrike tried to go back to business as usual at one of the world's largest annual cybersecurity conferences, weeks after its massive global IT crash. © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="microsoft: windows 11 22h2 reaches end of support in 60 days" data-date="2024-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/microsoft/microsoft-windows-11-22h2-reaches-end-of-support-in-60-days/" target="_blank" rel="noopener">Microsoft: Windows 11 22H2 reaches end of support in 60 days</a><span class="article-summary">Microsoft has reminded customers that multiple editions of Windows 11 21H2 and 22H2 will reach the end of servicing in 60 days, on October 8, 2024. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

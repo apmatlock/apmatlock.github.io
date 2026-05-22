@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-03-31</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,67 +109,46 @@
       <div class="stat"><span class="stat-value">4</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-03-31</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">9</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-03-31"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.kaspersky.com/blog/cve-2024-3094-vulnerability-backdoor/50873/" target="_blank" rel="noopener">CVE-2024-3094: malicious code in Linux distributions | Kaspersky official blog</a></div><span class="article-meta">KASPERSKY.COM &mdash; 31 Mar 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-03-31"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://haveibeenpwned.com/PwnedWebsites#WashingtonStateFoodWorkerCard" target="_blank" rel="noopener">Washington State Food Worker Card - 1,594,305 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 31 Mar 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-03-31"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/30794" target="_blank" rel="noopener">Wireshark 4.2.4 Released, (Sun, Mar 31st)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 31 Mar 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-03-31"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.securityweek.com/att-says-data-on-73-million-customers-leaked-on-dark-web/" target="_blank" rel="noopener">AT&amp;T Says Data on 73 Million Customers Leaked on Dark Web</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 31 Mar 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-03-31"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/dinodasrat-malware-targets-linux-servers-in-espionage-campaign/" target="_blank" rel="noopener">DinodasRAT malware targets Linux servers in espionage campaign</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 31 Mar 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-03-31"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thecyberexpress.com/what-is-tails/amp/" target="_blank" rel="noopener">What Is Tails OS: Everything You Need To Know In 2024!</a></div><span class="article-meta">THECYBEREXPRESS.COM &mdash; 31 Mar 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-03-31"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/30796" target="_blank" rel="noopener">Checking CSV Files, (Sun, Mar 31st)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 31 Mar 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-03-31"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.helpnetsecurity.com/2024/03/31/xz-backdoored-linux-affected-distros/" target="_blank" rel="noopener">XZ Utils backdoor update: Which Linux distros are affected and what can you do? - Help Net Security</a></div><span class="article-meta">HELPNETSECURITY.COM &mdash; 31 Mar 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-03-31"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/technology/its-surprisingly-difficult-for-ai-to-create-just-a-plain-white-image/" target="_blank" rel="noopener">It's surprisingly difficult for AI to create just a plain white image</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 31 Mar 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cve-2024-3094: malicious code in linux distributions | kaspersky official blog" data-date="2024-03-31"><span class="headline-date">31 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.kaspersky.com/blog/cve-2024-3094-vulnerability-backdoor/50873/" target="_blank" rel="noopener">CVE-2024-3094: malicious code in Linux distributions | Kaspersky official blog</a><span class="article-summary">Vulnerability CVE-2024-3094. The attackers implanted a backdoor into the compression utilities set XZ Utils versions 5.6.0 and 5.6.1.</span></span><span class="headline-source">KASPERSKY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="washington state food worker card - 1,594,305 breached accounts" data-date="2024-03-31"><span class="headline-date">31 Mar</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/PwnedWebsites#WashingtonStateFoodWorkerCard" target="_blank" rel="noopener">Washington State Food Worker Card - 1,594,305 breached accounts</a><span class="article-summary">In June 2023, the Tacoma-Pierce County Health Department announced a data breach of their Washington State Food Worker Card online training system . The breach was published to a popular hacking forum the year before and dated back to a 2018 database backup. Included in the data …</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+<div class="headline" data-title="wireshark 4.2.4 released, (sun, mar 31st)" data-date="2024-03-31"><span class="headline-date">31 Mar</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/30794" target="_blank" rel="noopener">Wireshark 4.2.4 Released, (Sun, Mar 31st)</a><span class="article-summary">Wireshark release 4.2.4 fixes 1 vulnerability (&#x25;&#x25;cve:2024-2955&#x25;&#x25;) and 10 bugs. &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="at&amp;t says data on 73 million customers leaked on dark web" data-date="2024-03-31"><span class="headline-date">31 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/att-says-data-on-73-million-customers-leaked-on-dark-web/" target="_blank" rel="noopener">AT&amp;T Says Data on 73 Million Customers Leaked on Dark Web</a><span class="article-summary">AT&#038;T used the Easter holiday weekend to quietly share details on data that surfaced on the dark web roughly two weeks ago. The post AT&amp;T Says Data on 73 Million Customers Leaked on Dark Web appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="dinodasrat malware targets linux servers in espionage campaign" data-date="2024-03-31"><span class="headline-date">31 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/dinodasrat-malware-targets-linux-servers-in-espionage-campaign/" target="_blank" rel="noopener">DinodasRAT malware targets Linux servers in espionage campaign</a><span class="article-summary">Security researchers have observed Red Hat and Ubuntu systems being attacked by a Linux version of the DinodasRAT (also known as XDealer) that may have been operating since 2022. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="what is tails os: everything you need to know in 2024!" data-date="2024-03-31"><span class="headline-date">31 Mar</span><span class="headline-body"><a class="headline-title" href="https://thecyberexpress.com/what-is-tails/amp/" target="_blank" rel="noopener">What Is Tails OS: Everything You Need To Know In 2024!</a><span class="article-summary">submitted by Lanky_Pomegranate530 to cybersecurity 1 points | 0 comments https://thecyberexpress.com/what-is-tails/amp/ Here is the link to Tails Os in case you want to try it out for yourself.</span></span><span class="headline-source">THECYBEREXPRESS.COM</span></div>
+<div class="headline" data-title="checking csv files, (sun, mar 31st)" data-date="2024-03-31"><span class="headline-date">31 Mar</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/30796" target="_blank" rel="noopener">Checking CSV Files, (Sun, Mar 31st)</a><span class="article-summary">Like Xavier (diary entry " Quick Forensics Analysis of Apache logs "), I too often have to analyze client&&#x23&#x3b;x26&#x3b;&#x23&#x3b;39&#x3b;s log files. &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="xz utils backdoor update: which linux distros are affected and what can you do? - help net security" data-date="2024-03-31"><span class="headline-date">31 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2024/03/31/xz-backdoored-linux-affected-distros/" target="_blank" rel="noopener">XZ Utils backdoor update: Which Linux distros are affected and what can you do? - Help Net Security</a><span class="article-summary">submitted by Lanky_Pomegranate530 to cybersecurity 1 points | 0 comments https://www.helpnetsecurity.com/2024/03/31/xz-backdoored-linux-affected-distros/</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="it's surprisingly difficult for ai to create just a plain white image" data-date="2024-03-31"><span class="headline-date">31 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/technology/its-surprisingly-difficult-for-ai-to-create-just-a-plain-white-image/" target="_blank" rel="noopener">It's surprisingly difficult for AI to create just a plain white image</a><span class="article-summary">Generative AI services like Midjourney and OpenAI's DALL-E can deliver the unimaginable when it comes to stunning artifacts produced from simple text prompts. Sketching complex art imagery may be AI's specialty, yet some of the simplest tasks are evidently what AI struggles with …</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

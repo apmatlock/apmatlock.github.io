@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-06-01</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,72 +109,51 @@
       <div class="stat"><span class="stat-value">4</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-06-01</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">14</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://sh.itjust.works/post/39159620" target="_blank" rel="noopener">Spain: Number of cyberattacks against critical infrastructure rose by 43% in 2024 and are &amp;#x27;typically state-sponsored,&amp;#x27; report finds</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 1 Jun 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/29190565" target="_blank" rel="noopener">Spain: Number of cyberattacks against critical infrastructure rose by 43% in 2024 and are &amp;#x27;typically state-sponsored,&amp;#x27; report finds</a></div><span class="article-meta">INFOSEC.PUB &mdash; 1 Jun 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/29201539" target="_blank" rel="noopener">AI agents outperform human teams in hacking competitions</a></div><span class="article-meta">INFOSEC.PUB &mdash; 1 Jun 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://sh.itjust.works/post/39173772" target="_blank" rel="noopener">AI agents outperform human teams in hacking competitions</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 1 Jun 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=UuzvY_Bax8Y" target="_blank" rel="noopener">PewDiePie Just Endorsed Linux!?</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-01</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=ZNUuc933kwc" target="_blank" rel="noopener">Google Analyzed 10 Years of CVEs. The Result Is Shocking</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-01</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-06-01"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/watch?v=VtaTgQaAT_M" target="_blank" rel="noopener">Shadow IT Is the Real Trojan Horse Inside Your Company</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-01</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-06-01"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/watch?v=g_W5yLTquEQ" target="_blank" rel="noopener">Why Being a CISO Could Cost You VC Credibility 💸</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-01</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-01"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31976" target="_blank" rel="noopener">YARA 4.5.3 Release, (Sun, Jun 1st)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 01 Jun 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-01"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=BFRtr54632E" target="_blank" rel="noopener">Are We Lying About Secure Design?</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-01</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-01"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=EpbxUCyQ9lI" target="_blank" rel="noopener">Cyber Experts Reveal: AI’s a Mad Assistant!</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-01</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-01"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=3OtvgRpysUw" target="_blank" rel="noopener">I’ve Used TNS for 20 Years Without Knowing This 🤯</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-01</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-06-01"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=6Yibauvd-lg" target="_blank" rel="noopener">Why Cyber Analysts Are Quitting (And How to Fix It!)</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-01</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-06-01"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=iXy6vlfe344" target="_blank" rel="noopener">How Cybersecurity Vendors Keep Changing Their AI Story!</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-01</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="spain: number of cyberattacks against critical infrastructure rose by 43% in 2024 and are &amp;#x27;typically state-sponsored,&amp;#x27; report finds" data-date="2025-06-01"><span class="headline-date">1 Jun</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/39159620" target="_blank" rel="noopener">Spain: Number of cyberattacks against critical infrastructure rose by 43% in 2024 and are &amp;#x27;typically state-sponsored,&amp;#x27; report finds</a><span class="article-summary">submitted by Hotznplotzn to cybersecurity 1 points | 0 comments https://www.prosegur.com/en/media/article/press/cipher-aumento-espana-ciberataques-infraestructuras-esenciales crosspostato da: lemmy.sdf.org/post/35753834 Archived Cipher, the cybersecurity division of Prosegur Grou…</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="spain: number of cyberattacks against critical infrastructure rose by 43% in 2024 and are &amp;#x27;typically state-sponsored,&amp;#x27; report finds" data-date="2025-06-01"><span class="headline-date">1 Jun</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/29190565" target="_blank" rel="noopener">Spain: Number of cyberattacks against critical infrastructure rose by 43% in 2024 and are &amp;#x27;typically state-sponsored,&amp;#x27; report finds</a><span class="article-summary">submitted by Hotznplotzn to cybersecurity 1 points | 0 comments https://www.prosegur.com/en/media/article/press/cipher-aumento-espana-ciberataques-infraestructuras-esenciales crosspostato da: lemmy.sdf.org/post/35753834 Archived Cipher, the cybersecurity division of Prosegur Grou…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="ai agents outperform human teams in hacking competitions" data-date="2025-06-01"><span class="headline-date">1 Jun</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/29201539" target="_blank" rel="noopener">AI agents outperform human teams in hacking competitions</a><span class="article-summary">submitted by Pro to cybersecurity 1 points | 0 comments https://the-decoder.com/ai-agents-outperform-human-teams-in-hacking-competitions/ In two hacker competitions run by Palisade Research, autonomous AI systems matched or outperformed human professionals in demanding security c…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="ai agents outperform human teams in hacking competitions" data-date="2025-06-01"><span class="headline-date">1 Jun</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/39173772" target="_blank" rel="noopener">AI agents outperform human teams in hacking competitions</a><span class="article-summary">submitted by Pro to cybersecurity -1 points | 0 comments https://the-decoder.com/ai-agents-outperform-human-teams-in-hacking-competitions/ In two hacker competitions run by Palisade Research, autonomous AI systems matched or outperformed human professionals in demanding security …</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="pewdiepie just endorsed linux!?" data-date="2025-06-01"><span class="headline-date">1 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=UuzvY_Bax8Y" target="_blank" rel="noopener">PewDiePie Just Endorsed Linux!?</a><span class="article-summary">When a pop culture icon like PewDiePie casually mentions Linux on the desktop, the internet takes notice. In this explosive short, the cybersecurity world reacts to PewDiePie's unexpected nod to open-source—and the timing couldn’t be more intense. With Windows 10 nearing its end …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="google analyzed 10 years of cves. the result is shocking" data-date="2025-06-01"><span class="headline-date">1 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=ZNUuc933kwc" target="_blank" rel="noopener">Google Analyzed 10 Years of CVEs. The Result Is Shocking</a><span class="article-summary">Cybersecurity pros get bombarded with over 25,000 new CVEs every year—but what if only 70 to 90 of them actually matter? In this short, the team breaks down a decade-long analysis from Google (possibly in collaboration with Mandiant) that reveals a surprising truth: most CVEs pos…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="shadow it is the real trojan horse inside your company" data-date="2025-06-01"><span class="headline-date">1 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=VtaTgQaAT_M" target="_blank" rel="noopener">Shadow IT Is the Real Trojan Horse Inside Your Company</a><span class="article-summary">When cybersecurity expert Bill Swearingen drops the truth about Shadow IT, it’s a wake-up call every company needs. In this eye-opening clip, a real-life example of an unvetted app putting an entire system at risk is exposed. No audits, no reviews—just open doors for attackers. S…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="why being a ciso could cost you vc credibility 💸" data-date="2025-06-01"><span class="headline-date">1 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=g_W5yLTquEQ" target="_blank" rel="noopener">Why Being a CISO Could Cost You VC Credibility 💸</a><span class="article-summary">Many CISOs dream of breaking into the VC world… but what if their breach record is the red flag investors notice first? In this short, cybersecurity experts drop a stat that’ll make any security pro sweat: one-third of companies know they’ve been breached — the other two-thirds? …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="yara 4.5.3 release, (sun, jun 1st)" data-date="2025-06-01"><span class="headline-date">1 Jun</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31976" target="_blank" rel="noopener">YARA 4.5.3 Release, (Sun, Jun 1st)</a><span class="article-summary">YARA 4.5.3 was released with 5 bugfixes. &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="are we lying about secure design?" data-date="2025-06-01"><span class="headline-date">1 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=BFRtr54632E" target="_blank" rel="noopener">Are We Lying About Secure Design?</a><span class="article-summary">After decades in cybersecurity, Jeff Man shares a shocking truth: not a single company defines “Secure by Design” the same way. In this clip, Mike breaks down a report from Secure Code Warrior that proves how inconsistent the industry still is. Are we just pretending to agree on …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="cyber experts reveal: ai’s a mad assistant!" data-date="2025-06-01"><span class="headline-date">1 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=EpbxUCyQ9lI" target="_blank" rel="noopener">Cyber Experts Reveal: AI’s a Mad Assistant!</a><span class="article-summary">When cybersecurity expert Sam Bowne said AI is a "useful employee"—but also "stupid and crazy"—it hit hard with every infosec pro who's seen AI misfire in real-time. In this short, the unsettling truth about AI’s unpredictable behavior in cyber operations is exposed. From halluci…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="i’ve used tns for 20 years without knowing this 🤯" data-date="2025-06-01"><span class="headline-date">1 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=3OtvgRpysUw" target="_blank" rel="noopener">I’ve Used TNS for 20 Years Without Knowing This 🤯</a><span class="article-summary">Adrian Sanabria takes cybersecurity pros on a nostalgic ride back to the early 2000s, recounting his time managing Oracle databases on Sun hardware. But here’s the kicker—after two decades of working with TNS, he never knew what it actually stood for. TNS, the Transparent Network…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="why cyber analysts are quitting (and how to fix it!)" data-date="2025-06-01"><span class="headline-date">1 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=6Yibauvd-lg" target="_blank" rel="noopener">Why Cyber Analysts Are Quitting (And How to Fix It!)</a><span class="article-summary">Why are cyber analysts quitting their jobs at alarming rates? Jackie McGuire reveals the hidden burnout behind endless low-risk alerts and the psychological toll of dismissing pointless notifications all day. The solution? Automate the small stuff and elevate meaningful work — be…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="how cybersecurity vendors keep changing their ai story!" data-date="2025-06-01"><span class="headline-date">1 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=iXy6vlfe344" target="_blank" rel="noopener">How Cybersecurity Vendors Keep Changing Their AI Story!</a><span class="article-summary">Cybersecurity vendors keep changing their AI story! 🚨 Just a year ago, many companies claimed AI would replace security teams, but now their messaging has shifted. Why the sudden change? 🤔 Watch as experts break down how AI in cybersecurity is evolving and what it really means fo…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

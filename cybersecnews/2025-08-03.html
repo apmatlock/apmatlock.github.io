@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-08-03</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,72 +109,51 @@
       <div class="stat"><span class="stat-value">4</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-08-03</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">14</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Security Advisories" data-date="2025-08-03"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://gbhackers.com/hipaa-compliance-software/" target="_blank" rel="noopener">10 Best HIPAA Compliance Software &amp; Solutions Providers in 2025</a></div><span class="article-meta">GBHACKERS.COM &mdash; 03 Aug 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-08-03"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.troyhunt.com/weekly-update-463/" target="_blank" rel="noopener">Weekly Update 463</a></div><span class="article-meta">TROYHUNT.COM &mdash; 03 Aug 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-08-03"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/shorts/kwrrLAv-ZSE" target="_blank" rel="noopener">The Shady IP That Nearly Took Down a Nation 😨</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-03</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-08-03"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://gbhackers.com/pi-hole-plugin-flaw/" target="_blank" rel="noopener">Pi-hole Plugin Flaw Exposes Donor Names and Email Addresses in Data Breach</a></div><span class="article-meta">GBHACKERS.COM &mdash; 03 Aug 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-08-03"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/shorts/HxXF4ImlSeI" target="_blank" rel="noopener">You’re Under Attack. What’s Your Next Move?</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-03</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-08-03"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/shorts/3ptd2RwsIkk" target="_blank" rel="noopener">Would You Survive a Real Cyber Disaster?</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-03</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/dark-web-monitoring-tools/" target="_blank" rel="noopener">10 Best Dark Web Monitoring Tools in 2025</a></div><span class="article-meta">GBHACKERS.COM &mdash; 03 Aug 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/0Mf1eyRBpew" target="_blank" rel="noopener">This Guy Runs Your Bank’s Security System… Alone 🧍‍♂️💾 #Mainframe</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-03</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/nhgC23Dk_1g" target="_blank" rel="noopener">Google and Apple Are Ready... But Your Bank Isn’t 😅</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-03</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/ODvFuZp0G2U" target="_blank" rel="noopener">If You’re Not Failing, You’re NOT Growing in Tech 😮</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-03</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/0znm8RRFlMY" target="_blank" rel="noopener">The Coconut Cream Pie Cyber Meltdown 🧁💻</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-03</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/PkgBH4W1YhY" target="_blank" rel="noopener">Are We Stuck in a Cyber Inception? 🤯</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-03</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/Qo4diUoJ8UU" target="_blank" rel="noopener">95% of SOC Time Is Wasted On THIS in 2025 🤯</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-03</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-08-03"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/32166" target="_blank" rel="noopener">Legacy May Kill, (Sun, Aug 3rd)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 03 Aug 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="10 best hipaa compliance software &amp; solutions providers in 2025" data-date="2025-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/hipaa-compliance-software/" target="_blank" rel="noopener">10 Best HIPAA Compliance Software &amp; Solutions Providers in 2025</a><span class="article-summary">In the rapidly evolving healthcare landscape of 2025, ensuring compliance with the Health Insurance Portability and Accountability Act (HIPAA) is more critical than ever. The increasing reliance on digital health records, telehealth, and other technological advancements has creat…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="weekly update 463" data-date="2025-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.troyhunt.com/weekly-update-463/" target="_blank" rel="noopener">Weekly Update 463</a><span class="article-summary">Presently sponsored by: Report URI: Guarding you from rogue JavaScript! Don’t get pwned; get real-time alerts & prevent breaches #SecureYourSite I&apos;ve listened to a few industry podcasts discussing the Tea app breach since recording, and the thing that really struck me was th…</span></span><span class="headline-source">TROYHUNT.COM</span></div>
+<div class="headline" data-title="the shady ip that nearly took down a nation 😨" data-date="2025-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/kwrrLAv-ZSE" target="_blank" rel="noopener">The Shady IP That Nearly Took Down a Nation 😨</a><span class="article-summary">When a shady IP address like “shadyserver.ru” starts communicating with critical infrastructure tools like SolarWinds, it’s not just suspicious — it’s a red flag for nation-state level threats. In this short, cybersecurity expert Adrian breaks down how Zero Trust architecture and…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="pi-hole plugin flaw exposes donor names and email addresses in data breach" data-date="2025-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/pi-hole-plugin-flaw/" target="_blank" rel="noopener">Pi-hole Plugin Flaw Exposes Donor Names and Email Addresses in Data Breach</a><span class="article-summary">A Pi-hole donor has reported receiving spam email to an address created exclusively for their donation to the popular network-level ad blocker, raising concerns about a potential data breach affecting the project&#8217;s donor database. The incident, reported on Reddit&#8217;s Pi…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="you’re under attack. what’s your next move?" data-date="2025-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/HxXF4ImlSeI" target="_blank" rel="noopener">You’re Under Attack. What’s Your Next Move?</a><span class="article-summary">When disaster strikes, most teams freeze. In this intense cybersecurity simulation, Doug White asks the ultimate question: “You’re under attack. What’s your next move?” It’s not just theory—he exposes how unprepared most professionals really are when the hypervisor burns, backups…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="would you survive a real cyber disaster?" data-date="2025-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/3ptd2RwsIkk" target="_blank" rel="noopener">Would You Survive a Real Cyber Disaster?</a><span class="article-summary">When a cloud provider goes down, businesses scramble. But what if that failure was triggered by a third-party breach? In this short, Erika breaks down how one threat actor can trigger a digital domino effect — knocking out banks, brokerages, and time-sensitive operations in secon…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="10 best dark web monitoring tools in 2025" data-date="2025-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/dark-web-monitoring-tools/" target="_blank" rel="noopener">10 Best Dark Web Monitoring Tools in 2025</a><span class="article-summary">Choosing the right dark web monitoring tool is a critical decision for both individuals and organizations seeking to protect their digital assets and identity. With the dark web serving as a hub for illegal data trading, from leaked credentials to intellectual property, a robust …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="this guy runs your bank’s security system… alone 🧍‍♂️💾 #mainframe" data-date="2025-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/0Mf1eyRBpew" target="_blank" rel="noopener">This Guy Runs Your Bank’s Security System… Alone 🧍‍♂️💾 #Mainframe</a><span class="article-summary">Everyone’s got that one IT guy… but what if he was the only one keeping your bank’s mainframe alive? In this wild story, Doug White paints a picture of the last-standing mainframe admin—armed, eccentric, and totally untouchable. He’s the reason your money’s still safe… or is it? …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="google and apple are ready... but your bank isn’t 😅" data-date="2025-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/nhgC23Dk_1g" target="_blank" rel="noopener">Google and Apple Are Ready... But Your Bank Isn’t 😅</a><span class="article-summary">While Big Tech giants like Google, Apple, Microsoft, and Facebook are racing ahead with passkey adoption, most banks still haven't caught up. In this short, cybersecurity pro Russell Beauchemin shares a real-world moment that proves how far behind financial institutions are. Logg…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="if you’re not failing, you’re not growing in tech 😮" data-date="2025-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/ODvFuZp0G2U" target="_blank" rel="noopener">If You’re Not Failing, You’re NOT Growing in Tech 😮</a><span class="article-summary">Most people think success in cybersecurity comes from talent—but Doug White knows it's built on failure. In this clip, he shares the brutal truth: if you're not failing, you're not growing. From years of rejection to finally reaching regionals, his story reminds every cybersecuri…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="the coconut cream pie cyber meltdown 🧁💻" data-date="2025-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/0znm8RRFlMY" target="_blank" rel="noopener">The Coconut Cream Pie Cyber Meltdown 🧁💻</a><span class="article-summary">A group of cybersecurity pros accidentally sparks chaos for a poor marketing manager... all because of coconut cream pie. What starts as a harmless joke about bland dessert branding quickly turns into a full-on meltdown. One of them even declares the pie a security risk. This is …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="are we stuck in a cyber inception? 🤯" data-date="2025-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/PkgBH4W1YhY" target="_blank" rel="noopener">Are We Stuck in a Cyber Inception? 🤯</a><span class="article-summary">What happens when AI starts building the same tools developers already made... then forgets? Rey Bango and Mike dive into the surreal cycle of cybersecurity, comparing the state of modern DevSecOps to movies like Inception and Memento. As devs rely more on AI, are we creating a r…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="95% of soc time is wasted on this in 2025 🤯" data-date="2025-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/Qo4diUoJ8UU" target="_blank" rel="noopener">95% of SOC Time Is Wasted On THIS in 2025 🤯</a><span class="article-summary">In 2025, cybersecurity teams are still overwhelmed by one thing: phishing. In this short, Erik Bloch breaks down shocking data he’s tracked across multiple enterprise SOCs. With real Sankey charts and insights from top experts like Anton Shibaki, this video reveals why phishing e…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="legacy may kill, (sun, aug 3rd)" data-date="2025-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/32166" target="_blank" rel="noopener">Legacy May Kill, (Sun, Aug 3rd)</a><span class="article-summary">Just saw something that I thought was long gone. The username "pop3user" is showing up in our telnet/ssh logs. I don&&#x23&#x3b;x26&#x3b;&#x23&#x3b;39&#x3b;t know how long ago it was that I used POP3 to retrieve e-mail from one of my mail servers. IMAP and various webmail systems…</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-06-28</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,85 +109,68 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-06-28</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">26</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">3</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/bridging-the-gap-ai-and-cybersecurity-in-the-enterprise" target="_blank" rel="noopener">Bridging the Gap: AI and Cybersecurity in the Enterprise</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 28 Jun 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/30640557" target="_blank" rel="noopener">Citrix Bleed 2 flaw now believed to be exploited in attacks</a></div><span class="article-meta">INFOSEC.PUB &mdash; 28 Jun 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/cybercriminals-exploit-capcut-popularity/" target="_blank" rel="noopener">Cybercriminals Exploit CapCut Popularity to Steal Apple ID Credentials and Credit Card Data</a></div><span class="article-meta">GBHACKERS.COM &mdash; 28 Jun 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/weaponized-deepseek-installers/" target="_blank" rel="noopener">Weaponized DeepSeek Installers Deploy Sainbox RAT and Hidden Rootkit</a></div><span class="article-meta">GBHACKERS.COM &mdash; 28 Jun 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/threat-actors-exploit-windows-and-linux-server-vulnerabilities/" target="_blank" rel="noopener">Threat Actors Exploit Windows and Linux Server Vulnerabilities to Deploy Web Shells</a></div><span class="article-meta">GBHACKERS.COM &mdash; 28 Jun 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/eset-warns-cybercriminals-are-targeting-nfc-data/" target="_blank" rel="noopener">ESET Warns Cybercriminals Are Targeting NFC Data for Contactless Payments</a></div><span class="article-meta">GBHACKERS.COM &mdash; 28 Jun 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/u_wqlSX-xmE" target="_blank" rel="noopener">The Cyber Risk No One Talks About 😶 #ceoawareness</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-28</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://infosec.pub/post/30657897" target="_blank" rel="noopener">Canada orders China&amp;#x27;s Hikvision to close Canadian operations over national security concerns</a></div><span class="article-meta">INFOSEC.PUB &mdash; 28 Jun 2025</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://sh.itjust.works/post/41139145" target="_blank" rel="noopener">Canada orders China&amp;#x27;s Hikvision to close Canadian operations over national security concerns</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 28 Jun 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2025/06/giftedcrook-malware-evolves-from.html" target="_blank" rel="noopener">GIFTEDCROOK Malware Evolves: From Browser Stealer to Intelligence-Gathering Tool</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 28 Jun 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bitdefender.com/en-us/blog/hotforsecurity/breachforums-broken-up-french-police-arrest-five-members-of-notorious-cybercrime-site" target="_blank" rel="noopener">BreachForums broken up? French police arrest five members of notorious cybercrime site</a></div><span class="article-meta">BITDEFENDER.COM &mdash; 28 Jun 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/shorts/MBBs0MQdVFU" target="_blank" rel="noopener">Initial Access Isn’t The End… It’s Just Step One ⚠️</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-28</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/shorts/NEFIWXeDmAc" target="_blank" rel="noopener">Can Identity Security Ever Be “Finished”?</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-28</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/shorts/WB6rd1ZIlTQ" target="_blank" rel="noopener">Inside the Mind of a Modern Adversary 🔍</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-28</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/shorts/96RjL2hqdIk" target="_blank" rel="noopener">Your Whole OneDrive Is at Risk 😳 #CyberAlert</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-28</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.welivesecurity.com/en/videos/month-security-tony-anscombe-june-2025/" target="_blank" rel="noopener">This month in security with Tony Anscombe – June 2025 edition</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 28 Jun 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/malicious-passlib-python-package-triggers-windows-shutdowns/" target="_blank" rel="noopener">Malicious Passlib Python Package Triggers Windows Shutdowns with Invalid Inputs</a></div><span class="article-meta">GBHACKERS.COM &mdash; 28 Jun 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/beware-of-trending-tiktok-videos-promoting-pirated-apps/" target="_blank" rel="noopener">Beware of Trending TikTok Videos Promoting Pirated Apps That Deliver Stealer Malware</a></div><span class="article-meta">GBHACKERS.COM &mdash; 28 Jun 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/fQKkZf4Q5XU" target="_blank" rel="noopener">Treat Your Data Like a Library, Not a Dumpster</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-28</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/Ltd9Djx4qfs" target="_blank" rel="noopener">Whose AI Is Bigger? Cybersecurity's Wild New Flex 💥</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-28</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/7b5Rykhpe3U" target="_blank" rel="noopener">The Easiest Way to Practice Social Skills (Even If You're an Introvert)</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-28</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/dW-4pwwnR3I" target="_blank" rel="noopener">When “Don’t Be Evil” Gets an Update…👀 Welcome to AI-Powered Ads</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-28</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/threat-actors-transform-giftedcrook-stealer/" target="_blank" rel="noopener">Threat Actors Transform GIFTEDCROOK Stealer into an Intelligence-Gathering Tool</a></div><span class="article-meta">GBHACKERS.COM &mdash; 28 Jun 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2025/06/facebooks-new-ai-tool-requests-photo.html" target="_blank" rel="noopener">Facebook’s New AI Tool Asks to Upload Your Photos for Story Ideas, Sparking Privacy Concerns</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 28 Jun 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2025/06/fbi-warns-of-scattered-spiders.html" target="_blank" rel="noopener">FBI Warns of Scattered Spider's Expanding Attacks on Airlines Using Social Engineering</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 28 Jun 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-06-28"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/lets-encrypt-ends-certificate-expiry-emails-to-cut-costs-boost-privacy/" target="_blank" rel="noopener">Let’s Encrypt ends certificate expiry emails to cut costs, boost privacy</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 28 Jun 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="bridging the gap: ai and cybersecurity in the enterprise" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/bridging-the-gap-ai-and-cybersecurity-in-the-enterprise" target="_blank" rel="noopener">Bridging the Gap: AI and Cybersecurity in the Enterprise</a><span class="article-summary">In this episode of Cybersecurity Today, host Jim Love is joined by Krish Banerjee, the Canada Managing Director at Accenture for AI and Data. They begin the discussion with a report from Accenture that highlights the gap between the perceived and actual preparedness for cybersecu…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="citrix bleed 2 flaw now believed to be exploited in attacks" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/30640557" target="_blank" rel="noopener">Citrix Bleed 2 flaw now believed to be exploited in attacks</a><span class="article-summary">submitted by cm0002 to cybersecurity 1 points | 0 comments https://www.bleepingcomputer.com/news/security/citrix-bleed-2-flaw-now-believed-to-be-exploited-in-attacks/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="cybercriminals exploit capcut popularity to steal apple id credentials and credit card data" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/cybercriminals-exploit-capcut-popularity/" target="_blank" rel="noopener">Cybercriminals Exploit CapCut Popularity to Steal Apple ID Credentials and Credit Card Data</a><span class="article-summary">Threat actors have capitalized on the immense popularity of CapCut, the leading short-form video editing app, to orchestrate a highly deceptive phishing campaign. According to the Cofense Phishing Defense Center (PDC), attackers are deploying meticulously crafted fake invoices th…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="weaponized deepseek installers deploy sainbox rat and hidden rootkit" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/weaponized-deepseek-installers/" target="_blank" rel="noopener">Weaponized DeepSeek Installers Deploy Sainbox RAT and Hidden Rootkit</a><span class="article-summary">Netskope Threat Labs has uncovered a malicious campaign exploiting fake software installers, including those mimicking popular tools like DeepSeek, Sogou, and WPS Office, to deliver dangerous malware payloads such as the Sainbox RAT (a variant of Gh0stRAT) and the Hidden rootkit.…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="threat actors exploit windows and linux server vulnerabilities to deploy web shells" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/threat-actors-exploit-windows-and-linux-server-vulnerabilities/" target="_blank" rel="noopener">Threat Actors Exploit Windows and Linux Server Vulnerabilities to Deploy Web Shells</a><span class="article-summary">Threat actors have been observed exploiting file upload vulnerabilities to deploy web shells and advanced malware on both Windows and Linux systems. The campaign, which showcases a blend of publicly available tools and custom malicious payloads, indicates a highly coordinated eff…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="eset warns cybercriminals are targeting nfc data for contactless payments" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/eset-warns-cybercriminals-are-targeting-nfc-data/" target="_blank" rel="noopener">ESET Warns Cybercriminals Are Targeting NFC Data for Contactless Payments</a><span class="article-summary">ESET researchers have uncovered a sophisticated attack vector exploiting Near Field Communication (NFC) data, initially targeting Czech banking customers but now spreading worldwide. According to the ESET Threat Report H1 2025, the incidence of NFC-related attacks has skyrocketed…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="the cyber risk no one talks about 😶 #ceoawareness" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/u_wqlSX-xmE" target="_blank" rel="noopener">The Cyber Risk No One Talks About 😶 #ceoawareness</a><span class="article-summary">Everyone talks about firewalls, phishing, and zero-days — but Jinan Budge reveals the one cybersecurity risk often ignored: humans. In this eye-opening short, she explains why boards and executives need to understand the human side of security to truly protect their organizations…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="canada orders china&amp;#x27;s hikvision to close canadian operations over national security concerns" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/30657897" target="_blank" rel="noopener">Canada orders China&amp;#x27;s Hikvision to close Canadian operations over national security concerns</a><span class="article-summary">submitted by Hotznplotzn to cybersecurity 1 points | 0 comments https://www.reuters.com/markets/emerging/ottawa-orders-chinese-manufacturer-hikvision-shutter-canadian-operations-2025-06-28 cross-posted from: lemmy.sdf.org/post/37599025 Archived The Canadian government has ordered…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="canada orders china&amp;#x27;s hikvision to close canadian operations over national security concerns" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/41139145" target="_blank" rel="noopener">Canada orders China&amp;#x27;s Hikvision to close Canadian operations over national security concerns</a><span class="article-summary">submitted by Hotznplotzn to cybersecurity 1 points | 0 comments https://www.reuters.com/markets/emerging/ottawa-orders-chinese-manufacturer-hikvision-shutter-canadian-operations-2025-06-28 cross-posted from: lemmy.sdf.org/post/37599025 Archived The Canadian government has ordered…</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="giftedcrook malware evolves: from browser stealer to intelligence-gathering tool" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/06/giftedcrook-malware-evolves-from.html" target="_blank" rel="noopener">GIFTEDCROOK Malware Evolves: From Browser Stealer to Intelligence-Gathering Tool</a><span class="article-summary">The threat actor behind the GIFTEDCROOK malware has made significant updates to turn the malicious program from a basic browser data stealer to a potent intelligence-gathering tool. "Recent campaigns in June 2025 demonstrate GIFTEDCROOK's enhanced ability to exfiltrate a broad ra…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="breachforums broken up? french police arrest five members of notorious cybercrime site" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.bitdefender.com/en-us/blog/hotforsecurity/breachforums-broken-up-french-police-arrest-five-members-of-notorious-cybercrime-site" target="_blank" rel="noopener">BreachForums broken up? French police arrest five members of notorious cybercrime site</a><span class="article-summary">Suspected high-ranking members of one of the world's largest online marketplaces for leaked data have been arrested by French police. Read more in my article on the Hot for Security blog.</span></span><span class="headline-source">BITDEFENDER.COM</span></div>
+<div class="headline" data-title="initial access isn’t the end… it’s just step one ⚠️" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/MBBs0MQdVFU" target="_blank" rel="noopener">Initial Access Isn’t The End… It’s Just Step One ⚠️</a><span class="article-summary">Most people think stopping a phishing email means the job is done — but cybersecurity pros know better. In this short, Michael from CardinalOps reveals why “Initial Access Isn’t The End… It’s Just Step One.” He breaks down how attackers move beyond the breach using kill chains an…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="can identity security ever be “finished”?" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/NEFIWXeDmAc" target="_blank" rel="noopener">Can Identity Security Ever Be “Finished”?</a><span class="article-summary">Identity security is a never-ending battle—and cybersecurity pros know it. In this clip, Geoff Cairns explains why attackers keep adapting faster than our defenses and why no amount of technology alone will ever be enough. The human element, processes, and evolving strategies are…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="inside the mind of a modern adversary 🔍" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/WB6rd1ZIlTQ" target="_blank" rel="noopener">Inside the Mind of a Modern Adversary 🔍</a><span class="article-summary">A cybersecurity expert breaks down one of the most shocking SaaS breaches they’ve ever seen. From passwords stored in Slack to spreadsheets full of credentials just sitting in a SOC, this short exposes how modern adversaries think—and why SaaS is their new playground. As infrastr…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="your whole onedrive is at risk 😳 #cyberalert" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/96RjL2hqdIk" target="_blank" rel="noopener">Your Whole OneDrive Is at Risk 😳 #CyberAlert</a><span class="article-summary">A shocking new security flaw has cybersecurity pros on edge 😳 According to Oasis Security, any app using the OneDrive file picker could gain access to your entire OneDrive — not just the file you selected. And the worst part? That access might persist even after you're done. Popu…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="this month in security with tony anscombe – june 2025 edition" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/en/videos/month-security-tony-anscombe-june-2025/" target="_blank" rel="noopener">This month in security with Tony Anscombe – June 2025 edition</a><span class="article-summary">From Australia's new ransomware payment disclosure rules to another record-breaking DDoS attack, June 2025 saw no shortage of interesting cybersecurity news</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="malicious passlib python package triggers windows shutdowns with invalid inputs" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/malicious-passlib-python-package-triggers-windows-shutdowns/" target="_blank" rel="noopener">Malicious Passlib Python Package Triggers Windows Shutdowns with Invalid Inputs</a><span class="article-summary">A deceptive and destructive Python package named psslib, uncovered by Socket’s Threat Research Team, poses a severe risk to developers by masquerading as a legitimate password security solution. Published by the threat actor identified as umaraq, this malicious package typosquats…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="beware of trending tiktok videos promoting pirated apps that deliver stealer malware" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/beware-of-trending-tiktok-videos-promoting-pirated-apps/" target="_blank" rel="noopener">Beware of Trending TikTok Videos Promoting Pirated Apps That Deliver Stealer Malware</a><span class="article-summary">A sophisticated social engineering campaign has surfaced on TikTok, leveraging the platform&#8217;s massive user base and algorithmic reach to distribute information-stealing malware, specifically Vidar and StealC. Identified by Trend Research, this attack uses potentially AI-gen…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="treat your data like a library, not a dumpster" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/fQKkZf4Q5XU" target="_blank" rel="noopener">Treat Your Data Like a Library, Not a Dumpster</a><span class="article-summary">When Neil Desai compares messy data to a bin of random, free books, cybersecurity professionals everywhere feel the hit. In this short, Neil and Adrian Sanabria reveal a simple but powerful metaphor: most companies store data like it’s thrown in a dumpster—unorganized, inaccessib…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="whose ai is bigger? cybersecurity's wild new flex 💥" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/Ltd9Djx4qfs" target="_blank" rel="noopener">Whose AI Is Bigger? Cybersecurity's Wild New Flex 💥</a><span class="article-summary">In the world of cybersecurity, it’s no longer just about defense — it’s about whose AI is "bigger." Rob Allen breaks down the absurdity of today’s AI flexing trend in the infosec industry. While companies compete in a not-so-subtle game of artificial intelligence one-upmanship, R…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="the easiest way to practice social skills (even if you're an introvert)" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/7b5Rykhpe3U" target="_blank" rel="noopener">The Easiest Way to Practice Social Skills (Even If You're an Introvert)</a><span class="article-summary">Most people think cybersecurity is all about tech... but Evgeniy Kharam drops a surprising tip: start at the grocery store. In this short, he reveals how striking up small talk with strangers—like cashiers—can sharpen your social engineering skills and boost human connection. No …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="when “don’t be evil” gets an update…👀 welcome to ai-powered ads" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/dW-4pwwnR3I" target="_blank" rel="noopener">When “Don’t Be Evil” Gets an Update…👀 Welcome to AI-Powered Ads</a><span class="article-summary">Google used to say “Don’t be evil” — but things have changed. In this short, Doug breaks down how Google’s new AI Overviews are now filled with ads, even in incognito mode. Is this the future of search or just another way to sell clicks? Cyber pros, you’ll want to see this. →Subs…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="threat actors transform giftedcrook stealer into an intelligence-gathering tool" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/threat-actors-transform-giftedcrook-stealer/" target="_blank" rel="noopener">Threat Actors Transform GIFTEDCROOK Stealer into an Intelligence-Gathering Tool</a><span class="article-summary">The Arctic Wolf Labs team has uncovered a dramatic transformation in the capabilities of the GIFTEDCROOK infostealer, wielded by the threat group UAC-0226. Initially identified as a rudimentary browser data stealer in early 2025, this malware has undergone rapid evolution through…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="facebook’s new ai tool asks to upload your photos for story ideas, sparking privacy concerns" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/06/facebooks-new-ai-tool-requests-photo.html" target="_blank" rel="noopener">Facebook’s New AI Tool Asks to Upload Your Photos for Story Ideas, Sparking Privacy Concerns</a><span class="article-summary">Facebook, the social network platform owned by Meta, is asking for users to upload pictures from their phones to suggest collages, recaps, and other ideas using artificial intelligence (AI), including those that have not been directly uploaded to the service. According to TechCru…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="fbi warns of scattered spider's expanding attacks on airlines using social engineering" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/06/fbi-warns-of-scattered-spiders.html" target="_blank" rel="noopener">FBI Warns of Scattered Spider's Expanding Attacks on Airlines Using Social Engineering</a><span class="article-summary">The U.S. Federal Bureau of Investigation (FBI) has revealed that it has observed the notorious cybercrime group Scattered Spider broadening its targeting footprint to strike the airline sector. To that end, the agency said it's actively working with aviation and industry partners…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="let’s encrypt ends certificate expiry emails to cut costs, boost privacy" data-date="2025-06-28"><span class="headline-date">28 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/lets-encrypt-ends-certificate-expiry-emails-to-cut-costs-boost-privacy/" target="_blank" rel="noopener">Let’s Encrypt ends certificate expiry emails to cut costs, boost privacy</a><span class="article-summary">Let's Encrypt has announced it will no longer notify users about imminent certificate expirations via email due to high costs, privacy concerns, and unnecessary complexities. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

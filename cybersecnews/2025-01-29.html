@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-01-29</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,64 +109,39 @@
       <div class="stat"><span class="stat-value">3</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-01-29</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-01-29"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-21415" target="_blank" rel="noopener">CVE-2025-21415 Azure AI Face Service Elevation of Privilege Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 29 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-29"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/deepseek-new-ai-disruptor-gets-hit-with-cyber-attack-cyber-security-today-for-wednesday-january-29-2025" target="_blank" rel="noopener">DeepSeek - New AI Disruptor Gets Hit With Cyber Attack: Cyber Security Today for Wednesday, January 29, 2025</a></div><span class="kev-badge">KEV</span><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 29 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-29"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="http://security.googleblog.com/2025/01/how-we-kept-google-play-android-app-ecosystem-safe-2024.html" target="_blank" rel="noopener">How we kept the Google Play &amp; Android app ecosystems safe in 2024</a></div><span class="article-meta">SECURITY.GOOGLEBLOG.COM &mdash; 2025-01-29</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-29"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="http://security.googleblog.com/2025/01/how-we-estimate-risk-from-prompt.html" target="_blank" rel="noopener">How we estimate the risk from prompt injection attacks on AI systems</a></div><span class="article-meta">SECURITY.GOOGLEBLOG.COM &mdash; 2025-01-29</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-29"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://risky.biz/RB777/" target="_blank" rel="noopener">Risky Business #777 -- It's SonicWall's turn</a></div><span class="article-meta">RISKY.BIZ &mdash; 29 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-29"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/25/a/asrm-cyber-insurance-underwriting.html" target="_blank" rel="noopener">ASRM: A New Pillar for Cyber Insurance Underwriting</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 29 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-29"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.welivesecurity.com/en/we-live-science/brian-greene-until-end-time-starmus-highlights/" target="_blank" rel="noopener">Brian Greene: Until the end of time | Starmus highlights</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 29 Jan 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cve-2025-21415 azure ai face service elevation of privilege vulnerability" data-date="2025-01-29"><span class="headline-date">29 Jan</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-21415" target="_blank" rel="noopener">CVE-2025-21415 Azure AI Face Service Elevation of Privilege Vulnerability</a><span class="article-summary">Authentication bypass by spoofing in Azure AI Face Service allows an authorized attacker to elevate privileges over a network.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="deepseek - new ai disruptor gets hit with cyber attack: cyber security today for wednesday, january 29, 2025" data-date="2025-01-29"><span class="headline-date">29 Jan <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/deepseek-new-ai-disruptor-gets-hit-with-cyber-attack-cyber-security-today-for-wednesday-january-29-2025" target="_blank" rel="noopener">DeepSeek - New AI Disruptor Gets Hit With Cyber Attack: Cyber Security Today for Wednesday, January 29, 2025</a><span class="article-summary">Navigating AI Cyber Threats and Critical Infrastructure Vulnerabilities In this episode of Cybersecurity Today, host Jim Love discusses the recent cyber attack on AI platform DeepSeek that exploited open source vulnerabilities. He highlights significant challenges in U.S. cyberse…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="how we kept the google play &amp; android app ecosystems safe in 2024" data-date="2025-01-29"><span class="headline-date">29 Jan</span><span class="headline-body"><a class="headline-title" href="http://security.googleblog.com/2025/01/how-we-kept-google-play-android-app-ecosystem-safe-2024.html" target="_blank" rel="noopener">How we kept the Google Play &amp; Android app ecosystems safe in 2024</a><span class="article-summary">Posted by Bethel Otuteye and Khawaja Shams (Android Security and Privacy Team), and Ron Aquino (Play Trust and Safety) Android and Google Play comprise a vibrant ecosystem with billions of users around the globe and millions of helpful apps. Keeping this ecosystem safe for users …</span></span><span class="headline-source">SECURITY.GOOGLEBLOG.COM</span></div>
+<div class="headline" data-title="how we estimate the risk from prompt injection attacks on ai systems" data-date="2025-01-29"><span class="headline-date">29 Jan</span><span class="headline-body"><a class="headline-title" href="http://security.googleblog.com/2025/01/how-we-estimate-risk-from-prompt.html" target="_blank" rel="noopener">How we estimate the risk from prompt injection attacks on AI systems</a><span class="article-summary">Posted by the Agentic AI Security Team at Google DeepMind Modern AI systems, like Gemini, are more capable than ever, helping retrieve data and perform actions on behalf of users. However, data from external sources present new security challenges if untrusted sources are availab…</span></span><span class="headline-source">SECURITY.GOOGLEBLOG.COM</span></div>
+<div class="headline" data-title="risky business #777 -- it's sonicwall's turn" data-date="2025-01-29"><span class="headline-date">29 Jan</span><span class="headline-body"><a class="headline-title" href="https://risky.biz/RB777/" target="_blank" rel="noopener">Risky Business #777 -- It's SonicWall's turn</a><span class="article-summary">Coming to you from the same room in Risky Business headquarters Patrick Gray and Adam Boileau discuss the week’s cybersecurity news. They talk through: Sonicwall firewalls hand out remote code exec like candy Mastercard make a slapstick-grade mistake with their DNS The data breac…</span></span><span class="headline-source">RISKY.BIZ</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="asrm: a new pillar for cyber insurance underwriting" data-date="2025-01-29"><span class="headline-date">29 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/25/a/asrm-cyber-insurance-underwriting.html" target="_blank" rel="noopener">ASRM: A New Pillar for Cyber Insurance Underwriting</a><span class="article-summary">ASRM transforms cyber insurance underwriting by integrating real-time risk assessments, advanced tools (NDR, EDR, Cloud Security, MDR), and proactive mitigation strategies to improve accuracy, reduce claims, and build trust.</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+<div class="headline" data-title="brian greene: until the end of time | starmus highlights" data-date="2025-01-29"><span class="headline-date">29 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/en/we-live-science/brian-greene-until-end-time-starmus-highlights/" target="_blank" rel="noopener">Brian Greene: Until the end of time | Starmus highlights</a><span class="article-summary">The renowned physicist explores how time and entropy shape the evolution of the universe, the nature of existence, and the eventual fate of everything, including humanity</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-09-03</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,92 +109,87 @@
       <div class="stat"><span class="stat-value">8</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-09-03</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">30</span></button>
-<button class="filter-btn" data-cat="CISA KEV" onclick="filterCat('CISA KEV', this)">CISA KEV <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">11</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">5</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="CISA KEV" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://thehackernews.com/2025/09/cisa-adds-tp-link-and-whatsapp-flaws-to.html" target="_blank" rel="noopener">CISA Adds TP-Link and WhatsApp Flaws to KEV Catalog Amid Active Exploitation</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) on Tuesday added a high-severity security flaw impacting TP-Link TL-WA855RE Wi-Fi Ranger Extender products to its Known Exploited Vulnerabilities (KEV) catalog, citing evidence of active exploitation. The vulnerabil…</span></div><span class="kev-badge">KEV</span><span class="article-meta">THEHACKERNEWS.COM &mdash; 03 Sep 2025</span></div>
-<div class="article-row" data-cat="CISA KEV" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2025/09/03/cisa-adds-two-known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA Adds Two Known Exploited Vulnerabilities to Catalog</a><span class="article-summary">CISA has added two new vulnerabilities to its&nbsp; Known Exploited Vulnerabilities (KEV) Catalog , based on evidence of active exploitation. CVE-2023-50224 TP-Link TL-WR841N Authentication Bypass by Spoofing Vulnerability CVE-2025-9377 TP-Link Archer C7(EU) and TL-WR841N/ND(MS) …</span></div><span class="kev-badge">KEV</span><span class="article-meta">CISA.GOV &mdash; Wed, 03 Sep 25 1</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2025/09/android-security-alert-google-patches.html" target="_blank" rel="noopener">Android Security Alert: Google Patches 120 Flaws, Including Two Zero-Days Under Attack</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 03 Sep 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/32256" target="_blank" rel="noopener">Exploit Attempts for Dassault DELMIA Apriso. CVE-2025-5086, (Wed, Sep 3rd)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 03 Sep 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2025/09/indirect-prompt-injection-attacks-against-llm-assistants.html" target="_blank" rel="noopener">Indirect Prompt Injection Attacks Against LLM Assistants</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2025-09-03</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/09/threat-actors-weaponize-hexstrike-ai-to.html" target="_blank" rel="noopener">Threat Actors Weaponize HexStrike AI to Exploit Citrix Flaws Within a Week of Disclosure</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 03 Sep 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/09/iranian-hackers-exploit-100-embassy.html" target="_blank" rel="noopener">Iranian Hackers Exploit 100+ Embassy Email Accounts in Global Phishing Targeting Diplomats</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 03 Sep 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2025/09/03/cisa-nsa-and-global-partners-release-shared-vision-software-bill-materials-sbom-guidance" target="_blank" rel="noopener">CISA, NSA, and Global Partners Release a Shared Vision of Software Bill of Materials (SBOM) Guidance</a></div><span class="article-meta">CISA.GOV &mdash; Wed, 03 Sep 25 1</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://grahamcluley.com/smashing-security-podcast-433/" target="_blank" rel="noopener">Smashing Security podcast #433: How hackers turned AI into their new henchman</a></div><span class="article-meta">GRAHAMCLULEY.COM &mdash; 03 Sep 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.lastwatchdog.com/critical-insight-qa-as-digital-trust-compresses-resilience-will-require-automation-and-scale/" target="_blank" rel="noopener">Critical Insight Q&amp;A: As digital trust compresses, resilience will require automation and scale</a></div><span class="article-meta">LASTWATCHDOG.COM &mdash; 03 Sep 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/4050956/malicious-npm-packages-use-ethereum-blockchain-for-malware-delivery.html" target="_blank" rel="noopener">Malicious npm packages use Ethereum blockchain for malware delivery</a></div><span class="article-meta">CSOONLINE.COM &mdash; 03 Sep 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/4050543/zero-trust-bereitet-cisos-probleme.html" target="_blank" rel="noopener">Zero Trust bereitet CISOs Probleme</a></div><span class="article-meta">CSOONLINE.COM &mdash; 03 Sep 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/4049373/how-the-generative-ai-boom-opens-up-new-privacy-and-cybersecurity-risks.html" target="_blank" rel="noopener">How the generative AI boom opens up new privacy and cybersecurity risks</a></div><span class="article-meta">CSOONLINE.COM &mdash; 03 Sep 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/4046242/a-cisos-guide-to-monitoring-the-dark-web.html" target="_blank" rel="noopener">A CISO’s guide to monitoring the dark web</a></div><span class="article-meta">CSOONLINE.COM &mdash; 03 Sep 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisecurity.org/advisory/multiple-vulnerabilities-in-google-chrome-could-allow-for-arbitrary-code-execution_2025-080" target="_blank" rel="noopener">Multiple Vulnerabilities in Google Chrome Could Allow for Arbitrary Code Execution</a></div><span class="article-meta">CISECURITY.ORG &mdash; 03 Sep 2025</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.cisa.gov/news-events/news/cisa-nsa-and-19-international-partners-release-shared-vision-software-bill-materials-cybersecurity" target="_blank" rel="noopener">CISA, NSA and 19 International Partners Release Shared Vision of Software Bill of Materials for Cybersecurity Guide</a></div><span class="article-meta">CISA.GOV &mdash; Wed, 03 Sep 25 1</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.csoonline.com/article/4050892/relief-for-european-commission-as-court-upholds-eu-data-privacy-framework-agreement-with-us.html" target="_blank" rel="noopener">Relief for European Commission as court upholds EU Data Privacy Framework agreement with US</a></div><span class="article-meta">CSOONLINE.COM &mdash; 03 Sep 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.csoonline.com/article/4050298/jaguar-land-rover-nach-cyberattacke-lahmgelegt.html" target="_blank" rel="noopener">Jaguar Land Rover nach Cyberattacke lahmgelegt</a></div><span class="article-meta">CSOONLINE.COM &mdash; 03 Sep 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://risky.biz/RB805/" target="_blank" rel="noopener">Risky Business #805 -- On the Salesloft Drift breach and "OAuth soup"</a></div><span class="article-meta">RISKY.BIZ &mdash; 03 Sep 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/32254" target="_blank" rel="noopener">ISC Stormcast For Wednesday, September 3rd, 2025 https://isc.sans.edu/podcastdetail/9596, (Wed, Sep 3rd)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 03 Sep 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://blog.knowbe4.com/cyberheistnews-vol-15-35-watch-out-hackers-now-use-ai-to-write-better-phish" target="_blank" rel="noopener">CyberheistNews Vol 15 #35 [Watch Out] Hackers Now Use AI to Write Better Phish</a></div><span class="article-meta">KNOWBE4.COM &mdash; 03 Sep 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=buhrdpQiP4s" target="_blank" rel="noopener">Security Money: The Index Dips and 20 Years of Cybersecurity Consolidation - Ross Hale... - BSW #411</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-09-03</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/34123381" target="_blank" rel="noopener">Attackers Abuse Velociraptor Forensic Tool to Deploy Visual Studio Code for C2 Tunneling</a></div><span class="article-meta">INFOSEC.PUB &mdash; 3 Sep 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/34114213" target="_blank" rel="noopener">What are You Working on Wednesday</a></div><span class="article-meta">INFOSEC.PUB &mdash; 3 Sep 2025</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://thehackernews.com/2025/09/salesloft-takes-drift-offline-after.html" target="_blank" rel="noopener">Salesloft Takes Drift Offline After OAuth Token Theft Hits Hundreds of Organizations</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 03 Sep 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2025/09/detecting-data-leaks-before-disaster.html" target="_blank" rel="noopener">Detecting Data Leaks Before Disaster</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 03 Sep 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2025/09/cloudflare-blocks-record-breaking-115.html" target="_blank" rel="noopener">Cloudflare Blocks Record-Breaking 11.5 Tbps DDoS Attack</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 03 Sep 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2025/09/03/venezuelas-president-thinks-american-spies-cant-hack-huawei-phones/" target="_blank" rel="noopener">Venezuela’s president thinks American spies can’t hack Huawei phones</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 03 Sep 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.fortra.com/blog/fbi-warns-seniors-targeted-three-phase-phantom-hacker-scams" target="_blank" rel="noopener">FBI warns seniors are being targeted in three-phase Phantom Hacker scams</a></div><span class="article-meta">FORTRA.COM &mdash; 03 Sep 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-09-03"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.kaspersky.com/blog/shadow-ai-3-policies/54252/" target="_blank" rel="noopener">How businesses should respond to employees using personal AI apps</a></div><span class="article-meta">KASPERSKY.COM &mdash; 03 Sep 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa adds tp-link and whatsapp flaws to kev catalog amid active exploitation" data-date="2025-09-03"><span class="headline-date">3 Sep <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/09/cisa-adds-tp-link-and-whatsapp-flaws-to.html" target="_blank" rel="noopener">CISA Adds TP-Link and WhatsApp Flaws to KEV Catalog Amid Active Exploitation</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) on Tuesday added a high-severity security flaw impacting TP-Link TL-WA855RE Wi-Fi Ranger Extender products to its Known Exploited Vulnerabilities (KEV) catalog, citing evidence of active exploitation. The vulnerabil…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="cisa adds two known exploited vulnerabilities to catalog" data-date="2025-09-03"><span class="headline-date">3 Sep <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2025/09/03/cisa-adds-two-known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA Adds Two Known Exploited Vulnerabilities to Catalog</a><span class="article-summary">CISA has added two new vulnerabilities to its&nbsp; Known Exploited Vulnerabilities (KEV) Catalog , based on evidence of active exploitation. CVE-2023-50224 TP-Link TL-WR841N Authentication Bypass by Spoofing Vulnerability CVE-2025-9377 TP-Link Archer C7(EU) and TL-WR841N/ND(MS) …</span></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="android security alert: google patches 120 flaws, including two zero-days under attack" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/09/android-security-alert-google-patches.html" target="_blank" rel="noopener">Android Security Alert: Google Patches 120 Flaws, Including Two Zero-Days Under Attack</a><span class="article-summary">Google has shipped security updates to address 120 security flaws in its Android operating system as part of its monthly fixes for September 2025, including two issues that it said have been exploited in targeted attacks. The vulnerabilities are listed below - CVE-2025-38352 (CVS…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="exploit attempts for dassault delmia apriso. cve-2025-5086, (wed, sep 3rd)" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/32256" target="_blank" rel="noopener">Exploit Attempts for Dassault DELMIA Apriso. CVE-2025-5086, (Wed, Sep 3rd)</a><span class="article-summary">When I am thinking about the security of manufacturing environments, I am usually focusing on IoT devices integrated into production lines. All the little sensors and actuators are often very difficult to secure. On the other hand, there is also "big software" that is used to man…</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">11</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="indirect prompt injection attacks against llm assistants" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2025/09/indirect-prompt-injection-attacks-against-llm-assistants.html" target="_blank" rel="noopener">Indirect Prompt Injection Attacks Against LLM Assistants</a><span class="article-summary">Really good research on practical attacks against LLM agents. &#8220; Invitation Is All You Need! Promptware Attacks Against LLM-Powered Assistants in Production Are Practical and Dangerous &#8221; Abstract: The growing integration of LLMs into applications has introduced new sec…</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="threat actors weaponize hexstrike ai to exploit citrix flaws within a week of disclosure" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/09/threat-actors-weaponize-hexstrike-ai-to.html" target="_blank" rel="noopener">Threat Actors Weaponize HexStrike AI to Exploit Citrix Flaws Within a Week of Disclosure</a><span class="article-summary">Threat actors are attempting to leverage a newly released artificial intelligence (AI) offensive security tool called HexStrike AI to exploit recently disclosed security flaws. HexStrike AI, according to its website, is pitched as an AI‑driven security platform to automate reconn…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="iranian hackers exploit 100+ embassy email accounts in global phishing targeting diplomats" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/09/iranian-hackers-exploit-100-embassy.html" target="_blank" rel="noopener">Iranian Hackers Exploit 100+ Embassy Email Accounts in Global Phishing Targeting Diplomats</a><span class="article-summary">An Iran-nexus group has been linked to a "coordinated" and "multi-wave" spear-phishing campaign targeting the embassies and consulates in Europe and other regions across the world. The activity has been attributed by Israeli cybersecurity company Dream to Iranian-aligned operator…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="cisa, nsa, and global partners release a shared vision of software bill of materials (sbom) guidance" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2025/09/03/cisa-nsa-and-global-partners-release-shared-vision-software-bill-materials-sbom-guidance" target="_blank" rel="noopener">CISA, NSA, and Global Partners Release a Shared Vision of Software Bill of Materials (SBOM) Guidance</a><span class="article-summary">CISA, in collaboration with NSA and 19 international partners, released joint guidance outlining A Shared Vision of Software Bill of Materials (SBOM) for Cybersecurity . This marks a significant step forward in strengthening software supply chain transparency and security worldwi…</span></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="smashing security podcast #433: how hackers turned ai into their new henchman" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://grahamcluley.com/smashing-security-podcast-433/" target="_blank" rel="noopener">Smashing Security podcast #433: How hackers turned AI into their new henchman</a><span class="article-summary">Your AI reads the small print, and that's a problem. This week in episode 433 of "Smashing Security" we dig into LegalPwn - malicious instructions tucked into code comments and disclaimers that sweet-talks AI into rubber-stamping dangerous payloads (or even pretending they’re a h…</span></span><span class="headline-source">GRAHAMCLULEY.COM</span></div>
+<div class="headline" data-title="critical insight q&amp;a: as digital trust compresses, resilience will require automation and scale" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.lastwatchdog.com/critical-insight-qa-as-digital-trust-compresses-resilience-will-require-automation-and-scale/" target="_blank" rel="noopener">Critical Insight Q&amp;A: As digital trust compresses, resilience will require automation and scale</a><span class="article-summary">A quiet but consequential change is reshaping the foundations of online trust. Related: CISA on quantum readiness Starting in 2026, TLS certificate lifespans will shrink in stages — from 200 days, to 100, and eventually just 47 by 2029. The &#8230; (more…) The post Critical Insig…</span></span><span class="headline-source">LASTWATCHDOG.COM</span></div>
+<div class="headline" data-title="malicious npm packages use ethereum blockchain for malware delivery" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4050956/malicious-npm-packages-use-ethereum-blockchain-for-malware-delivery.html" target="_blank" rel="noopener">Malicious npm packages use Ethereum blockchain for malware delivery</a><span class="article-summary">Attackers behind a recent supply chain attack that involved rogue GitHub repositories and npm packages used smart contracts on the Ethereum blockchain to deliver malware payloads. The attacks likely targeted users and developers from the cryptocurrency space. “These latest attack…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="zero trust bereitet cisos probleme" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4050543/zero-trust-bereitet-cisos-probleme.html" target="_blank" rel="noopener">Zero Trust bereitet CISOs Probleme</a><span class="article-summary">Laut einer Umfrage ist die Umsetzung von Zero Trust für die meisten CISOs nicht leicht. Gannvector – shutterstock.com Laut einem aktuellen Bericht von Accenture haben fast neun von zehn Sicherheitsverantwortlichen (88 Prozent) erhebliche Schwierigkeiten damit, Zero-Trust in ihren…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="how the generative ai boom opens up new privacy and cybersecurity risks" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4049373/how-the-generative-ai-boom-opens-up-new-privacy-and-cybersecurity-risks.html" target="_blank" rel="noopener">How the generative AI boom opens up new privacy and cybersecurity risks</a><span class="article-summary">It was one of the viral tech news stories at the start of July when WeTransfer, the popular file sharing service used massively by companies and end users alike, had changed its terms of use. It’s the kind of thing that is usually accepted without going too deeply into it, but on…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="a ciso’s guide to monitoring the dark web" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4046242/a-cisos-guide-to-monitoring-the-dark-web.html" target="_blank" rel="noopener">A CISO’s guide to monitoring the dark web</a><span class="article-summary">Most security leaders know the dark web exists, but many still view it as the internet’s seedy underbelly — useful for criminals who want to make illegal transactions, but not a source of information for those who walk the straight and narrow. That’s a mistake. Cybercriminal netw…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="multiple vulnerabilities in google chrome could allow for arbitrary code execution" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.cisecurity.org/advisory/multiple-vulnerabilities-in-google-chrome-could-allow-for-arbitrary-code-execution_2025-080" target="_blank" rel="noopener">Multiple Vulnerabilities in Google Chrome Could Allow for Arbitrary Code Execution</a><span class="article-summary">Multiple vulnerabilities have been discovered in Google Chrome, the most severe of which could allow for arbitrary code execution. Successful exploitation of the most severe of these vulnerabilities could allow for arbitrary code execution in the context of the logged on user. De…</span></span><span class="headline-source">CISECURITY.ORG</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa, nsa and 19 international partners release shared vision of software bill of materials for cybersecurity guide" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/news/cisa-nsa-and-19-international-partners-release-shared-vision-software-bill-materials-cybersecurity" target="_blank" rel="noopener">CISA, NSA and 19 International Partners Release Shared Vision of Software Bill of Materials for Cybersecurity Guide</a><span class="article-summary">CISA, NSA, and 19 international partners release a shared vision of Software Bill of Materials (SBOM) highlighting the importance of SBOM in securing global supply chains &amp; enhancing software resilience worldwide.</span></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="relief for european commission as court upholds eu data privacy framework agreement with us" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4050892/relief-for-european-commission-as-court-upholds-eu-data-privacy-framework-agreement-with-us.html" target="_blank" rel="noopener">Relief for European Commission as court upholds EU Data Privacy Framework agreement with US</a><span class="article-summary">The controversial Data Privacy Framework (DPF) agreement between the EU and the US has been upheld after the European Court of Justice (ECJ) General Court rejected a high-profile legal challenge that would have struck it down. “The General Court dismisses an action for annulment …</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="jaguar land rover nach cyberattacke lahmgelegt" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4050298/jaguar-land-rover-nach-cyberattacke-lahmgelegt.html" target="_blank" rel="noopener">Jaguar Land Rover nach Cyberattacke lahmgelegt</a><span class="article-summary">srcset="https://b2b-contenthub.com/wp-content/uploads/2025/09/Richard-OD_shutterstock_2589622701_GermanyOnly_NURREDAKTIONELL-1.jpg?quality=50&amp;strip=all 6909w, https://b2b-contenthub.com/wp-content/uploads/2025/09/Richard-OD_shutterstock_2589622701_GermanyOnly_NURREDAKTIONELL-…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="risky business #805 -- on the salesloft drift breach and &quot;oauth soup&quot;" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://risky.biz/RB805/" target="_blank" rel="noopener">Risky Business #805 -- On the Salesloft Drift breach and "OAuth soup"</a><span class="article-summary">On this week’s show Patrick Gray and Adam Boileau discuss the week’s cybersecurity news, including: The Salesloft breach and why OAuth soup is a problem The Salt Typhoon telco hackers turn out to be Chinese private sector, but state-directed Google says it will stand up a “disrup…</span></span><span class="headline-source">RISKY.BIZ</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="isc stormcast for wednesday, september 3rd, 2025 https://isc.sans.edu/podcastdetail/9596, (wed, sep 3rd)" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/32254" target="_blank" rel="noopener">ISC Stormcast For Wednesday, September 3rd, 2025 https://isc.sans.edu/podcastdetail/9596, (Wed, Sep 3rd)</a><span class="article-summary">(c) SANS Internet Storm Center. https://isc.sans.edu Creative Commons Attribution-Noncommercial 3.0 United States License.</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="cyberheistnews vol 15 #35 [watch out] hackers now use ai to write better phish" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://blog.knowbe4.com/cyberheistnews-vol-15-35-watch-out-hackers-now-use-ai-to-write-better-phish" target="_blank" rel="noopener">CyberheistNews Vol 15 #35 [Watch Out] Hackers Now Use AI to Write Better Phish</a></span><span class="headline-source">KNOWBE4.COM</span></div>
+<div class="headline" data-title="security money: the index dips and 20 years of cybersecurity consolidation - ross hale... - bsw #411" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=buhrdpQiP4s" target="_blank" rel="noopener">Security Money: The Index Dips and 20 Years of Cybersecurity Consolidation - Ross Hale... - BSW #411</a><span class="article-summary">The cybersecurity industry is undergoing a consolidation wave that is moving far faster than many realize. This isn’t at all about CISOs wanting fewer tools as much as some would like to think - the changes are happening at the macro level. Ross Haleliuk joins BSW to present the …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="attackers abuse velociraptor forensic tool to deploy visual studio code for c2 tunneling" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/34123381" target="_blank" rel="noopener">Attackers Abuse Velociraptor Forensic Tool to Deploy Visual Studio Code for C2 Tunneling</a><span class="article-summary">submitted by cm0002 to cybersecurity 3 points | 0 comments https://thehackernews.com/2025/08/attackers-abuse-velociraptor-forensic.html</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="what are you working on wednesday" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/34114213" target="_blank" rel="noopener">What are You Working on Wednesday</a><span class="article-summary">submitted by shellsharks to cybersecurity 2 points | 1 comments Weekly thread to discuss whatever you’re working on, big or small, at work or in your free time.</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="salesloft takes drift offline after oauth token theft hits hundreds of organizations" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/09/salesloft-takes-drift-offline-after.html" target="_blank" rel="noopener">Salesloft Takes Drift Offline After OAuth Token Theft Hits Hundreds of Organizations</a><span class="article-summary">Salesloft on Tuesday announced that it's taking Drift temporarily offline "in the very near future," as multiple companies have been ensnared in a far-reaching supply chain attack spree targeting the marketing software-as-a-service product, resulting in the mass theft of authenti…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="detecting data leaks before disaster" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/09/detecting-data-leaks-before-disaster.html" target="_blank" rel="noopener">Detecting Data Leaks Before Disaster</a><span class="article-summary">In January 2025, cybersecurity experts at Wiz Research found that Chinese AI specialist DeepSeek had suffered a data leak, putting more than 1 million sensitive log streams at risk. According to the Wiz Research team, they identified a publicly accessible ClickHouse database belo…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="cloudflare blocks record-breaking 11.5 tbps ddos attack" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/09/cloudflare-blocks-record-breaking-115.html" target="_blank" rel="noopener">Cloudflare Blocks Record-Breaking 11.5 Tbps DDoS Attack</a><span class="article-summary">Cloudflare on Tuesday said it automatically mitigated a record-setting volumetric distributed denial-of-service (DDoS) attack that peaked at 11.5 terabits per second (Tbps). "Over the past few weeks, we've autonomously blocked hundreds of hyper-volumetric DDoS attacks, with the l…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="venezuela’s president thinks american spies can’t hack huawei phones" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/09/03/venezuelas-president-thinks-american-spies-cant-hack-huawei-phones/" target="_blank" rel="noopener">Venezuela’s president thinks American spies can’t hack Huawei phones</a><span class="article-summary">Huawei phones, given their custom hardware and operating system, may actually be easier to hack than other brands.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="fbi warns seniors are being targeted in three-phase phantom hacker scams" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.fortra.com/blog/fbi-warns-seniors-targeted-three-phase-phantom-hacker-scams" target="_blank" rel="noopener">FBI warns seniors are being targeted in three-phase Phantom Hacker scams</a><span class="article-summary">The FBI’s Internet Crime Complaint Center (IC3) says that the elderly are more at risk from falling victim to online fraud and internet scammers than ever before. Read more in my article on the Fortra blog.</span></span><span class="headline-source">FORTRA.COM</span></div>
+<div class="headline" data-title="how businesses should respond to employees using personal ai apps" data-date="2025-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.kaspersky.com/blog/shadow-ai-3-policies/54252/" target="_blank" rel="noopener">How businesses should respond to employees using personal AI apps</a><span class="article-summary">Shadow AI is already present in 90% of companies. How do you strike a balance between business growth and security?</span></span><span class="headline-source">KASPERSKY.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

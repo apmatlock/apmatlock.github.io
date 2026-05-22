@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-12-15</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,71 +109,54 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-12-15</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">12</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">4</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-12-15"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31520" target="_blank" rel="noopener">Exploit attempts inspired by recent Struts2 File Upload Vulnerability (CVE-2024-53677, CVE-2023-50164), (Sun, Dec 15th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 15 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-15"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/21208379" target="_blank" rel="noopener">Malware warning on my phone (mirai-gx)</a></div><span class="article-meta">INFOSEC.PUB &mdash; 15 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-15"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.troyhunt.com/weekly-update-430/" target="_blank" rel="noopener">Weekly Update 430</a></div><span class="article-meta">TROYHUNT.COM &mdash; 15 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-15"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/clop-ransomware-claims-responsibility-for-cleo-data-theft-attacks/" target="_blank" rel="noopener">Clop ransomware claims responsibility for Cleo data theft attacks</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 15 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-15"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://haveibeenpwned.com/PwnedWebsites#MC2Data" target="_blank" rel="noopener">MC2 Data - 2,122,280 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 15 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-15"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/21203109" target="_blank" rel="noopener">Getting a taste of your own medicine: Threat actor MUT-1244 targets offensive actors, leaking hundreds of thousands of credentials</a></div><span class="article-meta">INFOSEC.PUB &mdash; 15 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-15"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/21224427" target="_blank" rel="noopener">Glutton: A New Zero-Detection PHP Backdoor from Winnti Targets Cybercrimals</a></div><span class="article-meta">INFOSEC.PUB &mdash; 15 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-15"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/winnti-hackers-target-other-threat-actors-with-new-glutton-php-backdoor/" target="_blank" rel="noopener">Winnti hackers target other threat actors with new Glutton PHP backdoor</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 15 Dec 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-15"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=SfcI8dro7yw" target="_blank" rel="noopener">Office 365 Token Glitch—How It Shut Everything Down</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-15</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-15"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=eLPzhvIEGVw" target="_blank" rel="noopener">Ham Radio Meets Android – Game Changer!</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-15</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-15"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=bjl9L_AsRCI" target="_blank" rel="noopener">Confessions of a Cyber Stalker?! 😱</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-15</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-15"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=Q4mRTo2TAMo" target="_blank" rel="noopener">C-Suite Says 'You're Included' But Are You? 🤔</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-15</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="exploit attempts inspired by recent struts2 file upload vulnerability (cve-2024-53677, cve-2023-50164), (sun, dec 15th)" data-date="2024-12-15"><span class="headline-date">15 Dec</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31520" target="_blank" rel="noopener">Exploit attempts inspired by recent Struts2 File Upload Vulnerability (CVE-2024-53677, CVE-2023-50164), (Sun, Dec 15th)</a><span class="article-summary">Last week, Apache announced a vulnerability in Struts2 &#x5b;1&#x5d;. The path traversal vulnerability scored 9.5 on the CVSS scale. If exploited, the vulnerability allows file uploads into otherwise restricted directories, which may lead to remote code execution if a webshell is…</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="malware warning on my phone (mirai-gx)" data-date="2024-12-15"><span class="headline-date">15 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/21208379" target="_blank" rel="noopener">Malware warning on my phone (mirai-gx)</a><span class="article-summary">submitted by joulethief to cybersecurity 1 points | 0 comments Hey there, not entirely sure where to post this, hope it fits. This morning, for the first time ever, my phone (a Huawei P20) showed a malware warning to me. The app ‘Idealo’, a german portal for price comparison, was…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="weekly update 430" data-date="2024-12-15"><span class="headline-date">15 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.troyhunt.com/weekly-update-430/" target="_blank" rel="noopener">Weekly Update 430</a><span class="article-summary">Presently sponsored by: 1Password Extended Access Management: Secure every sign-in for every app on every device. I&apos;m back in Oslo! Writing this the day after recording, it feels like I couldn&apos;t be further from Dubai; the temperature starts with a minus, it&apos;s snowi…</span></span><span class="headline-source">TROYHUNT.COM</span></div>
+<div class="headline" data-title="clop ransomware claims responsibility for cleo data theft attacks" data-date="2024-12-15"><span class="headline-date">15 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/clop-ransomware-claims-responsibility-for-cleo-data-theft-attacks/" target="_blank" rel="noopener">Clop ransomware claims responsibility for Cleo data theft attacks</a><span class="article-summary">The Clop ransomware gang has confirmed to BleepingComputer that they are behind the recent Cleo data-theft attacks, utilizing zero-day exploits to breach corporate networks and steal data. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="mc2 data - 2,122,280 breached accounts" data-date="2024-12-15"><span class="headline-date">15 Dec</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/PwnedWebsites#MC2Data" target="_blank" rel="noopener">MC2 Data - 2,122,280 breached accounts</a><span class="article-summary">In August 2024, data aggregator MC2 Data left a database publicly accessible without a password which was subsequently discovered by a security researcher . The breach exposed the personal information of 2.1M subscribers to the service which was marketed under a series of differe…</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="getting a taste of your own medicine: threat actor mut-1244 targets offensive actors, leaking hundreds of thousands of credentials" data-date="2024-12-15"><span class="headline-date">15 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/21203109" target="_blank" rel="noopener">Getting a taste of your own medicine: Threat actor MUT-1244 targets offensive actors, leaking hundreds of thousands of credentials</a><span class="article-summary">submitted by Joker to cybersecurity 1 points | 0 comments https://securitylabs.datadoghq.com/articles/mut-1244-targeting-offensive-actors/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="glutton: a new zero-detection php backdoor from winnti targets cybercrimals" data-date="2024-12-15"><span class="headline-date">15 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/21224427" target="_blank" rel="noopener">Glutton: A New Zero-Detection PHP Backdoor from Winnti Targets Cybercrimals</a><span class="article-summary">submitted by Joker to cybersecurity 1 points | 0 comments https://blog.xlab.qianxin.com/glutton_stealthily_targets_mainstream_php_frameworks-en/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="winnti hackers target other threat actors with new glutton php backdoor" data-date="2024-12-15"><span class="headline-date">15 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/winnti-hackers-target-other-threat-actors-with-new-glutton-php-backdoor/" target="_blank" rel="noopener">Winnti hackers target other threat actors with new Glutton PHP backdoor</a><span class="article-summary">​The Chinese Winnti hacking group is using a new PHP backdoor named 'Glutton' in attacks on organizations in China and the U.S., and also in attacks on other cybercriminals. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="office 365 token glitch—how it shut everything down" data-date="2024-12-15"><span class="headline-date">15 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=SfcI8dro7yw" target="_blank" rel="noopener">Office 365 Token Glitch—How It Shut Everything Down</a><span class="article-summary">Millions of users faced disruptions as Microsoft Office 365 apps, including Outlook and OneDrive, experienced major outages due to a glitch in their authentication system. 🖥️🔧 Microsoft is investigating the issue, focusing on token generation failures in their infrastructure. Whi…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="ham radio meets android – game changer!" data-date="2024-12-15"><span class="headline-date">15 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=eLPzhvIEGVw" target="_blank" rel="noopener">Ham Radio Meets Android – Game Changer!</a><span class="article-summary">Did you know your Android phone can become a full-fledged ham radio? 📱➡️📻 With just an ESP32 module and some setup, you can transmit, receive, and even text message using ham radio protocols! Whether you're into scanning or chatting, this tech combo is a must-try for radio enthus…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="confessions of a cyber stalker?! 😱" data-date="2024-12-15"><span class="headline-date">15 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=bjl9L_AsRCI" target="_blank" rel="noopener">Confessions of a Cyber Stalker?! 😱</a><span class="article-summary">Confessions of a Cyber Stalker?! 😱 Ever wondered what it’s like to walk in the shoes of a professional cyber investigator? Ken Westin spills the beans, sharing the surprising highs and lows of tracking digital footprints. From unexpected hacker movie favorites to the quirks of li…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="c-suite says 'you're included' but are you? 🤔" data-date="2024-12-15"><span class="headline-date">15 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=Q4mRTo2TAMo" target="_blank" rel="noopener">C-Suite Says 'You're Included' But Are You? 🤔</a><span class="article-summary">The boardroom thinks they've got cybersecurity under control, but what do the real security pros say? There's a major disconnect happening in companies everywhere, and it's not what you think! 😮 The C-Suite may believe their security teams are in the loop, but many cybersecurity …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

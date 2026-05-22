@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-01-02</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,96 +109,87 @@
       <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-01-02</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">35</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">13</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">8</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">8</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://gbhackers.com/windows-ldap-rce-exploit/" target="_blank" rel="noopener">PoC Exploit Released For Critical Windows LDAP RCE Vulnerability</a></div><span class="article-meta">GBHACKERS.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://sh.itjust.works/post/30467056" target="_blank" rel="noopener">LDAPNightmare: SafeBreach Publishes First PoC Exploit (CVE-2024-49113)</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 2 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/d-link-warns-of-botnets/" target="_blank" rel="noopener">D-Link Warns of Botnets Exploiting End-of-Life Routers</a></div><span class="kev-badge">KEV</span><span class="article-meta">GBHACKERS.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/3625151/ciso-traumjob-oder-eher-albtraum.html" target="_blank" rel="noopener">CISO – Traumjob oder eher Albtraum</a></div><span class="article-meta">CSOONLINE.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/new-doubleclickjacking-attack-exploits-double-clicks-to-hijack-accounts/" target="_blank" rel="noopener">New DoubleClickjacking attack exploits double-clicks to hijack accounts</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/chinese-hackers-targeted-sanctions-office-in-treasury-attack/" target="_blank" rel="noopener">Chinese hackers targeted sanctions office in Treasury attack</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/01/severe-security-flaws-patched-in.html" target="_blank" rel="noopener">Severe Security Flaws Patched in Microsoft Dynamics 365 and Power Apps Web API</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/01/cross-domain-attacks-growing-threat-to.html" target="_blank" rel="noopener">Cross-Domain Attacks: A Growing Threat to Modern Security and How to Combat Them</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/01/malicious-obfuscated-npm-package.html" target="_blank" rel="noopener">Malicious Obfuscated NPM Package Disguised as an Ethereum Tool Deploys Quasar RAT</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://blog.knowbe4.com/tax-themed-phishing-campaign-delivers-malware-via-msc-files" target="_blank" rel="noopener">Tax-Themed Phishing Campaign Delivers Malware Via Microsoft Management Console Files</a></div><span class="article-meta">KNOWBE4.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/3631055/volkswagen-massive-data-leak-caused-by-a-failure-to-secure-aws-credentials.html" target="_blank" rel="noopener">Volkswagen massive data leak caused by a failure to secure AWS credentials</a></div><span class="article-meta">CSOONLINE.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/3631052/microsoft-sentinel-a-cloud-native-siem-with-integrated-genai.html" target="_blank" rel="noopener">Microsoft Sentinel: A cloud-native SIEM with integrated GenAI</a></div><span class="article-meta">CSOONLINE.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/3631033/us-soldier-linked-to-trump-call-log-hack-arrested-in-texas.html" target="_blank" rel="noopener">US soldier linked to Trump call log hack arrested in Texas</a></div><span class="article-meta">CSOONLINE.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/3626956/12-best-entry-level-cybersecurity-certifications.html" target="_blank" rel="noopener">12 best entry-level cybersecurity certifications</a></div><span class="article-meta">CSOONLINE.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/3630665/squarex-researchers-expose-oauth-attack-on-chrome-extensions-days-before-major-breach.html" target="_blank" rel="noopener">SquareX Researchers Expose OAuth Attack on Chrome Extensions Days Before Major Breach</a></div><span class="article-meta">CSOONLINE.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://securityintelligence.com/articles/preparing-for-the-future-of-data-privacy/" target="_blank" rel="noopener">Preparing for the future of data privacy</a></div><span class="article-meta">SECURITYINTELLIGENCE.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/ransomware-gang-leaks-data-stolen-in-rhode-islands-ribridges-breach/" target="_blank" rel="noopener">Ransomware gang leaks data stolen in Rhode Island's RIBridges Breach</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2025/01/02/chinese-government-hackers-reportedly-targeted-us-treasurys-sanctions-office-during-december-cyberattack/" target="_blank" rel="noopener">Chinese government hackers reportedly targeted US Treasury’s sanctions office during December cyberattack</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2025/01/google-is-allowing-device-fingerprinting.html" target="_blank" rel="noopener">Google Is Allowing Device Fingerprinting</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2025-01-02</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.securityweek.com/us-arrests-charges-army-soldier-suspected-of-extorting-att-verizon/" target="_blank" rel="noopener">US Arrests Army Soldier Over AT&amp;T, Verizon Hacking</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2025/01/three-russian-german-nationals-charged.html" target="_blank" rel="noopener">Three Russian-German Nationals Charged with Espionage for Russian Secret Service</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/playfulghost-audio-hack/" target="_blank" rel="noopener">New PLAYFULGHOST Malware Hacking Devices To Remotely Capture Audio Recordings</a></div><span class="article-meta">GBHACKERS.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/phishing-service-tycoon-2fa/" target="_blank" rel="noopener">Researchers Uncover Phishing-As-A-Service Domains Associated With Tycoon 2FA</a></div><span class="article-meta">GBHACKERS.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/windows-11-bitlocker-encryption-bypassed/" target="_blank" rel="noopener">Windows 11 BitLocker Encryption Bypassed to Extract Full Volume Encryption Keys</a></div><span class="article-meta">GBHACKERS.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/smuggleshield-browser-extension/" target="_blank" rel="noopener">SmuggleShield – Browser Extension to Detect HTML Smuggling Attacks</a></div><span class="article-meta">GBHACKERS.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.paloaltonetworks.com/blog/2025/01/breaking-encryption-how-to-prepare-for-tomorrows-quantum-risk-today/" target="_blank" rel="noopener">Breaking Encryption: How To Prepare For Tomorrow's Quantum Risk Today</a></div><span class="article-meta">PALOALTONETWORKS.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.youtube.com/watch?v=2bJtCTiWfpo" target="_blank" rel="noopener">From AI Hype to Global Chaos: What Happened in 2024?</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-01-02</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/over-3-million-mail-servers-without-encryption-exposed-to-sniffing-attacks/" target="_blank" rel="noopener">Over 3 million mail servers without encryption exposed to sniffing attacks</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31556" target="_blank" rel="noopener">Goodware Hash Sets, (Thu, Jan 2nd)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2025/01/02/police-investigating-cybertruck-fire-outside-trump-hotel-in-vegas/" target="_blank" rel="noopener">New details emerge in Cybertruck explosion outside Trump hotel in Vegas that left 1 dead, 7 injured</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://grahamcluley.com/fireside-chat-with-graham-cluley-about-risks-of-ai-adoption-in-2025/" target="_blank" rel="noopener">Fireside chat with Graham Cluley about risks of AI adoption in 2025</a></div><span class="article-meta">GRAHAMCLULEY.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://us.resources.csoonline.com/resources/download-the-hot-it-certifications-enterprise-spotlight/" target="_blank" rel="noopener">Download the Hot IT Certifications Enterprise Spotlight</a></div><span class="article-meta">US.RESOURCES.CSOONLINE.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://us.resources.csoonline.com/resources/form?placement_id=998d754b-7378-47fb-8908-eb5a56019804&brand_id=32&locale_id=1" target="_blank" rel="noopener">Download our security orchestration, automation, and remediation (SOAR) tools buyer’s guide</a></div><span class="article-meta">US.RESOURCES.CSOONLINE.COM &mdash; 02 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=ntNgBYYC_kM" target="_blank" rel="noopener">Could Your Life Be On Someone’s Hard Drive? 😨🔍</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-01-02</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-02"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=_94Et5T2j3c" target="_blank" rel="noopener">AI Trolls Scammers for Hours! 😂</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-01-02</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="poc exploit released for critical windows ldap rce vulnerability" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/windows-ldap-rce-exploit/" target="_blank" rel="noopener">PoC Exploit Released For Critical Windows LDAP RCE Vulnerability</a><span class="article-summary">The CVE-2024-49112 vulnerability in Windows LDAP allows remote code execution on unpatched Domain Controllers, as a zero-click exploit leverages this by crafting malicious LDAP requests, which, sent without any user interaction, exploit a memory corruption vulnerability within th…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="ldapnightmare: safebreach publishes first poc exploit (cve-2024-49113)" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/30467056" target="_blank" rel="noopener">LDAPNightmare: SafeBreach Publishes First PoC Exploit (CVE-2024-49113)</a><span class="article-summary">submitted by kid to cybersecurity 10 points | 0 comments https://www.safebreach.com/blog/ldapnightmare-safebreach-labs-publishes-first-proof-of-concept-exploit-for-cve-2024-49112/</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">13</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="d-link warns of botnets exploiting end-of-life routers" data-date="2025-01-02"><span class="headline-date">2 Jan <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/d-link-warns-of-botnets/" target="_blank" rel="noopener">D-Link Warns of Botnets Exploiting End-of-Life Routers</a><span class="article-summary">D-Link warned users of several legacy router models about known vulnerabilities actively exploited by botnets. These devices, which have reached End-of-Life (EOL) and End-of-Service (EOS), are at heightened risk of being targeted by malware strains known as &#8220;Ficora&#8221; a…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="ciso – traumjob oder eher albtraum" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/3625151/ciso-traumjob-oder-eher-albtraum.html" target="_blank" rel="noopener">CISO – Traumjob oder eher Albtraum</a><span class="article-summary">loading="lazy" width="400px"> Der CISO-Job kann auch zu einem Albtraum werden – gerade wenn die Unterstützung und das Budget fehlt. Toma Stepunina – shutterstock.com „Die Rolle des CISO (Chief Information Security Office) ist nicht erstrebenswert“ – so lautet eine der zentralen T…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="new doubleclickjacking attack exploits double-clicks to hijack accounts" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/new-doubleclickjacking-attack-exploits-double-clicks-to-hijack-accounts/" target="_blank" rel="noopener">New DoubleClickjacking attack exploits double-clicks to hijack accounts</a><span class="article-summary">A new variation of clickjacking attacks called "DoubleClickjacking" lets attackers trick users into authorizing sensitive actions using double-clicks while bypassing existing protections against these types of attacks. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="chinese hackers targeted sanctions office in treasury attack" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/chinese-hackers-targeted-sanctions-office-in-treasury-attack/" target="_blank" rel="noopener">Chinese hackers targeted sanctions office in Treasury attack</a><span class="article-summary">​Chinese state-backed hackers have reportedly breached the Office of Foreign Assets Control (OFAC), a Treasury Department office that administers and enforces trade and economic sanctions programs. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="severe security flaws patched in microsoft dynamics 365 and power apps web api" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/severe-security-flaws-patched-in.html" target="_blank" rel="noopener">Severe Security Flaws Patched in Microsoft Dynamics 365 and Power Apps Web API</a><span class="article-summary">Details have emerged about three now-patched security vulnerabilities in Dynamics 365 and Power Apps Web API that could result in data exposure. The flaws, discovered by Melbourne-based cybersecurity company Stratus Security, have been addressed as of May 2024. Two of the three s…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="cross-domain attacks: a growing threat to modern security and how to combat them" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/cross-domain-attacks-growing-threat-to.html" target="_blank" rel="noopener">Cross-Domain Attacks: A Growing Threat to Modern Security and How to Combat Them</a><span class="article-summary">In the past year, cross-domain attacks have gained prominence as an emerging tactic among adversaries. These operations exploit weak points across multiple domains – including endpoints, identity systems and cloud environments – so the adversary can infiltrate organizations, move…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="malicious obfuscated npm package disguised as an ethereum tool deploys quasar rat" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/malicious-obfuscated-npm-package.html" target="_blank" rel="noopener">Malicious Obfuscated NPM Package Disguised as an Ethereum Tool Deploys Quasar RAT</a><span class="article-summary">Cybersecurity researchers have discovered a malicious package on the npm package registry that masquerades as a library for detecting vulnerabilities in Ethereum smart contracts but, in reality, drops an open-source remote access trojan called Quasar RAT onto developer systems. T…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="tax-themed phishing campaign delivers malware via microsoft management console files" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://blog.knowbe4.com/tax-themed-phishing-campaign-delivers-malware-via-msc-files" target="_blank" rel="noopener">Tax-Themed Phishing Campaign Delivers Malware Via Microsoft Management Console Files</a><span class="article-summary">Securonix warns that tax-themed phishing emails are attempting to deliver malware via Microsoft Management Console (MSC) files.</span></span><span class="headline-source">KNOWBE4.COM</span></div>
+<div class="headline" data-title="volkswagen massive data leak caused by a failure to secure aws credentials" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/3631055/volkswagen-massive-data-leak-caused-by-a-failure-to-secure-aws-credentials.html" target="_blank" rel="noopener">Volkswagen massive data leak caused by a failure to secure AWS credentials</a><span class="article-summary">A failure to properly protect access to its AWS environment is one of the root causes of the recent massive Volkswagen data leak, according to a presentation on the incident at the Chaos Computer Club on Dec. 27. But the security analyst who helped expose the leak said the $351 b…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="microsoft sentinel: a cloud-native siem with integrated genai" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/3631052/microsoft-sentinel-a-cloud-native-siem-with-integrated-genai.html" target="_blank" rel="noopener">Microsoft Sentinel: A cloud-native SIEM with integrated GenAI</a><span class="article-summary">In a recent survey, 74% of cybersecurity professionals said that the threat landscape is the worst they’ve seen in 5 years. 1 Escalating cyber threats, an expanding attack surface, and staffing shortages are putting tremendous pressure on the security operations center (SOC). It’…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="us soldier linked to trump call log hack arrested in texas" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/3631033/us-soldier-linked-to-trump-call-log-hack-arrested-in-texas.html" target="_blank" rel="noopener">US soldier linked to Trump call log hack arrested in Texas</a><span class="article-summary">Court documents unsealed Monday show that US authorities have arrested a 20-year-old soldier, Cameron John Wagenius, charged with two counts of selling or attempting to sell confidential phone records without the customer’s authorization. But behind the scant details provided in …</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="12 best entry-level cybersecurity certifications" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/3626956/12-best-entry-level-cybersecurity-certifications.html" target="_blank" rel="noopener">12 best entry-level cybersecurity certifications</a><span class="article-summary">A UC Berkeley professor recently made headlines when he stated that even his computer science graduates with a perfect 4.0 grade point average were failing to land jobs . Such is the labor market in the AI era. With AI coding assistants in wide use, junior developer roles are in …</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="squarex researchers expose oauth attack on chrome extensions days before major breach" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/3630665/squarex-researchers-expose-oauth-attack-on-chrome-extensions-days-before-major-breach.html" target="_blank" rel="noopener">SquareX Researchers Expose OAuth Attack on Chrome Extensions Days Before Major Breach</a><span class="article-summary">SquareX , an industry-first Browser Detection and Response (BDR) solution, leads the way in browser security. About a week ago, SquareX reported large-scale attacks targeting Chrome Extension developers aimed at taking over the Chrome Extension from the Chrome Store. On December …</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="preparing for the future of data privacy" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://securityintelligence.com/articles/preparing-for-the-future-of-data-privacy/" target="_blank" rel="noopener">Preparing for the future of data privacy</a><span class="article-summary">The focus on data privacy started to quickly shift beyond compliance in recent years and is expected to move even faster in the near future. Not surprisingly, the Thomson Reuters Risk &#38; Compliance Survey Report found that 82% of respondents cited data and cybersecurity concer…</span></span><span class="headline-source">SECURITYINTELLIGENCE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ransomware gang leaks data stolen in rhode island's ribridges breach" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/ransomware-gang-leaks-data-stolen-in-rhode-islands-ribridges-breach/" target="_blank" rel="noopener">Ransomware gang leaks data stolen in Rhode Island's RIBridges Breach</a><span class="article-summary">The Brain Cipher ransomware gang has begun to leak documents stolen in an attack on Rhode Island's "RIBridges" social services platform. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="chinese government hackers reportedly targeted us treasury’s sanctions office during december cyberattack" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/01/02/chinese-government-hackers-reportedly-targeted-us-treasurys-sanctions-office-during-december-cyberattack/" target="_blank" rel="noopener">Chinese government hackers reportedly targeted US Treasury’s sanctions office during December cyberattack</a><span class="article-summary">Chinese government hackers targeted the U.S. Treasury’s highly sensitive sanctions office during a December cyberattack, according to reports. According to The Washington Post, the state-sponsored hackers targeted the Office of Foreign Assets Control (OFAC), a government departme…</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">8</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="google is allowing device fingerprinting" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2025/01/google-is-allowing-device-fingerprinting.html" target="_blank" rel="noopener">Google Is Allowing Device Fingerprinting</a><span class="article-summary">Lukasz Olejnik writes about device fingerprinting, and why Google&#8217;s policy change to allow it in 2025 is a major privacy setback.</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="us arrests army soldier over at&amp;t, verizon hacking" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/us-arrests-charges-army-soldier-suspected-of-extorting-att-verizon/" target="_blank" rel="noopener">US Arrests Army Soldier Over AT&amp;T, Verizon Hacking</a><span class="article-summary">US soldier Cameron John Wagenius was arrested and charged over his suspected connection to presidential phone records leaks. The post US Arrests Army Soldier Over AT&amp;T, Verizon Hacking appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="three russian-german nationals charged with espionage for russian secret service" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/three-russian-german-nationals-charged.html" target="_blank" rel="noopener">Three Russian-German Nationals Charged with Espionage for Russian Secret Service</a><span class="article-summary">German prosecutors have charged three Russian-German nationals for acting as secret service agents for Russia. The individuals, named Dieter S., Alexander J., and Alex D., have been accused of working for a foreign secret service. Dieter S. is also alleged to have participated in…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="new playfulghost malware hacking devices to remotely capture audio recordings" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/playfulghost-audio-hack/" target="_blank" rel="noopener">New PLAYFULGHOST Malware Hacking Devices To Remotely Capture Audio Recordings</a><span class="article-summary">PLAYFULGHOST, a Gh0st RAT variant, leverages distinct traffic patterns and encryption, which spread via phishing emails and SEO poisoning of bundled applications, enabling keylogging, screen capture, and other malicious remote access capabilities. A phishing campaign employed a .…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="researchers uncover phishing-as-a-service domains associated with tycoon 2fa" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/phishing-service-tycoon-2fa/" target="_blank" rel="noopener">Researchers Uncover Phishing-As-A-Service Domains Associated With Tycoon 2FA</a><span class="article-summary">The Tycoon 2FA platform is a Phishing-as-a-Service (PhaaS) tool that enables cybercriminals to easily launch sophisticated phishing attacks targeting two-factor authentication (2FA).&#160; It provides a service that simplifies the process for attackers. and offers an intuitive in…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="windows 11 bitlocker encryption bypassed to extract full volume encryption keys" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/windows-11-bitlocker-encryption-bypassed/" target="_blank" rel="noopener">Windows 11 BitLocker Encryption Bypassed to Extract Full Volume Encryption Keys</a><span class="article-summary">A cybersecurity researcher has demonstrated a method to bypass BitLocker encryption on Windows 11 (version 24H2) by extracting full volume encryption keys (FVEK) from memory. Using a custom-built tool named&#160;Memory-Dump-UEFI, the researcher was able to retrieve sensitive cryp…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="smuggleshield – browser extension to detect html smuggling attacks" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/smuggleshield-browser-extension/" target="_blank" rel="noopener">SmuggleShield – Browser Extension to Detect HTML Smuggling Attacks</a><span class="article-summary">SmuggleShield, a recently launched browser extension, is gaining attention in the cybersecurity space for its innovative approach to mitigating HTML smuggling attacks. With its stable version (2.0) now available, SmuggleShield provides an additional layer of protection for everyd…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="breaking encryption: how to prepare for tomorrow's quantum risk today" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.paloaltonetworks.com/blog/2025/01/breaking-encryption-how-to-prepare-for-tomorrows-quantum-risk-today/" target="_blank" rel="noopener">Breaking Encryption: How To Prepare For Tomorrow's Quantum Risk Today</a><span class="article-summary">There’s a growing threat looming over our collective privacy and security — and that’s quantum computing. The post Breaking Encryption: How To Prepare For Tomorrow&#039;s Quantum Risk Today appeared first on Palo Alto Networks Blog .</span></span><span class="headline-source">PALOALTONETWORKS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="from ai hype to global chaos: what happened in 2024?" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=2bJtCTiWfpo" target="_blank" rel="noopener">From AI Hype to Global Chaos: What Happened in 2024?</a><span class="article-summary">2024 was a whirlwind of change. From AI dominating every discussion to global conflicts and economic instability, it felt like the world was flipping upside down. Mass layoffs, political chaos, and technological shifts shaped this year into one we’ll never forget. But amidst the …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">8</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="over 3 million mail servers without encryption exposed to sniffing attacks" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/over-3-million-mail-servers-without-encryption-exposed-to-sniffing-attacks/" target="_blank" rel="noopener">Over 3 million mail servers without encryption exposed to sniffing attacks</a><span class="article-summary">Over three million POP3 and IMAP mail servers without TLS encryption are currently exposed on the Internet and vulnerable to network sniffing attacks. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="goodware hash sets, (thu, jan 2nd)" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31556" target="_blank" rel="noopener">Goodware Hash Sets, (Thu, Jan 2nd)</a><span class="article-summary">In the cybersecurity landscape, we all need hashes&#x21; A hash is the result of applying a special mathematical function (a &#xe2;&#x20ac;&#x153;hash function&#xe2;&#x20ac;&#x9d;) that transforms an input (such as a file or a piece of text) into a fixed-size string or number. Th…</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="new details emerge in cybertruck explosion outside trump hotel in vegas that left 1 dead, 7 injured" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/01/02/police-investigating-cybertruck-fire-outside-trump-hotel-in-vegas/" target="_blank" rel="noopener">New details emerge in Cybertruck explosion outside Trump hotel in Vegas that left 1 dead, 7 injured</a><span class="article-summary">A Tesla Cybertruck that exploded and burst into flames Wednesday morning just outside the Trump International Hotel Las Vegas has left one person dead and seven people injured, according to the Las Vegas Metropolitan Police Department (LVMPD). Matthew Alan Livelsberger, a 37-year…</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="fireside chat with graham cluley about risks of ai adoption in 2025" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://grahamcluley.com/fireside-chat-with-graham-cluley-about-risks-of-ai-adoption-in-2025/" target="_blank" rel="noopener">Fireside chat with Graham Cluley about risks of AI adoption in 2025</a><span class="article-summary">Join me, and the experts from Rubrik, on Weds January 15 2025, where we’ll be having a fireside chat with Dark Reading all about the known and unknown risks of adopting AI.</span></span><span class="headline-source">GRAHAMCLULEY.COM</span></div>
+<div class="headline" data-title="download the hot it certifications enterprise spotlight" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://us.resources.csoonline.com/resources/download-the-hot-it-certifications-enterprise-spotlight/" target="_blank" rel="noopener">Download the Hot IT Certifications Enterprise Spotlight</a><span class="article-summary">Download the January 2025 issue of the Enterprise Spotlight from the editors of CIO, Computerworld, CSO, InfoWorld, and Network World.</span></span><span class="headline-source">US.RESOURCES.CSOONLINE.COM</span></div>
+<div class="headline" data-title="download our security orchestration, automation, and remediation (soar) tools buyer’s guide" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://us.resources.csoonline.com/resources/form?placement_id=998d754b-7378-47fb-8908-eb5a56019804&brand_id=32&locale_id=1" target="_blank" rel="noopener">Download our security orchestration, automation, and remediation (SOAR) tools buyer’s guide</a><span class="article-summary">From the editors of CSO, this enterprise buyer’s guide helps IT security staff understand what SOAR can do for their organizations and how to choose the right solution.</span></span><span class="headline-source">US.RESOURCES.CSOONLINE.COM</span></div>
+<div class="headline" data-title="could your life be on someone’s hard drive? 😨🔍" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=ntNgBYYC_kM" target="_blank" rel="noopener">Could Your Life Be On Someone’s Hard Drive? 😨🔍</a><span class="article-summary">Could your life be sitting on someone else's hard drive? 😱💻 In this short, we uncover the shocking truths hidden on used hard drives purchased online. From personal photos to sensitive documents, the risks are real and alarming. Hackers, cybersecurity pros, and anyone with old te…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="ai trolls scammers for hours! 😂" data-date="2025-01-02"><span class="headline-date">2 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=_94Et5T2j3c" target="_blank" rel="noopener">AI Trolls Scammers for Hours! 😂</a><span class="article-summary">What if an AI could outsmart phone scammers and waste their time for hours? Meet the hilarious AI “grandma” that keeps scammers on the line with endless confusion and random stories! This is one of the coolest uses of deepfake technology – turning a scammer’s bad intentions into …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

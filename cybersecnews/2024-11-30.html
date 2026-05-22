@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-11-30</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,69 +109,56 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-11-30</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">9</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Podcasts" onclick="filterCat('Podcasts', this)">PODCASTS <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-11-30"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/ai-whats-holding-you-back-cyber-security-today-weekend-special" target="_blank" rel="noopener">AI: What's Holding You Back? Cyber Security Today Weekend Special</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 30 Nov 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-11-30"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/11/wanted-russian-cybercriminal-linked-to.html" target="_blank" rel="noopener">Wanted Russian Cybercriminal Linked to Hive and LockBit Ransomware Has Been Arrested</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 30 Nov 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-11-30"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/hackers-can-secretly-access-thinkpad-webcams-by-disabling-led-indicator-light/" target="_blank" rel="noopener">Hackers Can Secretly Access ThinkPad Webcams by Disabling LED Indicator Light</a></div><span class="article-meta">GBHACKERS.COM &mdash; 30 Nov 2024</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-11-30"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.youtube.com/watch?v=HC_uLYS201o" target="_blank" rel="noopener">Why Cybersecurity Teams Are Always Reacting to Chaos! ⚠️</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-11-30</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-11-30"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31484" target="_blank" rel="noopener">From a Regular Infostealer to its Obfuscated Version, (Sat, Nov 30th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 30 Nov 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-11-30"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/20658191" target="_blank" rel="noopener">From a Regular Infostealer to its Obfuscated Version</a></div><span class="article-meta">INFOSEC.PUB &mdash; 30 Nov 2024</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2024-11-30"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/spyloan-android-malware-on-google-play-installed-8-million-times/" target="_blank" rel="noopener">SpyLoan Android malware on Google play installed 8 million times</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 30 Nov 2024</span></div>
-<div class="article-row" data-cat="Podcasts" data-date="2024-11-30"><span class="cat-badge" style="border:1px solid rgba(85,170,204,0.5);background:rgba(85,170,204,0.10);" title="Podcasts">🎙️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=fLQeiVkMZr8" target="_blank" rel="noopener">How Startup Culture Impacts Everything: Hiring, Vision, and Growth</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-11-30</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-11-30"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=AVukJi4w3SA" target="_blank" rel="noopener">Breaking a Cipher by Reading the Name? ROT13 Fail! 🤯</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-11-30</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ai: what's holding you back? cyber security today weekend special" data-date="2024-11-30"><span class="headline-date">30 Nov</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/ai-whats-holding-you-back-cyber-security-today-weekend-special" target="_blank" rel="noopener">AI: What's Holding You Back? Cyber Security Today Weekend Special</a><span class="article-summary">AI and Cybersecurity: Addressing AI Myths and Strategies | Project Synapse Episode 3 Join Jim Love, host of Cyber Security Today, alongside Marcel Gagné and John Pennard in this weekend edition from our sister podcast, Hashtag Trending. This episode, part of the Project Synapse s…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="wanted russian cybercriminal linked to hive and lockbit ransomware has been arrested" data-date="2024-11-30"><span class="headline-date">30 Nov</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/11/wanted-russian-cybercriminal-linked-to.html" target="_blank" rel="noopener">Wanted Russian Cybercriminal Linked to Hive and LockBit Ransomware Has Been Arrested</a><span class="article-summary">A Russian cybercriminal wanted in the U.S. in connection with LockBit and Hive ransomware operations has been arrested by law enforcement authorities in the country. According to a news report from Russian media outlet RIA Novosti, Mikhail Pavlovich Matveev has been accused of de…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="hackers can secretly access thinkpad webcams by disabling led indicator light" data-date="2024-11-30"><span class="headline-date">30 Nov</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/hackers-can-secretly-access-thinkpad-webcams-by-disabling-led-indicator-light/" target="_blank" rel="noopener">Hackers Can Secretly Access ThinkPad Webcams by Disabling LED Indicator Light</a><span class="article-summary">In a presentation at the POC 2024 conference, cybersecurity expert Andrey Konovalov revealed a novel method for covertly disabling the LED indicator of the ThinkPad X230&#8217;s webcam, highlighting ongoing vulnerabilities in USB-connected devices. Like many laptops, the ThinkPad…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="why cybersecurity teams are always reacting to chaos! ⚠️" data-date="2024-11-30"><span class="headline-date">30 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=HC_uLYS201o" target="_blank" rel="noopener">Why Cybersecurity Teams Are Always Reacting to Chaos! ⚠️</a><span class="article-summary">Cybersecurity teams often find themselves scrambling to patch vulnerabilities, handle breaches, or react to new compliance rules. But why does it seem like they’re always in crisis mode? 🚨 In this short, we break down why many cybersecurity approaches are reactive instead of proa…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="from a regular infostealer to its obfuscated version, (sat, nov 30th)" data-date="2024-11-30"><span class="headline-date">30 Nov</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31484" target="_blank" rel="noopener">From a Regular Infostealer to its Obfuscated Version, (Sat, Nov 30th)</a><span class="article-summary">There are many malicious scripts available on the Internet. Github has plenty of info stealers and RATs made available &#xe2;&#x20ac;&#x153;for testing or research purposes&#xe2;&#x20ac;&#x9d;. Here is one that I found recently: Trap-Stealer&#x5b; 1 &#x5d;. Often those scripts ar…</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="from a regular infostealer to its obfuscated version" data-date="2024-11-30"><span class="headline-date">30 Nov</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/20658191" target="_blank" rel="noopener">From a Regular Infostealer to its Obfuscated Version</a><span class="article-summary">submitted by Joker to cybersecurity 1 points | 0 comments https://isc.sans.edu/diary/rss/31484</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="spyloan android malware on google play installed 8 million times" data-date="2024-11-30"><span class="headline-date">30 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/spyloan-android-malware-on-google-play-installed-8-million-times/" target="_blank" rel="noopener">SpyLoan Android malware on Google play installed 8 million times</a><span class="article-summary">A new set of 15 SpyLoan apps with over 8 million installs was discovered on Google Play, targeting primarily users from South America, Southeast Asia, and Africa. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-podcasts">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(85,170,204,0.5);" onclick="toggleSection(this)">🎙️ PODCASTS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="how startup culture impacts everything: hiring, vision, and growth" data-date="2024-11-30"><span class="headline-date">30 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=fLQeiVkMZr8" target="_blank" rel="noopener">How Startup Culture Impacts Everything: Hiring, Vision, and Growth</a><span class="article-summary">Ever wondered what really drives a startup's success? It's more than just the founders or CEOs. Startup culture influences everything – from hiring the right people, communicating the vision, selling the product, to even raising funds. In this short, we dive into how authenticity…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="breaking a cipher by reading the name? rot13 fail! 🤯" data-date="2024-11-30"><span class="headline-date">30 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=AVukJi4w3SA" target="_blank" rel="noopener">Breaking a Cipher by Reading the Name? ROT13 Fail! 🤯</a><span class="article-summary">Ever heard of ROT13 encryption? It’s the 'secure' method that literally tells you how to crack it—right in the name! 😂 In this throwback to simpler (and dumber) tech times, we break down why this cipher became a meme-worthy example of low-tech security at its best (or worst!). Fr…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

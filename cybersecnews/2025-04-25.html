@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-04-25</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,79 +109,66 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-04-25</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">19</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-25"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2025/04/sap-confirms-critical-netweaver-flaw.html" target="_blank" rel="noopener">New Critical SAP NetWeaver Flaw Exploited to Drop Web Shell, Brute Ratel Framework</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 25 Apr 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-25"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2025/04/researchers-identify-rackstatic.html" target="_blank" rel="noopener">Researchers Identify Rack::Static Vulnerability Enabling Data Breaches in Ruby Servers</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 25 Apr 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-25"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2025/04/dslogdrat-malware-deployed-via-ivanti.html" target="_blank" rel="noopener">DslogdRAT Malware Deployed via Ivanti ICS Zero-Day CVE-2025-0282 in Japan Attacks</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 25 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-25"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisecurity.org/advisory/a-vulnerability-in-sap-netweaver-visual-composer-could-allow-for-remote-code-execution_2025-044" target="_blank" rel="noopener">A Vulnerability in SAP NetWeaver Visual Composer Could Allow for Remote Code Execution</a></div><span class="article-meta">CISECURITY.ORG &mdash; 25 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-25"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://medium.com/anton-on-security/antons-security-blog-quarterly-q1-2025-d8906386503c?source=rss----8e8c3ed26c4c---4" target="_blank" rel="noopener">Anton’s Security Blog Quarterly Q1 2025</a></div><span class="kev-badge">KEV</span><span class="article-meta">MEDIUM.COM &mdash; 25 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-25"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.lastwatchdog.com/rsac-fireside-chat-attackers-are-exploiting-gaps-in-business-logic-created-by-proliferation-of-apis/" target="_blank" rel="noopener">RSAC Fireside Chat: Attackers are exploiting gaps in business logic created by proliferation of APIs</a></div><span class="article-meta">LASTWATCHDOG.COM &mdash; 25 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-25"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.welivesecurity.com/en/social-media/deepfake-doctors-tiktok-bogus-cures/" target="_blank" rel="noopener">Deepfake 'doctors' take to TikTok to peddle bogus cures</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 25 Apr 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-04-25"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/record-breaking-cybercrime-losses-and-data-breaches-in-2024" target="_blank" rel="noopener">Record-Breaking Cybercrime Losses and Data Breaches in 2024</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 25 Apr 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-04-25"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2025/04/25/data-breach-at-connecticut-yale-new-haven-health-affects-over-5-million/" target="_blank" rel="noopener">Data breach at Connecticut’s Yale New Haven Health affects over 5 million</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 25 Apr 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-04-25"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bitdefender.com/en-us/blog/hotforsecurity/hackers-access-sensitive-sim-card-data-at-south-koreas-largest-telecoms-company" target="_blank" rel="noopener">Hackers access sensitive SIM card data at South Korea’s largest telecoms company</a></div><span class="article-meta">BITDEFENDER.COM &mdash; 25 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-25"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2025/04/friday-squid-blogging-squid-facts-on-your-phone.html" target="_blank" rel="noopener">Friday Squid Blogging: Squid Facts on Your Phone</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2025-04-25</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-25"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2025/04/cryptocurrency-thefts-get-physical.html" target="_blank" rel="noopener">Cryptocurrency Thefts Get Physical</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2025-04-25</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-25"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2025/04/north-korean-hackers-spread-malware-via.html" target="_blank" rel="noopener">North Korean Hackers Spread Malware via Fake Crypto Firms and Job Interview Lures</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 25 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-25"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.microsoft.com/en-us/security/blog/2025/04/25/explore-practical-best-practices-to-secure-your-data-with-microsoft-purview/" target="_blank" rel="noopener">​​Explore practical best practices to secure your data with Microsoft Purview​​</a></div><span class="article-meta">MICROSOFT.COM &mdash; 25 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-25"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/25/d/earth-kurma-apt-campaign.html" target="_blank" rel="noopener">Earth Kurma APT Campaign Targets Southeast Asian Government, Telecom Sectors</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 25 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-25"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.paloaltonetworks.com/blog/2025/04/adem-available-on-ngfw/" target="_blank" rel="noopener">Deliver Exceptional User Experience with ADEM Now Available on NGFW</a></div><span class="article-meta">PALOALTONETWORKS.COM &mdash; 25 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-25"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://programming.dev/post/29237262" target="_blank" rel="noopener">‘Vibe coding’ using LLMs susceptible to most common security flaws</a></div><span class="article-meta">PROGRAMMING.DEV &mdash; 25 Apr 2025</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-04-25"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.kaspersky.com/blog/trojan-in-fake-smartphones/53331/" target="_blank" rel="noopener">Triada: a Trojan pre-installed on Android smartphones out of the box | Kaspersky official blog</a></div><span class="article-meta">KASPERSKY.COM &mdash; 25 Apr 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-04-25"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2025/04/why-nhis-are-securitys-most-dangerous.html" target="_blank" rel="noopener">Why NHIs Are Security's Most Dangerous Blind Spot</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 25 Apr 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new critical sap netweaver flaw exploited to drop web shell, brute ratel framework" data-date="2025-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/sap-confirms-critical-netweaver-flaw.html" target="_blank" rel="noopener">New Critical SAP NetWeaver Flaw Exploited to Drop Web Shell, Brute Ratel Framework</a><span class="article-summary">Threat actors are likely exploiting a new vulnerability in SAP NetWeaver to upload JSP web shells with the goal of facilitating unauthorized file uploads and code execution.&nbsp; "The exploitation is likely tied to either a previously disclosed vulnerability like CVE-2017-9844 o…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="researchers identify rack::static vulnerability enabling data breaches in ruby servers" data-date="2025-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/researchers-identify-rackstatic.html" target="_blank" rel="noopener">Researchers Identify Rack::Static Vulnerability Enabling Data Breaches in Ruby Servers</a><span class="article-summary">Cybersecurity researchers have disclosed three security flaws in the Rack Ruby web server interface that, if successfully exploited, could enable attackers to gain unauthorized access to files, inject malicious data, and tamper with logs under certain conditions. The vulnerabilit…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="dslogdrat malware deployed via ivanti ics zero-day cve-2025-0282 in japan attacks" data-date="2025-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/dslogdrat-malware-deployed-via-ivanti.html" target="_blank" rel="noopener">DslogdRAT Malware Deployed via Ivanti ICS Zero-Day CVE-2025-0282 in Japan Attacks</a><span class="article-summary">Cybersecurity researchers are warning about a new malware called DslogdRAT that's installed following the exploitation of a now-patched security flaw in Ivanti Connect Secure (ICS). The malware, along with a web shell, were "installed by exploiting a zero-day vulnerability at tha…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="a vulnerability in sap netweaver visual composer could allow for remote code execution" data-date="2025-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.cisecurity.org/advisory/a-vulnerability-in-sap-netweaver-visual-composer-could-allow-for-remote-code-execution_2025-044" target="_blank" rel="noopener">A Vulnerability in SAP NetWeaver Visual Composer Could Allow for Remote Code Execution</a><span class="article-summary">A vulnerability has been discovered in SAP NetWeaver Visual Composer, which could allow for remote code execution. SAP NetWeaver Visual Composer is SAP’s web-based software modelling tool. It enables business process specialists and developers to create business application compo…</span></span><span class="headline-source">CISECURITY.ORG</span></div>
+<div class="headline" data-title="anton’s security blog quarterly q1 2025" data-date="2025-04-25"><span class="headline-date">25 Apr <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://medium.com/anton-on-security/antons-security-blog-quarterly-q1-2025-d8906386503c?source=rss----8e8c3ed26c4c---4" target="_blank" rel="noopener">Anton’s Security Blog Quarterly Q1 2025</a><span class="article-summary">Amazingly, Medium has fixed the stats so my blog/podcast quarterly is back to life. As before , this covers both Anton on Security and my posts from Google Cloud blog , and our Cloud Security Podcast ( subscribe ). Dall-E security blogging image Top 10 posts with the most lifetim…</span></span><span class="headline-source">MEDIUM.COM</span></div>
+<div class="headline" data-title="rsac fireside chat: attackers are exploiting gaps in business logic created by proliferation of apis" data-date="2025-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.lastwatchdog.com/rsac-fireside-chat-attackers-are-exploiting-gaps-in-business-logic-created-by-proliferation-of-apis/" target="_blank" rel="noopener">RSAC Fireside Chat: Attackers are exploiting gaps in business logic created by proliferation of APIs</a><span class="article-summary">APIs have become foundational to digital business operations, serving as the behind-the-scenes glue that connects apps, platforms and partners. Related: OWASP’s Top 10 Web App Security Risks But this growing reliance has opened a new front in cybersecurity—one where attackers &#8…</span></span><span class="headline-source">LASTWATCHDOG.COM</span></div>
+<div class="headline" data-title="deepfake 'doctors' take to tiktok to peddle bogus cures" data-date="2025-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/en/social-media/deepfake-doctors-tiktok-bogus-cures/" target="_blank" rel="noopener">Deepfake 'doctors' take to TikTok to peddle bogus cures</a><span class="article-summary">Look out for AI-generated 'TikDocs' who exploit the public's trust in the medical profession to drive sales of sketchy supplements</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="record-breaking cybercrime losses and data breaches in 2024" data-date="2025-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/record-breaking-cybercrime-losses-and-data-breaches-in-2024" target="_blank" rel="noopener">Record-Breaking Cybercrime Losses and Data Breaches in 2024</a><span class="article-summary">In this episode of Cybersecurity Today, host David Shipley discusses the FBI's report on cybercrime losses in 2024, which reached a record $16.6 billion, marking a 33% increase from the previous year. The report highlights major types of cyber crimes such as phishing, spoofing, e…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="data breach at connecticut’s yale new haven health affects over 5 million" data-date="2025-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/04/25/data-breach-at-connecticut-yale-new-haven-health-affects-over-5-million/" target="_blank" rel="noopener">Data breach at Connecticut’s Yale New Haven Health affects over 5 million</a><span class="article-summary">Connecticut's largest healthcare provider said it was hit by ransomware in March.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="hackers access sensitive sim card data at south korea’s largest telecoms company" data-date="2025-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.bitdefender.com/en-us/blog/hotforsecurity/hackers-access-sensitive-sim-card-data-at-south-koreas-largest-telecoms-company" target="_blank" rel="noopener">Hackers access sensitive SIM card data at South Korea’s largest telecoms company</a><span class="article-summary">Mobile network operator SK Telecom, which serves approximately 34 million subscribers in South Korea, has confirmed that it suffered a cyber attack earlier this month that saw malware infiltrate its internal systems, and access data related to customers' SIM cards. Read more in m…</span></span><span class="headline-source">BITDEFENDER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="friday squid blogging: squid facts on your phone" data-date="2025-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2025/04/friday-squid-blogging-squid-facts-on-your-phone.html" target="_blank" rel="noopener">Friday Squid Blogging: Squid Facts on Your Phone</a><span class="article-summary">Text &#8220;SQUID&#8221; to 1-833-SCI-TEXT for daily squid facts . The website has merch. As usual, you can also use this squid post to talk about the security stories in the news that I haven&#8217;t covered.</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="cryptocurrency thefts get physical" data-date="2025-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2025/04/cryptocurrency-thefts-get-physical.html" target="_blank" rel="noopener">Cryptocurrency Thefts Get Physical</a><span class="article-summary">Long story of a $250 million cryptocurrency theft that, in a complicated chain events, resulted in a pretty brutal kidnapping.</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="north korean hackers spread malware via fake crypto firms and job interview lures" data-date="2025-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/north-korean-hackers-spread-malware-via.html" target="_blank" rel="noopener">North Korean Hackers Spread Malware via Fake Crypto Firms and Job Interview Lures</a><span class="article-summary">North Korea-linked threat actors behind the Contagious Interview have set up front companies as a way to distribute malware during the fake hiring process. "In this new campaign, the threat actor group is using three front companies in the cryptocurrency consulting industry – Blo…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="​​explore practical best practices to secure your data with microsoft purview​​" data-date="2025-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.microsoft.com/en-us/security/blog/2025/04/25/explore-practical-best-practices-to-secure-your-data-with-microsoft-purview/" target="_blank" rel="noopener">​​Explore practical best practices to secure your data with Microsoft Purview​​</a><span class="article-summary">Microsoft presents best practices for securing data and optimizing Microsoft Purview implementation, emphasizing the integration of people, processes, and technology. The post ​​Explore practical best practices to secure your data with Microsoft Purview​​ appeared first on Micros…</span></span><span class="headline-source">MICROSOFT.COM</span></div>
+<div class="headline" data-title="earth kurma apt campaign targets southeast asian government, telecom sectors" data-date="2025-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/25/d/earth-kurma-apt-campaign.html" target="_blank" rel="noopener">Earth Kurma APT Campaign Targets Southeast Asian Government, Telecom Sectors</a><span class="article-summary">An APT group dubbed Earth Kurma is actively targeting government and telecommunications organizations in Southeast Asia using advanced malware, rootkits, and trusted cloud services to conduct cyberespionage.</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+<div class="headline" data-title="deliver exceptional user experience with adem now available on ngfw" data-date="2025-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.paloaltonetworks.com/blog/2025/04/adem-available-on-ngfw/" target="_blank" rel="noopener">Deliver Exceptional User Experience with ADEM Now Available on NGFW</a><span class="article-summary">ADEM expands trusted visibility and remediation capabilities from Prisma SASE to NGFW, empowering IT teams for unified network control and performance. The post Deliver Exceptional User Experience with ADEM Now Available on NGFW appeared first on Palo Alto Networks Blog .</span></span><span class="headline-source">PALOALTONETWORKS.COM</span></div>
+<div class="headline" data-title="‘vibe coding’ using llms susceptible to most common security flaws" data-date="2025-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://programming.dev/post/29237262" target="_blank" rel="noopener">‘Vibe coding’ using LLMs susceptible to most common security flaws</a><span class="article-summary">submitted by neme to security 102 points | 16 comments https://www.scworld.com/news/vibe-coding-using-llms-susceptible-to-most-common-security-flaws</span></span><span class="headline-source">PROGRAMMING.DEV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="triada: a trojan pre-installed on android smartphones out of the box | kaspersky official blog" data-date="2025-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.kaspersky.com/blog/trojan-in-fake-smartphones/53331/" target="_blank" rel="noopener">Triada: a Trojan pre-installed on Android smartphones out of the box | Kaspersky official blog</a><span class="article-summary">An updated version of the Triada mobile Trojan is built into the firmware of smartphones offered by online stores. It steals everything it can: from cryptocurrency to Telegram, WhatsApp, and other social media accounts.</span></span><span class="headline-source">KASPERSKY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="why nhis are security's most dangerous blind spot" data-date="2025-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/why-nhis-are-securitys-most-dangerous.html" target="_blank" rel="noopener">Why NHIs Are Security's Most Dangerous Blind Spot</a><span class="article-summary">When we talk about identity in cybersecurity, most people think of usernames, passwords, and the occasional MFA prompt. But lurking beneath the surface is a growing threat that does not involve human credentials at all, as we witness the exponential growth of Non-Human Identities…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

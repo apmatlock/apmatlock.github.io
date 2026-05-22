@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — Archive</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -36,11 +106,11 @@
 
     <div class="stats-bar">
       <div class="stat"><span class="stat-value">2125</span><span class="stat-label">Days Archived</span></div>
-      <div class="stat"><span class="stat-value">71,494</span><span class="stat-label">Total Articles</span></div>
+      <div class="stat"><span class="stat-value">71,501</span><span class="stat-label">Total Articles</span></div>
       <div class="stat"><span class="stat-value">94</span><span class="stat-label">Active Feeds</span></div>
     </div>
     <div class="index-grid"><a class="day-card" href="2026-05-23.html"><span class="day-date">2026-05-23</span><span class="day-count">1 ARTICLES</span></a>
-<a class="day-card" href="index.html"><span class="day-date">2026-05-22 (TODAY)</span><span class="day-count">82 ARTICLES</span></a>
+<a class="day-card" href="index.html"><span class="day-date">2026-05-22 (TODAY)</span><span class="day-count">89 ARTICLES</span></a>
 <a class="day-card" href="2026-05-21.html"><span class="day-date">2026-05-21</span><span class="day-count">151 ARTICLES</span></a>
 <a class="day-card" href="2026-05-20.html"><span class="day-date">2026-05-20</span><span class="day-count">121 ARTICLES</span></a>
 <a class="day-card" href="2026-05-19.html"><span class="day-date">2026-05-19</span><span class="day-count">136 ARTICLES</span></a>
@@ -2168,77 +2238,7 @@
 </main>
 <button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-05-22 13:57<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
-
-<script>
-  let _activeHours = null;
-
-  function toggleSection(headerEl) {
-    const sec = headerEl.closest('.cat-section');
-    sec.classList.toggle('collapsed');
-    headerEl.querySelector('.section-toggle').textContent =
-      sec.classList.contains('collapsed') ? '[+]' : '[−]';
-  }
-
-  function expandAll() {
-    document.querySelectorAll('.cat-section').forEach(s => {
-      s.classList.remove('collapsed');
-      const t = s.querySelector('.section-toggle');
-      if (t) t.textContent = '[−]';
-    });
-  }
-
-  function collapseAll() {
-    document.querySelectorAll('.cat-section').forEach(s => {
-      s.classList.add('collapsed');
-      const t = s.querySelector('.section-toggle');
-      if (t) t.textContent = '[+]';
-    });
-  }
-
-  function applyFilters() {
-    const inp = document.getElementById('searchInput');
-    const qLow = inp ? inp.value.trim().toLowerCase() : '';
-    const now = Date.now();
-
-    document.querySelectorAll('.cat-section').forEach(sec => {
-      let visible = 0;
-      sec.querySelectorAll('.headline').forEach(row => {
-        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
-        let timeOk = true;
-        if (_activeHours) {
-          const d = row.dataset.date;
-          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
-        }
-        const show = titleOk && timeOk;
-        row.style.display = show ? '' : 'none';
-        if (show) visible++;
-      });
-      if (qLow || _activeHours) {
-        sec.style.display = visible > 0 ? '' : 'none';
-        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
-          sec.classList.remove('collapsed');
-          const t = sec.querySelector('.section-toggle');
-          if (t) t.textContent = '[−]';
-        }
-      } else {
-        sec.style.display = '';
-      }
-    });
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-
-  window.addEventListener('scroll', () => {
-    const btn = document.getElementById('jumpTopBtn');
-    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
-  });
-</script>
 </body>
 </html>

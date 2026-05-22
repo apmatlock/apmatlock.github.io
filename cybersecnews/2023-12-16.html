@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2023-12-16</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,73 +109,56 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2023-12-16</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">14</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-16"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2023/12/new-nkabuse-malware-exploits-nkn.html?&web_view=true" target="_blank" rel="noopener">New NKAbuse Malware Exploits NKN Blockchain Tech for DDoS Attacks</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 16 Dec 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-16"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/delta-dental-of-california-data-breach-exposed-info-of-7-million-people/?&web_view=true" target="_blank" rel="noopener">Delta Dental of California Data Breach Exposed Info of Seven Million People</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 16 Dec 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-16"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/30492" target="_blank" rel="noopener">An Example of RocketMQ Exploit Scanner, (Sat, Dec 16th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 16 Dec 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-16"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://techcrunch.com/2023/12/16/google-geofence-warrants-law-enforcement-privacy/" target="_blank" rel="noopener">Google moves to end geofence warrants, a surveillance problem it largely created</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 16 Dec 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-16"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/qnap-viostor-nvr-vulnerability-actively-exploited-by-malware-botnet/" target="_blank" rel="noopener">QNAP VioStor NVR vulnerability actively exploited by malware botnet</a></div><span class="kev-badge">KEV</span><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 16 Dec 2023</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-12-16"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://thehackernews.com/2023/12/chinas-miit-introduces-color-coded.html" target="_blank" rel="noopener">China's MIIT Introduces Color-Coded Action Plan for Data Security Incidents</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 16 Dec 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-12-16"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://therecord.media/ontario-public-library-shuts-down-services?&web_view=true" target="_blank" rel="noopener">Ontario Public Library Shuts Down Most Services Due to Cyberattack</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 16 Dec 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-12-16"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://therecord.media/central-bank-lesotho-cyberattack-causes-outages?&web_view=true" target="_blank" rel="noopener">Central Bank of Lesotho Facing Outages After Cyberattack</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 16 Dec 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-12-16"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.databreaches.net/why-federal-efforts-to-protect-schools-from-cybersecurity-threats-fall-short/" target="_blank" rel="noopener">Why federal efforts to protect schools from cybersecurity threats fall short</a></div><span class="article-meta">DATABREACHES.NET &mdash; 16 Dec 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-12-16"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/mongodb-says-customer-data-was-exposed-in-a-cyberattack/" target="_blank" rel="noopener">MongoDB says customer data was exposed in a cyberattack</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 16 Dec 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-12-16"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.malwarebytes.com/blog/threat-intelligence/2023/12/pikabot-distributed-via-malicious-ads?&web_view=true" target="_blank" rel="noopener">PikaBot Distributed via Malicious Search Ads</a></div><span class="article-meta">MALWAREBYTES.COM &mdash; 16 Dec 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-12-16"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.troyhunt.com/weekly-update-378/" target="_blank" rel="noopener">Weekly Update 378</a></div><span class="article-meta">TROYHUNT.COM &mdash; 16 Dec 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-12-16"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2023/12/microsoft-warns-of-storm-0539-rising.html" target="_blank" rel="noopener">Microsoft Warns of Storm-0539: The Rising Threat Behind Holiday Gift Card Frauds</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 16 Dec 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-12-16"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/microsoft/microsoft-unveils-new-more-secure-windows-protected-print-mode/" target="_blank" rel="noopener">Microsoft unveils new, more secure Windows Protected Print Mode</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 16 Dec 2023</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new nkabuse malware exploits nkn blockchain tech for ddos attacks" data-date="2023-12-16"><span class="headline-date">16 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/12/new-nkabuse-malware-exploits-nkn.html?&web_view=true" target="_blank" rel="noopener">New NKAbuse Malware Exploits NKN Blockchain Tech for DDoS Attacks</a><span class="article-summary">Researchers have discovered a new multi-platform threat called NKAbuse that uses a decentralized network connectivity protocol called NKN to communicate. NKAbuse leverages blockchain technology to conduct DDoS attacks and function as an implant.</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="delta dental of california data breach exposed info of seven million people" data-date="2023-12-16"><span class="headline-date">16 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/delta-dental-of-california-data-breach-exposed-info-of-7-million-people/?&web_view=true" target="_blank" rel="noopener">Delta Dental of California Data Breach Exposed Info of Seven Million People</a><span class="article-summary">Delta Dental of California and its affiliates have suffered a data breach, affecting almost seven million patients. The breach occurred through a vulnerability in the MOVEit Transfer software, allowing unauthorized access by threat actors.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="an example of rocketmq exploit scanner, (sat, dec 16th)" data-date="2023-12-16"><span class="headline-date">16 Dec</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/30492" target="_blank" rel="noopener">An Example of RocketMQ Exploit Scanner, (Sat, Dec 16th)</a><span class="article-summary">A few months ago, RocketMQ&#x5b;1&#x5d;, a real-time message queue platform, suffered of a nasty vulnerability referred as &#x25;&#x25;cve:2023-33246&#x25;&#x25;. I found another malicious script in the wild a few weeks ago that exploits this vulnerability. It has still today a v…</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="google moves to end geofence warrants, a surveillance problem it largely created" data-date="2023-12-16"><span class="headline-date">16 Dec</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2023/12/16/google-geofence-warrants-law-enforcement-privacy/" target="_blank" rel="noopener">Google moves to end geofence warrants, a surveillance problem it largely created</a><span class="article-summary">Google will soon allow users to store their location data on their devices rather than on Google&#8217;s servers, effectively ending a long-running surveillance practice that allowed police and law enforcement to tap Google&#8217;s vast banks of location data to identify potentia…</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="qnap viostor nvr vulnerability actively exploited by malware botnet" data-date="2023-12-16"><span class="headline-date">16 Dec <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/qnap-viostor-nvr-vulnerability-actively-exploited-by-malware-botnet/" target="_blank" rel="noopener">QNAP VioStor NVR vulnerability actively exploited by malware botnet</a><span class="article-summary">A Mirai-based botnet named 'InfectedSlurs' is exploiting a remote code execution (RCE) vulnerability in QNAP VioStor NVR (Network Video Recorder) devices to hijack and make them part of its DDoS (distributed denial of service) swarm. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="china's miit introduces color-coded action plan for data security incidents" data-date="2023-12-16"><span class="headline-date">16 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/12/chinas-miit-introduces-color-coded.html" target="_blank" rel="noopener">China's MIIT Introduces Color-Coded Action Plan for Data Security Incidents</a><span class="article-summary">China's Ministry of Industry and Information Technology (MIIT) on Friday&nbsp;unveiled draft proposals&nbsp;detailing its plans to tackle data security events in the country using a color-coded system. The effort is designed to "improve the comprehensive response capacity for dat…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ontario public library shuts down most services due to cyberattack" data-date="2023-12-16"><span class="headline-date">16 Dec</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/ontario-public-library-shuts-down-services?&web_view=true" target="_blank" rel="noopener">Ontario Public Library Shuts Down Most Services Due to Cyberattack</a><span class="article-summary">The attack on the library, along with recent ransomware incidents at other major libraries, underscores the need for improved cybersecurity measures and data protection in the library sector.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="central bank of lesotho facing outages after cyberattack" data-date="2023-12-16"><span class="headline-date">16 Dec</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/central-bank-lesotho-cyberattack-causes-outages?&web_view=true" target="_blank" rel="noopener">Central Bank of Lesotho Facing Outages After Cyberattack</a><span class="article-summary">The ongoing downtime of the National Payments System has made it impossible for local banks in Lesotho to honor inter-bank transactions, requiring alternative measures to facilitate payments.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="why federal efforts to protect schools from cybersecurity threats fall short" data-date="2023-12-16"><span class="headline-date">16 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.databreaches.net/why-federal-efforts-to-protect-schools-from-cybersecurity-threats-fall-short/" target="_blank" rel="noopener">Why federal efforts to protect schools from cybersecurity threats fall short</a><span class="article-summary">submitted by jyunwai to cybersecurity 2 points | 0 comments https://www.databreaches.net/why-federal-efforts-to-protect-schools-from-cybersecurity-threats-fall-short/</span></span><span class="headline-source">DATABREACHES.NET</span></div>
+<div class="headline" data-title="mongodb says customer data was exposed in a cyberattack" data-date="2023-12-16"><span class="headline-date">16 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/mongodb-says-customer-data-was-exposed-in-a-cyberattack/" target="_blank" rel="noopener">MongoDB says customer data was exposed in a cyberattack</a><span class="article-summary">MongoDB is warning that its corporate systems were breached and that customer data was exposed in a cyberattack that was detected by the company earlier this week. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="pikabot distributed via malicious search ads" data-date="2023-12-16"><span class="headline-date">16 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.malwarebytes.com/blog/threat-intelligence/2023/12/pikabot-distributed-via-malicious-ads?&web_view=true" target="_blank" rel="noopener">PikaBot Distributed via Malicious Search Ads</a><span class="article-summary">Threat actors are bypassing Google's security measures and using fingerprinting techniques to ensure successful execution of malicious downloads, pointing to a potential "malvertising as a service" model.</span></span><span class="headline-source">MALWAREBYTES.COM</span></div>
+<div class="headline" data-title="weekly update 378" data-date="2023-12-16"><span class="headline-date">16 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.troyhunt.com/weekly-update-378/" target="_blank" rel="noopener">Weekly Update 378</a><span class="article-summary">Presently sponsored by: Identity theft isn’t cheap. Secure your family with Aura the #1 rated proactive protection that helps keep you safe online. Get started. I&apos;d say the balloon fetish segment was the highlight of this week&apos;s video. No, seriously, it&apos;s a moment …</span></span><span class="headline-source">TROYHUNT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="microsoft warns of storm-0539: the rising threat behind holiday gift card frauds" data-date="2023-12-16"><span class="headline-date">16 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/12/microsoft-warns-of-storm-0539-rising.html" target="_blank" rel="noopener">Microsoft Warns of Storm-0539: The Rising Threat Behind Holiday Gift Card Frauds</a><span class="article-summary">Microsoft is warning of an uptick in malicious activity from an emerging threat cluster it's tracking as&nbsp;Storm-0539&nbsp;for orchestrating gift card fraud and theft via highly sophisticated email and SMS phishing attacks against retail entities during the holiday shopping se…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="microsoft unveils new, more secure windows protected print mode" data-date="2023-12-16"><span class="headline-date">16 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/microsoft/microsoft-unveils-new-more-secure-windows-protected-print-mode/" target="_blank" rel="noopener">Microsoft unveils new, more secure Windows Protected Print Mode</a><span class="article-summary">Microsoft announced a new Windows Protected Print Mode (WPP), introducing significant security enhancements to the Windows print system. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

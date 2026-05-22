@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2026-05-03</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -23,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
-<a href="index.html" class="active">Today</a>
-<a href="2026-05-02.html">2026-05-02</a>
-<a href="2026-05-01.html">2026-05-01</a>
-<a href="2026-04-30.html">2026-04-30</a>
-<a href="2026-04-29.html">2026-04-29</a>
-<a href="2026-04-28.html">2026-04-28</a>
-<a href="2026-04-27.html">2026-04-27</a>
+<a href="2026-05-23.html">23 May</a>
+<a href="index.html">Today</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -39,85 +109,76 @@
       <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2026-05-03</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">24</span></button>
-<button class="filter-btn" data-cat="CISA KEV" onclick="filterCat('CISA KEV', this)">CISA KEV <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">13</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="CISA KEV" data-date="2026-05-03"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://thehackernews.com/2026/05/cisa-adds-actively-exploited-linux-root.html" target="_blank" rel="noopener">CISA Adds Actively Exploited Linux Root Access Bug CVE-2026-31431 to KEV</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) on Friday added a recently disclosed security flaw impacting various Linux distributions to its Known Exploited Vulnerabilities (KEV) catalog, citing evidence of active exploitation in the wild. The vulnerability, t…</span></div><span class="kev-badge">KEV</span><span class="article-meta">THEHACKERNEWS.COM &mdash; 03 May 2026</span></div>
-<div class="article-row" data-cat="CISA KEV" data-date="2026-05-03"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://securityaffairs.com/191613/hacking/u-s-cisa-adds-a-flaw-in-webpros-cpanel-to-its-known-exploited-vulnerabilities-catalog.html" target="_blank" rel="noopener">U.S. CISA adds a flaw in WebPros cPanel to its Known Exploited Vulnerabilities catalog</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) adds a flaw in WebPros cPanel to its Known Exploited Vulnerabilities catalog The U.S. Cybersecurity and Infrastructure Security Agency (CISA) added a flaw in Microsoft Defender, tracked as CVE-2026-41940 (CVSS score…</span></div><span class="kev-badge">KEV</span><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 03 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-37555" target="_blank" rel="noopener">CVE-2026-37555</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6842" target="_blank" rel="noopener">CVE-2026-6842 Nano: nano: local attacker can inject malicious .desktop launcher due to insecure directory permissions</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6845" target="_blank" rel="noopener">CVE-2026-6845 Binutils: binutils: denial of service via crafted elf file</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6846" target="_blank" rel="noopener">CVE-2026-6846 Binutils: binutils: arbitrary code execution via malformed xcoff object file processing</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-30656" target="_blank" rel="noopener">CVE-2026-30656</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6843" target="_blank" rel="noopener">CVE-2026-6843 Nano: nano: format string vulnerability leads to denial of service</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2017-20230" target="_blank" rel="noopener">CVE-2017-20230 Storable versions before 3.05 for Perl has a stack overflow</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-32148" target="_blank" rel="noopener">CVE-2026-32148 Lockfile checksums not verified in Hex allows dependency integrity bypass</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-11083" target="_blank" rel="noopener">CVE-2025-11083 GNU Binutils Linker elfcode.h elf_swap_shdr heap-based overflow</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-7598" target="_blank" rel="noopener">CVE-2026-7598 libssh2 userauth.c userauth_password integer overflow</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-43058" target="_blank" rel="noopener">CVE-2026-43058 media: vidtv: fix pass-by-value structs causing MSAN warnings</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-9403" target="_blank" rel="noopener">CVE-2025-9403 jqlang jq JSON jq_test.c run_jq_tests assertion</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-8224" target="_blank" rel="noopener">CVE-2025-8224 GNU Binutils BFD Library elf.c bfd_elf_get_str_section null pointer dereference</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.helpnetsecurity.com/2026/05/03/week-in-review-high-severity-lpe-vulnerability-in-the-linux-kernel-cpanel-0-day-exploited-for-months/" target="_blank" rel="noopener">Week in review: High-severity LPE vulnerability in the Linux kernel, cPanel 0-day exploited for months</a></div><span class="article-meta">HELPNETSECURITY.COM &mdash; 03 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://securityaffairs.com/191600/security/google-revamps-bug-bounty-programs-android-rewards-rise-chrome-payouts-drop-in-the-age-of-ai.html" target="_blank" rel="noopener">Google Revamps Bug Bounty Programs: Android Rewards Rise, Chrome Payouts Drop in the Age of AI</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 03 May 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-05-03"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://securityaffairs.com/191607/breaking-news/security-affairs-newsletter-round-575-by-pierluigi-paganini-international-edition.html" target="_blank" rel="noopener">Security Affairs newsletter Round 575 by Pierluigi Paganini – INTERNATIONAL EDITION</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 03 May 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-05-03"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://securityaffairs.com/191638/apt/salt-typhoon-breach-ibm-subsidiary-in-italy-a-warning-for-europes-digital-defenses.html" target="_blank" rel="noopener">Salt Typhoon breach IBM subsidiary in Italy: a warning for Europe’s digital defenses</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 03 May 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-05-03"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://haveibeenpwned.com/Breach/MarcusMillichap" target="_blank" rel="noopener">Marcus &amp; Millichap - 1,837,078 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 03 May 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-05-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/32944" target="_blank" rel="noopener">Wireshark 4.6.5 Released, (Sun, May 3rd)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 03 May 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-05-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.helpnetsecurity.com/2026/05/04/openai-chatgpt-advanced-account-security/" target="_blank" rel="noopener">ChatGPT advanced account security adds passkeys and hardware keys</a></div><span class="article-meta">HELPNETSECURITY.COM &mdash; 03 May 2026</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2026-05-03"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://securityaffairs.com/191623/malware/security-affairs-malware-newsletter-round-95.html" target="_blank" rel="noopener">SECURITY AFFAIRS MALWARE NEWSLETTER ROUND 95</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 03 May 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-05-03"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.malwarebytes.com/blog/how-to/2026/05/3-easy-to-miss-cybersecurity-risks-for-small-businesses" target="_blank" rel="noopener">3 easy-to-miss cybersecurity risks for small businesses</a></div><span class="article-meta">MALWAREBYTES.COM &mdash; 03 May 2026</span></div>
-    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa adds actively exploited linux root access bug cve-2026-31431 to kev" data-date="2026-05-03"><span class="headline-date">3 May <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/05/cisa-adds-actively-exploited-linux-root.html" target="_blank" rel="noopener">CISA Adds Actively Exploited Linux Root Access Bug CVE-2026-31431 to KEV</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) on Friday added a recently disclosed security flaw impacting various Linux distributions to its Known Exploited Vulnerabilities (KEV) catalog, citing evidence of active exploitation in the wild. The vulnerability, t…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="u.s. cisa adds a flaw in webpros cpanel to its known exploited vulnerabilities catalog" data-date="2026-05-03"><span class="headline-date">3 May <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/191613/hacking/u-s-cisa-adds-a-flaw-in-webpros-cpanel-to-its-known-exploited-vulnerabilities-catalog.html" target="_blank" rel="noopener">U.S. CISA adds a flaw in WebPros cPanel to its Known Exploited Vulnerabilities catalog</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) adds a flaw in WebPros cPanel to its Known Exploited Vulnerabilities catalog The U.S. Cybersecurity and Infrastructure Security Agency (CISA) added a flaw in Microsoft Defender, tracked as CVE-2026-41940 (CVSS score…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">13</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cve-2026-37555" data-date="2026-05-03"><span class="headline-date">3 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-37555" target="_blank" rel="noopener">CVE-2026-37555</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-6842 nano: nano: local attacker can inject malicious .desktop launcher due to insecure directory permissions" data-date="2026-05-03"><span class="headline-date">3 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6842" target="_blank" rel="noopener">CVE-2026-6842 Nano: nano: local attacker can inject malicious .desktop launcher due to insecure directory permissions</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-6845 binutils: binutils: denial of service via crafted elf file" data-date="2026-05-03"><span class="headline-date">3 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6845" target="_blank" rel="noopener">CVE-2026-6845 Binutils: binutils: denial of service via crafted elf file</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-6846 binutils: binutils: arbitrary code execution via malformed xcoff object file processing" data-date="2026-05-03"><span class="headline-date">3 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6846" target="_blank" rel="noopener">CVE-2026-6846 Binutils: binutils: arbitrary code execution via malformed xcoff object file processing</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-30656" data-date="2026-05-03"><span class="headline-date">3 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-30656" target="_blank" rel="noopener">CVE-2026-30656</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-6843 nano: nano: format string vulnerability leads to denial of service" data-date="2026-05-03"><span class="headline-date">3 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6843" target="_blank" rel="noopener">CVE-2026-6843 Nano: nano: format string vulnerability leads to denial of service</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2017-20230 storable versions before 3.05 for perl has a stack overflow" data-date="2026-05-03"><span class="headline-date">3 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2017-20230" target="_blank" rel="noopener">CVE-2017-20230 Storable versions before 3.05 for Perl has a stack overflow</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-32148 lockfile checksums not verified in hex allows dependency integrity bypass" data-date="2026-05-03"><span class="headline-date">3 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-32148" target="_blank" rel="noopener">CVE-2026-32148 Lockfile checksums not verified in Hex allows dependency integrity bypass</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-11083 gnu binutils linker elfcode.h elf_swap_shdr heap-based overflow" data-date="2026-05-03"><span class="headline-date">3 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-11083" target="_blank" rel="noopener">CVE-2025-11083 GNU Binutils Linker elfcode.h elf_swap_shdr heap-based overflow</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-7598 libssh2 userauth.c userauth_password integer overflow" data-date="2026-05-03"><span class="headline-date">3 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-7598" target="_blank" rel="noopener">CVE-2026-7598 libssh2 userauth.c userauth_password integer overflow</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-43058 media: vidtv: fix pass-by-value structs causing msan warnings" data-date="2026-05-03"><span class="headline-date">3 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-43058" target="_blank" rel="noopener">CVE-2026-43058 media: vidtv: fix pass-by-value structs causing MSAN warnings</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-9403 jqlang jq json jq_test.c run_jq_tests assertion" data-date="2026-05-03"><span class="headline-date">3 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-9403" target="_blank" rel="noopener">CVE-2025-9403 jqlang jq JSON jq_test.c run_jq_tests assertion</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-8224 gnu binutils bfd library elf.c bfd_elf_get_str_section null pointer dereference" data-date="2026-05-03"><span class="headline-date">3 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-8224" target="_blank" rel="noopener">CVE-2025-8224 GNU Binutils BFD Library elf.c bfd_elf_get_str_section null pointer dereference</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="week in review: high-severity lpe vulnerability in the linux kernel, cpanel 0-day exploited for months" data-date="2026-05-03"><span class="headline-date">3 May</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/05/03/week-in-review-high-severity-lpe-vulnerability-in-the-linux-kernel-cpanel-0-day-exploited-for-months/" target="_blank" rel="noopener">Week in review: High-severity LPE vulnerability in the Linux kernel, cPanel 0-day exploited for months</a><span class="article-summary">Here’s an overview of some of last week’s most interesting news, articles, interviews and videos: The AI criminal mastermind is already hiring on gig platforms Labor-hire platforms let anyone with a credit card post a task and pay a stranger to complete it. The RentAHuman platfor…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="google revamps bug bounty programs: android rewards rise, chrome payouts drop in the age of ai" data-date="2026-05-03"><span class="headline-date">3 May</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/191600/security/google-revamps-bug-bounty-programs-android-rewards-rise-chrome-payouts-drop-in-the-age-of-ai.html" target="_blank" rel="noopener">Google Revamps Bug Bounty Programs: Android Rewards Rise, Chrome Payouts Drop in the Age of AI</a><span class="article-summary">Google revamps bug bounties: Android rewards rise to $1.5M, Chrome payouts drop, shifting focus to high-impact, AI-resistant vulnerabilities. Google has announced a major overhaul of its Vulnerability Reward Programs (VRP) for Android and Chrome, marking a strategic shift in how …</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="security affairs newsletter round 575 by pierluigi paganini – international edition" data-date="2026-05-03"><span class="headline-date">3 May</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/191607/breaking-news/security-affairs-newsletter-round-575-by-pierluigi-paganini-international-edition.html" target="_blank" rel="noopener">Security Affairs newsletter Round 575 by Pierluigi Paganini – INTERNATIONAL EDITION</a><span class="article-summary">A new round of the weekly Security Affairs newsletter has arrived! Every week, the best security articles from Security Affairs are free in your email box. Enjoy a new round of the weekly SecurityAffairs newsletter, including the international press. Two US cybersecurity experts …</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+<div class="headline" data-title="salt typhoon breach ibm subsidiary in italy: a warning for europe’s digital defenses" data-date="2026-05-03"><span class="headline-date">3 May</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/191638/apt/salt-typhoon-breach-ibm-subsidiary-in-italy-a-warning-for-europes-digital-defenses.html" target="_blank" rel="noopener">Salt Typhoon breach IBM subsidiary in Italy: a warning for Europe’s digital defenses</a><span class="article-summary">April 2026 breach at Sistemi Informativi (IBM Italy) raises concerns over Chinese-linked cyber ops in Europe, including Salt Typhoon. In late April 2026, the Italian cybersecurity landscape was shaken by a significant breach targeting Sistemi Informativi, a company wholly owned b…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+<div class="headline" data-title="marcus &amp; millichap - 1,837,078 breached accounts" data-date="2026-05-03"><span class="headline-date">3 May</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/Breach/MarcusMillichap" target="_blank" rel="noopener">Marcus &amp; Millichap - 1,837,078 breached accounts</a><span class="article-summary">In April 2026, the commercial real estate brokerage firm Marcus & Millichap was named as one of multiple alleged victims of the ShinyHunters hacking and extortion group . Data alleged to have been obtained from the company was subsequently released publicly and included 1.8M uniq…</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="wireshark 4.6.5 released, (sun, may 3rd)" data-date="2026-05-03"><span class="headline-date">3 May</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/32944" target="_blank" rel="noopener">Wireshark 4.6.5 Released, (Sun, May 3rd)</a><span class="article-summary">Wireshark release 4.6.5 fixes 43 vulnerabilities (38 CVEs) and 35 bugs. &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="chatgpt advanced account security adds passkeys and hardware keys" data-date="2026-05-03"><span class="headline-date">3 May</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/05/04/openai-chatgpt-advanced-account-security/" target="_blank" rel="noopener">ChatGPT advanced account security adds passkeys and hardware keys</a><span class="article-summary">Journalists, elected officials, researchers, and political dissidents have spent years adapting their accounts to phishing-resistant authentication on consumer platforms. ChatGPT now joins that list. OpenAI has introduced Advanced Account Security, an opt-in setting that strips p…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="security affairs malware newsletter round 95" data-date="2026-05-03"><span class="headline-date">3 May</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/191623/malware/security-affairs-malware-newsletter-round-95.html" target="_blank" rel="noopener">SECURITY AFFAIRS MALWARE NEWSLETTER ROUND 95</a><span class="article-summary">Security Affairs Malware newsletter includes a collection of the best articles and research on malware in the international landscape Malware Newsletter fast16 &#124; Mystery ShadowBrokers Reference Reveals High-Precision Software Sabotage 5 Years Before Stuxnet 73 Open VSX Sleep…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="3 easy-to-miss cybersecurity risks for small businesses" data-date="2026-05-03"><span class="headline-date">3 May</span><span class="headline-body"><a class="headline-title" href="https://www.malwarebytes.com/blog/how-to/2026/05/3-easy-to-miss-cybersecurity-risks-for-small-businesses" target="_blank" rel="noopener">3 easy-to-miss cybersecurity risks for small businesses</a><span class="article-summary">Small business owners should be sure to fix these three non-technical risks that require little cybersecurity expertise.</span></span><span class="headline-source">MALWAREBYTES.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-05-03 23:01<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

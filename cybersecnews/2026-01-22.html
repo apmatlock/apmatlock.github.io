@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2026-01-22</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,71 +109,50 @@
       <div class="stat"><span class="stat-value">4</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2026-01-22</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">13</span></button>
-<button class="filter-btn" data-cat="CISA KEV" onclick="filterCat('CISA KEV', this)">CISA KEV <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">9</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="CISA KEV" data-date="2026-01-22"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2026/01/22/cisa-adds-four-known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA Adds Four Known Exploited Vulnerabilities to Catalog</a><span class="article-summary">CISA has added four new vulnerabilities to its Known Exploited Vulnerabilities (KEV) Catalog , based on evidence of active exploitation. CVE-2025-31125 Vite Vitejs Improper Access Control Vulnerability CVE-2025-34026 Versa Concerto Improper Authentication Vulnerability CVE-2025-5…</span></div><span class="kev-badge">KEV</span><span class="article-meta">CISA.GOV &mdash; Thu, 22 Jan 26 1</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-01-22"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-21520" target="_blank" rel="noopener">CVE-2026-21520 Copilot Studio Information Disclosure Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 22 Jan 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-01-22"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-24304" target="_blank" rel="noopener">CVE-2026-24304 Azure Resource Manager Elevation of Privilege Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 22 Jan 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-01-22"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-24306" target="_blank" rel="noopener">CVE-2026-24306 Azure Front Door Elevation of Privilege Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 22 Jan 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-01-22"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-21524" target="_blank" rel="noopener">CVE-2026-21524 Azure Data Explorer Information Disclosure Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 22 Jan 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-01-22"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-24305" target="_blank" rel="noopener">CVE-2026-24305 Azure Entra ID Elevation of Privilege Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 22 Jan 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-01-22"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-24307" target="_blank" rel="noopener">CVE-2026-24307 M365 Copilot Information Disclosure Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 22 Jan 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-01-22"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-21227" target="_blank" rel="noopener">CVE-2026-21227 Azure Logic Apps Elevation of Privilege Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 22 Jan 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-01-22"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-21521" target="_blank" rel="noopener">CVE-2026-21521 Word Copilot Information Disclosure Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 22 Jan 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-01-22"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-21264" target="_blank" rel="noopener">CVE-2026-21264 Microsoft Account Spoofing Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 22 Jan 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-01-22"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bitdefender.com/en-us/blog/hotforsecurity/european-space-agencys-cybersecurity-in-freefall-as-yet-another-breach-exposes-spacecraft-and-mission-data" target="_blank" rel="noopener">European Space Agency’s cybersecurity in freefall as yet another breach exposes spacecraft and mission data</a></div><span class="article-meta">BITDEFENDER.COM &mdash; 22 Jan 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-01-22"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/26/a/watering-hole-attack-targets-emeditor-users.html" target="_blank" rel="noopener">Watering Hole Attack Targets EmEditor Users with Information-Stealing Malware</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 22 Jan 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-01-22"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.welivesecurity.com/en/scams/common-apple-pay-scams-how-stay-safe/" target="_blank" rel="noopener">Common Apple Pay scams, and how to stay safe</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 22 Jan 2026</span></div>
-    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa adds four known exploited vulnerabilities to catalog" data-date="2026-01-22"><span class="headline-date">22 Jan <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2026/01/22/cisa-adds-four-known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA Adds Four Known Exploited Vulnerabilities to Catalog</a><span class="article-summary">CISA has added four new vulnerabilities to its Known Exploited Vulnerabilities (KEV) Catalog , based on evidence of active exploitation. CVE-2025-31125 Vite Vitejs Improper Access Control Vulnerability CVE-2025-34026 Versa Concerto Improper Authentication Vulnerability CVE-2025-5…</span></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">9</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cve-2026-21520 copilot studio information disclosure vulnerability" data-date="2026-01-22"><span class="headline-date">22 Jan</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-21520" target="_blank" rel="noopener">CVE-2026-21520 Copilot Studio Information Disclosure Vulnerability</a><span class="article-summary">Exposure of Sensitive Information to an Unauthorized Actor in Copilot Studio allows a unauthenticated attacker to view sensitive information through network attack vector</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-24304 azure resource manager elevation of privilege vulnerability" data-date="2026-01-22"><span class="headline-date">22 Jan</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-24304" target="_blank" rel="noopener">CVE-2026-24304 Azure Resource Manager Elevation of Privilege Vulnerability</a><span class="article-summary">Improper access control in Azure Resource Manager allows an authorized attacker to elevate privileges over a network.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-24306 azure front door elevation of privilege vulnerability" data-date="2026-01-22"><span class="headline-date">22 Jan</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-24306" target="_blank" rel="noopener">CVE-2026-24306 Azure Front Door Elevation of Privilege Vulnerability</a><span class="article-summary">Improper access control in Azure Front Door (AFD) allows an unauthorized attacker to elevate privileges over a network.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-21524 azure data explorer information disclosure vulnerability" data-date="2026-01-22"><span class="headline-date">22 Jan</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-21524" target="_blank" rel="noopener">CVE-2026-21524 Azure Data Explorer Information Disclosure Vulnerability</a><span class="article-summary">Exposure of sensitive information to an unauthorized actor in Azure Data Explorer allows an unauthorized attacker to disclose information over a network.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-24305 azure entra id elevation of privilege vulnerability" data-date="2026-01-22"><span class="headline-date">22 Jan</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-24305" target="_blank" rel="noopener">CVE-2026-24305 Azure Entra ID Elevation of Privilege Vulnerability</a><span class="article-summary">Azure Entra ID Elevation of Privilege Vulnerability</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-24307 m365 copilot information disclosure vulnerability" data-date="2026-01-22"><span class="headline-date">22 Jan</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-24307" target="_blank" rel="noopener">CVE-2026-24307 M365 Copilot Information Disclosure Vulnerability</a><span class="article-summary">Improper validation of specified type of input in M365 Copilot allows an unauthorized attacker to disclose information over a network.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-21227 azure logic apps elevation of privilege vulnerability" data-date="2026-01-22"><span class="headline-date">22 Jan</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-21227" target="_blank" rel="noopener">CVE-2026-21227 Azure Logic Apps Elevation of Privilege Vulnerability</a><span class="article-summary">Improper limitation of a pathname to a restricted directory ('path traversal') in Azure Logic Apps allows an unauthorized attacker to elevate privileges over a network.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-21521 word copilot information disclosure vulnerability" data-date="2026-01-22"><span class="headline-date">22 Jan</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-21521" target="_blank" rel="noopener">CVE-2026-21521 Word Copilot Information Disclosure Vulnerability</a><span class="article-summary">Improper neutralization of escape, meta, or control sequences in Copilot allows an unauthorized attacker to disclose information over a network.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-21264 microsoft account spoofing vulnerability" data-date="2026-01-22"><span class="headline-date">22 Jan</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-21264" target="_blank" rel="noopener">CVE-2026-21264 Microsoft Account Spoofing Vulnerability</a><span class="article-summary">Improper neutralization of input during web page generation ('cross-site scripting') in Microsoft Account allows an unauthorized attacker to perform spoofing over a network.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="european space agency’s cybersecurity in freefall as yet another breach exposes spacecraft and mission data" data-date="2026-01-22"><span class="headline-date">22 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bitdefender.com/en-us/blog/hotforsecurity/european-space-agencys-cybersecurity-in-freefall-as-yet-another-breach-exposes-spacecraft-and-mission-data" target="_blank" rel="noopener">European Space Agency’s cybersecurity in freefall as yet another breach exposes spacecraft and mission data</a><span class="article-summary">It has just been a few weeks since reports emerged of the Christmas cyber attack suffered by the European Space Agency (ESA), and the situation has already become worse. Read more in my article on the Hot for Security blog.</span></span><span class="headline-source">BITDEFENDER.COM</span></div>
+<div class="headline" data-title="watering hole attack targets emeditor users with information-stealing malware" data-date="2026-01-22"><span class="headline-date">22 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/26/a/watering-hole-attack-targets-emeditor-users.html" target="_blank" rel="noopener">Watering Hole Attack Targets EmEditor Users with Information-Stealing Malware</a><span class="article-summary">TrendAI™ Research provides a technical analysis of a compromised EmEditor installer used to deliver multistage malware that performs a range of malicious actions.</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="common apple pay scams, and how to stay safe" data-date="2026-01-22"><span class="headline-date">22 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/en/scams/common-apple-pay-scams-how-stay-safe/" target="_blank" rel="noopener">Common Apple Pay scams, and how to stay safe</a><span class="article-summary">Here’s how the most common scams targeting Apple Pay users work and what you can do to stay one step ahead</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

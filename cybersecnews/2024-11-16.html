@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-11-16</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,71 +109,54 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-11-16</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">12</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-11-16"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/ai-in-action-project-synapse-with-marcel-gagne-and-john-pinard-cyber-security-today-weekend-edition-for-november-16-2024" target="_blank" rel="noopener">AI in Action: Project Synapse With Marcel Gagne and John Pinard. Cyber Security Today Weekend Edition for November 16, 2024</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 16 Nov 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-11-16"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/t-mobile-confirms-it-was-hacked-in-recent-wave-of-telecom-breaches/" target="_blank" rel="noopener">T-Mobile confirms it was hacked in recent wave of telecom breaches</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 16 Nov 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-11-16"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/11/pan-os-firewall-vulnerability-under.html" target="_blank" rel="noopener">PAN-OS Firewall Vulnerability Under Active Exploitation – IoCs Released</a></div><span class="kev-badge">KEV</span><span class="article-meta">THEHACKERNEWS.COM &mdash; 16 Nov 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-11-16"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/11/warning-deepdata-malware-exploiting.html" target="_blank" rel="noopener">Warning: DEEPDATA Malware Exploiting Unpatched Fortinet Flaw to Steal VPN Credentials</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 16 Nov 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-11-16"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=63El3jpN-dQ" target="_blank" rel="noopener">Are Legacy Systems Leaving Your M365 Tenant Exposed?</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-11-16</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-11-16"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=ZY4zeCzj8tQ" target="_blank" rel="noopener">ChatGPT Lied to Me? The Hidden Truth Behind Fake Sources!</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-11-16</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-11-16"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://techcrunch.com/2024/11/16/what-a-second-trump-term-means-for-the-future-of-ransomware/" target="_blank" rel="noopener">What a second Trump term means for the future of ransomware</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 16 Nov 2024</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-11-16"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.youtube.com/watch?v=EgKPefz91ng" target="_blank" rel="noopener">Compliance Isn't About Safety, It's About Sales!</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-11-16</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-11-16"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2024/11/16/t-mobile-hack-linked-to-chinese-breaches-of-telecom-networks/" target="_blank" rel="noopener">T-Mobile hack linked to Chinese breaches of telecom networks</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 16 Nov 2024</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2024-11-16"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/fake-ai-video-generators-infect-windows-macos-with-infostealers/" target="_blank" rel="noopener">Fake AI video generators infect Windows, macOS with infostealers</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 16 Nov 2024</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2024-11-16"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/github-projects-targeted-with-malicious-commits-to-frame-researcher/" target="_blank" rel="noopener">GitHub projects targeted with malicious commits to frame researcher</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 16 Nov 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-11-16"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=pJkbHy-tf6g" target="_blank" rel="noopener">Is Your Child Safe Online? The Hidden Threat of Trafficking</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-11-16</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ai in action: project synapse with marcel gagne and john pinard. cyber security today weekend edition for november 16, 2024" data-date="2024-11-16"><span class="headline-date">16 Nov</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/ai-in-action-project-synapse-with-marcel-gagne-and-john-pinard-cyber-security-today-weekend-edition-for-november-16-2024" target="_blank" rel="noopener">AI in Action: Project Synapse With Marcel Gagne and John Pinard. Cyber Security Today Weekend Edition for November 16, 2024</a><span class="article-summary">Cybersecurity Today - Weekend Edition: Project Synapse, AI in Action (Episode 2) In this episode of Cybersecurity Today with host Jim Love, we dive into the intersection of Artificial Intelligence (AI) and cybersecurity, continuing our exploration in the series Project Synapse. J…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="t-mobile confirms it was hacked in recent wave of telecom breaches" data-date="2024-11-16"><span class="headline-date">16 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/t-mobile-confirms-it-was-hacked-in-recent-wave-of-telecom-breaches/" target="_blank" rel="noopener">T-Mobile confirms it was hacked in recent wave of telecom breaches</a><span class="article-summary">T-Mobile confirms it was hacked in the wave of recently reported telecom breaches conducted by Chinese threat actors to gain access to private communications, call records, and law enforcement information requests. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="pan-os firewall vulnerability under active exploitation – iocs released" data-date="2024-11-16"><span class="headline-date">16 Nov <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/11/pan-os-firewall-vulnerability-under.html" target="_blank" rel="noopener">PAN-OS Firewall Vulnerability Under Active Exploitation – IoCs Released</a><span class="article-summary">Palo Alto Networks has released new indicators of compromise (IoCs) a day after the network security vendor confirmed that a zero-day vulnerability impacting its PAN-OS firewall management interface has been actively exploited in the wild. To that end, the company said it observe…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="warning: deepdata malware exploiting unpatched fortinet flaw to steal vpn credentials" data-date="2024-11-16"><span class="headline-date">16 Nov</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/11/warning-deepdata-malware-exploiting.html" target="_blank" rel="noopener">Warning: DEEPDATA Malware Exploiting Unpatched Fortinet Flaw to Steal VPN Credentials</a><span class="article-summary">A threat actor known as BrazenBamboo has exploited an unresolved security flaw in Fortinet's FortiClient for Windows to extract VPN credentials as part of a modular framework called DEEPDATA. Volexity, which disclosed the findings Friday, said it identified the zero-day exploitat…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="are legacy systems leaving your m365 tenant exposed?" data-date="2024-11-16"><span class="headline-date">16 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=63El3jpN-dQ" target="_blank" rel="noopener">Are Legacy Systems Leaving Your M365 Tenant Exposed?</a><span class="article-summary">If you're using Microsoft 365, you might be missing a huge security update! 😬 Microsoft has tightened up security for new tenants by disabling legacy authentication, but older accounts might still have it active without you even knowing. For busy admins, it’s easy to overlook, ye…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="chatgpt lied to me? the hidden truth behind fake sources!" data-date="2024-11-16"><span class="headline-date">16 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=ZY4zeCzj8tQ" target="_blank" rel="noopener">ChatGPT Lied to Me? The Hidden Truth Behind Fake Sources!</a><span class="article-summary">Have you ever trusted AI sources without a second thought? 🤖 I learned the hard way when ChatGPT cited what seemed like the perfect references for my research—until I tried to verify them. Turns out, the sources were completely fabricated! 😳 Real academic journals, made-up author…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="what a second trump term means for the future of ransomware" data-date="2024-11-16"><span class="headline-date">16 Nov</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/11/16/what-a-second-trump-term-means-for-the-future-of-ransomware/" target="_blank" rel="noopener">What a second Trump term means for the future of ransomware</a><span class="article-summary">The U.S. government has made big strides over the past four years in the ongoing fight against the “scourge of ransomware,” as President Joe Biden described it. At the start of his term, Biden and his administration were quick to declare ransomware a national security threat, unl…</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="compliance isn't about safety, it's about sales!" data-date="2024-11-16"><span class="headline-date">16 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=EgKPefz91ng" target="_blank" rel="noopener">Compliance Isn't About Safety, It's About Sales!</a><span class="article-summary">Most people think companies get compliant for safety or ethics, but here’s the truth: it’s all about closing sales and meeting customer demands. From SOC 2 to PCI, compliance isn’t always about doing what’s right—it's about passing vendor checks and landing deals! 🚨 Discover why …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="t-mobile hack linked to chinese breaches of telecom networks" data-date="2024-11-16"><span class="headline-date">16 Nov</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/11/16/t-mobile-hack-linked-to-chinese-breaches-of-telecom-networks/" target="_blank" rel="noopener">T-Mobile hack linked to Chinese breaches of telecom networks</a><span class="article-summary">This is the ninth known cyberattack to target T-Mobile in recent years, according to an ongoing count by TechCrunch. © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="fake ai video generators infect windows, macos with infostealers" data-date="2024-11-16"><span class="headline-date">16 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/fake-ai-video-generators-infect-windows-macos-with-infostealers/" target="_blank" rel="noopener">Fake AI video generators infect Windows, macOS with infostealers</a><span class="article-summary">Fake AI image and video generators infect Windows and macOS with the Lumma Stealer and AMOS information-stealing malware, used to steal credentials and cryptocurrency wallets from infected devices. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="github projects targeted with malicious commits to frame researcher" data-date="2024-11-16"><span class="headline-date">16 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/github-projects-targeted-with-malicious-commits-to-frame-researcher/" target="_blank" rel="noopener">GitHub projects targeted with malicious commits to frame researcher</a><span class="article-summary">GitHub projects have been targeted with malicious commits and pull requests, in an attempt to inject backdoors into these projects. Most recently, the GitHub repository of Exo Labs, an AI and machine learning startup, was targeted in the attack, which has left many wondering abou…</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="is your child safe online? the hidden threat of trafficking" data-date="2024-11-16"><span class="headline-date">16 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=pJkbHy-tf6g" target="_blank" rel="noopener">Is Your Child Safe Online? The Hidden Threat of Trafficking</a><span class="article-summary">Did you know that human trafficking isn't just about moving people physically? It’s happening online through images and videos, targeting youth on social media. Predators use platforms kids visit daily, turning them into digital targets. 🚨 Watch this short to understand how traff…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

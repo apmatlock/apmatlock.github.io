@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-09-07</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,71 +109,50 @@
       <div class="stat"><span class="stat-value">4</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-09-07</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">13</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">3</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-09-07"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.troyhunt.com/weekly-update-468/" target="_blank" rel="noopener">Weekly Update 468</a></div><span class="article-meta">TROYHUNT.COM &mdash; 07 Sep 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-09-07"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/shorts/dsMmI2gR6Tc" target="_blank" rel="noopener">The No-Cost Fix That Protects You From Cyber Attacks 💡 #Shorts</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-09-07</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/hMepblFUcEA" target="_blank" rel="noopener">TLS 1.3: Faster, Safer… But At What Cost? ⚠️</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-09-07</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/IsJJRAOGEvw" target="_blank" rel="noopener">The 80% AI Trap Every Cybersecurity Pro Should Know 🚨</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-09-07</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/34325548" target="_blank" rel="noopener">Double trouble with CastleRAT malware, now in C and Python</a></div><span class="article-meta">INFOSEC.PUB &mdash; 7 Sep 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/1O5Q7ge6LFc" target="_blank" rel="noopener">Why Every Security Project Feels Like Paving Roads 🛠️ #Cybersecurity</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-09-07</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/WlB9cWdImjo" target="_blank" rel="noopener">When Crypto Operations Collide… Security Gets Weird! 😳</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-09-07</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/_IHnVpV7lk0" target="_blank" rel="noopener">AI Deepfakes Are Getting Out of Control… Here’s Proof 🔥</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-09-07</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/6lcsBgboBUQ" target="_blank" rel="noopener">Critical Vulnerabilities… That Aren’t That Critical 🤯</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-09-07</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-09-07"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/czech-cyber-agency-warns-against-chinese-tech-in-critical-infrastructure/" target="_blank" rel="noopener">Czech cyber agency warns against Chinese tech in critical infrastructure</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 07 Sep 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-09-07"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/icloud-calendar-abused-to-send-phishing-emails-from-apples-servers/" target="_blank" rel="noopener">iCloud Calendar abused to send phishing emails from Apple’s servers</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 07 Sep 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-09-07"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/artificial-intelligence/chatgpt-makes-projects-feature-free-adds-a-toggle-to-split-chat/" target="_blank" rel="noopener">ChatGPT makes Projects feature free, adds a toggle to split chat</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 07 Sep 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-09-07"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/google/google-to-make-it-easier-to-access-ai-mode-as-default/" target="_blank" rel="noopener">Google to make it easier to access AI Mode as default</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 07 Sep 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="weekly update 468" data-date="2025-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.troyhunt.com/weekly-update-468/" target="_blank" rel="noopener">Weekly Update 468</a><span class="article-summary">Presently sponsored by: Report URI: Guarding you from rogue JavaScript! Don’t get pwned; get real-time alerts & prevent breaches #SecureYourSite I only just realised, as I prepared this accompanying blog post, that I didn&apos;t talk about one of the points in the overview: food.…</span></span><span class="headline-source">TROYHUNT.COM</span></div>
+<div class="headline" data-title="the no-cost fix that protects you from cyber attacks 💡 #shorts" data-date="2025-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/dsMmI2gR6Tc" target="_blank" rel="noopener">The No-Cost Fix That Protects You From Cyber Attacks 💡 #Shorts</a><span class="article-summary">In this short, Mike reveals how a simple engineering-driven practice—avoiding “pinning to latest”—can stop dependency confusion attacks before they start. Cybersecurity professionals know that attackers often sneak in malicious “version 1000” updates, but Mike shows why orgs don’…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="tls 1.3: faster, safer… but at what cost? ⚠️" data-date="2025-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/hMepblFUcEA" target="_blank" rel="noopener">TLS 1.3: Faster, Safer… But At What Cost? ⚠️</a><span class="article-summary">Mike breaks down why TLS 1.3 is a game-changer for cybersecurity—faster handshakes, stronger encryption, and forward secrecy. But here’s the twist: by making things simpler, are we skipping over the fundamentals that every security pro should know? This short captures the tension…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="the 80% ai trap every cybersecurity pro should know 🚨" data-date="2025-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/IsJJRAOGEvw" target="_blank" rel="noopener">The 80% AI Trap Every Cybersecurity Pro Should Know 🚨</a><span class="article-summary">AI may code faster, smarter, and even better documented than humans—but Sohrob Kazerounian warns cybersecurity pros about the hidden danger: the 80% trap. When large language models deliver results that look amazing but fall short of being fully reliable, the smallest oversight c…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="double trouble with castlerat malware, now in c and python" data-date="2025-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/34325548" target="_blank" rel="noopener">Double trouble with CastleRAT malware, now in C and Python</a><span class="article-summary">submitted by cm0002 to cybersecurity 1 points | 0 comments https://www.theregister.com/2025/09/05/clickfix_castlerat_malware/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="why every security project feels like paving roads 🛠️ #cybersecurity" data-date="2025-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/1O5Q7ge6LFc" target="_blank" rel="noopener">Why Every Security Project Feels Like Paving Roads 🛠️ #Cybersecurity</a><span class="article-summary">In this short, Julia Knecht compares cybersecurity projects to paving bumpy roads — every step requires the right people, tools, and systems, and no road is ever smooth. It’s a raw look at why building secure infrastructure is always challenging, yet always worth it. →Subscribe t…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="when crypto operations collide… security gets weird! 😳" data-date="2025-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/WlB9cWdImjo" target="_blank" rel="noopener">When Crypto Operations Collide… Security Gets Weird! 😳</a><span class="article-summary">When crypto operations collide, even seasoned cybersecurity pros get surprised. This short unpacks how crypto agility and taint flow analysis break traditional models, revealing why Boolean checks no longer cut it. A quick dive into the hidden complexity shaping the future of cry…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="ai deepfakes are getting out of control… here’s proof 🔥" data-date="2025-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/_IHnVpV7lk0" target="_blank" rel="noopener">AI Deepfakes Are Getting Out of Control… Here’s Proof 🔥</a><span class="article-summary">AI just crossed a dangerous line. In this short, Doug White explains how Grok’s new “Spicy Mode” accidentally generated explicit deepfake videos of Taylor Swift — exposing the terrifying risks when artificial intelligence spins out of control. Cybersecurity experts warn this is o…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="critical vulnerabilities… that aren’t that critical 🤯" data-date="2025-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/6lcsBgboBUQ" target="_blank" rel="noopener">Critical Vulnerabilities… That Aren’t That Critical 🤯</a><span class="article-summary">Many cybersecurity pros still think a CVSS 10 automatically means danger. In this short, Neil Carpenter and John Kinsella break down why “critical” doesn’t always equal critical — and how context, likelihood, and accessibility change everything. Perfect for security teams who wan…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="czech cyber agency warns against chinese tech in critical infrastructure" data-date="2025-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/czech-cyber-agency-warns-against-chinese-tech-in-critical-infrastructure/" target="_blank" rel="noopener">Czech cyber agency warns against Chinese tech in critical infrastructure</a><span class="article-summary">The Czech Republic's National Cyber and Information Security Agency (NUKIB) is instructing critical infrastructure organizations in the country to avoid using Chinese technology or transferring user data to servers located in China. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="icloud calendar abused to send phishing emails from apple’s servers" data-date="2025-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/icloud-calendar-abused-to-send-phishing-emails-from-apples-servers/" target="_blank" rel="noopener">iCloud Calendar abused to send phishing emails from Apple’s servers</a><span class="article-summary">iCloud Calendar invites are being abused to send callback phishing emails disguised as purchase notifications directly from Apple's email servers, making them more likely to bypass spam filters to land in targets' inboxes. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="chatgpt makes projects feature free, adds a toggle to split chat" data-date="2025-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/artificial-intelligence/chatgpt-makes-projects-feature-free-adds-a-toggle-to-split-chat/" target="_blank" rel="noopener">ChatGPT makes Projects feature free, adds a toggle to split chat</a><span class="article-summary">ChatGPT's Projects feature is now feature and second new feature allows you to create new conversations from existing conversations. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="google to make it easier to access ai mode as default" data-date="2025-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/google/google-to-make-it-easier-to-access-ai-mode-as-default/" target="_blank" rel="noopener">Google to make it easier to access AI Mode as default</a><span class="article-summary">Google plans to make it easier for users to access AI mode by allowing them to set it as the default, replacing the traditional blue links. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2023-09-02</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,82 +109,69 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2023-09-02</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">22</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">6</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-09-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/exploit-released-for-critical-vmware-ssh-auth-bypass-vulnerability/?&web_view=true" target="_blank" rel="noopener">Update: Exploit Released for Critical VMware SSH Authentication Bypass Vulnerability</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 02 Sep 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-09-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://packetstormsecurity.com/news/view/34969/Hacker-Gains-Admin-Control-Of-Sourcegraph-And-Gives-Free-Access.html" target="_blank" rel="noopener">Hacker Gains Admin Control Of Sourcegraph And Gives Free Access</a></div><span class="article-meta">PACKETSTORMSECURITY.COM &mdash; 02 Sep 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-09-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/chrome-extensions-can-steal-plaintext-passwords-from-websites/" target="_blank" rel="noopener">Chrome extensions can steal plaintext passwords from websites</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 02 Sep 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-09-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/technology/yes-theres-an-npm-package-called-env-and-some-others-like-it/" target="_blank" rel="noopener">Yes, there's an npm package called @(-.-)/env and some others like it</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 02 Sep 2023</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-09-02"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://thehackernews.com/2023/09/okta-warns-of-social-engineering.html" target="_blank" rel="noopener">Okta Warns of Social Engineering Attacks Targeting Super Administrator Privileges</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 02 Sep 2023</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-09-02"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://gbhackers.com/chisel-android-malware/" target="_blank" rel="noopener">CISA Report on Notorious Chisel Android Malware that Steals Data and Monitors Traffic</a></div><span class="article-meta">GBHACKERS.COM &mdash; 02 Sep 2023</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-09-02"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://thehackernews.com/2023/09/okta-warns-of-social-engineering.html?&web_view=true" target="_blank" rel="noopener">Okta Warns of Social Engineering Attacks Targeting Super Administrator Privileges</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 02 Sep 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-09-02"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2023/09/threat-actors-targeting-microsoft-sql.html?&web_view=true" target="_blank" rel="noopener">Threat Actors Targeting Microsoft SQL Servers to Deploy FreeWorld Ransomware</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 02 Sep 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-09-02"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://therecord.media/pennsylvania-school-district-stays-open-after-ransomware-attack?&web_view=true" target="_blank" rel="noopener">Pennsylvania School District to Stay Open Despite Ransomware Attack</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 02 Sep 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-09-02"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://grahamcluley.com/freecycle-users-told-to-change-passwords-after-data-breach/" target="_blank" rel="noopener">Freecycle users told to change passwords after data breach</a></div><span class="article-meta">GRAHAMCLULEY.COM &mdash; 02 Sep 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-09-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/promptmap-chatgpt/" target="_blank" rel="noopener">Promptmap – Tool to Test Prompt Injection Attacks on ChatGPT Instances</a></div><span class="article-meta">GBHACKERS.COM &mdash; 02 Sep 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-09-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://techryptic.github.io/2023/09/01/Annoying-Apple-Fans/" target="_blank" rel="noopener">Annoying Apple Fans: The Flipper Zero Bluetooth Prank Revealed</a></div><span class="article-meta">TECHRYPTIC.GITHUB.IO &mdash; 02 Sep 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-09-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/nmap-version-7-94-released/" target="_blank" rel="noopener">Nmap 7.94 Released: What’s New!</a></div><span class="article-meta">GBHACKERS.COM &mdash; 02 Sep 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-09-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://cyware.com/news/vmconnect-supply-chain-attack-persists-616ac565/?&web_view=true" target="_blank" rel="noopener">VMConnect Supply Chain Attack Persists</a></div><span class="article-meta">CYWARE.COM &mdash; 02 Sep 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-09-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://packetstormsecurity.com/news/view/34968/VMConnect-Campaign-Linked-To-North-Koreas-Lazarus-Group.html" target="_blank" rel="noopener">VMConnect Campaign Linked To North Korea's Lazarus Group</a></div><span class="article-meta">PACKETSTORMSECURITY.COM &mdash; 02 Sep 2023</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2023-09-02"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://packetstormsecurity.com/news/view/34971/Cybercrime-To-Cost-Germany-206-Billion-Euros-In-2023-Survey-Finds.html" target="_blank" rel="noopener">Cybercrime To Cost Germany 206 Billion Euros In 2023, Survey Finds</a></div><span class="article-meta">PACKETSTORMSECURITY.COM &mdash; 02 Sep 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-09-02"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/30182" target="_blank" rel="noopener">What is the origin of passwords submitted to honeypots&amp;#x3f;, (Sat, Sep 2nd)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 02 Sep 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-09-02"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://packetstormsecurity.com/news/view/34970/More-Okta-Customers-Trapped-In-Scattered-Spiders-Web.html" target="_blank" rel="noopener">More Okta Customers Trapped In Scattered Spider's Web</a></div><span class="article-meta">PACKETSTORMSECURITY.COM &mdash; 02 Sep 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-09-02"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://packetstormsecurity.com/news/view/34967/X-AKA-Twitter-To-Collect-Biometric-And-Employment-Data.html" target="_blank" rel="noopener">X, AKA Twitter, To Collect Biometric And Employment Data</a></div><span class="article-meta">PACKETSTORMSECURITY.COM &mdash; 02 Sep 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-09-02"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2023/09/02/smart-chastity-cage-emails-passwords-location/" target="_blank" rel="noopener">Maker of ‘smart’ chastity cage left users’ emails, passwords, and locations exposed</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 02 Sep 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-09-02"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/new-youporn-sextortion-scam-threatens-to-leak-your-sex-tape/" target="_blank" rel="noopener">New ‘YouPorn’ sextortion scam threatens to leak your sex tape</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 02 Sep 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-09-02"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/fake-youporn-extortion-scam-threatens-to-leak-your-sex-tape/" target="_blank" rel="noopener">Fake YouPorn extortion scam threatens to leak your sex tape</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 02 Sep 2023</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="update: exploit released for critical vmware ssh authentication bypass vulnerability" data-date="2023-09-02"><span class="headline-date">2 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/exploit-released-for-critical-vmware-ssh-auth-bypass-vulnerability/?&web_view=true" target="_blank" rel="noopener">Update: Exploit Released for Critical VMware SSH Authentication Bypass Vulnerability</a><span class="article-summary">The proof-of-concept (PoC) exploit targets all Aria Operations for Networks versions from 6.0 to 6.10, and it was developed and released by Summoning Team vulnerability researcher Sina Kheirkhah.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="hacker gains admin control of sourcegraph and gives free access" data-date="2023-09-02"><span class="headline-date">2 Sep</span><span class="headline-body"><a class="headline-title" href="https://packetstormsecurity.com/news/view/34969/Hacker-Gains-Admin-Control-Of-Sourcegraph-And-Gives-Free-Access.html" target="_blank" rel="noopener">Hacker Gains Admin Control Of Sourcegraph And Gives Free Access</a></span><span class="headline-source">PACKETSTORMSECURITY.COM</span></div>
+<div class="headline" data-title="chrome extensions can steal plaintext passwords from websites" data-date="2023-09-02"><span class="headline-date">2 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/chrome-extensions-can-steal-plaintext-passwords-from-websites/" target="_blank" rel="noopener">Chrome extensions can steal plaintext passwords from websites</a><span class="article-summary">A team of researchers from the University of Wisconsin-Madison has uploaded to the Chrome Web Store a proof-of-concept extension that can steal plaintext passwords from a website's source code. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="yes, there's an npm package called @(-.-)/env and some others like it" data-date="2023-09-02"><span class="headline-date">2 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/technology/yes-theres-an-npm-package-called-env-and-some-others-like-it/" target="_blank" rel="noopener">Yes, there's an npm package called @(-.-)/env and some others like it</a><span class="article-summary">Strangely named npm packages like -, @!-!/-, @(-.-)/env, and --hepl continue to exist on the internet's largest software registry. While not all of these may necessarily pose an obvious security risk, some were named before npm enforced naming guidelines and could potentially bre…</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="okta warns of social engineering attacks targeting super administrator privileges" data-date="2023-09-02"><span class="headline-date">2 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/09/okta-warns-of-social-engineering.html" target="_blank" rel="noopener">Okta Warns of Social Engineering Attacks Targeting Super Administrator Privileges</a><span class="article-summary">Identity services provider Okta on Friday warned of social engineering attacks orchestrated by threat actors to obtain elevated administrator permissions. “In recent weeks, multiple US-based Okta customers have reported a consistent pattern of social engineering attacks against I…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="cisa report on notorious chisel android malware that steals data and monitors traffic" data-date="2023-09-02"><span class="headline-date">2 Sep</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/chisel-android-malware/" target="_blank" rel="noopener">CISA Report on Notorious Chisel Android Malware that Steals Data and Monitors Traffic</a><span class="article-summary">With the rise of new technological innovations and security mechanisms, threat actors are also upgrading their skills and evolving rapidly.&#160; These evolutions have resulted in an alarming increase in the quick growth of Android malware. Recently, CISA (The United States’ Cybe…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="okta warns of social engineering attacks targeting super administrator privileges" data-date="2023-09-02"><span class="headline-date">2 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/09/okta-warns-of-social-engineering.html?&web_view=true" target="_blank" rel="noopener">Okta Warns of Social Engineering Attacks Targeting Super Administrator Privileges</a><span class="article-summary">Central to the attacks is a commercial phishing kit called 0ktapus, which offers pre-made templates to create realistic fake authentication portals and ultimately harvest credentials and MFA codes. It also has a built-in C2 channel via Telegram.</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="threat actors targeting microsoft sql servers to deploy freeworld ransomware" data-date="2023-09-02"><span class="headline-date">2 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/09/threat-actors-targeting-microsoft-sql.html?&web_view=true" target="_blank" rel="noopener">Threat Actors Targeting Microsoft SQL Servers to Deploy FreeWorld Ransomware</a><span class="article-summary">Cybersecurity firm Securonix, which has dubbed the campaign DB#JAMMER, said it stands out for the way the toolset and infrastructure are employed against poorly secured Microsoft SQL servers.</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="pennsylvania school district to stay open despite ransomware attack" data-date="2023-09-02"><span class="headline-date">2 Sep</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/pennsylvania-school-district-stays-open-after-ransomware-attack?&web_view=true" target="_blank" rel="noopener">Pennsylvania School District to Stay Open Despite Ransomware Attack</a><span class="article-summary">On Thursday, the Chambersburg Area School District published a message on its website and social media channels announcing that it had become yet another K-12 school district attacked by a ransomware gang.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="freecycle users told to change passwords after data breach" data-date="2023-09-02"><span class="headline-date">2 Sep</span><span class="headline-body"><a class="headline-title" href="https://grahamcluley.com/freecycle-users-told-to-change-passwords-after-data-breach/" target="_blank" rel="noopener">Freecycle users told to change passwords after data breach</a><span class="article-summary">Freecycle, an online community that encourages sharing unwanted items with eachother than chucking them in the bin or taking them to landfill, has told users to change their passwords after it suffered a data breach.</span></span><span class="headline-source">GRAHAMCLULEY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="promptmap – tool to test prompt injection attacks on chatgpt instances" data-date="2023-09-02"><span class="headline-date">2 Sep</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/promptmap-chatgpt/" target="_blank" rel="noopener">Promptmap – Tool to Test Prompt Injection Attacks on ChatGPT Instances</a><span class="article-summary">Prompt injection refers to a technique where users input specific prompts or instructions to influence the responses generated by a language model like ChatGPT. However, threat actors mainly use this technique to mod the ChatGPT instances for several malicious purposes. It has se…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="annoying apple fans: the flipper zero bluetooth prank revealed" data-date="2023-09-02"><span class="headline-date">2 Sep</span><span class="headline-body"><a class="headline-title" href="https://techryptic.github.io/2023/09/01/Annoying-Apple-Fans/" target="_blank" rel="noopener">Annoying Apple Fans: The Flipper Zero Bluetooth Prank Revealed</a><span class="article-summary">submitted by L4s to secops 1 points | 0 comments https://techryptic.github.io/2023/09/01/Annoying-Apple-Fans/ Annoying Apple Fans: The Flipper Zero Bluetooth Prank Revealed::undefined</span></span><span class="headline-source">TECHRYPTIC.GITHUB.IO</span></div>
+<div class="headline" data-title="nmap 7.94 released: what’s new!" data-date="2023-09-02"><span class="headline-date">2 Sep</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/nmap-version-7-94-released/" target="_blank" rel="noopener">Nmap 7.94 Released: What’s New!</a><span class="article-summary">The latest version of Nmap, 7.94, was released on its 26th birthday. The most significant upgrade was the migration of Zenmap and Ndiff from Python 2 to Python 3 across all platforms. This new version of Nmap 7.94 was upgraded with more than a number of improvements, fixed some o…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="vmconnect supply chain attack persists" data-date="2023-09-02"><span class="headline-date">2 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyware.com/news/vmconnect-supply-chain-attack-persists-616ac565/?&web_view=true" target="_blank" rel="noopener">VMConnect Supply Chain Attack Persists</a><span class="article-summary">ReversingLabs identified three new malicious Python packages on PyPI, which are linked to a previously discovered VMConnect campaign. Analysis of the packages reveals similarities to previous supply chain attacks attributed to the Lazarus Group. To protect against such threats, o…</span></span><span class="headline-source">CYWARE.COM</span></div>
+<div class="headline" data-title="vmconnect campaign linked to north korea's lazarus group" data-date="2023-09-02"><span class="headline-date">2 Sep</span><span class="headline-body"><a class="headline-title" href="https://packetstormsecurity.com/news/view/34968/VMConnect-Campaign-Linked-To-North-Koreas-Lazarus-Group.html" target="_blank" rel="noopener">VMConnect Campaign Linked To North Korea's Lazarus Group</a></span><span class="headline-source">PACKETSTORMSECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cybercrime to cost germany 206 billion euros in 2023, survey finds" data-date="2023-09-02"><span class="headline-date">2 Sep</span><span class="headline-body"><a class="headline-title" href="https://packetstormsecurity.com/news/view/34971/Cybercrime-To-Cost-Germany-206-Billion-Euros-In-2023-Survey-Finds.html" target="_blank" rel="noopener">Cybercrime To Cost Germany 206 Billion Euros In 2023, Survey Finds</a></span><span class="headline-source">PACKETSTORMSECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="what is the origin of passwords submitted to honeypots&amp;#x3f;, (sat, sep 2nd)" data-date="2023-09-02"><span class="headline-date">2 Sep</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/30182" target="_blank" rel="noopener">What is the origin of passwords submitted to honeypots&amp;#x3f;, (Sat, Sep 2nd)</a><span class="article-summary">We use passwords just about everywhere in our daily lives. It&&#x23&#x3b;x26&#x3b;&#x23&#x3b;39&#x3b;s difficult to think of an online service where we don&&#x23&#x3b;x26&#x3b;&#x23&#x3b;39&#x3b;t have a need to enter some kind of credentials to access our content. DShield honeyp…</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="more okta customers trapped in scattered spider's web" data-date="2023-09-02"><span class="headline-date">2 Sep</span><span class="headline-body"><a class="headline-title" href="https://packetstormsecurity.com/news/view/34970/More-Okta-Customers-Trapped-In-Scattered-Spiders-Web.html" target="_blank" rel="noopener">More Okta Customers Trapped In Scattered Spider's Web</a></span><span class="headline-source">PACKETSTORMSECURITY.COM</span></div>
+<div class="headline" data-title="x, aka twitter, to collect biometric and employment data" data-date="2023-09-02"><span class="headline-date">2 Sep</span><span class="headline-body"><a class="headline-title" href="https://packetstormsecurity.com/news/view/34967/X-AKA-Twitter-To-Collect-Biometric-And-Employment-Data.html" target="_blank" rel="noopener">X, AKA Twitter, To Collect Biometric And Employment Data</a></span><span class="headline-source">PACKETSTORMSECURITY.COM</span></div>
+<div class="headline" data-title="maker of ‘smart’ chastity cage left users’ emails, passwords, and locations exposed" data-date="2023-09-02"><span class="headline-date">2 Sep</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2023/09/02/smart-chastity-cage-emails-passwords-location/" target="_blank" rel="noopener">Maker of ‘smart’ chastity cage left users’ emails, passwords, and locations exposed</a><span class="article-summary">A company that makes a chastity device for people with a penis that can be controlled by a partner over the internet exposed users’ email addresses, plaintext passwords, home addresses and IP addresses, and — in some cases — GPS coordinates, due to several flaws in its servers, a…</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="new ‘youporn’ sextortion scam threatens to leak your sex tape" data-date="2023-09-02"><span class="headline-date">2 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/new-youporn-sextortion-scam-threatens-to-leak-your-sex-tape/" target="_blank" rel="noopener">New ‘YouPorn’ sextortion scam threatens to leak your sex tape</a><span class="article-summary">A new sextortion scam is making the rounds that pretends to be an email from the adult site YouPorn, warning that a sexually explicit video of you was uploaded to the site and suggesting you pay to have it taken down. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="fake youporn extortion scam threatens to leak your sex tape" data-date="2023-09-02"><span class="headline-date">2 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/fake-youporn-extortion-scam-threatens-to-leak-your-sex-tape/" target="_blank" rel="noopener">Fake YouPorn extortion scam threatens to leak your sex tape</a><span class="article-summary">A new sextortion scam is making the rounds that pretends to be an email from the adult site YouPorn, warning that a sexually explicit video of you was uploaded to the site and suggesting you pay to have it taken down. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

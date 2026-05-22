@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2023-12-02</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,72 +109,51 @@
       <div class="stat"><span class="stat-value">4</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2023-12-02</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">14</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.theregister.com/2023/12/02/ransomware_infection_credit_unions/?&web_view=true" target="_blank" rel="noopener">60 US Credit Unions Offline After Cloud Ransomware Infection</a></div><span class="article-meta">THEREGISTER.COM &mdash; 02 Dec 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2023/11/north-koreas-lazarus-group-rakes-in-3.html?&web_view=true" target="_blank" rel="noopener">North Korea's Lazarus Group Rakes in $3 Billion from Cryptocurrency Hacks</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 02 Dec 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/cisa-warns-google-chromflaws/" target="_blank" rel="noopener">Active Attacks Targeting Google Chrome &amp; ownCloud Flaws: CISA Warns</a></div><span class="kev-badge">KEV</span><span class="article-meta">GBHACKERS.COM &mdash; 02 Dec 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/us-health-dept-urges-hospitals-to-patch-critical-citrix-bleed-bug/" target="_blank" rel="noopener">US Health Dept urges hospitals to patch critical Citrix Bleed bug</a></div><span class="kev-badge">KEV</span><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 02 Dec 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/over-20-000-vulnerable-microsoft-exchange-servers-exposed-to-attacks/" target="_blank" rel="noopener">Over 20,000 vulnerable Microsoft Exchange servers exposed to attacks</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 02 Dec 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-12-02"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2023/12/01/23andme-says-hackers-accessed-significant-number-of-files-about-users-ancestry/?&web_view=true" target="_blank" rel="noopener">Update: 23andMe Says Hackers Accessed ‘Significant Number’ of Files About Users’ Ancestry</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 02 Dec 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-12-02"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bankinfosecurity.com/surgical-practice-notifying-437400-patients-data-theft-a-23753?&web_view=true" target="_blank" rel="noopener">Surgical Practice Notifying 437,400 Patients of Data Theft</a></div><span class="article-meta">BANKINFOSECURITY.COM &mdash; 02 Dec 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-12-02"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://securityaffairs.com/155075/security/turtleransom-macos-ransomware.html?&web_view=true" target="_blank" rel="noopener">Expert Warns of Turtle macOS Ransomware</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 02 Dec 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-12-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2023/12/russian-hacker-vladimir-dunaev.html" target="_blank" rel="noopener">Russian Hacker Vladimir Dunaev Convicted for Creating TrickBot Malware</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 02 Dec 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-12-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2023/12/agent-racoon-backdoor-targets.html" target="_blank" rel="noopener">Agent Racoon Backdoor Targets Organizations in Middle East, Africa, and U.S.</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 02 Dec 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-12-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/pictrs/image/682cccc8-986b-4ce4-be56-751ab97da707.png" target="_blank" rel="noopener">AWS re:Invent 2023 - 35 Security Talks</a></div><span class="article-meta">INFOSEC.PUB &mdash; 02 Dec 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-12-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/pictrs/image/55ec54e4-26e9-4b22-921f-64bcd053b3ff.png" target="_blank" rel="noopener">Introduction to OT Cybersecurity  - GISPP ACADEMY - 1 hour 24 min</a></div><span class="article-meta">INFOSEC.PUB &mdash; 02 Dec 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-12-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.darkreading.com/endpoint-security/critical-logofail-bugs-secure-boot-bypass-millions-pcs" target="_blank" rel="noopener">Critical 'LogoFAIL' Bugs Offer Secure Boot Bypass for Millions of PCs</a></div><span class="article-meta">DARKREADING.COM &mdash; 02 Dec 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-12-02"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/google/google-chromes-new-cache-change-could-boost-performance/" target="_blank" rel="noopener">Google Chrome's new cache change could boost performance</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 02 Dec 2023</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="60 us credit unions offline after cloud ransomware infection" data-date="2023-12-02"><span class="headline-date">2 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.theregister.com/2023/12/02/ransomware_infection_credit_unions/?&web_view=true" target="_blank" rel="noopener">60 US Credit Unions Offline After Cloud Ransomware Infection</a><span class="article-summary">The affected IT provider, Ongoing Operations, was infiltrated through the Citrix Bleed vulnerability, emphasizing the importance of robust cybersecurity measures and patching vulnerabilities promptly.</span></span><span class="headline-source">THEREGISTER.COM</span></div>
+<div class="headline" data-title="north korea's lazarus group rakes in $3 billion from cryptocurrency hacks" data-date="2023-12-02"><span class="headline-date">2 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/11/north-koreas-lazarus-group-rakes-in-3.html?&web_view=true" target="_blank" rel="noopener">North Korea's Lazarus Group Rakes in $3 Billion from Cryptocurrency Hacks</a><span class="article-summary">The Lazarus Group, linked to North Korea, has exploited decentralized finance (DeFi) protocols to steal cryptocurrency and launder funds, contributing to the rise of DeFi hacking in 2022.</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="active attacks targeting google chrome &amp; owncloud flaws: cisa warns" data-date="2023-12-02"><span class="headline-date">2 Dec <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/cisa-warns-google-chromflaws/" target="_blank" rel="noopener">Active Attacks Targeting Google Chrome &amp; ownCloud Flaws: CISA Warns</a><span class="article-summary">The CISA announced two known exploited vulnerabilities active attacks targeting Google Chrome &#38; own cloud vulnerabilities in their catalog. As the national coordinator for critical infrastructure security and resilience, CISA oversees government cybersecurity operations.&#160…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="us health dept urges hospitals to patch critical citrix bleed bug" data-date="2023-12-02"><span class="headline-date">2 Dec <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/us-health-dept-urges-hospitals-to-patch-critical-citrix-bleed-bug/" target="_blank" rel="noopener">US Health Dept urges hospitals to patch critical Citrix Bleed bug</a><span class="article-summary">The U.S. Department of Health and Human Services (HHS) warned hospitals this week to patch the critical 'Citrix Bleed' Netscaler vulnerability actively exploited in attacks. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="over 20,000 vulnerable microsoft exchange servers exposed to attacks" data-date="2023-12-02"><span class="headline-date">2 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/over-20-000-vulnerable-microsoft-exchange-servers-exposed-to-attacks/" target="_blank" rel="noopener">Over 20,000 vulnerable Microsoft Exchange servers exposed to attacks</a><span class="article-summary">Tens of thousands of Microsoft Exchange email servers in Europe, the U.S., and Asia exposed on the public internet are vulnerable to remote code execution flaws. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="update: 23andme says hackers accessed ‘significant number’ of files about users’ ancestry" data-date="2023-12-02"><span class="headline-date">2 Dec</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2023/12/01/23andme-says-hackers-accessed-significant-number-of-files-about-users-ancestry/?&web_view=true" target="_blank" rel="noopener">Update: 23andMe Says Hackers Accessed ‘Significant Number’ of Files About Users’ Ancestry</a><span class="article-summary">Genetic testing company 23andMe experienced a data breach, with hackers accessing around 14,000 customer accounts and potentially compromising the personal information of other users connected to those accounts.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="surgical practice notifying 437,400 patients of data theft" data-date="2023-12-02"><span class="headline-date">2 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bankinfosecurity.com/surgical-practice-notifying-437400-patients-data-theft-a-23753?&web_view=true" target="_blank" rel="noopener">Surgical Practice Notifying 437,400 Patients of Data Theft</a><span class="article-summary">Proliance Surgeons, a large Seattle-based surgical group, suffered a ransomware attack and data theft, potentially compromising the personal information of nearly 437,400 individuals.</span></span><span class="headline-source">BANKINFOSECURITY.COM</span></div>
+<div class="headline" data-title="expert warns of turtle macos ransomware" data-date="2023-12-02"><span class="headline-date">2 Dec</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/155075/security/turtleransom-macos-ransomware.html?&web_view=true" target="_blank" rel="noopener">Expert Warns of Turtle macOS Ransomware</a><span class="article-summary">While the Turtle ransomware may not pose a significant risk to macOS users currently, its existence highlights the ongoing efforts by ransomware authors to target Apple devices.</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="russian hacker vladimir dunaev convicted for creating trickbot malware" data-date="2023-12-02"><span class="headline-date">2 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/12/russian-hacker-vladimir-dunaev.html" target="_blank" rel="noopener">Russian Hacker Vladimir Dunaev Convicted for Creating TrickBot Malware</a><span class="article-summary">A Russian national has been found guilty in connection with his role in developing and deploying a malware known as TrickBot, the U.S. Department of Justice (DoJ) announced. Vladimir Dunaev, 40, was&nbsp;arrested&nbsp;in South Korea in September 2021 and extradited to the U.S. a …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="agent racoon backdoor targets organizations in middle east, africa, and u.s." data-date="2023-12-02"><span class="headline-date">2 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/12/agent-racoon-backdoor-targets.html" target="_blank" rel="noopener">Agent Racoon Backdoor Targets Organizations in Middle East, Africa, and U.S.</a><span class="article-summary">Organizations in the Middle East, Africa, and the U.S. have been targeted by an unknown threat actor to distribute a new backdoor called&nbsp;Agent Racoon. "This malware family is written using the .NET framework and leverages the domain name service (DNS) protocol to create a co…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="aws re:invent 2023 - 35 security talks" data-date="2023-12-02"><span class="headline-date">2 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/pictrs/image/682cccc8-986b-4ce4-be56-751ab97da707.png" target="_blank" rel="noopener">AWS re:Invent 2023 - 35 Security Talks</a><span class="article-summary">submitted by ashar to security_cpe 1 points | 0 comments https://infosec.pub/pictrs/image/682cccc8-986b-4ce4-be56-751ab97da707.png AWS re:Invent 2023 - 35 Security Talks</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="introduction to ot cybersecurity  - gispp academy - 1 hour 24 min" data-date="2023-12-02"><span class="headline-date">2 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/pictrs/image/55ec54e4-26e9-4b22-921f-64bcd053b3ff.png" target="_blank" rel="noopener">Introduction to OT Cybersecurity  - GISPP ACADEMY - 1 hour 24 min</a><span class="article-summary">submitted by ashar to security_cpe 1 points | 0 comments https://infosec.pub/pictrs/image/55ec54e4-26e9-4b22-921f-64bcd053b3ff.png What is OT Security | Introduction to OT Cybersecurity | Knowledge and Skills needed for OT Security</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="critical 'logofail' bugs offer secure boot bypass for millions of pcs" data-date="2023-12-02"><span class="headline-date">2 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.darkreading.com/endpoint-security/critical-logofail-bugs-secure-boot-bypass-millions-pcs" target="_blank" rel="noopener">Critical 'LogoFAIL' Bugs Offer Secure Boot Bypass for Millions of PCs</a><span class="article-summary">submitted by IllNess to securitynews 1 points | 0 comments https://www.darkreading.com/endpoint-security/critical-logofail-bugs-secure-boot-bypass-millions-pcs</span></span><span class="headline-source">DARKREADING.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="google chrome's new cache change could boost performance" data-date="2023-12-02"><span class="headline-date">2 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/google/google-chromes-new-cache-change-could-boost-performance/" target="_blank" rel="noopener">Google Chrome's new cache change could boost performance</a><span class="article-summary">Google is introducing a significant change to Chrome's Back/Forward Cache (BFCache) behavior, allowing web pages to be stored in the cache, even if a webmaster specifies not to store a page in the browser's cache. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

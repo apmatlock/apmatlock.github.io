@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-08-24</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,77 +109,68 @@
       <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-08-24</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">16</span></button>
-<button class="filter-btn" data-cat="CISA KEV" onclick="filterCat('CISA KEV', this)">CISA KEV <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">3</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="CISA KEV" data-date="2024-08-24"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://securityaffairs.com/167414/uncategorized/u-s-cisa-dahua-ip-camera-linux-kernel-microsoft-exchange-server-bugs-its-known-exploited-vulnerabilities-catalog.html?&web_view=true" target="_blank" rel="noopener">CISA Adds Dahua IP Camera, Linux Kernel, and Microsoft Exchange Server Bugs to its KEV Catalog</a><span class="article-summary">The CISA has added new vulnerabilities to its Known Exploited Vulnerabilities catalog, including Dahua IP Camera authentication bypass flaws, a Linux Kernel buffer overflow issue, and a Microsoft Exchange Server vulnerability.</span></div><span class="kev-badge">KEV</span><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 24 Aug 2024</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-08-24"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://securityonline.info/exploit-for-cve-2024-38054-released-elevation-of-privilege-flaw-in-windows-kernel-streaming-wow-thunk/?&web_view=true" target="_blank" rel="noopener">Exploit for CVE-2024-38054 Released: Elevation of Privilege Flaw in Windows Kernel Streaming WOW Thunk</a></div><span class="article-meta">SECURITYONLINE.INFO &mdash; 24 Aug 2024</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-08-24"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://securityaffairs.com/167423/apt/china-velvet-ant-zero-day-cisco-switches.html?&web_view=true" target="_blank" rel="noopener">China-linked APT Velvet Ant Exploited Zero-Day to Compromise Cisco Nexus Switches</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 24 Aug 2024</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-08-24"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2024/08/cisa-urges-federal-agencies-to-patch.html" target="_blank" rel="noopener">CISA Urges Federal Agencies to Patch Versa Director Vulnerability by September</a></div><span class="kev-badge">KEV</span><span class="article-meta">THEHACKERNEWS.COM &mdash; 24 Aug 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-08-24"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.darkreading.com/cyberattacks-data-breaches/slack-ai-patches-bug-that-let-attackers-steal-data-from-private-channels?&web_view=true" target="_blank" rel="noopener">Slack Patches AI Bug That Exposed Private Channels</a></div><span class="article-meta">DARKREADING.COM &mdash; 24 Aug 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-08-24"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://securityonline.info/urgent-edge-security-update-microsoft-patches-zero-day-rce-vulnerabilities/?&web_view=true" target="_blank" rel="noopener">Urgent Edge Security Update: Microsoft Patches Zero-day &amp; RCE Vulnerabilities</a></div><span class="article-meta">SECURITYONLINE.INFO &mdash; 24 Aug 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-08-24"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/cyber-security-today-week-in-review-saturday-august-24th-2024" target="_blank" rel="noopener">Cyber Security Today Week In Review: Saturday, August 24th, 2024</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 24 Aug 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-08-24"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.darkreading.com/cybersecurity-operations/nsa-issues-tips-for-better-logging-threat-detection-in-lotl-incidents?&web_view=true" target="_blank" rel="noopener">NSA Issues Guidance for Better Logging, Threat Detection to Prevent LotL Incidents</a></div><span class="article-meta">DARKREADING.COM &mdash; 24 Aug 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-08-24"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=PI77EFxMuw0" target="_blank" rel="noopener">The end of the road for some cyber startups &amp; making detection actually work! - ESW #373</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-08-24</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-08-24"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2024/08/meta-exposes-iranian-hacker-group.html" target="_blank" rel="noopener">Meta Exposes Iranian Hacker Group Targeting Global Political Figures on WhatsApp</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 24 Aug 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-08-24"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/greasy-opals-captcha-solver-still-serving-cybercrime-after-16-years/?&web_view=true" target="_blank" rel="noopener">Greasy Opal's CAPTCHA Solver Still Serving Cybercrime After 16 Years</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 24 Aug 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-08-24"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://loudwhisper.me/blog/email-security/" target="_blank" rel="noopener">Email Security for Every Taste</a></div><span class="article-meta">LOUDWHISPER.ME &mdash; 24 Aug 2024</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2024-08-24"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/stealthy-sedexp-linux-malware-evaded-detection-for-two-years/" target="_blank" rel="noopener">Stealthy 'sedexp' Linux malware evaded detection for two years</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 24 Aug 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-08-24"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/hackers-now-use-appdomain-injection-to-drop-cobaltstrike-beacons/?&web_view=true" target="_blank" rel="noopener">Hackers Now Use AppDomain Injection to Drop Cobalt Strike Beacons</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 24 Aug 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-08-24"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.infosecurity-magazine.com/news/security-flaws-uk-political/?&web_view=true" target="_blank" rel="noopener">Security Flaws in UK Political Party Donation Platforms Exposed</a></div><span class="article-meta">INFOSECURITY-MAGAZINE.COM &mdash; 24 Aug 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-08-24"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.infosecurity-magazine.com/news/liverpool-fans-lose-big-ticket/?&web_view=true" target="_blank" rel="noopener">Liverpool Fans Lose Big in Premier League Ticket Scams</a></div><span class="article-meta">INFOSECURITY-MAGAZINE.COM &mdash; 24 Aug 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa adds dahua ip camera, linux kernel, and microsoft exchange server bugs to its kev catalog" data-date="2024-08-24"><span class="headline-date">24 Aug <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/167414/uncategorized/u-s-cisa-dahua-ip-camera-linux-kernel-microsoft-exchange-server-bugs-its-known-exploited-vulnerabilities-catalog.html?&web_view=true" target="_blank" rel="noopener">CISA Adds Dahua IP Camera, Linux Kernel, and Microsoft Exchange Server Bugs to its KEV Catalog</a><span class="article-summary">The CISA has added new vulnerabilities to its Known Exploited Vulnerabilities catalog, including Dahua IP Camera authentication bypass flaws, a Linux Kernel buffer overflow issue, and a Microsoft Exchange Server vulnerability.</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="exploit for cve-2024-38054 released: elevation of privilege flaw in windows kernel streaming wow thunk" data-date="2024-08-24"><span class="headline-date">24 Aug</span><span class="headline-body"><a class="headline-title" href="https://securityonline.info/exploit-for-cve-2024-38054-released-elevation-of-privilege-flaw-in-windows-kernel-streaming-wow-thunk/?&web_view=true" target="_blank" rel="noopener">Exploit for CVE-2024-38054 Released: Elevation of Privilege Flaw in Windows Kernel Streaming WOW Thunk</a><span class="article-summary">This vulnerability allows local attackers to escalate privileges to SYSTEM level through a heap-based buffer overflow. With a CVSS score of 7.8, CVE-2024-38054 is a critical flaw patched by Microsoft in July.</span></span><span class="headline-source">SECURITYONLINE.INFO</span></div>
+<div class="headline" data-title="china-linked apt velvet ant exploited zero-day to compromise cisco nexus switches" data-date="2024-08-24"><span class="headline-date">24 Aug</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/167423/apt/china-velvet-ant-zero-day-cisco-switches.html?&web_view=true" target="_blank" rel="noopener">China-linked APT Velvet Ant Exploited Zero-Day to Compromise Cisco Nexus Switches</a><span class="article-summary">The China-linked APT group Velvet Ant exploited a zero-day vulnerability in Cisco switches, CVE-2024-20399, to take control of network devices. The flaw in Cisco NX-OS Software's CLI enabled attackers with Admin credentials to run arbitrary commands.</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+<div class="headline" data-title="cisa urges federal agencies to patch versa director vulnerability by september" data-date="2024-08-24"><span class="headline-date">24 Aug <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/08/cisa-urges-federal-agencies-to-patch.html" target="_blank" rel="noopener">CISA Urges Federal Agencies to Patch Versa Director Vulnerability by September</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) has placed a security flaw impacting Versa Director to its Known Exploited Vulnerabilities (KEV) catalog based on evidence of active exploitation. The medium-severity vulnerability, tracked as CVE-2024-39717 (CVSS s…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="slack patches ai bug that exposed private channels" data-date="2024-08-24"><span class="headline-date">24 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.darkreading.com/cyberattacks-data-breaches/slack-ai-patches-bug-that-let-attackers-steal-data-from-private-channels?&web_view=true" target="_blank" rel="noopener">Slack Patches AI Bug That Exposed Private Channels</a><span class="article-summary">Slack fixed a vulnerability in its AI feature that could allow attackers to steal data from private channels. The flaw involved a prompt injection flaw in an AI feature, which allowed attackers to manipulate the system to perform malicious actions.</span></span><span class="headline-source">DARKREADING.COM</span></div>
+<div class="headline" data-title="urgent edge security update: microsoft patches zero-day &amp; rce vulnerabilities" data-date="2024-08-24"><span class="headline-date">24 Aug</span><span class="headline-body"><a class="headline-title" href="https://securityonline.info/urgent-edge-security-update-microsoft-patches-zero-day-rce-vulnerabilities/?&web_view=true" target="_blank" rel="noopener">Urgent Edge Security Update: Microsoft Patches Zero-day &amp; RCE Vulnerabilities</a><span class="article-summary">The urgent security update, Microsoft Edge Stable Channel Version 128.0.2739.42, based on Chromium versions 128.0.6613.85 and 128.0.6613.84, addresses a total of 25 security issues.</span></span><span class="headline-source">SECURITYONLINE.INFO</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cyber security today week in review: saturday, august 24th, 2024" data-date="2024-08-24"><span class="headline-date">24 Aug</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/cyber-security-today-week-in-review-saturday-august-24th-2024" target="_blank" rel="noopener">Cyber Security Today Week In Review: Saturday, August 24th, 2024</a><span class="article-summary">Join host Jim Love in this weekend edition of Cyber Security Today, featuring a distinguished panel including Terry Cutler (Cyology Labs), David Shipley (Beauceron Security), and special guest Tara Gold (Cado Security). The episode delves into key cybersecurity topics including t…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="nsa issues guidance for better logging, threat detection to prevent lotl incidents" data-date="2024-08-24"><span class="headline-date">24 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.darkreading.com/cybersecurity-operations/nsa-issues-tips-for-better-logging-threat-detection-in-lotl-incidents?&web_view=true" target="_blank" rel="noopener">NSA Issues Guidance for Better Logging, Threat Detection to Prevent LotL Incidents</a><span class="article-summary">The NSA has released guidelines to improve logging and threat detection for Living-off-the-Land (LotL) attacks in cloud services, enterprise networks, mobile devices, and OT networks as part of a global effort for critical infrastructure security.</span></span><span class="headline-source">DARKREADING.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the end of the road for some cyber startups &amp; making detection actually work! - esw #373" data-date="2024-08-24"><span class="headline-date">24 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=PI77EFxMuw0" target="_blank" rel="noopener">The end of the road for some cyber startups &amp; making detection actually work! - ESW #373</a><span class="article-summary">This week, in the enterprise security news, 1. A funding that looks like an acquisition 2. And two for-sure acquisitions 3. Rumors that there are funding problems for early stage cyber startups, and we’ll see a lot more acquisitions before the end of the year 4. Speaking of rumor…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="meta exposes iranian hacker group targeting global political figures on whatsapp" data-date="2024-08-24"><span class="headline-date">24 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/08/meta-exposes-iranian-hacker-group.html" target="_blank" rel="noopener">Meta Exposes Iranian Hacker Group Targeting Global Political Figures on WhatsApp</a><span class="article-summary">Meta Platforms on Friday became the latest company after Microsoft, Google, and OpenAI to expose the activities of an Iranian state-sponsored threat actor, who it said used a set of WhatsApp accounts that attempted to target individuals in Israel, Palestine, Iran, the U.K., and t…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="greasy opal's captcha solver still serving cybercrime after 16 years" data-date="2024-08-24"><span class="headline-date">24 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/greasy-opals-captcha-solver-still-serving-cybercrime-after-16-years/?&web_view=true" target="_blank" rel="noopener">Greasy Opal's CAPTCHA Solver Still Serving Cybercrime After 16 Years</a><span class="article-summary">Greasy Opal, a well-known developer, has been aiding cybercriminals for 16 years by offering a tool that can solve CAPTCHAs automatically on a large scale, bypassing security measures.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="email security for every taste" data-date="2024-08-24"><span class="headline-date">24 Aug</span><span class="headline-body"><a class="headline-title" href="https://loudwhisper.me/blog/email-security/" target="_blank" rel="noopener">Email Security for Every Taste</a><span class="article-summary">submitted by loudwhisper to cybersecurity 1 points | 0 comments https://loudwhisper.me/blog/email-security/ cross-posted from: infosec.pub/post/16642151 (I have just learned you can cross-post!) As someone who has read plenty of discussions about email security (some of them in t…</span></span><span class="headline-source">LOUDWHISPER.ME</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="stealthy 'sedexp' linux malware evaded detection for two years" data-date="2024-08-24"><span class="headline-date">24 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/stealthy-sedexp-linux-malware-evaded-detection-for-two-years/" target="_blank" rel="noopener">Stealthy 'sedexp' Linux malware evaded detection for two years</a><span class="article-summary">A stealthy Linux malware named 'sedexp' has been evading detection since 2022 by using a persistence technique not yet included in the MITRE ATT&amp;CK framework. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="hackers now use appdomain injection to drop cobalt strike beacons" data-date="2024-08-24"><span class="headline-date">24 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/hackers-now-use-appdomain-injection-to-drop-cobaltstrike-beacons/?&web_view=true" target="_blank" rel="noopener">Hackers Now Use AppDomain Injection to Drop Cobalt Strike Beacons</a><span class="article-summary">Hackers are now using AppDomain Injection to drop Cobalt Strike beacons in a series of attacks that began in July 2024. This technique, known as AppDomain Manager Injection, can weaponize any Microsoft .NET application on Windows.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="security flaws in uk political party donation platforms exposed" data-date="2024-08-24"><span class="headline-date">24 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.infosecurity-magazine.com/news/security-flaws-uk-political/?&web_view=true" target="_blank" rel="noopener">Security Flaws in UK Political Party Donation Platforms Exposed</a><span class="article-summary">DataDome researchers found that major UK political parties lack critical security features to protect against bot and credential stuffing attacks on their donation platforms.</span></span><span class="headline-source">INFOSECURITY-MAGAZINE.COM</span></div>
+<div class="headline" data-title="liverpool fans lose big in premier league ticket scams" data-date="2024-08-24"><span class="headline-date">24 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.infosecurity-magazine.com/news/liverpool-fans-lose-big-ticket/?&web_view=true" target="_blank" rel="noopener">Liverpool Fans Lose Big in Premier League Ticket Scams</a><span class="article-summary">Liverpool fans have suffered the most in Premier League ticket scams for the 2023/24 season, losing over £17,000 (~$22,460) to criminals, as revealed by a report from NatWest Bank. Arsenal supporters were also hit hard, losing £12,000 (~$15,855).</span></span><span class="headline-source">INFOSECURITY-MAGAZINE.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

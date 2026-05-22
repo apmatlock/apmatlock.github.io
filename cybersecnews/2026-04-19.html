@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2026-04-19</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html" class="active">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,74 +109,65 @@
       <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2026-04-19</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">13</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-19"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-5160" target="_blank" rel="noopener">CVE-2026-5160</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 19 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-19"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6100" target="_blank" rel="noopener">CVE-2026-6100 Use-after-free in lzma.LZMADecompressor, bz2.BZ2Decompressor, and gzip.GzipFile after re-use under memory pressure</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 19 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-19"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-4786" target="_blank" rel="noopener">CVE-2026-4786 Incomplete mitigation of CVE-2026-4519, %action expansion for command injection to webbrowser.open()</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 19 Apr 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-04-19"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cyberinsider.com/vercel-confirms-security-incident-as-hackers-claim-to-sell-internal-access/" target="_blank" rel="noopener">Vercel confirms security incident as hackers claim to sell internal access</a></div><span class="article-meta">CYBERINSIDER.COM &mdash; 19 Apr 2026</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2026-04-19"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://sh.itjust.works/post/58761084" target="_blank" rel="noopener">A new licensing period and legal regulations for VPN services are being discussed in Türkiye.</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 19 Apr 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-04-19"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://securityaffairs.com/191008/security/cyber-attacks-fuel-surge-in-cargo-theft-across-logistics-industry.html" target="_blank" rel="noopener">Cyber attacks fuel surge in cargo theft across logistics industry</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 19 Apr 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-04-19"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://cyberinsider.com/carnival-corporation-probes-data-breach-after-claims-of-8-7m-records-theft/" target="_blank" rel="noopener">Carnival Corporation probes data breach after claims of 8.7M records theft</a></div><span class="article-meta">CYBERINSIDER.COM &mdash; 19 Apr 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-04-19"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://sh.itjust.works/post/58778053" target="_blank" rel="noopener">Oil Industry Hacker Accused of Targeting Environmental Activists Appears in Court</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 19 Apr 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-04-19"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/45226429" target="_blank" rel="noopener">Microsoft's Silent Lockout: Why WireGuard, VeraCrypt &amp; Windscribe Can No Longer Update Windows Users</a></div><span class="article-meta">INFOSEC.PUB &mdash; 19 Apr 2026</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2026-04-19"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://securityaffairs.com/190994/breaking-news/security-affairs-newsletter-round-573-by-pierluigi-paganini-international-edition.html" target="_blank" rel="noopener">Security Affairs newsletter Round 573 by Pierluigi Paganini – INTERNATIONAL EDITION</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 19 Apr 2026</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2026-04-19"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://securityaffairs.com/191001/security/security-affairs-malware-newsletter-round-93.html" target="_blank" rel="noopener">SECURITY AFFAIRS MALWARE NEWSLETTER ROUND 93</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 19 Apr 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-04-19"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.heise.de/hintergrund/Datenaustausch-aber-kein-zentrales-Register-bei-psychisch-kranken-Risikopersonen-11246696.html" target="_blank" rel="noopener">Staatliches Bedrohungsmanagement: Psychisch kranke Personen mit Risikopotential</a></div><span class="article-meta">HEISE.DE &mdash; 2026-04-19</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-04-19"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2026/04/19/palantir-posts-mini-manifesto-denouncing-regressive-and-harmful-cultures/" target="_blank" rel="noopener">Palantir posts mini-manifesto denouncing inclusivity and ‘regressive’ cultures</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 19 Apr 2026</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cve-2026-5160" data-date="2026-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-5160" target="_blank" rel="noopener">CVE-2026-5160</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-6100 use-after-free in lzma.lzmadecompressor, bz2.bz2decompressor, and gzip.gzipfile after re-use under memory pressure" data-date="2026-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6100" target="_blank" rel="noopener">CVE-2026-6100 Use-after-free in lzma.LZMADecompressor, bz2.BZ2Decompressor, and gzip.GzipFile after re-use under memory pressure</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-4786 incomplete mitigation of cve-2026-4519, %action expansion for command injection to webbrowser.open()" data-date="2026-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-4786" target="_blank" rel="noopener">CVE-2026-4786 Incomplete mitigation of CVE-2026-4519, %action expansion for command injection to webbrowser.open()</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="vercel confirms security incident as hackers claim to sell internal access" data-date="2026-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://cyberinsider.com/vercel-confirms-security-incident-as-hackers-claim-to-sell-internal-access/" target="_blank" rel="noopener">Vercel confirms security incident as hackers claim to sell internal access</a><span class="article-summary">Vercel has disclosed a security incident involving unauthorized access to parts of its internal systems, as a threat actor simultaneously claims to be selling access keys, source code, and database information allegedly linked to the company. The incident was confirmed on April 1…</span></span><span class="headline-source">CYBERINSIDER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="a new licensing period and legal regulations for vpn services are being discussed in türkiye." data-date="2026-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/58761084" target="_blank" rel="noopener">A new licensing period and legal regulations for VPN services are being discussed in Türkiye.</a><span class="article-summary">submitted by gokayburucdev to cybersecurity 10 points | 0 comments https://shiftdelete.net/turkiyede-vpn-saglayicilari-icin-lisans-donemi-basliyor Under the new legal framework, all VPN platforms accessible in Turkey will first be required to fulfill certain legal obligations. Se…</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cyber attacks fuel surge in cargo theft across logistics industry" data-date="2026-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/191008/security/cyber-attacks-fuel-surge-in-cargo-theft-across-logistics-industry.html" target="_blank" rel="noopener">Cyber attacks fuel surge in cargo theft across logistics industry</a><span class="article-summary">Hackers infiltrate logistics firms to steal cargo and divert payments, cyberattacks are linked to organized crime and rising losses. Proofpoint researchers observed crooks targeting trucking and logistics companies, running coordinated remote access campaigns to steal cargo and d…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+<div class="headline" data-title="carnival corporation probes data breach after claims of 8.7m records theft" data-date="2026-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://cyberinsider.com/carnival-corporation-probes-data-breach-after-claims-of-8-7m-records-theft/" target="_blank" rel="noopener">Carnival Corporation probes data breach after claims of 8.7M records theft</a><span class="article-summary">Carnival Corporation is investigating a potential data breach after the ShinyHunters extortion group claimed to have stolen millions of records and threatened to leak the data if its demands are not met. ShinyHunters listed Carnival Corporation on its “pay or leak” portal on Apri…</span></span><span class="headline-source">CYBERINSIDER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="oil industry hacker accused of targeting environmental activists appears in court" data-date="2026-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/58778053" target="_blank" rel="noopener">Oil Industry Hacker Accused of Targeting Environmental Activists Appears in Court</a><span class="article-summary">submitted by Valnao to cybersecurity 7 points | 0 comments https://www.nytimes.com/2026/04/17/climate/amit-forlit-hacking-court.html?unlocked_article_code=1.cFA.JFPQ.Que4w_FTZDNb</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="microsoft's silent lockout: why wireguard, veracrypt &amp; windscribe can no longer update windows users" data-date="2026-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/45226429" target="_blank" rel="noopener">Microsoft's Silent Lockout: Why WireGuard, VeraCrypt &amp; Windscribe Can No Longer Update Windows Users</a><span class="article-summary">submitted by cm0002 to cybersecurity 20 points | 2 comments https://techlore.tech/microsofts-silent-lockout-why-wireguard-veracrypt-windscribe-can-no-longer-update-windows-users/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="security affairs newsletter round 573 by pierluigi paganini – international edition" data-date="2026-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/190994/breaking-news/security-affairs-newsletter-round-573-by-pierluigi-paganini-international-edition.html" target="_blank" rel="noopener">Security Affairs newsletter Round 573 by Pierluigi Paganini – INTERNATIONAL EDITION</a><span class="article-summary">A new round of the weekly Security Affairs newsletter has arrived! Every week, the best security articles from Security Affairs are free in your email box. Enjoy a new round of the weekly SecurityAffairs newsletter, including the international press. Hidden VMs: how hackers lever…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+<div class="headline" data-title="security affairs malware newsletter round 93" data-date="2026-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/191001/security/security-affairs-malware-newsletter-round-93.html" target="_blank" rel="noopener">SECURITY AFFAIRS MALWARE NEWSLETTER ROUND 93</a><span class="article-summary">Security Affairs Malware newsletter includes a collection of the best articles and research on malware in the international landscape CPU-Z / HWMonitor watering hole infection – a copy-pasted attack&#160;&#160; Fake Claude site installs malware that gives attackers access to your…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="staatliches bedrohungsmanagement: psychisch kranke personen mit risikopotential" data-date="2026-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.heise.de/hintergrund/Datenaustausch-aber-kein-zentrales-Register-bei-psychisch-kranken-Risikopersonen-11246696.html" target="_blank" rel="noopener">Staatliches Bedrohungsmanagement: Psychisch kranke Personen mit Risikopotential</a><span class="article-summary">Psychisch krank und potenziell gefährlich? Bund und Länder bauen ihre Frühwarnsysteme auf – mit Datenaustausch, Fallmanagement und Risikoanalyse.</span></span><span class="headline-source">HEISE.DE</span></div>
+<div class="headline" data-title="palantir posts mini-manifesto denouncing inclusivity and ‘regressive’ cultures" data-date="2026-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2026/04/19/palantir-posts-mini-manifesto-denouncing-regressive-and-harmful-cultures/" target="_blank" rel="noopener">Palantir posts mini-manifesto denouncing inclusivity and ‘regressive’ cultures</a><span class="article-summary">Palantir's ideological bent has come under more scrutiny as it's worked with ICE and positioned itself as a defender of "the West."</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

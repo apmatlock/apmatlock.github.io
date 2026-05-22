@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2023-11-04</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,73 +109,56 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2023-11-04</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">14</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">3</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-11-04"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://securityaffairs.com/153599/hacking/microsoft-exchange-zero-day-flaws.html?&web_view=true" target="_blank" rel="noopener">Four Zero-Day Flaws Disclosed in Microsoft Exchange</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 04 Nov 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-11-04"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2023/11/oktas-recent-customer-support-data.html" target="_blank" rel="noopener">Okta's Recent Customer Support Data Breach Impacted 134 Customers</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 04 Nov 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-04"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://therecord.media/american-airlines-pilot-union-cyberattack?&web_view=true" target="_blank" rel="noopener">American Airlines Pilot Union Hit With Ransomware</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 04 Nov 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-04"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.theregister.com/2023/11/03/hilb_data_leak/?&web_view=true" target="_blank" rel="noopener">Hilb Group Fears Cybercriminals Stole 81,000 People’s Financial Data</a></div><span class="article-meta">THEREGISTER.COM &mdash; 04 Nov 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-04"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/dutch-hacker-jailed-for-extortion-selling-stolen-data-on-raidforums/?&web_view=true" target="_blank" rel="noopener">Dutch Hacker Jailed for Extortion, Selling Stolen Data on RaidForums</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 04 Nov 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-04"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://securityaffairs.com/153581/data-breach/okta-customer-support-system-breach-customers.html?&web_view=true" target="_blank" rel="noopener">Update: Okta Customer Support System Breach Impacted 134 Customers</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 04 Nov 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-04"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://therecord.media/russian-sanctioned-ofac-treasury-money-launering-ryuk?&web_view=true" target="_blank" rel="noopener">US Sanctions Russian Accused of Laundering Virtual Currency for Ransomware Affiliate</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 04 Nov 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-04"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/okta-breach-tied-to-workers-personal-google-account-a-23520" target="_blank" rel="noopener">Okta Breach Tied to Worker's Personal Google Account</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-11-04</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-11-04"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/apple/apple-find-my-network-can-be-abused-to-steal-keylogged-passwords/" target="_blank" rel="noopener">Apple 'Find My' network can be abused to steal keylogged passwords</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 04 Nov 2023</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2023-11-04"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://thehackernews.com/2023/11/stripedfly-malware-operated-unnoticed.html" target="_blank" rel="noopener">StripedFly Malware Operated Unnoticed for 5 Years, Infecting 1 Million Devices</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 04 Nov 2023</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2023-11-04"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/discord-will-switch-to-temporary-file-links-to-block-malware-delivery/" target="_blank" rel="noopener">Discord will switch to temporary file links to block malware delivery</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 04 Nov 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-11-04"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://therecord.media/singapore-public-health-services-ddos-attack?&web_view=true" target="_blank" rel="noopener">Singapore Public Health Services Hit by DDoS Attacks</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 04 Nov 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-11-04"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2023/11/google-play-store-introduces.html" target="_blank" rel="noopener">Google Play Store Introduces 'Independent Security Review' Badge for Apps</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 04 Nov 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-11-04"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2023/11/04/google-play-android-real-time-app-scanning-sideload-apps/" target="_blank" rel="noopener">Android’s new real-time app scanning aims to combat malicious sideloaded apps</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 04 Nov 2023</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="four zero-day flaws disclosed in microsoft exchange" data-date="2023-11-04"><span class="headline-date">4 Nov</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/153599/hacking/microsoft-exchange-zero-day-flaws.html?&web_view=true" target="_blank" rel="noopener">Four Zero-Day Flaws Disclosed in Microsoft Exchange</a><span class="article-summary">Researchers have disclosed four zero-day vulnerabilities in Microsoft Exchange that can be exploited remotely, potentially allowing attackers to execute arbitrary code or access sensitive information.</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+<div class="headline" data-title="okta's recent customer support data breach impacted 134 customers" data-date="2023-11-04"><span class="headline-date">4 Nov</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/11/oktas-recent-customer-support-data.html" target="_blank" rel="noopener">Okta's Recent Customer Support Data Breach Impacted 134 Customers</a><span class="article-summary">Identity and authentication management provider Okta on Friday disclosed that the recent support case management system breach affected 134 of its 18,400 customers. It further noted that the unauthorized intruder gained access to its systems from September 28 to October 17, 2023,…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="american airlines pilot union hit with ransomware" data-date="2023-11-04"><span class="headline-date">4 Nov</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/american-airlines-pilot-union-cyberattack?&web_view=true" target="_blank" rel="noopener">American Airlines Pilot Union Hit With Ransomware</a><span class="article-summary">The American Airlines pilot union is actively working to restore their systems and prioritize the security of their operations while keeping their pilots informed about the progress.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="hilb group fears cybercriminals stole 81,000 people’s financial data" data-date="2023-11-04"><span class="headline-date">4 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.theregister.com/2023/11/03/hilb_data_leak/?&web_view=true" target="_blank" rel="noopener">Hilb Group Fears Cybercriminals Stole 81,000 People’s Financial Data</a><span class="article-summary">The company discovered suspicious activity in employee email accounts in January 2023 and determined that the breach occurred between December 2022 and January 2023. The stolen data includes names, SSNs, and financial account information.</span></span><span class="headline-source">THEREGISTER.COM</span></div>
+<div class="headline" data-title="dutch hacker jailed for extortion, selling stolen data on raidforums" data-date="2023-11-04"><span class="headline-date">4 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/dutch-hacker-jailed-for-extortion-selling-stolen-data-on-raidforums/?&web_view=true" target="_blank" rel="noopener">Dutch Hacker Jailed for Extortion, Selling Stolen Data on RaidForums</a><span class="article-summary">A former Dutch cybersecurity professional named Pepijn Van der Stap has been sentenced to four years in prison for hacking and blackmailing more than a dozen companies. He also infiltrated networks and stole sensitive information.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="update: okta customer support system breach impacted 134 customers" data-date="2023-11-04"><span class="headline-date">4 Nov</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/153581/data-breach/okta-customer-support-system-breach-customers.html?&web_view=true" target="_blank" rel="noopener">Update: Okta Customer Support System Breach Impacted 134 Customers</a><span class="article-summary">The attackers used stolen session tokens from HAR files to hijack the legitimate Okta sessions of five customers. The breach occurred from September 28 to October 17 and affected less than 1% of Okta's customers.</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+<div class="headline" data-title="us sanctions russian accused of laundering virtual currency for ransomware affiliate" data-date="2023-11-04"><span class="headline-date">4 Nov</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/russian-sanctioned-ofac-treasury-money-launering-ryuk?&web_view=true" target="_blank" rel="noopener">US Sanctions Russian Accused of Laundering Virtual Currency for Ransomware Affiliate</a><span class="article-summary">The US Treasury Department has sanctioned a Russian woman named Ekaterina Zhdanova for allegedly laundering virtual currency on behalf of Russian elites and cybercriminals, including a Ryuk ransomware affiliate.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="okta breach tied to worker's personal google account" data-date="2023-11-04"><span class="headline-date">4 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/okta-breach-tied-to-workers-personal-google-account-a-23520" target="_blank" rel="noopener">Okta Breach Tied to Worker's Personal Google Account</a><span class="article-summary">Threat Actor Used Session Hijacking Technique to Access Files of 134 Okta Customers Days after announcing a security compromise, cloud-based Identity and authentication management provider Okta said that an unknown threat actor accessed files of 134 customers by after an employee…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="apple 'find my' network can be abused to steal keylogged passwords" data-date="2023-11-04"><span class="headline-date">4 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/apple/apple-find-my-network-can-be-abused-to-steal-keylogged-passwords/" target="_blank" rel="noopener">Apple 'Find My' network can be abused to steal keylogged passwords</a><span class="article-summary">submitted by throws_lemy to cybersecurity 4 points | 0 comments https://www.bleepingcomputer.com/news/apple/apple-find-my-network-can-be-abused-to-steal-keylogged-passwords/</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="stripedfly malware operated unnoticed for 5 years, infecting 1 million devices" data-date="2023-11-04"><span class="headline-date">4 Nov</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/11/stripedfly-malware-operated-unnoticed.html" target="_blank" rel="noopener">StripedFly Malware Operated Unnoticed for 5 Years, Infecting 1 Million Devices</a><span class="article-summary">An advanced strain of malware masquerading as a cryptocurrency miner has managed to fly the radar for over five years, infecting no less than one million devices around the world in the process. That's according to findings from Kaspersky, which has codenamed the threat StripedFl…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="discord will switch to temporary file links to block malware delivery" data-date="2023-11-04"><span class="headline-date">4 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/discord-will-switch-to-temporary-file-links-to-block-malware-delivery/" target="_blank" rel="noopener">Discord will switch to temporary file links to block malware delivery</a><span class="article-summary">Discord will switch to temporary file links for all users by the end of the year to block attackers from using its CDN (content delivery network) for hosting and pushing malware. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="singapore public health services hit by ddos attacks" data-date="2023-11-04"><span class="headline-date">4 Nov</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/singapore-public-health-services-ddos-attack?&web_view=true" target="_blank" rel="noopener">Singapore Public Health Services Hit by DDoS Attacks</a><span class="article-summary">Public healthcare institutions in Singapore experienced disruptions in internet connectivity due to DDoS attacks. Synapxe, the agency overseeing these institutions, stated that there is no evidence of a compromise of healthcare or patient data.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="google play store introduces 'independent security review' badge for apps" data-date="2023-11-04"><span class="headline-date">4 Nov</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/11/google-play-store-introduces.html" target="_blank" rel="noopener">Google Play Store Introduces 'Independent Security Review' Badge for Apps</a><span class="article-summary">Google is rolling out an "Independent security review" badge in the Play Store's Data safety section for Android apps that have undergone a Mobile Application Security Assessment (MASA) audit. "We've launched this banner beginning with VPN apps due to the sensitive and significan…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="android’s new real-time app scanning aims to combat malicious sideloaded apps" data-date="2023-11-04"><span class="headline-date">4 Nov</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2023/11/04/google-play-android-real-time-app-scanning-sideload-apps/" target="_blank" rel="noopener">Android’s new real-time app scanning aims to combat malicious sideloaded apps</a><span class="article-summary">Android&#8217;s in-built security engine Google Play Protect has a new feature that conducts a real-time analysis of an Android app&#8217;s code and blocks it from installing the app if it&#8217;s considered potentially harmful. Google announced in October the new real-time app s…</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-09-21</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,78 +109,73 @@
       <div class="stat"><span class="stat-value">8</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-09-21</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">16</span></button>
-<button class="filter-btn" data-cat="CISA KEV" onclick="filterCat('CISA KEV', this)">CISA KEV <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="CISA KEV" data-date="2024-09-21"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://securityaffairs.com/168592/security/u-s-cisa-windows-apache-hugegraph-oracle-jdeveloper-oracle-weblogic-sql-server-bugs-to-its-known-exploited-vulnerabilities-catalog.html?&web_view=true" target="_blank" rel="noopener">CISA Adds Windows, Apache HugeGraph-Server, Oracle JDeveloper, Oracle WebLogic Server, and MSSQL Server Bugs to its KEV Catalog</a><span class="article-summary">These vulnerabilities can lead to remote code execution and privilege escalation, posing a significant risk to affected systems. For example, the Oracle JDeveloper vulnerability can allow attackers to compromise the software and take over the system.</span></div><span class="kev-badge">KEV</span><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 21 Sep 2024</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-09-21"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.helpnetsecurity.com/2024/09/19/cve-2024-45488/?&web_view=true" target="_blank" rel="noopener">Patch this Critical Safeguard for Privileged Passwords Authentication Bypass Flaw</a></div><span class="article-meta">HELPNETSECURITY.COM &mdash; 21 Sep 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-09-21"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/a-hackers-view-of-civic-infrastructure-cyber-security-today-special-feature" target="_blank" rel="noopener">A hacker's view of civic infrastructure: Cyber Security Today - Special Feature</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 21 Sep 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-09-21"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/clever-github-scanner-campaign-abusing-repos-to-push-malware/?&web_view=true" target="_blank" rel="noopener">Clever 'GitHub Scanner' Campaign Abusing Repositories to Push Malware</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 21 Sep 2024</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-09-21"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://securityonline.info/stealthy-persistence-microsoft-entra-ids-administrative-units-weaponized/?&web_view=true" target="_blank" rel="noopener">Microsoft Entra ID’s Administrative Units Weaponized to Gain Stealthy Persistence</a></div><span class="article-meta">SECURITYONLINE.INFO &mdash; 21 Sep 2024</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-09-21"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://sh.itjust.works/post/25522132" target="_blank" rel="noopener">Insecure software makers are the real cyber villains – CISA</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 21 Sep 2024</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-09-21"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://sh.itjust.works/post/25525436" target="_blank" rel="noopener">CISA Releases Plan to Align Cybersecurity Across Federal Agencies</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 21 Sep 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-09-21"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/germany-seizes-47-crypto-exchanges-used-by-ransomware-gangs/?&web_view=true" target="_blank" rel="noopener">Germany Seizes 47 Crypto Exchanges Used by Ransomware Gangs</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 21 Sep 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-09-21"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://sh.itjust.works/post/25520356" target="_blank" rel="noopener">Disney ditching Slack after massive July data breach</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 21 Sep 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-09-21"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2024/09/hacktivist-group-twelve-targets-russian.html" target="_blank" rel="noopener">Hacktivist Group Twelve Targets Russian Entities with Destructive Cyber Attacks</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 21 Sep 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-09-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2024/09/friday-squid-blogging-squid-game-season-two-teaser.html" target="_blank" rel="noopener">Friday Squid Blogging: Squid Game Season Two Teaser</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2024-09-21</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-09-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/17850546" target="_blank" rel="noopener">How to manage and document decisions</a></div><span class="article-meta">INFOSEC.PUB &mdash; 21 Sep 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-09-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://sh.itjust.works/post/25522282" target="_blank" rel="noopener">A chat app using state-of-the-art cryptography</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 21 Sep 2024</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2024-09-21"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://thehackernews.com/2024/09/ukraine-bans-telegram-use-for.html" target="_blank" rel="noopener">Ukraine Bans Telegram Use for Government and Military Personnel</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 21 Sep 2024</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2024-09-21"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/global-infostealer-malware-operation-targets-crypto-users-gamers/" target="_blank" rel="noopener">Global infostealer malware operation targets crypto users, gamers</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 21 Sep 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-09-21"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2024/09/linkedin-halts-ai-data-processing-in-uk.html" target="_blank" rel="noopener">LinkedIn Halts AI Data Processing in UK Amid Privacy Concerns Raised by ICO</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 21 Sep 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa adds windows, apache hugegraph-server, oracle jdeveloper, oracle weblogic server, and mssql server bugs to its kev catalog" data-date="2024-09-21"><span class="headline-date">21 Sep <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/168592/security/u-s-cisa-windows-apache-hugegraph-oracle-jdeveloper-oracle-weblogic-sql-server-bugs-to-its-known-exploited-vulnerabilities-catalog.html?&web_view=true" target="_blank" rel="noopener">CISA Adds Windows, Apache HugeGraph-Server, Oracle JDeveloper, Oracle WebLogic Server, and MSSQL Server Bugs to its KEV Catalog</a><span class="article-summary">These vulnerabilities can lead to remote code execution and privilege escalation, posing a significant risk to affected systems. For example, the Oracle JDeveloper vulnerability can allow attackers to compromise the software and take over the system.</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="patch this critical safeguard for privileged passwords authentication bypass flaw" data-date="2024-09-21"><span class="headline-date">21 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2024/09/19/cve-2024-45488/?&web_view=true" target="_blank" rel="noopener">Patch this Critical Safeguard for Privileged Passwords Authentication Bypass Flaw</a><span class="article-summary">Researchers have released technical details about CVE-2024-45488, a critical authentication bypass vulnerability affecting One Identity’s Safeguard for Privileged Passwords (SPP), which could allow attackers to gain full administrative access.</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="a hacker's view of civic infrastructure: cyber security today - special feature" data-date="2024-09-21"><span class="headline-date">21 Sep</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/a-hackers-view-of-civic-infrastructure-cyber-security-today-special-feature" target="_blank" rel="noopener">A hacker's view of civic infrastructure: Cyber Security Today - Special Feature</a><span class="article-summary">A Hacker's Perspective on Vulnerable Civic Infrastructure In this episode, host Jim Love explores the vulnerabilities of civic infrastructure with cybersecurity expert Nick Aleks. They discuss how hackers view and exploit city systems, the dangers of default passwords and outdate…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="clever 'github scanner' campaign abusing repositories to push malware" data-date="2024-09-21"><span class="headline-date">21 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/clever-github-scanner-campaign-abusing-repos-to-push-malware/?&web_view=true" target="_blank" rel="noopener">Clever 'GitHub Scanner' Campaign Abusing Repositories to Push Malware</a><span class="article-summary">A sophisticated campaign is using GitHub repositories to spread the Lumma Stealer malware, targeting users interested in open-source projects or receiving email notifications from them.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="microsoft entra id’s administrative units weaponized to gain stealthy persistence" data-date="2024-09-21"><span class="headline-date">21 Sep</span><span class="headline-body"><a class="headline-title" href="https://securityonline.info/stealthy-persistence-microsoft-entra-ids-administrative-units-weaponized/?&web_view=true" target="_blank" rel="noopener">Microsoft Entra ID’s Administrative Units Weaponized to Gain Stealthy Persistence</a><span class="article-summary">Datadog Security Labs recently revealed a security risk within Microsoft Entra ID, showing how its administrative units (AUs) can be weaponized by attackers to create persistent backdoor access.</span></span><span class="headline-source">SECURITYONLINE.INFO</span></div>
+<div class="headline" data-title="insecure software makers are the real cyber villains – cisa" data-date="2024-09-21"><span class="headline-date">21 Sep</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/25522132" target="_blank" rel="noopener">Insecure software makers are the real cyber villains – CISA</a><span class="article-summary">submitted by ptz to cybersecurity 3 points | 0 comments https://www.theregister.com/2024/09/20/cisa_sloppy_vendors_cybercrime_villains/ Software suppliers who ship buggy, insecure code are the true baddies in the cyber crime story, Jen Easterly, boss of the US government’s Cybers…</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="cisa releases plan to align cybersecurity across federal agencies" data-date="2024-09-21"><span class="headline-date">21 Sep</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/25525436" target="_blank" rel="noopener">CISA Releases Plan to Align Cybersecurity Across Federal Agencies</a><span class="article-summary">submitted by BrikoX to cybersecurity 1 points | 0 comments https://www.darkreading.com/cybersecurity-operations/cisa-releases-plan-to-align-cybersecurity-across-federal-agencies The FOCAL plan outlines baselines to synchronize cybersecurity priorities and policies across, as well…</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="germany seizes 47 crypto exchanges used by ransomware gangs" data-date="2024-09-21"><span class="headline-date">21 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/germany-seizes-47-crypto-exchanges-used-by-ransomware-gangs/?&web_view=true" target="_blank" rel="noopener">Germany Seizes 47 Crypto Exchanges Used by Ransomware Gangs</a><span class="article-summary">These exchanges allowed users to trade cryptocurrencies anonymously, creating a safe environment for cybercriminals to launder their proceeds without fear of prosecution.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="disney ditching slack after massive july data breach" data-date="2024-09-21"><span class="headline-date">21 Sep</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/25520356" target="_blank" rel="noopener">Disney ditching Slack after massive July data breach</a><span class="article-summary">submitted by BrikoX to cybersecurity 1 points | 0 comments https://www.bleepingcomputer.com/news/security/disney-ditching-slack-after-massive-july-data-breach/ The Walt Disney Company is reportedly ditching Slack after a July data breach exposed over 1TB of confidential messages …</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="hacktivist group twelve targets russian entities with destructive cyber attacks" data-date="2024-09-21"><span class="headline-date">21 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/09/hacktivist-group-twelve-targets-russian.html" target="_blank" rel="noopener">Hacktivist Group Twelve Targets Russian Entities with Destructive Cyber Attacks</a><span class="article-summary">A hacktivist group known as Twelve has been observed using an arsenal of publicly available tools to conduct destructive cyber attacks against Russian targets. "Rather than demand a ransom for decrypting data, Twelve prefers to encrypt victims' data and then destroy their infrast…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="friday squid blogging: squid game season two teaser" data-date="2024-09-21"><span class="headline-date">21 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2024/09/friday-squid-blogging-squid-game-season-two-teaser.html" target="_blank" rel="noopener">Friday Squid Blogging: Squid Game Season Two Teaser</a><span class="article-summary">The teaser for Squid Game Season Two dropped. Blog moderation policy.</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="how to manage and document decisions" data-date="2024-09-21"><span class="headline-date">21 Sep</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/17850546" target="_blank" rel="noopener">How to manage and document decisions</a><span class="article-summary">submitted by wop to cybersecurity 2 points | 0 comments Big or small, we make decisions every day. Rules, policies, processes, templates, etc. How do you document the process and results of your decision making and track changes? To give you some background, a lot of departments …</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="a chat app using state-of-the-art cryptography" data-date="2024-09-21"><span class="headline-date">21 Sep</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/25522282" target="_blank" rel="noopener">A chat app using state-of-the-art cryptography</a><span class="article-summary">submitted by Super_gamer46861 to cybersecurity 1 points | 0 comments https://lemmy.world/pictrs/image/01533713-31dc-4cb8-97e6-3b6e17c51a4f.png github.com/umutcamliyurt/NanoChat</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ukraine bans telegram use for government and military personnel" data-date="2024-09-21"><span class="headline-date">21 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/09/ukraine-bans-telegram-use-for.html" target="_blank" rel="noopener">Ukraine Bans Telegram Use for Government and Military Personnel</a><span class="article-summary">Ukraine has restricted the use of the Telegram messaging app by government officials, military personnel, and other defense and critical infrastructure workers, citing national security concerns. The ban was announced by the National Coordination Centre for Cybersecurity (NCCC) i…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="global infostealer malware operation targets crypto users, gamers" data-date="2024-09-21"><span class="headline-date">21 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/global-infostealer-malware-operation-targets-crypto-users-gamers/" target="_blank" rel="noopener">Global infostealer malware operation targets crypto users, gamers</a><span class="article-summary">A massive infostealer malware operation encompassing thirty campaigns targeting a broad spectrum of demographics and system platforms has been uncovered, attributed to a cybercriminal group named "Marko Polo." [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="linkedin halts ai data processing in uk amid privacy concerns raised by ico" data-date="2024-09-21"><span class="headline-date">21 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/09/linkedin-halts-ai-data-processing-in-uk.html" target="_blank" rel="noopener">LinkedIn Halts AI Data Processing in UK Amid Privacy Concerns Raised by ICO</a><span class="article-summary">The U.K. Information Commissioner's Office (ICO) has confirmed that professional social networking platform LinkedIn has suspended processing users' data in the country to train its artificial intelligence (AI) models. "We are pleased that LinkedIn has reflected on the concerns w…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

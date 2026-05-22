@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-03-14</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,64 +109,39 @@
       <div class="stat"><span class="stat-value">3</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-03-14</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-03-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisecurity.org/advisory/ms-isac-cybersecurity-advisory---multiple-vulnerabilities-in-sante-pacs-server-could-allow-for-remote-code-execution---patch-now---tlp-clear_2025-026" target="_blank" rel="noopener">MS-ISAC CYBERSECURITY ADVISORY - Multiple Vulnerabilities in Sante PACS Server Could Allow for Remote Code Execution - PATCH NOW - TLP: CLEAR</a></div><span class="article-meta">CISECURITY.ORG &mdash; 14 Mar 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-03-14"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/cyber-security-madness-in-the-us-government-cyber-security-today-for-march-14-2025" target="_blank" rel="noopener">Cyber Security Madness In The US Government: Cyber Security Today for March 14, 2025</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 14 Mar 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-03-14"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://krebsonsecurity.com/2025/03/clickfix-how-to-infect-your-pc-in-three-easy-steps/" target="_blank" rel="noopener">ClickFix: How to Infect Your PC in Three Easy Steps</a></div><span class="article-meta">KREBSONSECURITY.COM &mdash; 14 Mar 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-03-14"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/25/c/socgholishs-intrusion-techniques-facilitate-distribution-of-rans.html" target="_blank" rel="noopener">SocGholish’s Intrusion Techniques Facilitate Distribution of RansomHub Ransomware</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 14 Mar 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-03-14"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.welivesecurity.com/en/critical-infrastructure/when-it-meets-ot-cybersecurity-physical-world/" target="_blank" rel="noopener">When IT meets OT: Cybersecurity for the physical world</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 14 Mar 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-03-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://msrc.microsoft.com/blog/2025/03/announcing-the-winners-of-the-adaptive-prompt-injection-challenge-llmail-inject/" target="_blank" rel="noopener">Announcing the winners of the Adaptive Prompt Injection Challenge (LLMail-Inject)</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 14 Mar 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-03-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.paloaltonetworks.com/blog/2025/03/cybersecurity-considerations-financial-institutions/" target="_blank" rel="noopener">Key Cybersecurity Considerations for Financial Institutions</a></div><span class="article-meta">PALOALTONETWORKS.COM &mdash; 14 Mar 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ms-isac cybersecurity advisory - multiple vulnerabilities in sante pacs server could allow for remote code execution - patch now - tlp: clear" data-date="2025-03-14"><span class="headline-date">14 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.cisecurity.org/advisory/ms-isac-cybersecurity-advisory---multiple-vulnerabilities-in-sante-pacs-server-could-allow-for-remote-code-execution---patch-now---tlp-clear_2025-026" target="_blank" rel="noopener">MS-ISAC CYBERSECURITY ADVISORY - Multiple Vulnerabilities in Sante PACS Server Could Allow for Remote Code Execution - PATCH NOW - TLP: CLEAR</a><span class="article-summary">Multiple vulnerabilities have been discovered in Sante PACS Server, the most severe of which could allow for remote code execution. Successful exploitation of the most severe vulnerabilities could allow for remote code execution in the context of the system. Depending on the priv…</span></span><span class="headline-source">CISECURITY.ORG</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cyber security madness in the us government: cyber security today for march 14, 2025" data-date="2025-03-14"><span class="headline-date">14 Mar</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/cyber-security-madness-in-the-us-government-cyber-security-today-for-march-14-2025" target="_blank" rel="noopener">Cyber Security Madness In The US Government: Cyber Security Today for March 14, 2025</a><span class="article-summary">Cybersecurity Madness: Halting Operations, Google Gemini, and Fake Captchas In this episode, host Jim Love delves into controversial cybersecurity decisions and the latest trends. The US government's directive to halt offensive cyber operations against Russia sparks debate about …</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="clickfix: how to infect your pc in three easy steps" data-date="2025-03-14"><span class="headline-date">14 Mar</span><span class="headline-body"><a class="headline-title" href="https://krebsonsecurity.com/2025/03/clickfix-how-to-infect-your-pc-in-three-easy-steps/" target="_blank" rel="noopener">ClickFix: How to Infect Your PC in Three Easy Steps</a><span class="article-summary">A clever malware deployment scheme first spotted in targeted attacks last year has now gone mainstream. In this scam, dubbed "ClickFix," the visitor to a hacked or malicious website is asked to distinguish themselves from bots by pressing a combination of keyboard keys that cause…</span></span><span class="headline-source">KREBSONSECURITY.COM</span></div>
+<div class="headline" data-title="socgholish’s intrusion techniques facilitate distribution of ransomhub ransomware" data-date="2025-03-14"><span class="headline-date">14 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/25/c/socgholishs-intrusion-techniques-facilitate-distribution-of-rans.html" target="_blank" rel="noopener">SocGholish’s Intrusion Techniques Facilitate Distribution of RansomHub Ransomware</a><span class="article-summary">Trend Research analyzed SocGholish’s MaaS framework and its role in deploying RansomHub ransomware through compromised websites, using highly obfuscated JavaScript loaders to evade detection and execute various malicious tasks.</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+<div class="headline" data-title="when it meets ot: cybersecurity for the physical world" data-date="2025-03-14"><span class="headline-date">14 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/en/critical-infrastructure/when-it-meets-ot-cybersecurity-physical-world/" target="_blank" rel="noopener">When IT meets OT: Cybersecurity for the physical world</a><span class="article-summary">While relatively rare, real-world incidents impacting operational technology highlight that organizations in critical infrastructure can’t afford to dismiss the OT threat</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="announcing the winners of the adaptive prompt injection challenge (llmail-inject)" data-date="2025-03-14"><span class="headline-date">14 Mar</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/blog/2025/03/announcing-the-winners-of-the-adaptive-prompt-injection-challenge-llmail-inject/" target="_blank" rel="noopener">Announcing the winners of the Adaptive Prompt Injection Challenge (LLMail-Inject)</a><span class="article-summary">We are excited to announce the winners of LLMail-Inject, our first Adaptive Prompt Injection Challenge! The challenge ran from December 2024 until February 2025 and was featured as one of the four official competitions of the 3rd IEEE Conference on Secure and Trustworthy Machine …</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="key cybersecurity considerations for financial institutions" data-date="2025-03-14"><span class="headline-date">14 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.paloaltonetworks.com/blog/2025/03/cybersecurity-considerations-financial-institutions/" target="_blank" rel="noopener">Key Cybersecurity Considerations for Financial Institutions</a><span class="article-summary">Financial orgs face cybersecurity challenges. Palo Alto Networks &#038; IBM experts share top considerations in a new vodcast series for better cybersecurity. The post Key Cybersecurity Considerations for Financial Institutions appeared first on Palo Alto Networks Blog .</span></span><span class="headline-source">PALOALTONETWORKS.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

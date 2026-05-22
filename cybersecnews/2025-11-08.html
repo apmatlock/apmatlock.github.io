@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-11-08</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,74 +109,65 @@
       <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-11-08</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">13</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Security Bulletins" onclick="filterCat('Security Bulletins', this)">SECURITY BULLETINS <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-11-08"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://gbhackers.com/samsung-0-day-vulnerability/" target="_blank" rel="noopener">New “LANDFALL” Android Malware Uses Samsung 0-Day Vulnerability Hidden in WhatsApp Images</a></div><span class="article-meta">GBHACKERS.COM &mdash; 08 Nov 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-11-08"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/ai-powered-cyber-threats/" target="_blank" rel="noopener">AI-Powered Cyber Threats Rise: Attackers Target Manufacturing Sector</a></div><span class="article-meta">GBHACKERS.COM &mdash; 08 Nov 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-11-08"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/11/microsoft-uncovers-whisper-leak-attack.html" target="_blank" rel="noopener">Microsoft Uncovers 'Whisper Leak' Attack That Identifies AI Chat Topics in Encrypted Traffic</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 08 Nov 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-11-08"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/37381432" target="_blank" rel="noopener">Meta is earning a fortune on a deluge of fraudulent ads, documents show</a></div><span class="article-meta">INFOSEC.PUB &mdash; 8 Nov 2025</span></div>
-<div class="article-row" data-cat="Security Bulletins" data-date="2025-11-08"><span class="cat-badge" style="border:1px solid rgba(255,170,0,0.5);background:rgba(255,170,0,0.10);" title="Security Bulletins">📋</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/microsoft/still-on-windows-10-enroll-in-free-extended-security-updates/" target="_blank" rel="noopener">Still on Windows 10? Enroll in free ESU before next week’s Patch Tuesday</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 08 Nov 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-11-08"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://haveibeenpwned.com/Breach/Tisza" target="_blank" rel="noopener">TISZA Világ - 198,520 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 08 Nov 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-11-08"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/microsoft-teams-feature/" target="_blank" rel="noopener">New Microsoft Teams Feature Exposes Users to Phishing and Malware Risks</a></div><span class="article-meta">GBHACKERS.COM &mdash; 08 Nov 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-11-08"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/a-former-black-hat-hacker-advises-us-on-security-weaknesses" target="_blank" rel="noopener">A Former Black Hat Hacker Advises Us On Security Weaknesses</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 08 Nov 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-11-08"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/37353419" target="_blank" rel="noopener">Cybersecurity: Russian attacks surge in Ukraine and Europe, Chinese groups target Latin American governments, report says</a></div><span class="article-meta">INFOSEC.PUB &mdash; 8 Nov 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-11-08"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://sh.itjust.works/post/49423861" target="_blank" rel="noopener">Cybersecurity: Russian attacks surge in Ukraine and Europe, Chinese groups target Latin American governments, report says</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 8 Nov 2025</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-11-08"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/glassworm-malware-returns-on-openvsx-with-3-new-vscode-extensions/" target="_blank" rel="noopener">GlassWorm malware returns on OpenVSX with 3 new VSCode extensions</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 08 Nov 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-11-08"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/32460" target="_blank" rel="noopener">Honeypot: Requests for (Code) Repositories, (Sat, Nov 8th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 08 Nov 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-11-08"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/artificial-intelligence/openai-plans-to-release-gpt-51-gpt-51-reasoning-and-gpt-51-pro/" target="_blank" rel="noopener">OpenAI plans to release GPT-5.1, GPT-5.1 Reasoning, and GPT-5.1 Pro</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 08 Nov 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new “landfall” android malware uses samsung 0-day vulnerability hidden in whatsapp images" data-date="2025-11-08"><span class="headline-date">8 Nov</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/samsung-0-day-vulnerability/" target="_blank" rel="noopener">New “LANDFALL” Android Malware Uses Samsung 0-Day Vulnerability Hidden in WhatsApp Images</a><span class="article-summary">Cybersecurity researchers at Unit 42 have uncovered a sophisticated Android spyware campaign that exploited a previously unknown zero-day vulnerability in Samsung Galaxy devices. The malware, dubbed LANDFALL, leveraged a critical vulnerability in Samsung&#8217;s image processing …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ai-powered cyber threats rise: attackers target manufacturing sector" data-date="2025-11-08"><span class="headline-date">8 Nov</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/ai-powered-cyber-threats/" target="_blank" rel="noopener">AI-Powered Cyber Threats Rise: Attackers Target Manufacturing Sector</a><span class="article-summary">A comprehensive new report reveals that manufacturing organizations are grappling with a dual challenge: rapidly adopting generative AI technologies while simultaneously defending against attackers who exploit these same platforms and trusted cloud services to launch sophisticate…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="microsoft uncovers 'whisper leak' attack that identifies ai chat topics in encrypted traffic" data-date="2025-11-08"><span class="headline-date">8 Nov</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/11/microsoft-uncovers-whisper-leak-attack.html" target="_blank" rel="noopener">Microsoft Uncovers 'Whisper Leak' Attack That Identifies AI Chat Topics in Encrypted Traffic</a><span class="article-summary">Microsoft has disclosed details of a novel side-channel attack targeting remote language models that could enable a passive adversary with capabilities to observe network traffic to glean details about model conversation topics despite encryption protections under certain circums…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="meta is earning a fortune on a deluge of fraudulent ads, documents show" data-date="2025-11-08"><span class="headline-date">8 Nov</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/37381432" target="_blank" rel="noopener">Meta is earning a fortune on a deluge of fraudulent ads, documents show</a><span class="article-summary">submitted by cm0002 to cybersecurity 1 points | 0 comments https://www.reuters.com/investigations/meta-is-earning-fortune-deluge-fraudulent-ads-documents-show-2025-11-06/ Internal documents reveal Meta projected it would earn $16 billion - about 10% of its 2024 revenue - from run…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-bulletins">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,170,0,0.5);" onclick="toggleSection(this)">📋 SECURITY BULLETINS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="still on windows 10? enroll in free esu before next week’s patch tuesday" data-date="2025-11-08"><span class="headline-date">8 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/microsoft/still-on-windows-10-enroll-in-free-extended-security-updates/" target="_blank" rel="noopener">Still on Windows 10? Enroll in free ESU before next week’s Patch Tuesday</a><span class="article-summary">With the first Patch Tuesday following Windows 10's end of support approaching next week, users who continue to run the operating system should enroll in the Extended Security Updates (ESU) program to remain protected against newly discovered security vulnerabilities. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="tisza világ - 198,520 breached accounts" data-date="2025-11-08"><span class="headline-date">8 Nov</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/Breach/Tisza" target="_blank" rel="noopener">TISZA Világ - 198,520 breached accounts</a><span class="article-summary">In late October 2025, data breached from the Hungarian political party TISZA was published online before being extensively redistributed . Stemming from a compromise of the TISZA Világ service earlier in the month, the breach exposed 200k records of personal data including email …</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new microsoft teams feature exposes users to phishing and malware risks" data-date="2025-11-08"><span class="headline-date">8 Nov</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/microsoft-teams-feature/" target="_blank" rel="noopener">New Microsoft Teams Feature Exposes Users to Phishing and Malware Risks</a><span class="article-summary">Microsoft is poised to roll out a significant update to Teams, enabling users to initiate chats with anyone using just an email address—even if the recipient isn’t a Teams user. While the feature, launching in targeted releases by early November 2025 and globally by January 2026,…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="a former black hat hacker advises us on security weaknesses" data-date="2025-11-08"><span class="headline-date">8 Nov</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/a-former-black-hat-hacker-advises-us-on-security-weaknesses" target="_blank" rel="noopener">A Former Black Hat Hacker Advises Us On Security Weaknesses</a><span class="article-summary">Unveiling the Double-Edged Sword of AI in Cybersecurity with Brian Black In this episode of Cybersecurity Today, host Jim Love interviews Brian Black, the head of security engineering at Deep Instinct and a former black hat hacker. Brian shares his journey into hacking from a you…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="cybersecurity: russian attacks surge in ukraine and europe, chinese groups target latin american governments, report says" data-date="2025-11-08"><span class="headline-date">8 Nov</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/37353419" target="_blank" rel="noopener">Cybersecurity: Russian attacks surge in Ukraine and Europe, Chinese groups target Latin American governments, report says</a><span class="article-summary">submitted by randomname to cybersecurity 1 points | 0 comments https://www.eset.com/us/about/newsroom/research/eset-research-apt-report-april-september-2025/ cross-posted from: scribe.disroot.org/post/5522978 ESET has released its latest advanced persistent threat (APT) report, c…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="cybersecurity: russian attacks surge in ukraine and europe, chinese groups target latin american governments, report says" data-date="2025-11-08"><span class="headline-date">8 Nov</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/49423861" target="_blank" rel="noopener">Cybersecurity: Russian attacks surge in Ukraine and Europe, Chinese groups target Latin American governments, report says</a><span class="article-summary">submitted by randomname to cybersecurity 1 points | 0 comments https://www.eset.com/us/about/newsroom/research/eset-research-apt-report-april-september-2025/ ESET has released its latest advanced persistent threat (APT) report, covering the period from April through September 202…</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="glassworm malware returns on openvsx with 3 new vscode extensions" data-date="2025-11-08"><span class="headline-date">8 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/glassworm-malware-returns-on-openvsx-with-3-new-vscode-extensions/" target="_blank" rel="noopener">GlassWorm malware returns on OpenVSX with 3 new VSCode extensions</a><span class="article-summary">The GlassWorm malware campaign, which impacted the OpenVSX and Visual Studio Code marketplaces last month, has returned with three new VSCode extensions that have already been downloaded over 10,000 times. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="honeypot: requests for (code) repositories, (sat, nov 8th)" data-date="2025-11-08"><span class="headline-date">8 Nov</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/32460" target="_blank" rel="noopener">Honeypot: Requests for (Code) Repositories, (Sat, Nov 8th)</a><span class="article-summary">This is just a quick diary entry to report that I saw requests on my honeypot for (code) repositories: &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="openai plans to release gpt-5.1, gpt-5.1 reasoning, and gpt-5.1 pro" data-date="2025-11-08"><span class="headline-date">8 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/artificial-intelligence/openai-plans-to-release-gpt-51-gpt-51-reasoning-and-gpt-51-pro/" target="_blank" rel="noopener">OpenAI plans to release GPT-5.1, GPT-5.1 Reasoning, and GPT-5.1 Pro</a><span class="article-summary">OpenAI is preparing the GPT-5.1 family for public rollout. This includes GPT-5.1 (base), GPT-5.1 Reasoning, and GPT-5.1 Pro for those who pay a $200 monthly subscription. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

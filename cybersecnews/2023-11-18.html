@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2023-11-18</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,94 +109,81 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2023-11-18</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">34</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">10</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Podcasts" onclick="filterCat('Podcasts', this)">PODCASTS <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">7</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.securityweek.com/over-a-dozen-exploitable-vulnerabilities-found-in-ai-ml-tools/?&web_view=true" target="_blank" rel="noopener">Over a Dozen Exploitable Vulnerabilities Found in AI/ML Tools</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 18 Nov 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.sonarsource.com/blog/vscode-security-markdown-vulnerabilities-in-extensions/" target="_blank" rel="noopener">Visual Studio Code Security: Markdown Vulnerabilities in Third-Party Extensions (2/3)</a></div><span class="article-meta">SONARSOURCE.COM &mdash; 18 Nov 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://buskill.in/bitcoin-black-friday-2023/" target="_blank" rel="noopener">BusKill (Open-Source Hardware Dead Man Switch) Announces Bitcoin Black Friday Deal</a></div><span class="article-meta">BUSKILL.IN &mdash; 18 Nov 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/exploit-for-crushftp-rce-chain-released-patch-now/" target="_blank" rel="noopener">Exploit for CrushFTP RCE chain released, patch now</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 18 Nov 2023</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/trellix-security-advisory-av23-708" target="_blank" rel="noopener">Trellix security advisory (AV23-708)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-11-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/microsoft-edge-security-advisory-av23-707" target="_blank" rel="noopener">Microsoft Edge security advisory (AV23-707)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-11-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/control-systems-red-lion-security-advisory-av23-706" target="_blank" rel="noopener">[Control systems] Red Lion security advisory (AV23-706)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-11-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/control-systems-hitachi-energy-security-advisory-av23-705" target="_blank" rel="noopener">[Control systems] Hitachi Energy security advisory (AV23-705)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-11-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/jupiter-networks-security-advisory-av23-704" target="_blank" rel="noopener">Jupiter Networks security advisory (AV23-704)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-11-18</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/security-firm-coo-hacked-hospitals-to-drum-up-business-a-23631" target="_blank" rel="noopener">Security Firm COO Hacked Hospitals to Drum Up Business</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-11-18</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://therecord.media/colleges-schools-facing-outages-cyberattacks?&web_view=true" target="_blank" rel="noopener">Multiple Colleges, K-12 Schools Facing Outages After Cyberattacks</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 18 Nov 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.cybersecuritydive.com/news/stanley-steemer-hack-67k-customers/700175/?&web_view=true" target="_blank" rel="noopener">Stanley Steemer Hack Breached Data of Almost 67K Customers</a></div><span class="article-meta">CYBERSECURITYDIVE.COM &mdash; 18 Nov 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://therecord.media/yamaha-welllife-network-confirm-cyberattacks?&web_view=true" target="_blank" rel="noopener">Yamaha and WellLife Network Confirm Cyber Incidents After Ransomware Gang Claims Attacks</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 18 Nov 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://therecord.media/more-than-hundreds-thousands-medicare-moveit?&web_view=true" target="_blank" rel="noopener">More Than 330,000 Medicare Recipients Affected by MOVEit Breach</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 18 Nov 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/bloomberg-crypto-x-account-snafu-leads-to-discord-phishing-attack/?&web_view=true" target="_blank" rel="noopener">Bloomberg Crypto X Account Snafu Leads to Discord Phishing Attack</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 18 Nov 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.infosecurity-magazine.com/news/british-library-ransomware/?&web_view=true" target="_blank" rel="noopener">Ransomware Recovery Could Take Months at British Library</a></div><span class="article-meta">INFOSECURITY-MAGAZINE.COM &mdash; 18 Nov 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2023/11/8base-group-deploying-new-phobos.html" target="_blank" rel="noopener">8Base Group Deploying New Phobos Ransomware Variant via SmokeLoader</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 18 Nov 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2023/11/18/postmeds-truepill-data-breach-pharmacy-millions/" target="_blank" rel="noopener">Healthcare startups scramble to assess fallout after Postmeds data breach hits millions of patients</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 18 Nov 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/watch?v=Q2yKBfoLdv4" target="_blank" rel="noopener">Cashwarp vs. Reptar | Rackspace | BlackCat | Bots | Aaran Leyland &amp; More! – SWN343</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2023-11-18</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/openai-fires-ceo-sam-altman-for-lying-to-board-directors-a-23634" target="_blank" rel="noopener">OpenAI Fires CEO Sam Altman for Lying to Board of Directors</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-11-18</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/uk-privacy-watchdog-pursues-clearview-ai-fine-after-reversal-a-23633" target="_blank" rel="noopener">UK Privacy Watchdog Pursues Clearview AI Fine After Reversal</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-11-18</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/att-forms-joint-venture-for-managed-cybersecurity-business-a-23632" target="_blank" rel="noopener">AT&amp;T Forms Joint Venture for Managed Cybersecurity Business</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-11-18</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2023/11/russian-cyber-espionage-group-deploys.html" target="_blank" rel="noopener">Russian Cyber Espionage Group Deploys LitterDrifter USB Worm in Targeted Attacks</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 18 Nov 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/kubernetes-security-on-aws/" target="_blank" rel="noopener">Kubernetes Security on AWS: A Practical Guide</a></div><span class="article-meta">GBHACKERS.COM &mdash; 18 Nov 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.securityweek.com/chatgpt-maker-openai-fires-ceo-sam-altman-the-face-of-the-ai-boom-for-lack-of-candor-with-company/" target="_blank" rel="noopener">ChatGPT-Maker OpenAI Fires CEO Sam Altman, the Face of the AI Boom, for Lack of Candor With Company</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 18 Nov 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/industry-reels-from-sam-altman-firing-openai-return-rumored-a-23636" target="_blank" rel="noopener">Industry Reels from Sam Altman Firing, OpenAI Return Rumored</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-11-18</span></div>
-<div class="article-row" data-cat="Podcasts" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(85,170,204,0.5);background:rgba(85,170,204,0.10);" title="Podcasts">🎙️</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/interviews/how-state-governments-regulate-ai-protect-privacy-i-5316" target="_blank" rel="noopener">How State Governments Can Regulate AI and Protect Privacy</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-11-18</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://cyber.gc.ca/en/guidance/domain-name-system-dns-tampering-itsap40021" target="_blank" rel="noopener">Domain Name System (DNS) tampering - ITSAP.40.021</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-11-18</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/webinars/live-webinar-guardians-cybersecurity-guide-to-fortifying-defenses-w-5200" target="_blank" rel="noopener">Live Webinar | Guardians of Cybersecurity: Guide to Fortifying Defenses, Navigating Cyber Insurance and AI</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-11-18</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/30414" target="_blank" rel="noopener">Quasar RAT Delivered Through Updated SharpLoader, (Sat, Nov 18th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 18 Nov 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/microsoft/windows-10-to-let-admins-control-how-optional-updates-are-deployed/" target="_blank" rel="noopener">Windows 10 to let admins control how optional updates are deployed</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 18 Nov 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/fcc-adopts-new-rules-to-protect-against-sim-swapping-attacks/" target="_blank" rel="noopener">FCC adopts new rules to protect against SIM-swapping attacks</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 18 Nov 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/google/google-shares-plans-for-blocking-third-party-cookies-in-chrome/" target="_blank" rel="noopener">Google shares plans for blocking third-party cookies in Chrome</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 18 Nov 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-11-18"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/fcc-adopts-new-rules-to-protect-consumers-from-sim-swapping-attacks/" target="_blank" rel="noopener">FCC adopts new rules to protect consumers from SIM-swapping attacks</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 18 Nov 2023</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="over a dozen exploitable vulnerabilities found in ai/ml tools" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/over-a-dozen-exploitable-vulnerabilities-found-in-ai-ml-tools/?&web_view=true" target="_blank" rel="noopener">Over a Dozen Exploitable Vulnerabilities Found in AI/ML Tools</a><span class="article-summary">The Huntr bug bounty platform has discovered multiple vulnerabilities in popular AI/ML tools, including H2O-3, MLflow, and Ray, which could lead to system takeover and data theft.</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="visual studio code security: markdown vulnerabilities in third-party extensions (2/3)" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.sonarsource.com/blog/vscode-security-markdown-vulnerabilities-in-extensions/" target="_blank" rel="noopener">Visual Studio Code Security: Markdown Vulnerabilities in Third-Party Extensions (2/3)</a><span class="article-summary">submitted by L4s to secops 1 points | 0 comments https://www.sonarsource.com/blog/vscode-security-markdown-vulnerabilities-in-extensions/ Visual Studio Code Security: Markdown Vulnerabilities in Third-Party Extensions (2/3)::We took a look at the security of the most popular code…</span></span><span class="headline-source">SONARSOURCE.COM</span></div>
+<div class="headline" data-title="buskill (open-source hardware dead man switch) announces bitcoin black friday deal" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://buskill.in/bitcoin-black-friday-2023/" target="_blank" rel="noopener">BusKill (Open-Source Hardware Dead Man Switch) Announces Bitcoin Black Friday Deal</a><span class="article-summary">submitted by maltfield to cybersecurity -2 points | 1 comments https://buskill.in/bitcoin-black-friday-2023/ In celebration of Bitcoin Black Friday 2023 , we’re offering a 10% discount on all BusKill cables sold between Nov 18 to Dec 03. BusKill Bitcoin Black Friday Sale - Our De…</span></span><span class="headline-source">BUSKILL.IN</span></div>
+<div class="headline" data-title="exploit for crushftp rce chain released, patch now" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/exploit-for-crushftp-rce-chain-released-patch-now/" target="_blank" rel="noopener">Exploit for CrushFTP RCE chain released, patch now</a><span class="article-summary">A proof-of-concept exploit was publicly released for a critical remote code execution vulnerability in the CrushFTP enterprise suite, allowing unauthenticated attackers to access files on the server, execute code, and obtain plain-text passwords. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="trellix security advisory (av23-708)" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/trellix-security-advisory-av23-708" target="_blank" rel="noopener">Trellix security advisory (AV23-708)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="microsoft edge security advisory (av23-707)" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/microsoft-edge-security-advisory-av23-707" target="_blank" rel="noopener">Microsoft Edge security advisory (AV23-707)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="[control systems] red lion security advisory (av23-706)" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/control-systems-red-lion-security-advisory-av23-706" target="_blank" rel="noopener">[Control systems] Red Lion security advisory (AV23-706)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="[control systems] hitachi energy security advisory (av23-705)" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/control-systems-hitachi-energy-security-advisory-av23-705" target="_blank" rel="noopener">[Control systems] Hitachi Energy security advisory (AV23-705)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="jupiter networks security advisory (av23-704)" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/jupiter-networks-security-advisory-av23-704" target="_blank" rel="noopener">Jupiter Networks security advisory (AV23-704)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">10</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="security firm coo hacked hospitals to drum up business" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/security-firm-coo-hacked-hospitals-to-drum-up-business-a-23631" target="_blank" rel="noopener">Security Firm COO Hacked Hospitals to Drum Up Business</a><span class="article-summary">Atlanta Man Pleads Guilty, Is Ordered to Pay $818,000 Restitution, May Avoid Prison The chief operating officer of an Atlanta-based cybersecurity firm has pleaded guilty and agreed to pay restitution of more than $818,000 in a federal criminal case in which he admitted hacking a …</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+<div class="headline" data-title="multiple colleges, k-12 schools facing outages after cyberattacks" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/colleges-schools-facing-outages-cyberattacks?&web_view=true" target="_blank" rel="noopener">Multiple Colleges, K-12 Schools Facing Outages After Cyberattacks</a><span class="article-summary">Schools like North Carolina Central University and Glendale Community College experienced significant disruptions to their IT systems, leading to the temporary suspension of online courses and the interruption of critical processes.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="stanley steemer hack breached data of almost 67k customers" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.cybersecuritydive.com/news/stanley-steemer-hack-67k-customers/700175/?&web_view=true" target="_blank" rel="noopener">Stanley Steemer Hack Breached Data of Almost 67K Customers</a><span class="article-summary">The breach went undetected for almost a month, highlighting the importance of proactive monitoring and timely detection of suspicious activities to prevent data breaches.</span></span><span class="headline-source">CYBERSECURITYDIVE.COM</span></div>
+<div class="headline" data-title="yamaha and welllife network confirm cyber incidents after ransomware gang claims attacks" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/yamaha-welllife-network-confirm-cyberattacks?&web_view=true" target="_blank" rel="noopener">Yamaha and WellLife Network Confirm Cyber Incidents After Ransomware Gang Claims Attacks</a><span class="article-summary">Japanese manufacturer Yamaha Motor and healthcare organization WellLife Network have both confirmed being victims of cyberattacks. The ransomware group responsible for the attacks, possibly the INC gang, has been targeting various industries.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="more than 330,000 medicare recipients affected by moveit breach" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/more-than-hundreds-thousands-medicare-moveit?&web_view=true" target="_blank" rel="noopener">More Than 330,000 Medicare Recipients Affected by MOVEit Breach</a><span class="article-summary">The breach highlights the importance of implementing the "Secure By Design" initiative and ensuring that software used by organizations is secure to prevent supply chain attacks.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="bloomberg crypto x account snafu leads to discord phishing attack" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/bloomberg-crypto-x-account-snafu-leads-to-discord-phishing-attack/?&web_view=true" target="_blank" rel="noopener">Bloomberg Crypto X Account Snafu Leads to Discord Phishing Attack</a><span class="article-summary">The official Twitter account for Bloomberg Crypto was hacked and used to redirect users to a phishing website. The hackers created a fake Bloomberg Discord server and prompted visitors to verify their accounts through a deceptive link.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="ransomware recovery could take months at british library" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.infosecurity-magazine.com/news/british-library-ransomware/?&web_view=true" target="_blank" rel="noopener">Ransomware Recovery Could Take Months at British Library</a><span class="article-summary">The British Library has confirmed that it was targeted in a ransomware attack on October 28. The attack caused a major technology outage, impacting phone lines, on-site services, access to digital collections, and its website.</span></span><span class="headline-source">INFOSECURITY-MAGAZINE.COM</span></div>
+<div class="headline" data-title="8base group deploying new phobos ransomware variant via smokeloader" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/11/8base-group-deploying-new-phobos.html" target="_blank" rel="noopener">8Base Group Deploying New Phobos Ransomware Variant via SmokeLoader</a><span class="article-summary">The threat actors behind the 8Base ransomware are leveraging a variant of the Phobos ransomware to conduct their financially motivated attacks. The findings come from Cisco Talos, which has recorded an increase in activity carried out by cybercriminals. “Most of the group’s Phobo…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="healthcare startups scramble to assess fallout after postmeds data breach hits millions of patients" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2023/11/18/postmeds-truepill-data-breach-pharmacy-millions/" target="_blank" rel="noopener">Healthcare startups scramble to assess fallout after Postmeds data breach hits millions of patients</a><span class="article-summary">More than two million people across the United States will receive notice that their personal and sensitive health information was stolen earlier this year during a cyberattack at Postmeds, the parent company of online pharmacy startup Truepill. For some of those affected, it&#82…</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="cashwarp vs. reptar | rackspace | blackcat | bots | aaran leyland &amp; more! – swn343" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=Q2yKBfoLdv4" target="_blank" rel="noopener">Cashwarp vs. Reptar | Rackspace | BlackCat | Bots | Aaran Leyland &amp; More! – SWN343</a><span class="article-summary">This week, Doug Talks: Cashwarp vs. Reptar, Rackspace, BlackCat, Bots, Aaran Leyland, and More on the security weekly news. →Full Show Notes: https://securityweekly.com/swn343 →Join the Security Weekly Discord Server: https://discord.gg/pqSwWm4 →Visit our website: https://www.sec…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="openai fires ceo sam altman for lying to board of directors" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/openai-fires-ceo-sam-altman-for-lying-to-board-directors-a-23634" target="_blank" rel="noopener">OpenAI Fires CEO Sam Altman for Lying to Board of Directors</a><span class="article-summary">CTO Mira Murati Becomes Interim CEO; President Greg Brockman Ousted as Chairman The organization behind ChatGPT carried out a shocking firing of its high-profile chief executive for being "not consistently candid in his communications with the board." OpenAI's board said Friday t…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+<div class="headline" data-title="uk privacy watchdog pursues clearview ai fine after reversal" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/uk-privacy-watchdog-pursues-clearview-ai-fine-after-reversal-a-23633" target="_blank" rel="noopener">UK Privacy Watchdog Pursues Clearview AI Fine After Reversal</a><span class="article-summary">ICO Seeks Permission to Challenge Ruling Vacating 7.5 Million-Pound Fine Britain's privacy watchdog on Friday said it will continue fighting to impose a fine on Clearview AI for allegedly violating the privacy rights of Britons after a tribunal sided with the facial recognition c…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+<div class="headline" data-title="at&amp;t forms joint venture for managed cybersecurity business" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/att-forms-joint-venture-for-managed-cybersecurity-business-a-23632" target="_blank" rel="noopener">AT&amp;T Forms Joint Venture for Managed Cybersecurity Business</a><span class="article-summary">WillJam Ventures Standing Up Joint Venture With AT&amp;T for Managed Cybersecurity Unit AT&amp;T will split its managed cybersecurity services practice from its core connectivity business by standing up a joint venture with Chicago-area investor WillJam Ventures. AT&amp;T will mo…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+<div class="headline" data-title="russian cyber espionage group deploys litterdrifter usb worm in targeted attacks" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/11/russian-cyber-espionage-group-deploys.html" target="_blank" rel="noopener">Russian Cyber Espionage Group Deploys LitterDrifter USB Worm in Targeted Attacks</a><span class="article-summary">Russian cyber espionage actors affiliated with the Federal Security Service (FSB) have been observed using a USB propagating worm called LitterDrifter in attacks targeting Ukrainian entities. Check Point, which detailed Gamaredon's (aka Aqua Blizzard, Iron Tilden, Primitive Bear,…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="kubernetes security on aws: a practical guide" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/kubernetes-security-on-aws/" target="_blank" rel="noopener">Kubernetes Security on AWS: A Practical Guide</a><span class="article-summary">Kubernetes security is safeguarding your Kubernetes clusters, the applications they host, and the infrastructure they rely on from threats. As a container orchestration platform, Kubernetes is incredibly powerful but presents a broad attack surface for potential adversaries. Kube…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="chatgpt-maker openai fires ceo sam altman, the face of the ai boom, for lack of candor with company" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/chatgpt-maker-openai-fires-ceo-sam-altman-the-face-of-the-ai-boom-for-lack-of-candor-with-company/" target="_blank" rel="noopener">ChatGPT-Maker OpenAI Fires CEO Sam Altman, the Face of the AI Boom, for Lack of Candor With Company</a><span class="article-summary">Open AI pushed out its co-founder and CEO Sam Altman after a review found he was “not consistently candid in his communications” with the board of directors. The post ChatGPT-Maker OpenAI Fires CEO Sam Altman, the Face of the AI Boom, for Lack of Candor With Company appeared firs…</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="industry reels from sam altman firing, openai return rumored" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/industry-reels-from-sam-altman-firing-openai-return-rumored-a-23636" target="_blank" rel="noopener">Industry Reels from Sam Altman Firing, OpenAI Return Rumored</a><span class="article-summary">Tech Investors, Execs Stunned By Altman's OpenAI Exodus, Which May Be Short-Lived Technology investors and executives are reeling from OpenAI's shocking firing of co-founder and CEO Sam Altman, though there's a chance the split may be short-lived. 'Whatever offense Altman committ…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-podcasts">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(85,170,204,0.5);" onclick="toggleSection(this)">🎙️ PODCASTS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="how state governments can regulate ai and protect privacy" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/interviews/how-state-governments-regulate-ai-protect-privacy-i-5316" target="_blank" rel="noopener">How State Governments Can Regulate AI and Protect Privacy</a><span class="article-summary">Regulating AI is "like regulating Jell-O," said Massachusetts risk counsel Jenny Hedderman, but states are looking at regulating "areas of harm" rather than AI as a whole. In this episode of "Cybersecurity Insights," Hedderman discusses privacy, third-party vendor risk, and lawye…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="domain name system (dns) tampering - itsap.40.021" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/guidance/domain-name-system-dns-tampering-itsap40021" target="_blank" rel="noopener">Domain Name System (DNS) tampering - ITSAP.40.021</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="live webinar | guardians of cybersecurity: guide to fortifying defenses, navigating cyber insurance and ai" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/webinars/live-webinar-guardians-cybersecurity-guide-to-fortifying-defenses-w-5200" target="_blank" rel="noopener">Live Webinar | Guardians of Cybersecurity: Guide to Fortifying Defenses, Navigating Cyber Insurance and AI</a></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+<div class="headline" data-title="quasar rat delivered through updated sharploader, (sat, nov 18th)" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/30414" target="_blank" rel="noopener">Quasar RAT Delivered Through Updated SharpLoader, (Sat, Nov 18th)</a><span class="article-summary">SharpLoader is a very old project&&#x23;x21; I found repositories on Gitlab that are 8 years old&&#x23;x5b;1&&#x23;x5d;&&#x23;x21; Its purpose is to load and uncompress a C&#x23; payload from a remote web server or a local file to execute it. There exists also a Powershell versio…</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="windows 10 to let admins control how optional updates are deployed" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/microsoft/windows-10-to-let-admins-control-how-optional-updates-are-deployed/" target="_blank" rel="noopener">Windows 10 to let admins control how optional updates are deployed</a><span class="article-summary">Microsoft announced a new policy that allows admins to control how optional updates are deployed on Windows 10 enterprise endpoints on their networks. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="fcc adopts new rules to protect against sim-swapping attacks" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/fcc-adopts-new-rules-to-protect-against-sim-swapping-attacks/" target="_blank" rel="noopener">FCC adopts new rules to protect against SIM-swapping attacks</a><span class="article-summary">The Federal Communications Commission (FCC) has revealed new rules to shield consumers from criminals who hijack their phone numbers in SIM swapping attacks and port-out fraud. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="google shares plans for blocking third-party cookies in chrome" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/google/google-shares-plans-for-blocking-third-party-cookies-in-chrome/" target="_blank" rel="noopener">Google shares plans for blocking third-party cookies in Chrome</a><span class="article-summary">Google has officially announced plans to gradually eliminate third-party cookies, a key aspect of its Privacy Sandbox initiative. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="fcc adopts new rules to protect consumers from sim-swapping attacks" data-date="2023-11-18"><span class="headline-date">18 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/fcc-adopts-new-rules-to-protect-consumers-from-sim-swapping-attacks/" target="_blank" rel="noopener">FCC adopts new rules to protect consumers from SIM-swapping attacks</a><span class="article-summary">The Federal Communications Commission (FCC) has revealed new rules to shield consumers from criminals who hijack their phone numbers in SIM swapping attacks and port-out fraud. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

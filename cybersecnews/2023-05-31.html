@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2023-05-31</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,62 +109,37 @@
       <div class="stat"><span class="stat-value">3</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2023-05-31</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Cybersecurity Briefings" onclick="filterCat('Cybersecurity Briefings', this)">CYBERSECURITY BRIEFINGS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-05-31"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/cyber-security-today-may-31-2023-almost-9-million-victims-in-a-data-breach-a-database-of-crooks-is-published-and-more" target="_blank" rel="noopener">Cyber Security Today, May 31, 2023 - Almost 9 million victims in a data breach, a database of crooks is published, and more</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 31 May 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-05-31"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisecurity.org/advisory/a-vulnerability-in-barracuda-email-security-gateway-could-allow-for-remote-command-injection_2023-054" target="_blank" rel="noopener">A Vulnerability in Barracuda Email Security Gateway Could Allow for Remote Command Injection</a></div><span class="article-meta">CISECURITY.ORG &mdash; 31 May 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-05-31"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://haveibeenpwned.com/PwnedWebsites#RaidForums" target="_blank" rel="noopener">RaidForums - 478,604 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 31 May 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-05-31"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="http://security.googleblog.com/2023/05/adding-chrome-browser-cloud-management.html" target="_blank" rel="noopener">Adding Chrome Browser Cloud Management remediation actions in Splunk using Alert Actions</a></div><span class="article-meta">SECURITY.GOOGLEBLOG.COM &mdash; 2023-05-31</span></div>
-<div class="article-row" data-cat="Cybersecurity Briefings" data-date="2023-05-31"><span class="cat-badge" style="border:1px solid rgba(68,170,136,0.5);background:rgba(68,170,136,0.10);" title="Cybersecurity Briefings">📰</span><div class="article-body"><a href="https://www.welivesecurity.com/2023/05/31/5-free-osint-tools-social-media/" target="_blank" rel="noopener">5 free OSINT tools for social media</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 31 May 2023</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cyber security today, may 31, 2023 - almost 9 million victims in a data breach, a database of crooks is published, and more" data-date="2023-05-31"><span class="headline-date">31 May</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/cyber-security-today-may-31-2023-almost-9-million-victims-in-a-data-breach-a-database-of-crooks-is-published-and-more" target="_blank" rel="noopener">Cyber Security Today, May 31, 2023 - Almost 9 million victims in a data breach, a database of crooks is published, and more</a><span class="article-summary">This episode reports on CAPTCHA evasion, more exploits added to the Murai botnet and more</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="a vulnerability in barracuda email security gateway could allow for remote command injection" data-date="2023-05-31"><span class="headline-date">31 May</span><span class="headline-body"><a class="headline-title" href="https://www.cisecurity.org/advisory/a-vulnerability-in-barracuda-email-security-gateway-could-allow-for-remote-command-injection_2023-054" target="_blank" rel="noopener">A Vulnerability in Barracuda Email Security Gateway Could Allow for Remote Command Injection</a><span class="article-summary">A Vulnerability has been discovered in Barracuda Email Security Gateway (ESG) which could allow for remote code injection. Barracuda Email Security Gateway is an email security gateway that manages and filters all inbound and outbound email traffic to protect organizations from e…</span></span><span class="headline-source">CISECURITY.ORG</span></div>
+<div class="headline" data-title="raidforums - 478,604 breached accounts" data-date="2023-05-31"><span class="headline-date">31 May</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/PwnedWebsites#RaidForums" target="_blank" rel="noopener">RaidForums - 478,604 breached accounts</a><span class="article-summary">In May 2023, 478k user records from the now defunct hacking forum known as &quot;RaidForums&quot; was posted to another hacking forum . The data dated back to September 2020 and included email addresses, usernames, dates of birth, IP addresses and passwords stored as Argon2 hashe…</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="adding chrome browser cloud management remediation actions in splunk using alert actions" data-date="2023-05-31"><span class="headline-date">31 May</span><span class="headline-body"><a class="headline-title" href="http://security.googleblog.com/2023/05/adding-chrome-browser-cloud-management.html" target="_blank" rel="noopener">Adding Chrome Browser Cloud Management remediation actions in Splunk using Alert Actions</a><span class="article-summary">Posted by Ashish Pujari, Chrome Security Team Introduction Chrome is trusted by millions of business users as a secure enterprise browser. Organizations can use Chrome Browser Cloud Management to help manage Chrome browsers more effectively. As an admin, they can use the Google A…</span></span><span class="headline-source">SECURITY.GOOGLEBLOG.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cybersecurity-briefings">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,170,136,0.5);" onclick="toggleSection(this)">📰 CYBERSECURITY BRIEFINGS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="5 free osint tools for social media" data-date="2023-05-31"><span class="headline-date">31 May</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/2023/05/31/5-free-osint-tools-social-media/" target="_blank" rel="noopener">5 free OSINT tools for social media</a><span class="article-summary">A roundup of some of the handiest tools for the collection and analysis of publicly available data from Twitter, Facebook and other social media platforms</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

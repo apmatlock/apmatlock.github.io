@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2026-03-28</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,78 +109,65 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2026-03-28</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">18</span></button>
-<button class="filter-btn" data-cat="CISA KEV" onclick="filterCat('CISA KEV', this)">CISA KEV <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Podcasts" onclick="filterCat('Podcasts', this)">PODCASTS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="CISA KEV" data-date="2026-03-28"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://thehackernews.com/2026/03/cisa-adds-cve-2025-53521-to-kev-after.html" target="_blank" rel="noopener">CISA Adds CVE-2025-53521 to KEV After Active F5 BIG-IP APM Exploitation</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) on Friday added a critical security flaw impacting F5 BIG-IP Access Policy Manager (APM) to its Known Exploited Vulnerabilities (KEV) catalog, citing evidence of active exploitation. The vulnerability in question is…</span></div><span class="kev-badge">KEV</span><span class="article-meta">THEHACKERNEWS.COM &mdash; 28 Mar 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-03-28"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-33343" target="_blank" rel="noopener">CVE-2026-33343 etcd: Nested etcd transactions bypass RBAC authorization checks</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 28 Mar 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-03-28"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-33413" target="_blank" rel="noopener">CVE-2026-33413 etcd: Authorization bypasses in multiple APIs</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 28 Mar 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-03-28"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2026/03/citrix-netscaler-under-active-recon-for.html" target="_blank" rel="noopener">Citrix NetScaler Under Active Recon for CVE-2026-3055 (CVSS 9.3) Memory Overread Bug</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 28 Mar 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-03-28"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/open-vsx-scanner/" target="_blank" rel="noopener">Open VSX Scanner Vulnerability Lets Malicious Extensions Go Live</a></div><span class="article-meta">GBHACKERS.COM &mdash; 28 Mar 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-03-28"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2026/03/ta446-deploys-leaked-darksword-ios.html" target="_blank" rel="noopener">TA446 Deploys Leaked DarkSword iOS Exploit Kit in Targeted Spear-Phishing Campaign</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 28 Mar 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-03-28"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/new-infinity-stealer-malware-grabs-macos-data-via-clickfix-lures/" target="_blank" rel="noopener">New Infinity Stealer malware grabs macOS data via ClickFix lures</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 28 Mar 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-03-28"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://infosec.pub/post/44089454" target="_blank" rel="noopener">Hundreds of Millions of iPhones Can Be Hacked With a New Tool Found in the Wild</a></div><span class="article-meta">INFOSEC.PUB &mdash; 28 Mar 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-03-28"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://programming.dev/post/47896253" target="_blank" rel="noopener">Hundreds of Millions of iPhones Can Be Hacked With a New Tool Found in the Wild</a></div><span class="article-meta">PROGRAMMING.DEV &mdash; 28 Mar 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-03-28"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://sh.itjust.works/post/57532724" target="_blank" rel="noopener">Hundreds of Millions of iPhones Can Be Hacked With a New Tool Found in the Wild</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 28 Mar 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-03-28"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://gbhackers.com/aws-account-breach/" target="_blank" rel="noopener">European Commission Confirms Cyberattack After AWS Account Breach</a></div><span class="article-meta">GBHACKERS.COM &mdash; 28 Mar 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-03-28"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://gbhackers.com/blankgrabber-malware/" target="_blank" rel="noopener">Fake Certificate Loader Hides BlankGrabber Malware Chain</a></div><span class="article-meta">GBHACKERS.COM &mdash; 28 Mar 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-03-28"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/32842" target="_blank" rel="noopener">TeamPCP Supply Chain Campaign: Update 003 - Operational Tempo Shift as Campaign Enters Monetization Phase With No New Compromises in 48 Hours, (Sat, Mar 28th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 28 Mar 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-03-28"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2026/03/iran-linked-hackers-breach-fbi.html" target="_blank" rel="noopener">Iran-Linked Hackers Breach FBI Director’s Personal Email, Hit Stryker With Wiper Attack</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 28 Mar 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-03-28"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.securityweek.com/cloudflare-themed-clickfix-attack-drops-infiniti-stealer-on-macs/" target="_blank" rel="noopener">Cloudflare-Themed ClickFix Attack Drops Infiniti Stealer on Macs</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 28 Mar 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-03-28"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/malicious-browser-extensions-2/" target="_blank" rel="noopener">Malicious Browser Extensions Hijack Users’ AI Chats in New “Prompt Poaching” Attack</a></div><span class="article-meta">GBHACKERS.COM &mdash; 28 Mar 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-03-28"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/9SyftWAWs1k" target="_blank" rel="noopener">What Are You Giving Up?</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2026-03-28</span></div>
-<div class="article-row" data-cat="Podcasts" data-date="2026-03-28"><span class="cat-badge" style="border:1px solid rgba(85,170,204,0.5);background:rgba(85,170,204,0.10);" title="Podcasts">🎙️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/rsac-recap-agentic-ai-and-interview-with-commvault-ciso-bill-oconnell" target="_blank" rel="noopener">RSAC Recap: Agentic AI and Interview With Commvault CISO Bill O'Connell</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 28 Mar 2026</span></div>
-    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa adds cve-2025-53521 to kev after active f5 big-ip apm exploitation" data-date="2026-03-28"><span class="headline-date">28 Mar <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/03/cisa-adds-cve-2025-53521-to-kev-after.html" target="_blank" rel="noopener">CISA Adds CVE-2025-53521 to KEV After Active F5 BIG-IP APM Exploitation</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) on Friday added a critical security flaw impacting F5 BIG-IP Access Policy Manager (APM) to its Known Exploited Vulnerabilities (KEV) catalog, citing evidence of active exploitation. The vulnerability in question is…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cve-2026-33343 etcd: nested etcd transactions bypass rbac authorization checks" data-date="2026-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-33343" target="_blank" rel="noopener">CVE-2026-33343 etcd: Nested etcd transactions bypass RBAC authorization checks</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-33413 etcd: authorization bypasses in multiple apis" data-date="2026-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-33413" target="_blank" rel="noopener">CVE-2026-33413 etcd: Authorization bypasses in multiple APIs</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="citrix netscaler under active recon for cve-2026-3055 (cvss 9.3) memory overread bug" data-date="2026-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/03/citrix-netscaler-under-active-recon-for.html" target="_blank" rel="noopener">Citrix NetScaler Under Active Recon for CVE-2026-3055 (CVSS 9.3) Memory Overread Bug</a><span class="article-summary">A recently disclosed critical security flaw impacting Citrix NetScaler ADC and NetScaler Gateway is witnessing active reconnaissance activity, according to Defused Cyber and watchTowr. The vulnerability, CVE-2026-3055 (CVSS score: 9.3), refers to a case of insufficient input vali…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="open vsx scanner vulnerability lets malicious extensions go live" data-date="2026-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/open-vsx-scanner/" target="_blank" rel="noopener">Open VSX Scanner Vulnerability Lets Malicious Extensions Go Live</a><span class="article-summary">Open VSX, the extension marketplace used by VS Code forks such as Cursor and Windsurf, recently fixed a critical vulnerability in its newly introduced pre-publish scanning pipeline that could allow malicious extensions to bypass security checks and go live undetected. The issue, …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="ta446 deploys leaked darksword ios exploit kit in targeted spear-phishing campaign" data-date="2026-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/03/ta446-deploys-leaked-darksword-ios.html" target="_blank" rel="noopener">TA446 Deploys Leaked DarkSword iOS Exploit Kit in Targeted Spear-Phishing Campaign</a><span class="article-summary">Proofpoint has disclosed details of a targeted email campaign in which threat actors with ties to Russia are leveraging the recently disclosed DarkSword exploit kit to target iOS devices. The activity has been attributed with high confidence to the Russian state-sponsored threat …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="new infinity stealer malware grabs macos data via clickfix lures" data-date="2026-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/new-infinity-stealer-malware-grabs-macos-data-via-clickfix-lures/" target="_blank" rel="noopener">New Infinity Stealer malware grabs macOS data via ClickFix lures</a><span class="article-summary">A new info-stealing malware named Infinity Stealer is targeting macOS systems with a Python payload packaged as an executable using the open-source Nuitka compiler. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="hundreds of millions of iphones can be hacked with a new tool found in the wild" data-date="2026-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/44089454" target="_blank" rel="noopener">Hundreds of Millions of iPhones Can Be Hacked With a New Tool Found in the Wild</a><span class="article-summary">submitted by Innerworld to cybersecurity 1 points | 0 comments https://www.wired.com/story/hundreds-of-millions-of-iphones-can-be-hacked-with-a-new-tool-found-in-the-wild/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="hundreds of millions of iphones can be hacked with a new tool found in the wild" data-date="2026-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://programming.dev/post/47896253" target="_blank" rel="noopener">Hundreds of Millions of iPhones Can Be Hacked With a New Tool Found in the Wild</a><span class="article-summary">submitted by Innerworld to security 2 points | 0 comments https://www.wired.com/story/hundreds-of-millions-of-iphones-can-be-hacked-with-a-new-tool-found-in-the-wild/</span></span><span class="headline-source">PROGRAMMING.DEV</span></div>
+<div class="headline" data-title="hundreds of millions of iphones can be hacked with a new tool found in the wild" data-date="2026-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/57532724" target="_blank" rel="noopener">Hundreds of Millions of iPhones Can Be Hacked With a New Tool Found in the Wild</a><span class="article-summary">submitted by Innerworld to cybersecurity 1 points | 0 comments https://www.wired.com/story/hundreds-of-millions-of-iphones-can-be-hacked-with-a-new-tool-found-in-the-wild/</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="european commission confirms cyberattack after aws account breach" data-date="2026-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/aws-account-breach/" target="_blank" rel="noopener">European Commission Confirms Cyberattack After AWS Account Breach</a><span class="article-summary">The European Commission has confirmed a cybersecurity incident affecting its cloud-based infrastructure after attackers gained access to an Amazon Web Services (AWS) account hosting parts of the Europa.eu platform. According to an official statement, the compromised infrastructur…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="fake certificate loader hides blankgrabber malware chain" data-date="2026-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/blankgrabber-malware/" target="_blank" rel="noopener">Fake Certificate Loader Hides BlankGrabber Malware Chain</a><span class="article-summary">BlankGrabber’s operators are now abusing a fake “certificate” loader to hide a multi‑stage Rust and Python infection chain, making this commodity stealer significantly harder to spot on Windows endpoints. The new technique relies on built‑in tools such as certutil.exe, heavily ob…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="teampcp supply chain campaign: update 003 - operational tempo shift as campaign enters monetization phase with no new compromises in 48 hours, (sat, mar 28th)" data-date="2026-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/32842" target="_blank" rel="noopener">TeamPCP Supply Chain Campaign: Update 003 - Operational Tempo Shift as Campaign Enters Monetization Phase With No New Compromises in 48 Hours, (Sat, Mar 28th)</a><span class="article-summary">This is the third update to the TeamPCP supply chain campaign threat intelligence report, "When the Security Scanner Became the Weapon" (v3.0, March 25, 2026). Update 002 covered developments through March 27, including the Telnyx PyPI compromise and Vect ransomware partnership. …</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="iran-linked hackers breach fbi director’s personal email, hit stryker with wiper attack" data-date="2026-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/03/iran-linked-hackers-breach-fbi.html" target="_blank" rel="noopener">Iran-Linked Hackers Breach FBI Director’s Personal Email, Hit Stryker With Wiper Attack</a><span class="article-summary">Threat actors with ties to Iran successfully broke into the personal email account of Kash Patel, the director of the U.S. Federal Bureau of Investigation (FBI), and leaked a cache of photos and other documents to the internet. Handala Hack Team, which carried out the breach, sai…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cloudflare-themed clickfix attack drops infiniti stealer on macs" data-date="2026-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/cloudflare-themed-clickfix-attack-drops-infiniti-stealer-on-macs/" target="_blank" rel="noopener">Cloudflare-Themed ClickFix Attack Drops Infiniti Stealer on Macs</a><span class="article-summary">The infection chain includes a fake CAPTCHA page, a Bash script, a Nuitka loader, and the Python-based infostealer. The post Cloudflare-Themed ClickFix Attack Drops Infiniti Stealer on Macs appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="malicious browser extensions hijack users’ ai chats in new “prompt poaching” attack" data-date="2026-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/malicious-browser-extensions-2/" target="_blank" rel="noopener">Malicious Browser Extensions Hijack Users’ AI Chats in New “Prompt Poaching” Attack</a><span class="article-summary">A new wave of malicious browser extensions is quietly harvesting sensitive user interactions with AI tools, in a growing threat now dubbed “prompt poaching.” The rise of AI assistants in everyday browsing has created a usability gap. Most users interact with AI tools in isolated …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="what are you giving up?" data-date="2026-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/9SyftWAWs1k" target="_blank" rel="noopener">What Are You Giving Up?</a><span class="article-summary">A simple mental check—“what am I giving up?”—can help identify risky interactions, especially when information or downloads are involved. Scams rely on quick decisions and unnoticed tradeoffs. By pausing and evaluating the cost—whether it’s money, personal data, or access—you can…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-podcasts">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(85,170,204,0.5);" onclick="toggleSection(this)">🎙️ PODCASTS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="rsac recap: agentic ai and interview with commvault ciso bill o'connell" data-date="2026-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/rsac-recap-agentic-ai-and-interview-with-commvault-ciso-bill-oconnell" target="_blank" rel="noopener">RSAC Recap: Agentic AI and Interview With Commvault CISO Bill O'Connell</a><span class="article-summary">RSAC Recap: Agentic AI Takes Over, Security Funding Shifts, and Why CISOs Must Focus on Resilience Cybersecurity Today would like to thank Meter for their support in bringing you this podcast. Meter delivers a complete networking stack, wired, wireless and cellular in one integra…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

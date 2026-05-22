@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-07-20</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,79 +109,62 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-07-20</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">20</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Security Bulletins" onclick="filterCat('Security Bulletins', this)">SECURITY BULLETINS <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-07-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/2810058/federal-judge-greenlights-securities-fraud-charges-against-solarwinds-and-its-ciso.html" target="_blank" rel="noopener">Federal judge greenlights securities fraud charges against SolarWinds and its CISO</a></div><span class="article-meta">CSOONLINE.COM &mdash; 20 Jul 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-07-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/07/17-year-old-linked-to-scattered-spider.html" target="_blank" rel="noopener">17-Year-Old Linked to Scattered Spider Cybercrime Syndicate Arrested in U.K.</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 20 Jul 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-07-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.theregister.com/2024/07/19/wasirx_pauses_trade/?&web_view=true" target="_blank" rel="noopener">North Korean Hackers May Have Attacked Indian Crypto Exchange WazirX</a></div><span class="article-meta">THEREGISTER.COM &mdash; 20 Jul 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-07-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/fake-websites-phishing-surface-in-wake-crowdstrike-outage-a-25817" target="_blank" rel="noopener">Fake Websites, Phishing Surface in Wake CrowdStrike Outage</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2024-07-20</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-07-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://techcrunch.com/2024/07/20/microsoft-says-8-5m-windows-devices-were-affected-by-crowdstrike-outage/" target="_blank" rel="noopener">Microsoft says 8.5M Windows devices were affected by CrowdStrike outage</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 20 Jul 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-07-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/07/cybercriminals-exploit-crowdstrike.html" target="_blank" rel="noopener">Cybercriminals Exploit CrowdStrike Update Mishap to Distribute Remcos RAT Malware</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 20 Jul 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-07-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://techcrunch.com/2024/07/20/unpacking-how-alphabets-rumored-wiz-acquisition-could-affect-vc/" target="_blank" rel="noopener">Unpacking how Alphabet’s rumored Wiz acquisition could affect VC</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 20 Jul 2024</span></div>
-<div class="article-row" data-cat="Security Bulletins" data-date="2024-07-20"><span class="cat-badge" style="border:1px solid rgba(255,170,0,0.5);background:rgba(255,170,0,0.10);" title="Security Bulletins">📋</span><div class="article-body"><a href="https://www.securityweek.com/crowdstrike-provides-remediation-guidance-after-software-update-causes-worldwide-it-chaos/" target="_blank" rel="noopener">CrowdStrike Provides Remediation Guidance After Software Update Causes Worldwide IT Chaos</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 20 Jul 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-07-20"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/24/g/new-play-ransomware-linux-variant-targets-esxi-shows-ties-with-p.html?&web_view=true" target="_blank" rel="noopener">New Play Ransomware Linux Variant Targets ESXi Shows Ties With Prolific Puma</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 20 Jul 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-07-20"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.csoonline.com/article/2872861/crowdstrike-ceo-apologizes-for-crashing-it-systems-around-the-world-details-fix.html" target="_blank" rel="noopener">CrowdStrike CEO apologizes for crashing IT systems around the world, details fix</a></div><span class="article-meta">CSOONLINE.COM &mdash; 20 Jul 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-07-20"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/watch?v=eoKUPNbpIxI" target="_blank" rel="noopener">🔥 Breaking Down the CrowdStrike Incident with Josh Marpet | Security Weekly News 🔐</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-07-20</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-07-20"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/watch?v=CUEUSXYfhuo" target="_blank" rel="noopener">Breaking Down the CrowdStrike Incident: Data Flow and Supply Chain Vulnerabilities Explained</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-07-20</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-07-20"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/uk-arrests-suspected-scattered-spider-hacker-linked-to-mgm-attack/" target="_blank" rel="noopener">UK arrests suspected Scattered Spider hacker linked to MGM attack</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 20 Jul 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-07-20"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://haveibeenpwned.com/PwnedWebsites#Life360" target="_blank" rel="noopener">Life360 - 442,519 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 20 Jul 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-07-20"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.securityweek.com/crowdstrike-says-logic-error-caused-windows-bsod-chaos/" target="_blank" rel="noopener">CrowdStrike Says Logic Error Caused Windows BSOD Chaos</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 20 Jul 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-07-20"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust?&web_view=true" target="_blank" rel="noopener">APT41 Has Arisen From the DUST</a></div><span class="article-meta">CLOUD.GOOGLE.COM &mdash; 20 Jul 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-07-20"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://sh.itjust.works/post/22522847" target="_blank" rel="noopener">What is the best antivirus for windows 10/11?</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 20 Jul 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-07-20"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://github.com/AndyFul/ConfigureDefender" target="_blank" rel="noopener">A recommended tool for people using Defender.</a></div><span class="article-meta">GITHUB.COM &mdash; 20 Jul 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-07-20"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.recordedfuture.com/research/oilalpha-spyware-used-to-target-humanitarian-aid-groups?&web_view=true" target="_blank" rel="noopener">OilAlpha Malicious Applications Target Humanitarian Aid Groups Operating in Yemen</a></div><span class="article-meta">RECORDEDFUTURE.COM &mdash; 20 Jul 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-07-20"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/microsoft/microsoft-windows-365-cloud-pcs-stuck-restarting-after-crowdstrike-update/" target="_blank" rel="noopener">Microsoft confirms CrowdStrike update also hit Windows 365 PCs</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 20 Jul 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="federal judge greenlights securities fraud charges against solarwinds and its ciso" data-date="2024-07-20"><span class="headline-date">20 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/2810058/federal-judge-greenlights-securities-fraud-charges-against-solarwinds-and-its-ciso.html" target="_blank" rel="noopener">Federal judge greenlights securities fraud charges against SolarWinds and its CISO</a><span class="article-summary">Security firm SolarWinds had good news and bad news this week, as most of the charges in the US Securities and Exchange Commission (SEC) lawsuit, filed in the wake of the 2020 Sunburst cyberattack , were dismissed. However, the charges against both the company and its CISO around…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="17-year-old linked to scattered spider cybercrime syndicate arrested in u.k." data-date="2024-07-20"><span class="headline-date">20 Jul</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/07/17-year-old-linked-to-scattered-spider.html" target="_blank" rel="noopener">17-Year-Old Linked to Scattered Spider Cybercrime Syndicate Arrested in U.K.</a><span class="article-summary">Law enforcement officials in the U.K. have arrested a 17-year-old boy from Walsall who is suspected to be a member of the notorious Scattered Spider cybercrime syndicate. The arrest was made "in connection with a global cyber online crime group which has been targeting large orga…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="north korean hackers may have attacked indian crypto exchange wazirx" data-date="2024-07-20"><span class="headline-date">20 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.theregister.com/2024/07/19/wasirx_pauses_trade/?&web_view=true" target="_blank" rel="noopener">North Korean Hackers May Have Attacked Indian Crypto Exchange WazirX</a><span class="article-summary">Indian crypto exchange WazirX disclosed a loss of virtual assets worth more than $230 million due to a cyber attack linked to North Korea. The attack targeted a multi-signature wallet with six signatories, leading to a breach in security measures.</span></span><span class="headline-source">THEREGISTER.COM</span></div>
+<div class="headline" data-title="fake websites, phishing surface in wake crowdstrike outage" data-date="2024-07-20"><span class="headline-date">20 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/fake-websites-phishing-surface-in-wake-crowdstrike-outage-a-25817" target="_blank" rel="noopener">Fake Websites, Phishing Surface in Wake CrowdStrike Outage</a><span class="article-summary">Authorities Warn About Domains Targeting Victims Seeking to Restore Windows Devices Cybercriminals are exploiting the chaos created by the CrowdStrike outage by launching fake websites and phishing campaigns to trick victims into downloading malware or divulging sensitive informa…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+<div class="headline" data-title="microsoft says 8.5m windows devices were affected by crowdstrike outage" data-date="2024-07-20"><span class="headline-date">20 Jul</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/07/20/microsoft-says-8-5m-windows-devices-were-affected-by-crowdstrike-outage/" target="_blank" rel="noopener">Microsoft says 8.5M Windows devices were affected by CrowdStrike outage</a><span class="article-summary">Around 8.5 million devices — less than 1 percent Windows machines globally — were affected by the recent CrowdStrike outage, according to a Microsoft blog post by David Weston, the company’s vice president of enterprise and OS security. These are the first real numbers released b…</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="cybercriminals exploit crowdstrike update mishap to distribute remcos rat malware" data-date="2024-07-20"><span class="headline-date">20 Jul</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/07/cybercriminals-exploit-crowdstrike.html" target="_blank" rel="noopener">Cybercriminals Exploit CrowdStrike Update Mishap to Distribute Remcos RAT Malware</a><span class="article-summary">Cybersecurity firm CrowdStrike, which is facing the heat for causing worldwide IT disruptions by pushing out a flawed update to Windows devices, is now warning that threat actors are exploiting the situation to distribute Remcos RAT to its customers in Latin America under the gui…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="unpacking how alphabet’s rumored wiz acquisition could affect vc" data-date="2024-07-20"><span class="headline-date">20 Jul</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/07/20/unpacking-how-alphabets-rumored-wiz-acquisition-could-affect-vc/" target="_blank" rel="noopener">Unpacking how Alphabet’s rumored Wiz acquisition could affect VC</a><span class="article-summary">Alphabet, the parent company of Google, is in advanced talks to acquire cybersecurity startup Wiz for $23 billion, the Wall Street Journal reported on Sunday. TechCrunch&#8217;s sources heard similar and added that deal discussions could last into next week. If this deal does end…</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-bulletins">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,170,0,0.5);" onclick="toggleSection(this)">📋 SECURITY BULLETINS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="crowdstrike provides remediation guidance after software update causes worldwide it chaos" data-date="2024-07-20"><span class="headline-date">20 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/crowdstrike-provides-remediation-guidance-after-software-update-causes-worldwide-it-chaos/" target="_blank" rel="noopener">CrowdStrike Provides Remediation Guidance After Software Update Causes Worldwide IT Chaos</a><span class="article-summary">CrowdStrike on Saturday provided technical information and remediation guidance to help organizations impacted by the faulty software update that trigged massive IT outages across the globe on Friday. The post CrowdStrike Provides Remediation Guidance After Software Update Causes…</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new play ransomware linux variant targets esxi shows ties with prolific puma" data-date="2024-07-20"><span class="headline-date">20 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/24/g/new-play-ransomware-linux-variant-targets-esxi-shows-ties-with-p.html?&web_view=true" target="_blank" rel="noopener">New Play Ransomware Linux Variant Targets ESXi Shows Ties With Prolific Puma</a><span class="article-summary">The Play ransomware group has introduced a Linux variant that targets ESXi environments. This variant verifies its environment before executing and has been successful in evading security measures.</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+<div class="headline" data-title="crowdstrike ceo apologizes for crashing it systems around the world, details fix" data-date="2024-07-20"><span class="headline-date">20 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/2872861/crowdstrike-ceo-apologizes-for-crashing-it-systems-around-the-world-details-fix.html" target="_blank" rel="noopener">CrowdStrike CEO apologizes for crashing IT systems around the world, details fix</a><span class="article-summary">CrowdStrike CEO has apologized to the company’s customers and partners for crashing their Windows systems, and the company has described the error that caused the disaster. “I want to sincerely apologize directly to all of you for today’s outage. All of CrowdStrike understands th…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="🔥 breaking down the crowdstrike incident with josh marpet | security weekly news 🔐" data-date="2024-07-20"><span class="headline-date">20 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=eoKUPNbpIxI" target="_blank" rel="noopener">🔥 Breaking Down the CrowdStrike Incident with Josh Marpet | Security Weekly News 🔐</a><span class="article-summary">Join us as Josh Marpet & Dr. Doug White dive into the recent CrowdStrike incident and the pitfalls of the 'beta test culture' promoted by big tech. 🚨 How does this affect our interconnected cloud systems? Tune in to find out! #cybersecurity #CrowdStrike #TechNews"</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="breaking down the crowdstrike incident: data flow and supply chain vulnerabilities explained" data-date="2024-07-20"><span class="headline-date">20 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=CUEUSXYfhuo" target="_blank" rel="noopener">Breaking Down the CrowdStrike Incident: Data Flow and Supply Chain Vulnerabilities Explained</a><span class="article-summary">In this clip from Security Weekly News, Josh Marpet dives deep into the critical aspects of understanding your data flow and identifying supply chain vulnerabilities in light of the recent CrowdStrike incident. Learn how to ensure your systems are resilient and prepared for any d…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="uk arrests suspected scattered spider hacker linked to mgm attack" data-date="2024-07-20"><span class="headline-date">20 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/uk-arrests-suspected-scattered-spider-hacker-linked-to-mgm-attack/" target="_blank" rel="noopener">UK arrests suspected Scattered Spider hacker linked to MGM attack</a><span class="article-summary">UK police have arrested a 17-year-old boy suspected of being involved in the 2023 MGM Resorts ransomware attack and a member of the Scattered Spider hacking collective. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="life360 - 442,519 breached accounts" data-date="2024-07-20"><span class="headline-date">20 Jul</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/PwnedWebsites#Life360" target="_blank" rel="noopener">Life360 - 442,519 breached accounts</a><span class="article-summary">In July 2024, data scraped from a misconfigured Life360 API was posted online after being obtained several months earlier . The records included 443k unique email addresses and in most cases, corresponding names and phone numbers (some records were null or obfuscated). Life360 pr…</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="crowdstrike says logic error caused windows bsod chaos" data-date="2024-07-20"><span class="headline-date">20 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/crowdstrike-says-logic-error-caused-windows-bsod-chaos/" target="_blank" rel="noopener">CrowdStrike Says Logic Error Caused Windows BSOD Chaos</a><span class="article-summary">CrowdStrike says a routine sensor configuration update pushed to Windows OS triggered a logic error that blue-screened computers worldwide. The post CrowdStrike Says Logic Error Caused Windows BSOD Chaos appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="apt41 has arisen from the dust" data-date="2024-07-20"><span class="headline-date">20 Jul</span><span class="headline-body"><a class="headline-title" href="https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust?&web_view=true" target="_blank" rel="noopener">APT41 Has Arisen From the DUST</a><span class="article-summary">APT41, a China-based hacking group, has targeted organizations in shipping, logistics, media, technology, and automotive sectors in Italy, Spain, Taiwan, Thailand, Turkey, and the U.K. since 2023.</span></span><span class="headline-source">CLOUD.GOOGLE.COM</span></div>
+<div class="headline" data-title="what is the best antivirus for windows 10/11?" data-date="2024-07-20"><span class="headline-date">20 Jul</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/22522847" target="_blank" rel="noopener">What is the best antivirus for windows 10/11?</a><span class="article-summary">submitted by ModerateImprovement to cybersecurity 1 points | 2 comments I am under the impression that the best antivirus programs that work without account is Eset and Kaspersky. Is there is a better solutions?</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="a recommended tool for people using defender." data-date="2024-07-20"><span class="headline-date">20 Jul</span><span class="headline-body"><a class="headline-title" href="https://github.com/AndyFul/ConfigureDefender" target="_blank" rel="noopener">A recommended tool for people using Defender.</a><span class="article-summary">submitted by ModerateImprovement to cybersecurity 2 points | 0 comments https://github.com/AndyFul/ConfigureDefender Based on my last post I saw a lot of people who recommend me windows defender, so I wanted to suggest this tool for people who use it on their systems.</span></span><span class="headline-source">GITHUB.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="oilalpha malicious applications target humanitarian aid groups operating in yemen" data-date="2024-07-20"><span class="headline-date">20 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.recordedfuture.com/research/oilalpha-spyware-used-to-target-humanitarian-aid-groups?&web_view=true" target="_blank" rel="noopener">OilAlpha Malicious Applications Target Humanitarian Aid Groups Operating in Yemen</a><span class="article-summary">The attacks, linked to a group called OilAlpha, involved malicious mobile apps and targeted CARE International, Norwegian Refugee Council (NRC), and Saudi Arabian King Salman Humanitarian Aid and Relief Centre.</span></span><span class="headline-source">RECORDEDFUTURE.COM</span></div>
+<div class="headline" data-title="microsoft confirms crowdstrike update also hit windows 365 pcs" data-date="2024-07-20"><span class="headline-date">20 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/microsoft/microsoft-windows-365-cloud-pcs-stuck-restarting-after-crowdstrike-update/" target="_blank" rel="noopener">Microsoft confirms CrowdStrike update also hit Windows 365 PCs</a><span class="article-summary">Microsoft says the faulty CrowdStrike Falcon update, which caused widespread outages by crashing Windows systems worldwide, also resulted in Windows 365 Cloud PCs getting stuck in reboot loops, rendering them unusable. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-08-17</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,72 +109,51 @@
       <div class="stat"><span class="stat-value">4</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-08-17</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">14</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">3</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/elastic-edr-0-day-flaw/" target="_blank" rel="noopener">Elastic EDR 0-Day Flaw Lets Hackers Evade Detection, Run Malware, and Trigger BSOD</a></div><span class="article-meta">GBHACKERS.COM &mdash; 17 Aug 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/4XIYV42IML0" target="_blank" rel="noopener">Why Crypto Miners Love Poor Cloud Governance 🔓</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-17</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/QOPvuBRYJ5k" target="_blank" rel="noopener">BIOS Attacks: The Malware Apocalypse No One’s Ready For</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-17</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/best-patch-management-software/" target="_blank" rel="noopener">Top 10 Best Patch Management Software For IT Security 2025</a></div><span class="article-meta">GBHACKERS.COM &mdash; 17 Aug 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://sh.itjust.works/post/44313344" target="_blank" rel="noopener">Researcher to release exploit for full auth bypass on FortiWeb</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 17 Aug 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-08-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/us-seizes-28-million-in-crypto-from-zeppelin-ransomware-operator/" target="_blank" rel="noopener">U.S. seizes $2.8 million in crypto from Zeppelin ransomware operator</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 17 Aug 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-08-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/shorts/JnTt2tGWzII" target="_blank" rel="noopener">Short-Lived URLs: Your Secret Weapon Against Data Leaks 🕵️‍♂️</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-17</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/33237031" target="_blank" rel="noopener">Citizen Lab director warns Black Hat security conference about authoritarian descent</a></div><span class="article-meta">INFOSEC.PUB &mdash; 17 Aug 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://sh.itjust.works/post/44271613" target="_blank" rel="noopener">Citizen Lab director warns Black Hat security conference about authoritarian descent</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 17 Aug 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/RJzKX1OqdjA" target="_blank" rel="noopener">Secure by Design: The Secret Weapon in DevOps</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-17</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/si-2-q6cmPw" target="_blank" rel="noopener">Signed Code or Cyber Chaos? 🔐</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-17</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-08-17"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/artificial-intelligence/anthropic-claude-can-now-end-conversations-to-prevent-harmful-uses/" target="_blank" rel="noopener">Anthropic: Claude can now end conversations to prevent harmful uses</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 17 Aug 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-08-17"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/artificial-intelligence/google-is-adding-projects-feature-to-gemini-to-run-research-tasks/" target="_blank" rel="noopener">Google is adding "Projects" feature to Gemini to run research tasks</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 17 Aug 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-08-17"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/artificial-intelligence/openai-releases-warmer-gpt-5-personality-but-only-for-non-thinking-model/" target="_blank" rel="noopener">OpenAI releases warmer GPT-5 personality, but only for non thinking model</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 17 Aug 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="elastic edr 0-day flaw lets hackers evade detection, run malware, and trigger bsod" data-date="2025-08-17"><span class="headline-date">17 Aug</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/elastic-edr-0-day-flaw/" target="_blank" rel="noopener">Elastic EDR 0-Day Flaw Lets Hackers Evade Detection, Run Malware, and Trigger BSOD</a><span class="article-summary">AshES Cybersecurity has disclosed a severe zero-day vulnerability in Elastic&#8217;s Endpoint Detection and Response (EDR) software that transforms the security tool into a weapon against the systems it&#8217;s designed to protect. The flaw, found in the Microsoft-signed kernel d…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="why crypto miners love poor cloud governance 🔓" data-date="2025-08-17"><span class="headline-date">17 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/4XIYV42IML0" target="_blank" rel="noopener">Why Crypto Miners Love Poor Cloud Governance 🔓</a><span class="article-summary">When unused servers and non-standard assets go unnoticed, they can become a goldmine for crypto miners. In this short, Yogi breaks down how poor cloud governance opens the door to escalating costs, security gaps, and even hidden mining rigs draining your resources. Perfect for cy…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="bios attacks: the malware apocalypse no one’s ready for" data-date="2025-08-17"><span class="headline-date">17 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/QOPvuBRYJ5k" target="_blank" rel="noopener">BIOS Attacks: The Malware Apocalypse No One’s Ready For</a><span class="article-summary">Deep inside the BIOS, beyond the reach of antivirus and traditional defenses, lurks a new breed of malware. In this jaw-dropping clip, cybersecurity expert Aaran explains how attackers can plant a permanent backdoor that survives full disk wipes, system resets, and even motherboa…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="top 10 best patch management software for it security 2025" data-date="2025-08-17"><span class="headline-date">17 Aug</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/best-patch-management-software/" target="_blank" rel="noopener">Top 10 Best Patch Management Software For IT Security 2025</a><span class="article-summary">In the relentless battle against cyber threats in 2025, unpatched software remains a gaping vulnerability exploited by attackers worldwide. Outdated operating systems, applications riddled with known flaws, and missing security updates create an open invitation for malware, ranso…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="researcher to release exploit for full auth bypass on fortiweb" data-date="2025-08-17"><span class="headline-date">17 Aug</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/44313344" target="_blank" rel="noopener">Researcher to release exploit for full auth bypass on FortiWeb</a><span class="article-summary">submitted by floofloof to cybersecurity 2 points | 0 comments https://www.bleepingcomputer.com/news/security/researcher-to-release-exploit-for-full-auth-bypass-on-fortiweb/</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="u.s. seizes $2.8 million in crypto from zeppelin ransomware operator" data-date="2025-08-17"><span class="headline-date">17 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/us-seizes-28-million-in-crypto-from-zeppelin-ransomware-operator/" target="_blank" rel="noopener">U.S. seizes $2.8 million in crypto from Zeppelin ransomware operator</a><span class="article-summary">The U.S. Department of Justice (DoJ) announced the seizure of over $2,800,000 in cryptocurrency from alleged ransomware operator Ianis Aleksandrovich Antropenko. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="short-lived urls: your secret weapon against data leaks 🕵️‍♂️" data-date="2025-08-17"><span class="headline-date">17 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/JnTt2tGWzII" target="_blank" rel="noopener">Short-Lived URLs: Your Secret Weapon Against Data Leaks 🕵️‍♂️</a><span class="article-summary">In this quick cybersecurity tip, Aaran reveals why short-lived signed URLs are a game-changer for protecting sensitive files from leaks. By scoping each link to the authenticated user and limiting its lifetime, even compromised servers can’t expose private buckets. This 30-second…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="citizen lab director warns black hat security conference about authoritarian descent" data-date="2025-08-17"><span class="headline-date">17 Aug</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/33237031" target="_blank" rel="noopener">Citizen Lab director warns Black Hat security conference about authoritarian descent</a><span class="article-summary">submitted by Davriellelouna to cybersecurity 6 points | 0 comments http://techcrunch.com/2025/08/06/citizen-lab-director-warns-cyber-industry-about-us-authoritarian-descent/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="citizen lab director warns black hat security conference about authoritarian descent" data-date="2025-08-17"><span class="headline-date">17 Aug</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/44271613" target="_blank" rel="noopener">Citizen Lab director warns Black Hat security conference about authoritarian descent</a><span class="article-summary">submitted by Davriellelouna to cybersecurity 2 points | 0 comments http://techcrunch.com/2025/08/06/citizen-lab-director-warns-cyber-industry-about-us-authoritarian-descent/</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="secure by design: the secret weapon in devops" data-date="2025-08-17"><span class="headline-date">17 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/RJzKX1OqdjA" target="_blank" rel="noopener">Secure by Design: The Secret Weapon in DevOps</a><span class="article-summary">In this short, Danielle Ruderman shares why “secure by design” isn’t just a buzzword—it’s becoming the secret weapon for DevOps teams. Viewers learn how building security basics directly into developer tools can reduce third-party risk, boost customer trust, and shift the way the…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="signed code or cyber chaos? 🔐" data-date="2025-08-17"><span class="headline-date">17 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/si-2-q6cmPw" target="_blank" rel="noopener">Signed Code or Cyber Chaos? 🔐</a><span class="article-summary">In this clip, Kalyani Pawar breaks down a subtle but dangerous AI security risk: what happens when you can’t verify who really wrote the code your AI is running? 🕵️‍♂️ Using a Slack channel analogy, she explains how untrusted context windows can become a hacker’s playground — and…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="anthropic: claude can now end conversations to prevent harmful uses" data-date="2025-08-17"><span class="headline-date">17 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/artificial-intelligence/anthropic-claude-can-now-end-conversations-to-prevent-harmful-uses/" target="_blank" rel="noopener">Anthropic: Claude can now end conversations to prevent harmful uses</a><span class="article-summary">OpenAI rival Anthropic says Claude has been updated with a rare new feature that allows the AI model to end conversations when it feels it poses harm or is being abused. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="google is adding &quot;projects&quot; feature to gemini to run research tasks" data-date="2025-08-17"><span class="headline-date">17 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/artificial-intelligence/google-is-adding-projects-feature-to-gemini-to-run-research-tasks/" target="_blank" rel="noopener">Google is adding "Projects" feature to Gemini to run research tasks</a><span class="article-summary">Google's Gemini never stops delivering, and it's now testing a new feature called "Projects." This will be similar to OpenAI's Project Feature for ChatGPT. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="openai releases warmer gpt-5 personality, but only for non thinking model" data-date="2025-08-17"><span class="headline-date">17 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/artificial-intelligence/openai-releases-warmer-gpt-5-personality-but-only-for-non-thinking-model/" target="_blank" rel="noopener">OpenAI releases warmer GPT-5 personality, but only for non thinking model</a><span class="article-summary">OpenAI has confirmed it has begun rolling out a new warmer personality for GPT-5, but remember that it won't be as warm as GPT-4o, which is still available for use under legacy models. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-06-21</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,82 +109,61 @@
       <div class="stat"><span class="stat-value">4</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-06-21</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">24</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">13</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-21"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/ai-vulnerabilities-and-the-gentle-singularity-a-deep-dive-with-project-synapse" target="_blank" rel="noopener">AI Vulnerabilities and the Gentle Singularity: A Deep Dive with Project Synapse</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 21 Jun 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-21"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/FBYKhFQ7xQU" target="_blank" rel="noopener">The $120M DeFi Scam No One Saw Coming! 😱</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-21</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-21"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/vkLlKnrkZU0" target="_blank" rel="noopener">Why Your Security Strategy is Failing (And How to Fix It) 🚨</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-21</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-21"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/open-directories-exposes-publically-available-tools/" target="_blank" rel="noopener">Open Directories Exposes Publically Available tools Used by Hackers</a></div><span class="article-meta">GBHACKERS.COM &mdash; 21 Jun 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-21"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/wordpress-motors-theme-flaw-mass-exploited-to-hijack-admin-accounts/" target="_blank" rel="noopener">WordPress Motors theme flaw mass-exploited to hijack admin accounts</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 21 Jun 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-06-21"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.securityweek.com/aflac-finds-suspicious-activity-on-us-network-that-may-impact-social-security-numbers-other-data/" target="_blank" rel="noopener">Aflac Finds Suspicious Activity on US Network That May Impact Social Security Numbers, Other Data</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 21 Jun 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-06-21"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2025/06/scattered-spider-behind-cyberattacks-on.html" target="_blank" rel="noopener">Scattered Spider Behind Cyberattacks on M&amp;S and Co-op, Causing Up to $592M in Damages</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 21 Jun 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-06-21"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/shorts/9pELw2IZyC0" target="_blank" rel="noopener">How Fast Can a Hacker Move Through Your Network?</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-21</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-06-21"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://gbhackers.com/surge-in-xss-cyberattacks-targets-popular-webmail-platforms/" target="_blank" rel="noopener">Surge in XSS Cyberattacks Targets Popular Webmail Platforms, ESET Reports</a></div><span class="article-meta">GBHACKERS.COM &mdash; 21 Jun 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-06-21"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/shorts/Pa0yeej7EyY" target="_blank" rel="noopener">Cyber War Games: Can YOU Spot the Threat?</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-21</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/30270031" target="_blank" rel="noopener">Review: Learning Kali Linux, 2nd Edition</a></div><span class="article-meta">INFOSEC.PUB &mdash; 21 Jun 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/32058" target="_blank" rel="noopener">ADS &amp;#x26; Python Tools, (Sat, Jun 21st)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 21 Jun 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.troyhunt.com/weekly-update-457/" target="_blank" rel="noopener">Weekly Update 457</a></div><span class="article-meta">TROYHUNT.COM &mdash; 21 Jun 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/iranian-hacktivist-attacking-israeli/" target="_blank" rel="noopener">Iranian Hacktivist Attacking Israeli Military, Government, and Infrastructure Targets</a></div><span class="article-meta">GBHACKERS.COM &mdash; 21 Jun 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/32xO7X0JSQ4" target="_blank" rel="noopener">Why Blockchain Is Still a Nerd’s Playground 🧑‍💻</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-21</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/microsoft-announces-new-graph-powered-detection/" target="_blank" rel="noopener">Microsoft Announces New Graph Powered Detection of Hybrid Attack Targeting Organizations</a></div><span class="article-meta">GBHACKERS.COM &mdash; 21 Jun 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/7agK0Mznc4Q" target="_blank" rel="noopener">How ‘Need to Know’ is Failing in the Age of AI</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-21</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://sh.itjust.works/post/40680026" target="_blank" rel="noopener">Cyber Security Card Game</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 21 Jun 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/zZpsvQZC71Y" target="_blank" rel="noopener">How to Scale Your Cloud Security Like a Pro</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-21</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/duckduckgo-browsers-scam-blocker-to-guard/" target="_blank" rel="noopener">DuckDuckGo Browser’s Scam Blocker to Guard Against Phishing and Malware Sites</a></div><span class="article-meta">GBHACKERS.COM &mdash; 21 Jun 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/B9PjJtNksFs" target="_blank" rel="noopener">CISOs: Want Influence? Stop Playing It Safe</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-21</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/cyberwarfare-on-the-rise-with-surge-in-hacktivist/" target="_blank" rel="noopener">CyberWarfare on the Rise With Surge in Hacktivist Activity Following Israel-Iran</a></div><span class="article-meta">GBHACKERS.COM &mdash; 21 Jun 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/russian-hackers-bypass-gmail-mfa-using-stolen-app-passwords/" target="_blank" rel="noopener">Russian hackers bypass Gmail MFA using stolen app passwords</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 21 Jun 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-06-21"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/shorts/Tq3n5U9cPPI" target="_blank" rel="noopener">When a 'Lazy' Web Hacker Dives into Binary Protocols...</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-21</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ai vulnerabilities and the gentle singularity: a deep dive with project synapse" data-date="2025-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/ai-vulnerabilities-and-the-gentle-singularity-a-deep-dive-with-project-synapse" target="_blank" rel="noopener">AI Vulnerabilities and the Gentle Singularity: A Deep Dive with Project Synapse</a><span class="article-summary">In this thought-provoking episode of Project Synapse, host Jim and his friends Marcel Gagne and John Pinard delve into the complexities of artificial intelligence, especially in the context of cybersecurity. The discussion kicks off by revisiting a blog post by Sam Altman about r…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="the $120m defi scam no one saw coming! 😱" data-date="2025-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/FBYKhFQ7xQU" target="_blank" rel="noopener">The $120M DeFi Scam No One Saw Coming! 😱</a><span class="article-summary">A hacker just pulled off one of the most shocking DeFi exploits, manipulating a price feed to trick a crypto platform into minting millions. This is the BonkDAO hack—a $120M lesson in how vulnerable Web3 still is. How did they do it? And why does crypto keep falling for the same …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="why your security strategy is failing (and how to fix it) 🚨" data-date="2025-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/vkLlKnrkZU0" target="_blank" rel="noopener">Why Your Security Strategy is Failing (And How to Fix It) 🚨</a><span class="article-summary">Most companies are stuck in a never-ending game of security whack-a-mole—patching one vulnerability at a time while missing the bigger picture. In this short, cybersecurity expert Jack reveals why traditional AppSec strategies are failing and how a shift in mindset can make all t…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="open directories exposes publically available tools used by hackers" data-date="2025-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/open-directories-exposes-publically-available-tools/" target="_blank" rel="noopener">Open Directories Exposes Publically Available tools Used by Hackers</a><span class="article-summary">A series of misconfigured web servers have been uncovered, revealing a treasure trove of publicly accessible tools and tactics employed by malicious actors targeting critical infrastructure. These exposed open directories, discovered through Hunt&#8217;s advanced scanning capabil…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="wordpress motors theme flaw mass-exploited to hijack admin accounts" data-date="2025-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/wordpress-motors-theme-flaw-mass-exploited-to-hijack-admin-accounts/" target="_blank" rel="noopener">WordPress Motors theme flaw mass-exploited to hijack admin accounts</a><span class="article-summary">Hackers are exploiting a critical privilege escalation vulnerability in the WordPress theme "Motors" to hijack administrator accounts and gain complete control of a targeted site. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="aflac finds suspicious activity on us network that may impact social security numbers, other data" data-date="2025-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/aflac-finds-suspicious-activity-on-us-network-that-may-impact-social-security-numbers-other-data/" target="_blank" rel="noopener">Aflac Finds Suspicious Activity on US Network That May Impact Social Security Numbers, Other Data</a><span class="article-summary">Aflac said that it’s in the early stages of a review of the incident, and so far is unable to determine the total number of affected individuals. The post Aflac Finds Suspicious Activity on US Network That May Impact Social Security Numbers, Other Data appeared first on SecurityW…</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="scattered spider behind cyberattacks on m&amp;s and co-op, causing up to $592m in damages" data-date="2025-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/06/scattered-spider-behind-cyberattacks-on.html" target="_blank" rel="noopener">Scattered Spider Behind Cyberattacks on M&amp;S and Co-op, Causing Up to $592M in Damages</a><span class="article-summary">The April 2025 cyber attacks targeting U.K. retailers Marks &amp; Spencer and Co-op have been classified as a "single combined cyber event." That's according to an assessment from the Cyber Monitoring Centre (CMC), a U.K.-based independent, non-profit body set up by the insurance…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="how fast can a hacker move through your network?" data-date="2025-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/9pELw2IZyC0" target="_blank" rel="noopener">How Fast Can a Hacker Move Through Your Network?</a><span class="article-summary">When a breach happens, it’s not just about if they get in — it’s about how fast they move once they’re inside. In this short, Greg explains how lateral movement works and how security teams use real-time network diagrams to trace attacker pathways instantly. With context-rich ins…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="surge in xss cyberattacks targets popular webmail platforms, eset reports" data-date="2025-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/surge-in-xss-cyberattacks-targets-popular-webmail-platforms/" target="_blank" rel="noopener">Surge in XSS Cyberattacks Targets Popular Webmail Platforms, ESET Reports</a><span class="article-summary">A recent report from ESET has uncovered a sophisticated cyber espionage campaign by the Russia-aligned Sednit group, targeting high-value webmail platforms through cross-site scripting (XSS) attacks. Dubbed Operation RoundPress, this operation has compromised popular webmail serv…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="cyber war games: can you spot the threat?" data-date="2025-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/Pa0yeej7EyY" target="_blank" rel="noopener">Cyber War Games: Can YOU Spot the Threat?</a><span class="article-summary">In a high-stakes cybersecurity drill, the red team launches a simulated attack while the blue team scrambles to detect and neutralize the threat. But what happens when the defenders spot something unusual? This real-world cyber war game puts security experts to the test—can they …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">13</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="review: learning kali linux, 2nd edition" data-date="2025-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/30270031" target="_blank" rel="noopener">Review: Learning Kali Linux, 2nd Edition</a><span class="article-summary">submitted by cm0002 to cybersecurity 1 points | 0 comments https://www.helpnetsecurity.com/2025/06/16/review-learning-kali-linux-2nd-edition/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="ads &amp;#x26; python tools, (sat, jun 21st)" data-date="2025-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/32058" target="_blank" rel="noopener">ADS &amp;#x26; Python Tools, (Sat, Jun 21st)</a><span class="article-summary">Ehsaan Mavani talks about Alternate Data Streams (ADS) in diary entry " Alternate Data Streams &#x3f; Adversary Defense Evasion and Detection &#x5b;Guest Diary&#x5d; ". &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="weekly update 457" data-date="2025-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.troyhunt.com/weekly-update-457/" target="_blank" rel="noopener">Weekly Update 457</a><span class="article-summary">Presently sponsored by: 1Password Extended Access Management: Secure every sign-in for every app on every device. Firstly, apologies for the annoying clipping in the audio. I use a Rode VideoMic that&apos;s a shotgun style that plugs straight into the iPhone and it&apos;s usually…</span></span><span class="headline-source">TROYHUNT.COM</span></div>
+<div class="headline" data-title="iranian hacktivist attacking israeli military, government, and infrastructure targets" data-date="2025-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/iranian-hacktivist-attacking-israeli/" target="_blank" rel="noopener">Iranian Hacktivist Attacking Israeli Military, Government, and Infrastructure Targets</a><span class="article-summary">Over 35 different pro-Iranian hacktivist organizations launched a coordinated attack on Israeli military, government, and key infrastructure targets in a dramatic escalation of cyberwarfare. This surge in activity starkly contrasts with the limited response from just 4-5 identifi…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="why blockchain is still a nerd’s playground 🧑‍💻" data-date="2025-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/32xO7X0JSQ4" target="_blank" rel="noopener">Why Blockchain Is Still a Nerd’s Playground 🧑‍💻</a><span class="article-summary">Most people still don’t understand blockchain — and that’s a problem. In this short, a cybersecurity expert breaks down why Web3 hasn’t gone mainstream and how bridging Web2 and Web3 could change everything. It’s not just about finance anymore — it’s about making tech for everyon…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="microsoft announces new graph powered detection of hybrid attack targeting organizations" data-date="2025-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/microsoft-announces-new-graph-powered-detection/" target="_blank" rel="noopener">Microsoft Announces New Graph Powered Detection of Hybrid Attack Targeting Organizations</a><span class="article-summary">Microsoft has unveiled a groundbreaking advancement in cybersecurity with the integration of the Enterprise Exposure Graph into its threat detection and response capabilities. This cutting-edge solution, part of Microsoft Defender XDR and Microsoft Security Exposure Management (M…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="how ‘need to know’ is failing in the age of ai" data-date="2025-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/7agK0Mznc4Q" target="_blank" rel="noopener">How ‘Need to Know’ is Failing in the Age of AI</a><span class="article-summary">Cybersecurity is built on the "need to know" principle—but is it failing in the age of AI? 🤯 Right now, access control decisions rely on human discretion, but what happens when large language models need to follow the same rules? There’s no codified system, just fragmented data p…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="cyber security card game" data-date="2025-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/40680026" target="_blank" rel="noopener">Cyber Security Card Game</a><span class="article-summary">submitted by LockheedTheDragon to cybersecurity 1 points | 0 comments I’m trying to find out the name of this card game? I took this photo 7 years ago. I’m also interested in any other cyber security related games people know of. I’m already aware of Elevation of Privilege (EoP) …</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="how to scale your cloud security like a pro" data-date="2025-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/zZpsvQZC71Y" target="_blank" rel="noopener">How to Scale Your Cloud Security Like a Pro</a><span class="article-summary">Scaling cloud security isn't just about tech—it's about empowering experts! 🚀 In this short, Marina Segal explains how her team of cloud pros is revolutionizing security by automating workflows and making engineers superhuman. Think of it like a self-driving car—autopilot for sec…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="duckduckgo browser’s scam blocker to guard against phishing and malware sites" data-date="2025-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/duckduckgo-browsers-scam-blocker-to-guard/" target="_blank" rel="noopener">DuckDuckGo Browser’s Scam Blocker to Guard Against Phishing and Malware Sites</a><span class="article-summary">DuckDuckGo has rolled out an advanced update to its browser’s built-in Scam Blocker, a robust security feature designed to shield users from a wide array of online threats, including phishing sites, malware, and sophisticated scams. Now integrated into the DuckDuckGo browser for …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="cisos: want influence? stop playing it safe" data-date="2025-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/B9PjJtNksFs" target="_blank" rel="noopener">CISOs: Want Influence? Stop Playing It Safe</a><span class="article-summary">Cybersecurity leaders are done playing it safe—and it's about time. In this powerful clip, Ben Carr and Jinan Budge dive deep into the mindset shift CISOs must embrace if they want real influence. Playing by the old rules won’t cut it anymore. From challenging the status quo to p…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="cyberwarfare on the rise with surge in hacktivist activity following israel-iran" data-date="2025-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/cyberwarfare-on-the-rise-with-surge-in-hacktivist/" target="_blank" rel="noopener">CyberWarfare on the Rise With Surge in Hacktivist Activity Following Israel-Iran</a><span class="article-summary">Cyberspace has become a crucial battlefield in addition to conventional combat since the open conflict between Israel and Iran broke out. Following Israeli airstrikes on Iranian nuclear and military sites and Iran’s retaliatory missile salvos, both nations recognized as formidabl…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="russian hackers bypass gmail mfa using stolen app passwords" data-date="2025-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/russian-hackers-bypass-gmail-mfa-using-stolen-app-passwords/" target="_blank" rel="noopener">Russian hackers bypass Gmail MFA using stolen app passwords</a><span class="article-summary">Russian hackers bypass multi-factor authentication and access Gmail accounts by leveraging app-specific passwords in advanced social engineering attacks that impersonate U.S. Department of State officials. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="when a 'lazy' web hacker dives into binary protocols..." data-date="2025-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/Tq3n5U9cPPI" target="_blank" rel="noopener">When a 'Lazy' Web Hacker Dives into Binary Protocols...</a><span class="article-summary">When a self-proclaimed "lazy" web hacker ventures beyond JavaScript and HTML into the depths of binary protocols, the result is jaw-dropping. He uncovers how SQL injection isn't just alive — it's evolving, with query smuggling at the protocol level. 🤯 Cybersecurity experts couldn…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

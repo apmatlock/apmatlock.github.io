@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-08-02</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,82 +109,65 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-08-02</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">23</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">8</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/combating-the-grandparent-scam-a-deep-dive-into-cybersecurity-and-law-enforcement-efforts" target="_blank" rel="noopener">Combating the Grandparent Scam: A Deep Dive into Cybersecurity and Law Enforcement Efforts</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 02 Aug 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/08/akira-ransomware-exploits-sonicwall.html" target="_blank" rel="noopener">Akira Ransomware Exploits SonicWall VPNs in Likely Zero-Day Attack on Fully-Patched Devices</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 02 Aug 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/akira-ransomware-exploits-0-day-vulnerability/" target="_blank" rel="noopener">Akira Ransomware Exploits 0-Day Vulnerability in SonicWall Firewall Devices</a></div><span class="article-meta">GBHACKERS.COM &mdash; 02 Aug 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/artificial-intelligence/openai-prepares-new-open-weight-models-along-with-gpt-5/" target="_blank" rel="noopener">OpenAI prepares new open weight models along with GPT-5</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 02 Aug 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://sh.itjust.works/post/43290838" target="_blank" rel="noopener">China accuses US of exploiting Microsoft zero-day in cyberattack</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 2 Aug 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/attackers-exploit-link-wrapping-services-to-steal-microsoft-365-logins/" target="_blank" rel="noopener">Attackers exploit link-wrapping services to steal Microsoft 365 logins</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 02 Aug 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-08-02"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.lastwatchdog.com/strategic-reel-proactive-by-design-fortinet-retools-network-defense-for-real-time-threats/" target="_blank" rel="noopener">STRATEGIC REEL: Proactive by design: Fortinet retools network defense for real-time threats</a></div><span class="article-meta">LASTWATCHDOG.COM &mdash; 02 Aug 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-08-02"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://gbhackers.com/new-undetectable-plague-malware-targeting-linux-servers/" target="_blank" rel="noopener">New Undetectable Plague Malware Targeting Linux Servers for Persistent SSH Access</a></div><span class="article-meta">GBHACKERS.COM &mdash; 02 Aug 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-08-02"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://gbhackers.com/qilin-ransomware-affiliate-panel-login-credentials/" target="_blank" rel="noopener">Qilin Ransomware Affiliate Panel Login Credentials Exposed Online</a></div><span class="article-meta">GBHACKERS.COM &mdash; 02 Aug 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-08-02"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/shorts/EpvP54TML68" target="_blank" rel="noopener">“Failure Is a Terrible Thing to Waste” in Cyber 🧠</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-02</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-08-02"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2025/08/cl-sta-0969-installs-covert-malware-in.html" target="_blank" rel="noopener">CL-STA-0969 Installs Covert Malware in Telecom Networks During 10-Month Espionage Campaign</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 02 Aug 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-08-02"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/shorts/pqqFR-IUktU" target="_blank" rel="noopener">LLM-Generated Code: Smart Shortcut or Security Time Bomb?</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-02</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-08-02"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/shorts/m_CoBtflwn8" target="_blank" rel="noopener">If Venture Capital Solved Security... We’d Be Safe By Now 🤷</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-02</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/nawZMAK4wbk" target="_blank" rel="noopener">Cyber Pro Tip: Test Before It's Too Late</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-02</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/C3wTgpgbR20" target="_blank" rel="noopener">How A Backup Plan FAILED Everyone... In One Night 🫣</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-02</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/cXxYgLdlT9g" target="_blank" rel="noopener">Microsoft Just Dug Up a 1991 Program… For LINUX?</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-02</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/MN41_IV7mYo" target="_blank" rel="noopener">From Zero to Cyber Range: How We Did It</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-02</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/32447329" target="_blank" rel="noopener">New &amp;#x27;Shade BIOS&amp;#x27; Technique Beats Every Kind of Security</a></div><span class="article-meta">INFOSEC.PUB &mdash; 2 Aug 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/yOFWUfi-kts" target="_blank" rel="noopener">They Let Me Connect to Their Bank’s Wi-Fi... Big Mistake.</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-02</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/dATylM8TGl0" target="_blank" rel="noopener">What Happens When a Secret Never Expires?</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-02</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/32459865" target="_blank" rel="noopener">Internet exchange points are ignored, vulnerable, and absent from infrastructure protection plans</a></div><span class="article-meta">INFOSEC.PUB &mdash; 2 Aug 2025</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-08-02"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://thehackernews.com/2025/08/new-plague-pam-backdoor-exposes.html" target="_blank" rel="noopener">New ‘Plague’ PAM Backdoor Exposes Critical Linux Systems to Silent Credential Theft</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 02 Aug 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-08-02"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/artificial-intelligence/anthropic-says-openai-engineers-using-claude-code-ahead-of-gpt-5-launch/" target="_blank" rel="noopener">Anthropic says OpenAI engineers using Claude Code ahead of GPT-5 launch</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 02 Aug 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="combating the grandparent scam: a deep dive into cybersecurity and law enforcement efforts" data-date="2025-08-02"><span class="headline-date">2 Aug</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/combating-the-grandparent-scam-a-deep-dive-into-cybersecurity-and-law-enforcement-efforts" target="_blank" rel="noopener">Combating the Grandparent Scam: A Deep Dive into Cybersecurity and Law Enforcement Efforts</a><span class="article-summary">This episode explores the 'Grandparent Scam,' a prevalent and profitable fraud targeting seniors by exploiting their concern for their grandchildren. Experts Deirdre and John from Ireland's National Cybersecurity Center and the Ontario Provincial Police share insights into the sc…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="akira ransomware exploits sonicwall vpns in likely zero-day attack on fully-patched devices" data-date="2025-08-02"><span class="headline-date">2 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/08/akira-ransomware-exploits-sonicwall.html" target="_blank" rel="noopener">Akira Ransomware Exploits SonicWall VPNs in Likely Zero-Day Attack on Fully-Patched Devices</a><span class="article-summary">SonicWall SSL VPN devices have become the target of Akira ransomware attacks as part of a newfound surge in activity observed in late July 2025. "In the intrusions reviewed, multiple pre-ransomware intrusions were observed within a short period of time, each involving VPN access …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="akira ransomware exploits 0-day vulnerability in sonicwall firewall devices" data-date="2025-08-02"><span class="headline-date">2 Aug</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/akira-ransomware-exploits-0-day-vulnerability/" target="_blank" rel="noopener">Akira Ransomware Exploits 0-Day Vulnerability in SonicWall Firewall Devices</a><span class="article-summary">Cybersecurity firm Arctic Wolf has identified a significant increase in ransomware attacks targeting SonicWall firewall devices in late July 2025, with evidence pointing to the exploitation of a previously unknown zero-day vulnerability. The company&#8217;s investigation revealed…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="openai prepares new open weight models along with gpt-5" data-date="2025-08-02"><span class="headline-date">2 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/artificial-intelligence/openai-prepares-new-open-weight-models-along-with-gpt-5/" target="_blank" rel="noopener">OpenAI prepares new open weight models along with GPT-5</a><span class="article-summary">OpenAI isn't just working on GPT-5. It looks like OpenAI is also preparing to release new open-source weights, living up to its name, OpenAI.' [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="china accuses us of exploiting microsoft zero-day in cyberattack" data-date="2025-08-02"><span class="headline-date">2 Aug</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/43290838" target="_blank" rel="noopener">China accuses US of exploiting Microsoft zero-day in cyberattack</a><span class="article-summary">submitted by Amoxtli to cybersecurity 1 points | 0 comments https://cyberscoop.com/china-accuses-us-of-exploiting-microsoft-zero-day-in-cyberattack/</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="attackers exploit link-wrapping services to steal microsoft 365 logins" data-date="2025-08-02"><span class="headline-date">2 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/attackers-exploit-link-wrapping-services-to-steal-microsoft-365-logins/" target="_blank" rel="noopener">Attackers exploit link-wrapping services to steal Microsoft 365 logins</a><span class="article-summary">A threat actor has been abusing link wrapping services from reputed technology companies to mask malicious links leading to Microsoft 365 phishing pages that collect login credentials. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="strategic reel: proactive by design: fortinet retools network defense for real-time threats" data-date="2025-08-02"><span class="headline-date">2 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.lastwatchdog.com/strategic-reel-proactive-by-design-fortinet-retools-network-defense-for-real-time-threats/" target="_blank" rel="noopener">STRATEGIC REEL: Proactive by design: Fortinet retools network defense for real-time threats</a><span class="article-summary">Security teams can no longer afford to wait for alerts — not when cyberattacks unfold in milliseconds. That’s the core warning from Fortinet’s Derek Manky in a new Last Watchdog Strategic Reel recorded at RSAC 2025. As adversaries adopt AI-driven &#8230; (more…) The post STRATEGI…</span></span><span class="headline-source">LASTWATCHDOG.COM</span></div>
+<div class="headline" data-title="new undetectable plague malware targeting linux servers for persistent ssh access" data-date="2025-08-02"><span class="headline-date">2 Aug</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/new-undetectable-plague-malware-targeting-linux-servers/" target="_blank" rel="noopener">New Undetectable Plague Malware Targeting Linux Servers for Persistent SSH Access</a><span class="article-summary">Security researchers have discovered a sophisticated Linux backdoor dubbed &#8220;Plague&#8221; that has remained undetected by all major antivirus engines despite multiple samples being uploaded to VirusTotal over the past year. The malicious software operates as a Pluggable Aut…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="qilin ransomware affiliate panel login credentials exposed online" data-date="2025-08-02"><span class="headline-date">2 Aug</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/qilin-ransomware-affiliate-panel-login-credentials/" target="_blank" rel="noopener">Qilin Ransomware Affiliate Panel Login Credentials Exposed Online</a><span class="article-summary">A significant security breach within the Qilin ransomware operation has provided unprecedented insight into the group&#8217;s affiliate network structure and operational methods. On July 31, 2025, internal conflicts between the ransomware group and one of its affiliates led to th…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="“failure is a terrible thing to waste” in cyber 🧠" data-date="2025-08-02"><span class="headline-date">2 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/EpvP54TML68" target="_blank" rel="noopener">“Failure Is a Terrible Thing to Waste” in Cyber 🧠</a><span class="article-summary">In this short, cybersecurity expert Adrian shares a hard-hitting truth: “Failure is a terrible thing to waste.” He reveals how the biggest lessons in cybersecurity often come from real-world breaches—yet many companies still keep those failures hidden. This thought-provoking clip…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="cl-sta-0969 installs covert malware in telecom networks during 10-month espionage campaign" data-date="2025-08-02"><span class="headline-date">2 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/08/cl-sta-0969-installs-covert-malware-in.html" target="_blank" rel="noopener">CL-STA-0969 Installs Covert Malware in Telecom Networks During 10-Month Espionage Campaign</a><span class="article-summary">Telecommunications organizations in Southeast Asia have been targeted by a state-sponsored threat actor known as CL-STA-0969 to facilitate remote control over compromised networks. Palo Alto Networks Unit 42 said it observed multiple incidents in the region, including one aimed a…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="llm-generated code: smart shortcut or security time bomb?" data-date="2025-08-02"><span class="headline-date">2 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/pqqFR-IUktU" target="_blank" rel="noopener">LLM-Generated Code: Smart Shortcut or Security Time Bomb?</a><span class="article-summary">When cybersecurity expert Rey Bango questions the blind trust in AI-generated code, he sparks a debate that every tech leader needs to hear. Can companies like Microsoft or Meta really afford to assume that code from LLMs is safe, structured, and universally understood? This shor…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="if venture capital solved security... we’d be safe by now 🤷" data-date="2025-08-02"><span class="headline-date">2 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/m_CoBtflwn8" target="_blank" rel="noopener">If Venture Capital Solved Security... We’d Be Safe By Now 🤷</a><span class="article-summary">Venture capitalists keep pouring millions into flashy cybersecurity startups, but the real threats? Still here. In this clip, Erik Bloch breaks down the brutal truth: VC firms care more about returns than fixing the actual problems. The same tools, the same noise, the same incide…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">8</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cyber pro tip: test before it's too late" data-date="2025-08-02"><span class="headline-date">2 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/nawZMAK4wbk" target="_blank" rel="noopener">Cyber Pro Tip: Test Before It's Too Late</a><span class="article-summary">Most IT teams say they have backups… but have they actually tested a full restore? In this eye-opening moment, cybersecurity expert Doug White shares a jaw-dropping story of organizations that thought they were protected—until they weren’t. From outdated tape drives to backup job…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="how a backup plan failed everyone... in one night 🫣" data-date="2025-08-02"><span class="headline-date">2 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/C3wTgpgbR20" target="_blank" rel="noopener">How A Backup Plan FAILED Everyone... In One Night 🫣</a><span class="article-summary">When disaster struck, everyone had go bags... but no real backup plan. In this jaw-dropping moment, Doug White reveals how an entire system collapsed because the backups were stored on the same array. No offsite, no isolation — just one mistake that left everyone saying “maybe ca…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="microsoft just dug up a 1991 program… for linux?" data-date="2025-08-02"><span class="headline-date">2 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/cXxYgLdlT9g" target="_blank" rel="noopener">Microsoft Just Dug Up a 1991 Program… For LINUX?</a><span class="article-summary">In a bizarre twist of tech history, Microsoft revives a long-forgotten MS-DOS program from 1991—this time, for Linux users. Cybersecurity experts are baffled: is this nostalgia, a prank, or something bigger? This short explores the resurrection of a digital relic, sparking debate…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="from zero to cyber range: how we did it" data-date="2025-08-02"><span class="headline-date">2 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/MN41_IV7mYo" target="_blank" rel="noopener">From Zero to Cyber Range: How We Did It</a><span class="article-summary">They started with bare hardware and built an entire cyber range from scratch — servers, virtualization, infrastructure as code, and a full video wall for live training. This isn’t your average IT lab. It's a full-scale simulation hub for real-world cybersecurity training, exams, …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="new &amp;#x27;shade bios&amp;#x27; technique beats every kind of security" data-date="2025-08-02"><span class="headline-date">2 Aug</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/32447329" target="_blank" rel="noopener">New &amp;#x27;Shade BIOS&amp;#x27; Technique Beats Every Kind of Security</a><span class="article-summary">submitted by cm0002 to cybersecurity 1 points | 0 comments https://www.darkreading.com/endpoint-security/shade-bios-technique-beats-security</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="they let me connect to their bank’s wi-fi... big mistake." data-date="2025-08-02"><span class="headline-date">2 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/yOFWUfi-kts" target="_blank" rel="noopener">They Let Me Connect to Their Bank’s Wi-Fi... Big Mistake.</a><span class="article-summary">A cybersecurity expert shares a real-world scenario from her time in banking—when a new “bank café” concept allowed customers to lounge all day… right next to the network. What could possibly go wrong? With laptops everywhere and open Wi-Fi, the attack surface just exploded. This…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="what happens when a secret never expires?" data-date="2025-08-02"><span class="headline-date">2 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/dATylM8TGl0" target="_blank" rel="noopener">What Happens When a Secret Never Expires?</a><span class="article-summary">When a developer hardcodes a secret, that secret often stays hidden in plain sight... forever. 😳 In this short, cybersecurity expert Sergey Gorbaty breaks down why static secrets are a ticking time bomb for secure apps. From legacy deployments to missing RBAC, this clip exposes a…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="internet exchange points are ignored, vulnerable, and absent from infrastructure protection plans" data-date="2025-08-02"><span class="headline-date">2 Aug</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/32459865" target="_blank" rel="noopener">Internet exchange points are ignored, vulnerable, and absent from infrastructure protection plans</a><span class="article-summary">submitted by cm0002 to cybersecurity 1 points | 0 comments https://www.theregister.com/2025/07/31/ixp_resilience_call/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new ‘plague’ pam backdoor exposes critical linux systems to silent credential theft" data-date="2025-08-02"><span class="headline-date">2 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/08/new-plague-pam-backdoor-exposes.html" target="_blank" rel="noopener">New ‘Plague’ PAM Backdoor Exposes Critical Linux Systems to Silent Credential Theft</a><span class="article-summary">Cybersecurity researchers have flagged a previously undocumented Linux backdoor dubbed Plague that has managed to evade detection for a year. "The implant is built as a malicious PAM (Pluggable Authentication Module), enabling attackers to silently bypass system authentication an…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="anthropic says openai engineers using claude code ahead of gpt-5 launch" data-date="2025-08-02"><span class="headline-date">2 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/artificial-intelligence/anthropic-says-openai-engineers-using-claude-code-ahead-of-gpt-5-launch/" target="_blank" rel="noopener">Anthropic says OpenAI engineers using Claude Code ahead of GPT-5 launch</a><span class="article-summary">Anthropic says it has revoked OpenAI's access to the Claude API after ChatGPT's engineers were found using Claude's coding tools. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

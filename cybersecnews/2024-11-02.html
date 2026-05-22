@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-11-02</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,70 +109,53 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-11-02</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">11</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">3</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-11-02"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/microsoft-sharepoint-rce-bug-exploited-to-breach-corporate-network/" target="_blank" rel="noopener">Microsoft SharePoint RCE bug exploited to breach corporate network</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 02 Nov 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-11-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/cyber-security-today-the-weekend-panel-november-2-2024" target="_blank" rel="noopener">Cyber Security Today - The Weekend Panel Reviews Cyber Security Month: November 2, 2024</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 02 Nov 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-11-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://sh.itjust.works/post/27501884" target="_blank" rel="noopener">RCE Vulnerability in QBittorrent – Sharp Security</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 2 Nov 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-11-02"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://sh.itjust.works/post/27500163" target="_blank" rel="noopener">Thousands of hacked TP-Link routers used in years-long account takeover attacks</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 2 Nov 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-11-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://sh.itjust.works/post/27485321" target="_blank" rel="noopener">Booking.com Phishers May Leave You With Reservations.</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 2 Nov 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-11-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.securityweek.com/noma-security-raises-32-million-to-safeguard-gen-ai-applications/" target="_blank" rel="noopener">Noma Security Raises $32 Million to Safeguard Gen-AI Applications</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 02 Nov 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-11-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31406" target="_blank" rel="noopener">qpdf: Extracting PDF Streams, (Sat, Nov 2nd)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 02 Nov 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-11-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://sh.itjust.works/post/27522235" target="_blank" rel="noopener">OSINT with ChatGPT Search Engine</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 2 Nov 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-11-02"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=8qD2tkz08Eo" target="_blank" rel="noopener">Why Your Board Doesn’t ‘Get’ Cybersecurity 🚫</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-11-02</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-11-02"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.kaspersky.com/blog/siem-update-q3-2024/52530/" target="_blank" rel="noopener">Improvements to our SIEM for Q3 2024 | Kaspersky official blog</a></div><span class="article-meta">KASPERSKY.COM &mdash; 02 Nov 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-11-02"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/microsoft/microsoft-outlook-workaround-fixes-freezes-when-copying-text/" target="_blank" rel="noopener">Microsoft Outlook workaround fixes freezes when copying text</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 02 Nov 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="microsoft sharepoint rce bug exploited to breach corporate network" data-date="2024-11-02"><span class="headline-date">2 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/microsoft-sharepoint-rce-bug-exploited-to-breach-corporate-network/" target="_blank" rel="noopener">Microsoft SharePoint RCE bug exploited to breach corporate network</a><span class="article-summary">A recently disclosed Microsoft SharePoint remote code execution (RCE) vulnerability tracked as CVE-2024-38094 is being exploited to gain initial access to corporate networks. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cyber security today - the weekend panel reviews cyber security month: november 2, 2024" data-date="2024-11-02"><span class="headline-date">2 Nov</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/cyber-security-today-the-weekend-panel-november-2-2024" target="_blank" rel="noopener">Cyber Security Today - The Weekend Panel Reviews Cyber Security Month: November 2, 2024</a><span class="article-summary">Welcome to the weekend edition of Cybersecurity Today! Join host Jim Love as he delves into the top cybersecurity stories of the month with industry experts David Shipley of Beauceron Security, Terry Cutler of Cyology Labs, and special guest Kim Schreader from TELUS. This episode…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="rce vulnerability in qbittorrent – sharp security" data-date="2024-11-02"><span class="headline-date">2 Nov</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/27501884" target="_blank" rel="noopener">RCE Vulnerability in QBittorrent – Sharp Security</a><span class="article-summary">submitted by fox to cybersecurity 3 points | 0 comments https://sharpsec.run/rce-vulnerability-in-qbittorrent/</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="thousands of hacked tp-link routers used in years-long account takeover attacks" data-date="2024-11-02"><span class="headline-date">2 Nov</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/27500163" target="_blank" rel="noopener">Thousands of hacked TP-Link routers used in years-long account takeover attacks</a><span class="article-summary">submitted by Alphane_Moon to cybersecurity 2 points | 0 comments https://arstechnica.com/information-technology/2024/11/microsoft-warns-of-8000-strong-botnet-used-in-password-spraying-attacks/</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="booking.com phishers may leave you with reservations." data-date="2024-11-02"><span class="headline-date">2 Nov</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/27485321" target="_blank" rel="noopener">Booking.com Phishers May Leave You With Reservations.</a><span class="article-summary">submitted by Dot to cybersecurity 1 points | 0 comments https://krebsonsecurity.com/2024/11/booking-com-phishers-may-leave-you-with-reservations/</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="noma security raises $32 million to safeguard gen-ai applications" data-date="2024-11-02"><span class="headline-date">2 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/noma-security-raises-32-million-to-safeguard-gen-ai-applications/" target="_blank" rel="noopener">Noma Security Raises $32 Million to Safeguard Gen-AI Applications</a><span class="article-summary">Noma provides a platform to protect the data and lifecycle of emerging gen-AI applications, which introduces new threats not covered by existing security controls. The post Noma Security Raises $32 Million to Safeguard Gen-AI Applications appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="qpdf: extracting pdf streams, (sat, nov 2nd)" data-date="2024-11-02"><span class="headline-date">2 Nov</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31406" target="_blank" rel="noopener">qpdf: Extracting PDF Streams, (Sat, Nov 2nd)</a><span class="article-summary">In diary entry " Analyzing PDF Streams " I answer a question asked by a student of Xavier: "how can you export all streams of a PDF&#x3f;". I explained how to do this with my pdf-parser.py tool. &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="osint with chatgpt search engine" data-date="2024-11-02"><span class="headline-date">2 Nov</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/27522235" target="_blank" rel="noopener">OSINT with ChatGPT Search Engine</a><span class="article-summary">submitted by sv1sjp to cybersecurity 1 points | 0 comments https://fosstodon.org/@sv1sjp/113413847893283236</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="why your board doesn’t ‘get’ cybersecurity 🚫" data-date="2024-11-02"><span class="headline-date">2 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=8qD2tkz08Eo" target="_blank" rel="noopener">Why Your Board Doesn’t ‘Get’ Cybersecurity 🚫</a><span class="article-summary">Ever wonder why so many CISOs struggle in the boardroom? It's not about tech skills—it's about communication. In this short, we break down why CISOs often lose credibility when they dive into geeky details instead of talking about business impact, risks, and numbers. Discover the…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="improvements to our siem for q3 2024 | kaspersky official blog" data-date="2024-11-02"><span class="headline-date">2 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.kaspersky.com/blog/siem-update-q3-2024/52530/" target="_blank" rel="noopener">Improvements to our SIEM for Q3 2024 | Kaspersky official blog</a><span class="article-summary">Rules for detecting atypical behavior in container infrastructure at the data collection stage, and other updates to our SIEM system.</span></span><span class="headline-source">KASPERSKY.COM</span></div>
+<div class="headline" data-title="microsoft outlook workaround fixes freezes when copying text" data-date="2024-11-02"><span class="headline-date">2 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/microsoft/microsoft-outlook-workaround-fixes-freezes-when-copying-text/" target="_blank" rel="noopener">Microsoft Outlook workaround fixes freezes when copying text</a><span class="article-summary">​Microsoft is investigating a known issue that affects Microsoft 365 customers and causes classic Outlook to hang or freeze when copying text. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

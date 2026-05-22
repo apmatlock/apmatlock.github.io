@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2026-01-01</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,73 +109,60 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2026-01-01</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">13</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-01-01"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.csoonline.com/article/4112265/critical-vulnerability-in-ibm-api-connect-could-allow-authentication-bypass-2.html" target="_blank" rel="noopener">Critical vulnerability in IBM API Connect could allow authentication bypass</a></div><span class="article-meta">CSOONLINE.COM &mdash; 01 Jan 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-01-01"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2026/01/rondodox-botnet-exploits-critical.html" target="_blank" rel="noopener">RondoDox Botnet Exploits Critical React2Shell Flaw to Hijack IoT Devices and Web Servers</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 01 Jan 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-01-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/Eg6WRAuxCoU" target="_blank" rel="noopener">Rakesh Soni: The Power of Reading</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2026-01-01</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-01-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2026/01/threatsday-bulletin-ghostad-drain-macos.html" target="_blank" rel="noopener">ThreatsDay Bulletin: GhostAd Drain, macOS Attacks, Proxy Botnets, Cloud Exploits, and 12+ Stories</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 01 Jan 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-01-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/the-biggest-cybersecurity-and-cyberattack-stories-of-2025/" target="_blank" rel="noopener">The biggest cybersecurity and cyberattack stories of 2025</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 01 Jan 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-01-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=3vOC7tWrg3A" target="_blank" rel="noopener">Breaking Into Cybersecurity - PSW #907</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2026-01-01</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-01-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/NSRYqZxONiI" target="_blank" rel="noopener">Cybersecurity: Passion Over Perfection</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2026-01-01</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2026-01-01"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://infosec.pub/post/39865557" target="_blank" rel="noopener">Trump Administration Removes Three Spyware-Linked Execs From Sanctions List</a></div><span class="article-meta">INFOSEC.PUB &mdash; 1 Jan 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-01-01"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/39865498" target="_blank" rel="noopener">DarkSpectre Hackers Spread Malware To 8.8 Million Chrome, Edge, and Firefox Users</a></div><span class="article-meta">INFOSEC.PUB &mdash; 1 Jan 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-01-01"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2026/01/how-to-browse-fast-using-a-lightweight-browser.html" target="_blank" rel="noopener">How To Browse Faster and Get More Done Using Adapt Browser</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 01 Jan 2026</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2026-01-01"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/new-glassworm-malware-wave-targets-macs-with-trojanized-crypto-wallets/" target="_blank" rel="noopener">New GlassWorm malware wave targets Macs with trojanized crypto wallets</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 01 Jan 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-01-01"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://us.resources.csoonline.com/resources/download-the-2026-it-agenda-spotlight-report/" target="_blank" rel="noopener">Enterprise Spotlight: Setting the 2026 IT agenda</a></div><span class="article-meta">US.RESOURCES.CSOONLINE.COM &mdash; 01 Jan 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-01-01"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/artificial-intelligence/openai-is-offering-20-chatgpt-plus-for-free-to-some-users/" target="_blank" rel="noopener">OpenAI is offering $20 ChatGPT Plus for free to some users</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 01 Jan 2026</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="critical vulnerability in ibm api connect could allow authentication bypass" data-date="2026-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4112265/critical-vulnerability-in-ibm-api-connect-could-allow-authentication-bypass-2.html" target="_blank" rel="noopener">Critical vulnerability in IBM API Connect could allow authentication bypass</a><span class="article-summary">IBM is urging customers to quickly patch a critical vulnerability in its API Connect platform that could allow remote attackers to bypass authentication. The company describes API Connect as a full lifecycle application programming interface (API) gateway used “to create, test, m…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="rondodox botnet exploits critical react2shell flaw to hijack iot devices and web servers" data-date="2026-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/01/rondodox-botnet-exploits-critical.html" target="_blank" rel="noopener">RondoDox Botnet Exploits Critical React2Shell Flaw to Hijack IoT Devices and Web Servers</a><span class="article-summary">Cybersecurity researchers have disclosed details of a persistent nine-month-long campaign that has targeted Internet of Things (IoT) devices and web applications to enroll them into a botnet known as RondoDox. As of December 2025, the activity has been observed leveraging the rec…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="rakesh soni: the power of reading" data-date="2026-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/Eg6WRAuxCoU" target="_blank" rel="noopener">Rakesh Soni: The Power of Reading</a><span class="article-summary">Reading is a powerful tool for expanding perspectives and reducing mistakes—especially in cybersecurity, where staying ahead of threats means staying informed. Dive into high-quality books and resources to sharpen your security mindset and invest in your future. What’s on your re…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="threatsday bulletin: ghostad drain, macos attacks, proxy botnets, cloud exploits, and 12+ stories" data-date="2026-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/01/threatsday-bulletin-ghostad-drain-macos.html" target="_blank" rel="noopener">ThreatsDay Bulletin: GhostAd Drain, macOS Attacks, Proxy Botnets, Cloud Exploits, and 12+ Stories</a><span class="article-summary">The first ThreatsDay Bulletin of 2026 lands on a day that already feels symbolic — new year, new breaches, new tricks. If the past twelve months taught defenders anything, it’s that threat actors don’t pause for holidays or resolutions. They just evolve faster. This week’s round-…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="the biggest cybersecurity and cyberattack stories of 2025" data-date="2026-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/the-biggest-cybersecurity-and-cyberattack-stories-of-2025/" target="_blank" rel="noopener">The biggest cybersecurity and cyberattack stories of 2025</a><span class="article-summary">2025 was a big year for cybersecurity, with cyberattacks, data breaches, threat groups reaching new notoriety levels, and, of course, zero-day flaws exploited in breaches. Some stories, though, were more impactful or popular with our readers than others. This article explores 15 …</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="breaking into cybersecurity - psw #907" data-date="2026-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=3vOC7tWrg3A" target="_blank" rel="noopener">Breaking Into Cybersecurity - PSW #907</a><span class="article-summary">Our field is booming! Cybersecurity jobs are projected to grow 33 percent through 2033, far outpacing the average 4 percent growth across all jobs. (And yes, those stats could be made up, but they sound nice, eh?) Yet newcomers often feel paralyzed by where to start. The truth? T…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="cybersecurity: passion over perfection" data-date="2026-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/NSRYqZxONiI" target="_blank" rel="noopener">Cybersecurity: Passion Over Perfection</a><span class="article-summary">You don't need to find the next big vulnerability to succeed. Involvement and passion in relevant projects are what truly matter. How will you show your passion in cybersecurity? Subscribe to our podcasts: https://securityweekly.com/subscribe #TechPassion #CareerAdvice #SecurityW…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="trump administration removes three spyware-linked execs from sanctions list" data-date="2026-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/39865557" target="_blank" rel="noopener">Trump Administration Removes Three Spyware-Linked Execs From Sanctions List</a><span class="article-summary">submitted by noumenon to cybersecurity 1 points | 0 comments https://www.reuters.com/business/trump-administration-removes-three-spyware-linked-executives-sanctions-list-2025-12-30/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="darkspectre hackers spread malware to 8.8 million chrome, edge, and firefox users" data-date="2026-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/39865498" target="_blank" rel="noopener">DarkSpectre Hackers Spread Malware To 8.8 Million Chrome, Edge, and Firefox Users</a><span class="article-summary">submitted by noumenon to cybersecurity 1 points | 0 comments https://cyberpress.org/darkspectre-hackers-malware/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="how to browse faster and get more done using adapt browser" data-date="2026-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/01/how-to-browse-fast-using-a-lightweight-browser.html" target="_blank" rel="noopener">How To Browse Faster and Get More Done Using Adapt Browser</a><span class="article-summary">As web browsers evolve into all-purpose platforms, performance and productivity often suffer.&nbsp; Feature overload, excessive background processes, and fragmented workflows can slow down browsing sessions and introduce unnecessary friction, especially for users who rely on the …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new glassworm malware wave targets macs with trojanized crypto wallets" data-date="2026-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/new-glassworm-malware-wave-targets-macs-with-trojanized-crypto-wallets/" target="_blank" rel="noopener">New GlassWorm malware wave targets Macs with trojanized crypto wallets</a><span class="article-summary">A fourth wave of the "GlassWorm" campaign is targeting macOS developers with malicious VSCode/OpenVSX extensions that deliver trojanized versions of crypto wallet applications. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="enterprise spotlight: setting the 2026 it agenda" data-date="2026-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://us.resources.csoonline.com/resources/download-the-2026-it-agenda-spotlight-report/" target="_blank" rel="noopener">Enterprise Spotlight: Setting the 2026 IT agenda</a><span class="article-summary">IT leaders are setting their operations strategies for 2026 with an eye toward agility, flexibility, and tangible business results. Download the January 2026 issue of the Enterprise Spotlight from the editors of CIO, Computerworld, CSO, InfoWorld, and Network World and learn abou…</span></span><span class="headline-source">US.RESOURCES.CSOONLINE.COM</span></div>
+<div class="headline" data-title="openai is offering $20 chatgpt plus for free to some users" data-date="2026-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/artificial-intelligence/openai-is-offering-20-chatgpt-plus-for-free-to-some-users/" target="_blank" rel="noopener">OpenAI is offering $20 ChatGPT Plus for free to some users</a><span class="article-summary">If you're already subscribed to ChatGPT Plus, which costs $20, you can request OpenAI to cancel your subscription, and it may offer one month of free usage. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

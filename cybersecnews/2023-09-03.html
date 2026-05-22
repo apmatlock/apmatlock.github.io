@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2023-09-03</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,73 +109,56 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2023-09-03</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">14</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">3</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-09-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2023/09/poc-exploit-released-for-critical.html" target="_blank" rel="noopener">PoC Exploit Released for Critical VMware Aria's SSH Auth Bypass Vulnerability</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 03 Sep 2023</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-09-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-24872" target="_blank" rel="noopener">CVE-2023-24872 Microsoft PostScript and PCL6 Class Printer Driver Remote Code Execution Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 Sep 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-09-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.helpnetsecurity.com/2023/09/03/week-in-review-11-search-engines-for-cybersecurity-research-poc-for-rce-in-juniper-firewall-released/" target="_blank" rel="noopener">Week in review: 11 search engines for cybersecurity research, PoC for RCE in Juniper firewall released</a></div><span class="article-meta">HELPNETSECURITY.COM &mdash; 03 Sep 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-09-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/hackers-adding-more-capabilities-to-open-source-malware-a-22998" target="_blank" rel="noopener">Hackers Adding More Capabilities to Open Source Malware</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-09-03</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-09-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://avi-lumelsky.medium.com/secure-fastapi-with-ebpf-724d4aef8d9e?source=friends_link&sk=b01a6b97ef09003b53cd52c479017b03" target="_blank" rel="noopener">Secure FastAPI with eBPF</a></div><span class="article-meta">AVI-LUMELSKY.MEDIUM.COM &mdash; 03 Sep 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-09-03"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/university-of-sydney-data-breach-impacts-recent-applicants/" target="_blank" rel="noopener">University of Sydney data breach impacts recent applicants</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 03 Sep 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-09-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.helpnetsecurity.com/2023/09/03/nidhi-gani-cybersecurity-regulatory-affairs/" target="_blank" rel="noopener">Championing cybersecurity regulatory affairs with Nidhi Gani</a></div><span class="article-meta">HELPNETSECURITY.COM &mdash; 03 Sep 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-09-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/30184" target="_blank" rel="noopener">Analysis of a Defective Phishing PDF, (Sun, Sep 3rd)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 03 Sep 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-09-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://youtu.be/MizrgSgtS9E?si=bzCmkhkgebS905qu" target="_blank" rel="noopener">Modern Security Podcast: Dev Akhawe from Figma on How to Scale Security with Secure Defaults</a></div><span class="article-meta">YOUTU.BE &mdash; 03 Sep 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-09-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://youtu.be/nsKIADw7TEM?si=Uzatpz_zFA3BgA4q" target="_blank" rel="noopener">21st Century Hackers | Full Hacking Documentary 2021 - 52 minutes</a></div><span class="article-meta">YOUTU.BE &mdash; 03 Sep 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-09-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://deform.co/china-linked-cybercriminals-bypass-barracudas-security-patch/" target="_blank" rel="noopener">China-linked cybercriminals bypass Barracuda’s security patch</a></div><span class="article-meta">DEFORM.CO &mdash; 03 Sep 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-09-03"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/childrens-snack-recalled-after-its-website-caught-serving-porn/" target="_blank" rel="noopener">Children's snack recalled after its website caught serving porn</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 03 Sep 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-09-03"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/microsoft/microsoft-reminds-users-windows-will-disable-insecure-tls-soon/" target="_blank" rel="noopener">Microsoft reminds users Windows will disable insecure TLS soon</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 03 Sep 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-09-03"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/microsoft/windows-11-23h2-top-three-new-features/" target="_blank" rel="noopener">Windows 11 23H2: Top three new features</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 03 Sep 2023</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="poc exploit released for critical vmware aria's ssh auth bypass vulnerability" data-date="2023-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/09/poc-exploit-released-for-critical.html" target="_blank" rel="noopener">PoC Exploit Released for Critical VMware Aria's SSH Auth Bypass Vulnerability</a><span class="article-summary">Proof-of-concept (PoC) exploit code has been made available for a recently disclosed and patched critical flaw impacting VMware Aria Operations for Networks (formerly vRealize Network Insight). The flaw, tracked as CVE-2023-34039, is rated 9.8 out of a maximum of 10 for severity …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="cve-2023-24872 microsoft postscript and pcl6 class printer driver remote code execution vulnerability" data-date="2023-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-24872" target="_blank" rel="noopener">CVE-2023-24872 Microsoft PostScript and PCL6 Class Printer Driver Remote Code Execution Vulnerability</a><span class="article-summary">Updated the links to the Windows Update Catalog. This is an informational change only.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="week in review: 11 search engines for cybersecurity research, poc for rce in juniper firewall released" data-date="2023-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2023/09/03/week-in-review-11-search-engines-for-cybersecurity-research-poc-for-rce-in-juniper-firewall-released/" target="_blank" rel="noopener">Week in review: 11 search engines for cybersecurity research, PoC for RCE in Juniper firewall released</a><span class="article-summary">Here’s an overview of some of last week’s most interesting news, articles, interviews and videos: Adapting authentication to a cloud-centric landscape In this Help Net Security interview, Florian Forster, CEO at Zitadel, discusses the challenges CISOs face in managing authenticat…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="hackers adding more capabilities to open source malware" data-date="2023-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/hackers-adding-more-capabilities-to-open-source-malware-a-22998" target="_blank" rel="noopener">Hackers Adding More Capabilities to Open Source Malware</a><span class="article-summary">SapphireStealer Enables Hackers to Steal Sensitive Corporate Credentials Multiple hackers are minting newer capabilities from an open source information stealer to spawn new variants. The malware steals sensitive information such as corporate credentials, which are resold to othe…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+<div class="headline" data-title="secure fastapi with ebpf" data-date="2023-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://avi-lumelsky.medium.com/secure-fastapi-with-ebpf-724d4aef8d9e?source=friends_link&sk=b01a6b97ef09003b53cd52c479017b03" target="_blank" rel="noopener">Secure FastAPI with eBPF</a><span class="article-summary">submitted by L4s to secops 1 points | 0 comments https://avi-lumelsky.medium.com/secure-fastapi-with-ebpf-724d4aef8d9e?source=friends_link&amp;sk=b01a6b97ef09003b53cd52c479017b03 Secure FastAPI with eBPF::undefined</span></span><span class="headline-source">AVI-LUMELSKY.MEDIUM.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="university of sydney data breach impacts recent applicants" data-date="2023-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/university-of-sydney-data-breach-impacts-recent-applicants/" target="_blank" rel="noopener">University of Sydney data breach impacts recent applicants</a><span class="article-summary">The University of Sydney (USYD) has announced it has suffered a data breach through a third-party service provider, exposing the personal data of recently applied and enrolled international applicants. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="championing cybersecurity regulatory affairs with nidhi gani" data-date="2023-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2023/09/03/nidhi-gani-cybersecurity-regulatory-affairs/" target="_blank" rel="noopener">Championing cybersecurity regulatory affairs with Nidhi Gani</a><span class="article-summary">Nidhi Gani is a seasoned regulatory affairs professional with over a decade of experience in cybersecurity, medical devices, and digital health. She’s worked with devices ranging from heart and lung machines to rehabilitation devices. Nidhi works at Embecta as a Regulatory Affair…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="analysis of a defective phishing pdf, (sun, sep 3rd)" data-date="2023-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/30184" target="_blank" rel="noopener">Analysis of a Defective Phishing PDF, (Sun, Sep 3rd)</a><span class="article-summary">A reader submitted a suspicious PDF file . TLDR: it&&#x23&#x3b;x26&#x3b;&#x23&#x3b;39&#x3b;s a defective phishing PDF. &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="modern security podcast: dev akhawe from figma on how to scale security with secure defaults" data-date="2023-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://youtu.be/MizrgSgtS9E?si=bzCmkhkgebS905qu" target="_blank" rel="noopener">Modern Security Podcast: Dev Akhawe from Figma on How to Scale Security with Secure Defaults</a><span class="article-summary">submitted by ashar to security_cpe 1 points | 0 comments https://youtu.be/MizrgSgtS9E?si=bzCmkhkgebS905qu Modern Security Podcast: Dev Akhawe on How to Scale Security with Secure Defaults For our first episode of The Modern Security Podcast, we had a wide-ranging conversation wit…</span></span><span class="headline-source">YOUTU.BE</span></div>
+<div class="headline" data-title="21st century hackers | full hacking documentary 2021 - 52 minutes" data-date="2023-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://youtu.be/nsKIADw7TEM?si=Uzatpz_zFA3BgA4q" target="_blank" rel="noopener">21st Century Hackers | Full Hacking Documentary 2021 - 52 minutes</a><span class="article-summary">submitted by ashar to security_cpe 1 points | 0 comments https://youtu.be/nsKIADw7TEM?si=Uzatpz_zFA3BgA4q In this documentary, learn about “white hat” hackers, the U.S. Secret Service’s cyber crime division working to protect us from the risks associated with persistent connectiv…</span></span><span class="headline-source">YOUTU.BE</span></div>
+<div class="headline" data-title="china-linked cybercriminals bypass barracuda’s security patch" data-date="2023-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://deform.co/china-linked-cybercriminals-bypass-barracudas-security-patch/" target="_blank" rel="noopener">China-linked cybercriminals bypass Barracuda’s security patch</a><span class="article-summary">submitted by L4s to secops 1 points | 0 comments https://deform.co/china-linked-cybercriminals-bypass-barracudas-security-patch/ China-linked cybercriminals bypass Barracuda’s security patch::Barracuda email security gateway devices became the target of a cyber espionage attack f…</span></span><span class="headline-source">DEFORM.CO</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="children's snack recalled after its website caught serving porn" data-date="2023-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/childrens-snack-recalled-after-its-website-caught-serving-porn/" target="_blank" rel="noopener">Children's snack recalled after its website caught serving porn</a><span class="article-summary">Supermarket chain Lidl has been recalling four types of PAW Patrol-themed snacks across the UK. Except, the reason for the recall has got nothing to do with food contents, but the website listed on the snack's packaging serving porn. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="microsoft reminds users windows will disable insecure tls soon" data-date="2023-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/microsoft/microsoft-reminds-users-windows-will-disable-insecure-tls-soon/" target="_blank" rel="noopener">Microsoft reminds users Windows will disable insecure TLS soon</a><span class="article-summary">Microsoft reminded users that insecure Transport Layer Security (TLS) 1.0 and 1.1 protocols will be disabled soon in future Windows releases. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="windows 11 23h2: top three new features" data-date="2023-09-03"><span class="headline-date">3 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/microsoft/windows-11-23h2-top-three-new-features/" target="_blank" rel="noopener">Windows 11 23H2: Top three new features</a><span class="article-summary">The highly anticipated Windows 11 23H2 update is around the corner, and Microsoft has released its best features to testers in the Beta Channel. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

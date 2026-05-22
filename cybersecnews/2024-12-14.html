@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-12-14</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,81 +109,64 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-12-14</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">22</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">8</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/12/390000-wordpress-credentials-stolen-via.html" target="_blank" rel="noopener">390,000+ WordPress Credentials Stolen via Malicious GitHub Repository Hosting PoC Exploits</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 14 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/ai-and-quantum-computing-waves-of-innovation-and-cyber-security-concerns-cyber-security-today-weekend-for-december-14-2024" target="_blank" rel="noopener">AI and Quantum Computing - Waves of innovation and Cyber Security Concerns:  Cyber Security Today Weekend for December 14, 2024</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 14 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://haveibeenpwned.com/PwnedWebsites#Tibber" target="_blank" rel="noopener">Tibber - 50,002 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 14 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/21173871" target="_blank" rel="noopener">NodeLoader Exposed: The Node.js Malware Evading Detection</a></div><span class="article-meta">INFOSEC.PUB &mdash; 14 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/dark-web-hacking-research/" target="_blank" rel="noopener">New Research Uncovered Dark Internet Service Providers Used For Hacking</a></div><span class="article-meta">GBHACKERS.COM &mdash; 14 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/prometheus-dos-risk/" target="_blank" rel="noopener">Over 300,000 Prometheus Servers Vulnerable to DoS Attacks Due to RepoJacking Exploit</a></div><span class="article-meta">GBHACKERS.COM &mdash; 14 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/reyee-os-air-hack/" target="_blank" rel="noopener">Reyee OS IoT Devices Compromised: Over-The-Air Attack Bypasses Wi-Fi Logins</a></div><span class="article-meta">GBHACKERS.COM &mdash; 14 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/android-malware-indian-banks/" target="_blank" rel="noopener">New Android Banking Malware Attacking Indian Banks To Steal Login Credentials</a></div><span class="article-meta">GBHACKERS.COM &mdash; 14 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-14"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://haveibeenpwned.com/PwnedWebsites#Yonema" target="_blank" rel="noopener">Yonéma - 35,962 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 14 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-14"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/watch?v=DjzQxFcc66Q" target="_blank" rel="noopener">Bolster Your Systems! The New Way to Beat Cyber Threats ⚔️</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-14</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-14"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/watch?v=sX2gklZ4QXE" target="_blank" rel="noopener">Unmasking Attacks with Secure Boot Alerts 🛡️</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-14</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-14"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2024/12/14/rhode-island-says-personal-data-likely-breached-in-social-services-cyberattack/" target="_blank" rel="noopener">Rhode Island says personal data likely breached in social services cyberattack</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 14 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/21163261" target="_blank" rel="noopener">Crypted Hearts: Exposing the HeartCrypt Packer-as-a-Service Operation</a></div><span class="article-meta">INFOSEC.PUB &mdash; 14 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2024/12/thai-officials-targeted-in-yokai.html" target="_blank" rel="noopener">Thai Officials Targeted in Yokai Backdoor Campaign Using DLL Side-Loading Techniques</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 14 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://sh.itjust.works/post/29474821" target="_blank" rel="noopener">UK police chief asks China to stop exporting engines used for small boats</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 14 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/password-era-passkeys/" target="_blank" rel="noopener">Password Era is Ending Microsoft to Delete 1 Billion Passwords</a></div><span class="article-meta">GBHACKERS.COM &mdash; 14 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/21181554" target="_blank" rel="noopener">Under the SADBRIDGE with GOSAR: QUASAR Gets a Golang Rewrite</a></div><span class="article-meta">INFOSEC.PUB &mdash; 14 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2024/12/upcoming-speaking-events-2.html" target="_blank" rel="noopener">Upcoming Speaking Events</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2024-12-14</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/390-000-wordpress-accounts-stolen-from-hackers-in-supply-chain-attack/" target="_blank" rel="noopener">390,000 WordPress accounts stolen from hackers in supply chain attack</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 14 Dec 2024</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2024-12-14"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://thehackernews.com/2024/12/germany-disrupts-badbox-malware-on.html" target="_blank" rel="noopener">Germany Disrupts BADBOX Malware on 30,000 Devices Using Sinkhole Action</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 14 Dec 2024</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2024-12-14"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.youtube.com/watch?v=IrElUuhc2WA" target="_blank" rel="noopener">The Hidden Danger Lurking in Managed File Transfers! 🔐</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-14</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-14"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=VRq71E3OrEs" target="_blank" rel="noopener">Vietnamese Moonshine in a Soda Bottle?! What Could Go Wrong?</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-14</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">8</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="390,000+ wordpress credentials stolen via malicious github repository hosting poc exploits" data-date="2024-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/390000-wordpress-credentials-stolen-via.html" target="_blank" rel="noopener">390,000+ WordPress Credentials Stolen via Malicious GitHub Repository Hosting PoC Exploits</a><span class="article-summary">A now-removed GitHub repository that advertised a WordPress tool to publish posts to the online content management system (CMS) is estimated to have enabled the exfiltration of over 390,000 credentials. The malicious activity is part of a broader attack campaign undertaken by a t…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="ai and quantum computing - waves of innovation and cyber security concerns:  cyber security today weekend for december 14, 2024" data-date="2024-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/ai-and-quantum-computing-waves-of-innovation-and-cyber-security-concerns-cyber-security-today-weekend-for-december-14-2024" target="_blank" rel="noopener">AI and Quantum Computing - Waves of innovation and Cyber Security Concerns:  Cyber Security Today Weekend for December 14, 2024</a><span class="article-summary">AI and Quantum Computing: Waves of Innovation and Cybersecurity Concerns In this episode of Cyber Security Today, host Jim Love delves into the latest in AI advancements, discussing their impact on cybersecurity with guests Marcel Gagné and John Pinard. The conversation covers a …</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="tibber - 50,002 breached accounts" data-date="2024-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/PwnedWebsites#Tibber" target="_blank" rel="noopener">Tibber - 50,002 breached accounts</a><span class="article-summary">In November 2024, the German electricity provider Tibber suffered a data breach that exposed the personal information of 50k customers . The data included names, email addresses, geographic locations (city and postcode) and total spend on purchases. The data was provided to HIBP …</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+<div class="headline" data-title="nodeloader exposed: the node.js malware evading detection" data-date="2024-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/21173871" target="_blank" rel="noopener">NodeLoader Exposed: The Node.js Malware Evading Detection</a><span class="article-summary">submitted by Joker to cybersecurity 2 points | 0 comments https://www.zscaler.com/blogs/security-research/nodeloader-exposed-node-js-malware-evading-detection Key Takeaways &gt; - ThreatLabz has observed threat actors deploying NodeLoader using the Node Package Manager (NPM) pkg …</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="new research uncovered dark internet service providers used for hacking" data-date="2024-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/dark-web-hacking-research/" target="_blank" rel="noopener">New Research Uncovered Dark Internet Service Providers Used For Hacking</a><span class="article-summary">Bulletproof hosting services, a type of dark internet service provider, offer infrastructure to cybercriminals, facilitating malicious activities like malware distribution, hacking attacks, fraudulent websites, and spam.&#160; These services evade legal scrutiny, posing a signifi…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="over 300,000 prometheus servers vulnerable to dos attacks due to repojacking exploit" data-date="2024-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/prometheus-dos-risk/" target="_blank" rel="noopener">Over 300,000 Prometheus Servers Vulnerable to DoS Attacks Due to RepoJacking Exploit</a><span class="article-summary">The research identified vulnerabilities in Prometheus, including information disclosure from exposed servers, DoS risks from pprof endpoints, and potential code execution threats, which could lead to data breaches, system outages, and unauthorized access. Vulnerable Prometheus se…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="reyee os iot devices compromised: over-the-air attack bypasses wi-fi logins" data-date="2024-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/reyee-os-air-hack/" target="_blank" rel="noopener">Reyee OS IoT Devices Compromised: Over-The-Air Attack Bypasses Wi-Fi Logins</a><span class="article-summary">Researchers discovered multiple vulnerabilities in Ruijie Networks&#8217; cloud-connected devices. By exploiting these vulnerabilities, attackers can remotely compromise access points, gain unauthorized access to internal networks, and execute arbitrary code on affected devices.&…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="new android banking malware attacking indian banks to steal login credentials" data-date="2024-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/android-malware-indian-banks/" target="_blank" rel="noopener">New Android Banking Malware Attacking Indian Banks To Steal Login Credentials</a><span class="article-summary">Researchers have discovered a new Android banking trojan targeting Indian users, and this malware disguises itself as essential utility services to trick users into providing sensitive information. The malware has already compromised 419 devices, intercepted 4,918 SMS messages, a…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="yonéma - 35,962 breached accounts" data-date="2024-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/PwnedWebsites#Yonema" target="_blank" rel="noopener">Yonéma - 35,962 breached accounts</a><span class="article-summary">In November 2024, data from the Senegalese payment platform Yonéma was posted to a popular hacking forum . The data included 36k unique email addresses alongside phone numbers, names and what appears to be encrypted passwords and dates of birth.</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+<div class="headline" data-title="bolster your systems! the new way to beat cyber threats ⚔️" data-date="2024-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=DjzQxFcc66Q" target="_blank" rel="noopener">Bolster Your Systems! The New Way to Beat Cyber Threats ⚔️</a><span class="article-summary">Cross-functional communication can be the secret weapon against cyber threats! 🛡️ Theresa Lanowitz shares why it's no longer enough to focus on fear when facing hackers and ransomware. Instead, the key is strong communication between your CISO, CIO, and CTO teams to stay ahead of…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="unmasking attacks with secure boot alerts 🛡️" data-date="2024-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=sX2gklZ4QXE" target="_blank" rel="noopener">Unmasking Attacks with Secure Boot Alerts 🛡️</a><span class="article-summary">Did you know that bootloader changes and Secure Boot tampering could signal a cyberattack? 🚨 Learn how to monitor these rare but critical events to protect your systems! Cybersecurity starts with vigilance. Stay ahead of the threats! 🔒 #Cybersecurity #Bootloader #SecureBoot #Cybe…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="rhode island says personal data likely breached in social services cyberattack" data-date="2024-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/12/14/rhode-island-says-personal-data-likely-breached-in-social-services-cyberattack/" target="_blank" rel="noopener">Rhode Island says personal data likely breached in social services cyberattack</a><span class="article-summary">State officials said hundreds of thousands of Rhode Island residents could be affected by a cyberattack on the state’s online portal for social services, with a “high probability” that&#160; personally identifiable information was breached. According to an update from Governor Da…</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="crypted hearts: exposing the heartcrypt packer-as-a-service operation" data-date="2024-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/21163261" target="_blank" rel="noopener">Crypted Hearts: Exposing the HeartCrypt Packer-as-a-Service Operation</a><span class="article-summary">submitted by Joker to cybersecurity 1 points | 0 comments https://unit42.paloaltonetworks.com/packer-as-a-service-heartcrypt-malware/ Executive Summary &gt; This article analyzes a new packer-as-a-service (PaaS) called HeartCrypt, which is used to protect malware. It has been in …</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="thai officials targeted in yokai backdoor campaign using dll side-loading techniques" data-date="2024-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/thai-officials-targeted-in-yokai.html" target="_blank" rel="noopener">Thai Officials Targeted in Yokai Backdoor Campaign Using DLL Side-Loading Techniques</a><span class="article-summary">Thai government officials have emerged as the target of a new campaign that leverages a technique called DLL side-loading to deliver a previously undocumented backdoor dubbed Yokai. "The target of the threat actors were Thailand officials based on the nature of the lures," Nikhil…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="uk police chief asks china to stop exporting engines used for small boats" data-date="2024-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/29474821" target="_blank" rel="noopener">UK police chief asks China to stop exporting engines used for small boats</a><span class="article-summary">submitted by Amoxtli to cybersecurity 1 points | 0 comments https://www.yahoo.com/news/uk-police-chief-asks-china-211658139.html</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="password era is ending microsoft to delete 1 billion passwords" data-date="2024-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/password-era-passkeys/" target="_blank" rel="noopener">Password Era is Ending Microsoft to Delete 1 Billion Passwords</a><span class="article-summary">Microsoft has announced that it is currently blocking an astounding 7,000 password attacks every second, nearly double the rate from just a year ago. This surge in cyber threats underscores the urgent need for more robust authentication methods, with passkeys emerging as a promis…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="under the sadbridge with gosar: quasar gets a golang rewrite" data-date="2024-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/21181554" target="_blank" rel="noopener">Under the SADBRIDGE with GOSAR: QUASAR Gets a Golang Rewrite</a><span class="article-summary">submitted by Joker to cybersecurity 1 points | 0 comments https://www.elastic.co/security-labs/under-the-sadbridge-with-gosar Elastic Security Labs share details about the SADBRIDGE loader and GOSAR backdoor, malware used in campaigns targeting Chinese-speaking victims. Introduct…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="upcoming speaking events" data-date="2024-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2024/12/upcoming-speaking-events-2.html" target="_blank" rel="noopener">Upcoming Speaking Events</a><span class="article-summary">This is a current list of where and when I am scheduled to speak: I&#8217;m speaking at a joint meeting of the Boston Chapter of the IEEE Computer Society and GBC/ACM , in Boston, Massachusetts, USA, at 7:00 PM ET on Thursday, January 9, 2025. The event will take place at the Mas…</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="390,000 wordpress accounts stolen from hackers in supply chain attack" data-date="2024-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/390-000-wordpress-accounts-stolen-from-hackers-in-supply-chain-attack/" target="_blank" rel="noopener">390,000 WordPress accounts stolen from hackers in supply chain attack</a><span class="article-summary">A threat actor tracked as MUT-1244 has stolen over 390,000 WordPress credentials in a large-scale, year-long campaign targeting other threat actors using a trojanized WordPress credentials checker. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="germany disrupts badbox malware on 30,000 devices using sinkhole action" data-date="2024-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/germany-disrupts-badbox-malware-on.html" target="_blank" rel="noopener">Germany Disrupts BADBOX Malware on 30,000 Devices Using Sinkhole Action</a><span class="article-summary">Germany's Federal Office of Information Security (BSI) has announced that it has disrupted a malware operation called BADBOX that came preloaded on at least 30,000 internet-connected devices sold across the country. In a statement published earlier this week, authorities said the…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="the hidden danger lurking in managed file transfers! 🔐" data-date="2024-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=IrElUuhc2WA" target="_blank" rel="noopener">The Hidden Danger Lurking in Managed File Transfers! 🔐</a><span class="article-summary">Ever heard of a supply chain attack? They’re not just about hacking updates like SolarWinds—there’s a scarier twist! Imagine using a managed file transfer system to bypass email security and access multiple companies’ servers. The hidden danger is real, and it’s terrifying. Could…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="vietnamese moonshine in a soda bottle?! what could go wrong?" data-date="2024-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=VRq71E3OrEs" target="_blank" rel="noopener">Vietnamese Moonshine in a Soda Bottle?! What Could Go Wrong?</a><span class="article-summary">When your buddy retires, brings back souvenirs, and casually hands you Vietnamese moonshine in a Sprite bottle, what do you do? This short dives into an unexpected story of a reunion, cheap thrills from Vietnam, and a green bottle holding... what exactly? Will we drink it? How ba…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

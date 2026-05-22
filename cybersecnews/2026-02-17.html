@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2026-02-17</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,81 +109,68 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2026-02-17</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">21</span></button>
-<button class="filter-btn" data-cat="CISA KEV" onclick="filterCat('CISA KEV', this)">CISA KEV <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">9</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="CISA KEV" data-date="2026-02-17"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2026/02/17/cisa-adds-four-known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA Adds Four Known Exploited Vulnerabilities to Catalog</a><span class="article-summary">CISA has added four new vulnerabilities to its Known Exploited Vulnerabilities (KEV) Catalog , based on evidence of active exploitation. CVE-2008-0015 Microsoft Windows Video ActiveX Control Remote Code Execution Vulnerability CVE-2020-7796 Synacor Zimbra Collaboration Suite (ZCS…</span></div><span class="kev-badge">KEV</span><span class="article-meta">CISA.GOV &mdash; Tue, 17 Feb 26 1</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-17"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-2320" target="_blank" rel="noopener">Chromium: CVE-2026-2320 Inappropriate implementation in File input</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 17 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-17"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-2441" target="_blank" rel="noopener">Chromium: CVE-2026-2441 Use after free in CSS</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 17 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-17"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-2323" target="_blank" rel="noopener">Chromium: CVE-2026-2323 Inappropriate implementation in Downloads</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 17 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-17"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-0102" target="_blank" rel="noopener">CVE-2026-0102 Microsoft Edge (Chromium-based) Defense in Depth Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 17 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-17"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-2318" target="_blank" rel="noopener">CVE-2026-2318</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 17 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-17"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-2317" target="_blank" rel="noopener">Chromium: CVE-2026-2317 Inappropriate implementation in Animation</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 17 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-17"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-2313" target="_blank" rel="noopener">Chromium: CVE-2026-2313 Use after free in CSS</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 17 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-17"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-26119" target="_blank" rel="noopener">CVE-2026-26119 Windows Admin Center Elevation of Privilege Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 17 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-17"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://cloud.google.com/blog/topics/threat-intelligence/unc6201-exploiting-dell-recoverpoint-zero-day/" target="_blank" rel="noopener">From BRICKSTORM to GRIMBOLT: UNC6201 Exploiting a Dell RecoverPoint for Virtual Machines Zero-Day</a></div><span class="article-meta">CLOUD.GOOGLE.COM &mdash; 17 Feb 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-02-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/26/b/spam-campaign-abuses-atlassian-jira.html" target="_blank" rel="noopener">Spam Campaign Abuses Atlassian Jira, Targets Government and Corporate Entities</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 17 Feb 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-02-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.troyhunt.com/weekly-update-491/" target="_blank" rel="noopener">Weekly Update 491</a></div><span class="article-meta">TROYHUNT.COM &mdash; 17 Feb 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-02-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://haveibeenpwned.com/Breach/CanadaGoose" target="_blank" rel="noopener">Canada Goose - 581,877 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 17 Feb 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-02-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.paloaltonetworks.com/blog/2026/02/unit-42-global-ir-report/" target="_blank" rel="noopener">2026 Unit 42 Global Incident Response Report — Attacks Now 4x Faster</a></div><span class="article-meta">PALOALTONETWORKS.COM &mdash; 17 Feb 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-02-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://infosec.pub/post/42191831" target="_blank" rel="noopener">Password managers less secure than promised</a></div><span class="article-meta">INFOSEC.PUB &mdash; 17 Feb 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-02-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.microsoft.com/en-us/security/blog/2026/02/17/unify-now-or-pay-later-new-research-exposes-the-operational-cost-of-a-fragmented-soc/" target="_blank" rel="noopener">Unify now or pay later: New research exposes the operational cost of a fragmented SOC</a></div><span class="article-meta">MICROSOFT.COM &mdash; 17 Feb 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-02-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.lastwatchdog.com/news-alert-award-nominations-reveal-a-shift-from-ai-hype-to-a-sharper-focus-on-governing-agentic-ai/" target="_blank" rel="noopener">News alert: Award nominations reveal a shift from AI hype to a sharper focus on governing agentic AI</a></div><span class="article-meta">LASTWATCHDOG.COM &mdash; 17 Feb 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-02-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.paloaltonetworks.com/blog/2026/02/securing-the-agentic-endpoint/" target="_blank" rel="noopener">Securing the Agentic Endpoint</a></div><span class="article-meta">PALOALTONETWORKS.COM &mdash; 17 Feb 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-02-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.paloaltonetworks.com/blog/2026/02/introducing-unit-42-managed-xsiam-2-0/" target="_blank" rel="noopener">Introducing Unit 42 Managed XSIAM 2.0</a></div><span class="article-meta">PALOALTONETWORKS.COM &mdash; 17 Feb 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-02-17"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.f5.com/labs/articles/weekly-threat-bulletin-february-18th-2026" target="_blank" rel="noopener">Weekly Threat Bulletin – February 18th, 2026</a></div><span class="article-meta">F5.COM &mdash; 17 Feb 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-02-17"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.welivesecurity.com/en/kids-online/children-selfies-online/" target="_blank" rel="noopener">Is it OK to let your children post selfies online?</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 17 Feb 2026</span></div>
-    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa adds four known exploited vulnerabilities to catalog" data-date="2026-02-17"><span class="headline-date">17 Feb <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2026/02/17/cisa-adds-four-known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA Adds Four Known Exploited Vulnerabilities to Catalog</a><span class="article-summary">CISA has added four new vulnerabilities to its Known Exploited Vulnerabilities (KEV) Catalog , based on evidence of active exploitation. CVE-2008-0015 Microsoft Windows Video ActiveX Control Remote Code Execution Vulnerability CVE-2020-7796 Synacor Zimbra Collaboration Suite (ZCS…</span></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">9</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="chromium: cve-2026-2320 inappropriate implementation in file input" data-date="2026-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-2320" target="_blank" rel="noopener">Chromium: CVE-2026-2320 Inappropriate implementation in File input</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2026-2441 use after free in css" data-date="2026-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-2441" target="_blank" rel="noopener">Chromium: CVE-2026-2441 Use after free in CSS</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information. Google is aware that an exploit for CVE-2026-2441 exists i…</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2026-2323 inappropriate implementation in downloads" data-date="2026-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-2323" target="_blank" rel="noopener">Chromium: CVE-2026-2323 Inappropriate implementation in Downloads</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-0102 microsoft edge (chromium-based) defense in depth vulnerability" data-date="2026-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-0102" target="_blank" rel="noopener">CVE-2026-0102 Microsoft Edge (Chromium-based) Defense in Depth Vulnerability</a><span class="article-summary">Under specific conditions, a malicious webpage may trigger autofill population after two consecutive taps, potentially without clear or intentional user consent. This could result in disclosure of stored autofill data such as addresses, email, or phone number metadata.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-2318" data-date="2026-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-2318" target="_blank" rel="noopener">CVE-2026-2318</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2026-2317 inappropriate implementation in animation" data-date="2026-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-2317" target="_blank" rel="noopener">Chromium: CVE-2026-2317 Inappropriate implementation in Animation</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2026-2313 use after free in css" data-date="2026-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-2313" target="_blank" rel="noopener">Chromium: CVE-2026-2313 Use after free in CSS</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-26119 windows admin center elevation of privilege vulnerability" data-date="2026-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-26119" target="_blank" rel="noopener">CVE-2026-26119 Windows Admin Center Elevation of Privilege Vulnerability</a><span class="article-summary">Improper authentication in Windows Admin Center allows an authorized attacker to elevate privileges over a network.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="from brickstorm to grimbolt: unc6201 exploiting a dell recoverpoint for virtual machines zero-day" data-date="2026-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://cloud.google.com/blog/topics/threat-intelligence/unc6201-exploiting-dell-recoverpoint-zero-day/" target="_blank" rel="noopener">From BRICKSTORM to GRIMBOLT: UNC6201 Exploiting a Dell RecoverPoint for Virtual Machines Zero-Day</a><span class="article-summary">Written by: Peter Ukhanov, Daniel Sislo, Nick Harbour, John Scarbrough, Fernando Tomlinson, Jr., Rich Reece Introduction Mandiant and Google Threat Intelligence Group (GTIG) have identified the zero-day exploitation of a high-risk vulnerability in Dell RecoverPoint for Virtual Ma…</span></span><span class="headline-source">CLOUD.GOOGLE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="spam campaign abuses atlassian jira, targets government and corporate entities" data-date="2026-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/26/b/spam-campaign-abuses-atlassian-jira.html" target="_blank" rel="noopener">Spam Campaign Abuses Atlassian Jira, Targets Government and Corporate Entities</a><span class="article-summary">We uncover how a campaign used Atlassian Jira Cloud to launch automated and targeted spam campaigns, exploiting trusted SaaS workflows to bypass security controls.</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="weekly update 491" data-date="2026-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.troyhunt.com/weekly-update-491/" target="_blank" rel="noopener">Weekly Update 491</a><span class="article-summary">Presently sponsored by: Report URI: Guarding you from rogue JavaScript! Don’t get pwned; get real-time alerts & prevent breaches #SecureYourSite Well, the ESP32 Bluetooth bridge experiment was a complete failure. Not the radios themselves, they&apos;re actually pretty cool, but t…</span></span><span class="headline-source">TROYHUNT.COM</span></div>
+<div class="headline" data-title="canada goose - 581,877 breached accounts" data-date="2026-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/Breach/CanadaGoose" target="_blank" rel="noopener">Canada Goose - 581,877 breached accounts</a><span class="article-summary">In February 2026, a data breach allegedly containing data relating to Canada Goose customers was published publicly . The data contained 920k records with 582k unique email addresses and included names, phone numbers, IP addresses, physical addresses and partial credit card data,…</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+<div class="headline" data-title="2026 unit 42 global incident response report — attacks now 4x faster" data-date="2026-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.paloaltonetworks.com/blog/2026/02/unit-42-global-ir-report/" target="_blank" rel="noopener">2026 Unit 42 Global Incident Response Report — Attacks Now 4x Faster</a><span class="article-summary">Attackers are leveraging identity, AI, and supply chain exposure. Unit 42's Global 2026 IR Report reveals faster, broader, harder-to-contain threats. The post 2026 Unit 42 Global Incident Response Report — Attacks Now 4x Faster appeared first on Palo Alto Networks Blog .</span></span><span class="headline-source">PALOALTONETWORKS.COM</span></div>
+<div class="headline" data-title="password managers less secure than promised" data-date="2026-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/42191831" target="_blank" rel="noopener">Password managers less secure than promised</a><span class="article-summary">submitted by cm0002 to cybersecurity 10 points | 11 comments https://ethz.ch/en/news-and-events/eth-news/news/2026/02/password-managers-less-secure-than-promised.html ETH Zurich researchers have discovered major security flaws in three popular cloud-based password managers - Bitw…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="unify now or pay later: new research exposes the operational cost of a fragmented soc" data-date="2026-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.microsoft.com/en-us/security/blog/2026/02/17/unify-now-or-pay-later-new-research-exposes-the-operational-cost-of-a-fragmented-soc/" target="_blank" rel="noopener">Unify now or pay later: New research exposes the operational cost of a fragmented SOC</a><span class="article-summary">New research from Microsoft and Omdia reveals how fragmented tools, manual workflows, and alert overload are pushing SOCs to a breaking point. The post Unify now or pay later: New research exposes the operational cost of a fragmented SOC appeared first on Microsoft Security Blog …</span></span><span class="headline-source">MICROSOFT.COM</span></div>
+<div class="headline" data-title="news alert: award nominations reveal a shift from ai hype to a sharper focus on governing agentic ai" data-date="2026-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.lastwatchdog.com/news-alert-award-nominations-reveal-a-shift-from-ai-hype-to-a-sharper-focus-on-governing-agentic-ai/" target="_blank" rel="noopener">News alert: Award nominations reveal a shift from AI hype to a sharper focus on governing agentic AI</a><span class="article-summary">WASHINGTON, Feb. 17, 2026, CyberNewswire: The Cybersecurity Excellence Awards today published early nomination insights from the 2026 program, highlighting a shift in vendor emphasis from broad AI positioning toward governance frameworks, identity architecture, and measurable acc…</span></span><span class="headline-source">LASTWATCHDOG.COM</span></div>
+<div class="headline" data-title="securing the agentic endpoint" data-date="2026-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.paloaltonetworks.com/blog/2026/02/securing-the-agentic-endpoint/" target="_blank" rel="noopener">Securing the Agentic Endpoint</a><span class="article-summary">Secure the Agentic Endpoint. Traditional security misses the risk of AI agents. Learn how Palo Alto Networks and the Koi acquisition bring new protection. The post Securing the Agentic Endpoint appeared first on Palo Alto Networks Blog .</span></span><span class="headline-source">PALOALTONETWORKS.COM</span></div>
+<div class="headline" data-title="introducing unit 42 managed xsiam 2.0" data-date="2026-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.paloaltonetworks.com/blog/2026/02/introducing-unit-42-managed-xsiam-2-0/" target="_blank" rel="noopener">Introducing Unit 42 Managed XSIAM 2.0</a><span class="article-summary">Unit 42 Managed XSIAM 2.0 delivers a 24/7 managed SOC with continuous detection, investigation, and full-cycle remediation. The post Introducing Unit 42 Managed XSIAM 2.0 appeared first on Palo Alto Networks Blog .</span></span><span class="headline-source">PALOALTONETWORKS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="weekly threat bulletin – february 18th, 2026" data-date="2026-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.f5.com/labs/articles/weekly-threat-bulletin-february-18th-2026" target="_blank" rel="noopener">Weekly Threat Bulletin – February 18th, 2026</a><span class="article-summary">These are the top threats you should know about this week.</span></span><span class="headline-source">F5.COM</span></div>
+<div class="headline" data-title="is it ok to let your children post selfies online?" data-date="2026-02-17"><span class="headline-date">17 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/en/kids-online/children-selfies-online/" target="_blank" rel="noopener">Is it OK to let your children post selfies online?</a><span class="article-summary">When it comes to our children’s digital lives, prohibition rarely works. It’s our responsibility to help them build a healthy relationship with tech.</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

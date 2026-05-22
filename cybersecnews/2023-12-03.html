@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2023-12-03</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,80 +109,71 @@
       <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2023-12-03</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">19</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-12-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.theregister.com/2023/11/30/chrome_zeroday/" target="_blank" rel="noopener">Google patches security bugs in Chrome, exploit out there</a></div><span class="article-meta">THEREGISTER.COM &mdash; 03 Dec 2023</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-12-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.theregister.com/2023/11/30/bluetooth_bluffs_attacks_are_no/" target="_blank" rel="noopener">Weak session keys let snoops eavesdrop on Bluetooth traffic</a></div><span class="article-meta">THEREGISTER.COM &mdash; 03 Dec 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.theregister.com/2023/12/02/ransomware_infection_credit_unions/" target="_blank" rel="noopener">60 US credit unions offline after cloud ransomware infection</a></div><span class="article-meta">THEREGISTER.COM &mdash; 03 Dec 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://therecord.media/offensive-cyber-force-proposal-european-council-president" target="_blank" rel="noopener">EU Council president proposes ‘European cyber force’ with ‘offensive capabilities’</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 03 Dec 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://therecord.media/xdspy-hackers-target-russian-military-industrial-companies" target="_blank" rel="noopener">XDSpy hackers attack military-industrial companies in Russia</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 03 Dec 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.theregister.com/2023/12/01/trickbot_dev_guilty_plea/" target="_blank" rel="noopener">US readies prison cell for another Russian Trickbot dev</a></div><span class="article-meta">THEREGISTER.COM &mdash; 03 Dec 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://therecord.media/blackbasta-ransom-payments" target="_blank" rel="noopener">More than $100 million in ransom paid to Black Basta gang over nearly 2 years</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 03 Dec 2023</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-12-03"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://web.archive.org/web/20231202114431/https://binarly.io/posts/The_Far_Reaching_Consequences_of_LogoFAIL/index.html" target="_blank" rel="noopener">UEFI flaws allow bootkits to pwn potentially hundreds of devices using images</a></div><span class="article-meta">WEB.ARCHIVE.ORG &mdash; 03 Dec 2023</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-12-03"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://blog.talosintelligence.com/new-sugargh0st-rat/" target="_blank" rel="noopener">New SugarGh0st RAT targets Uzbekistan government and South Korea</a></div><span class="article-meta">TALOSINTELLIGENCE.COM &mdash; 03 Dec 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-12-03"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.securityweek.com/breaches-by-iran-affiliated-hackers-spanned-multiple-u-s-states-federal-agencies-say/" target="_blank" rel="noopener">Breaches by Iran-Affiliated Hackers Spanned Multiple U.S. States, Federal Agencies Say</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 03 Dec 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-12-03"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://haveibeenpwned.com/PwnedWebsites#SoarGames" target="_blank" rel="noopener">SoarGames - 4,774,445 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 03 Dec 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-12-03"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/linux-version-of-qilin-ransomware-focuses-on-vmware-esxi/" target="_blank" rel="noopener">Linux version of Qilin ransomware focuses on VMware ESXi</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 03 Dec 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-12-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.troyhunt.com/weekly-update-376/" target="_blank" rel="noopener">Weekly Update 376</a></div><span class="article-meta">TROYHUNT.COM &mdash; 03 Dec 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-12-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.cyberdefensemagazine.com/it-modernization-efforts-need-to-prioritize-cybersecurity/" target="_blank" rel="noopener">IT Modernization Efforts Need to Prioritize Cybersecurity</a></div><span class="article-meta">CYBERDEFENSEMAGAZINE.COM &mdash; 03 Dec 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-12-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/pictrs/image/1bae1d65-7d2d-4b3d-8f0c-0a5f73f6002c.png" target="_blank" rel="noopener">BSides Toronto 2023 - 9 talks</a></div><span class="article-meta">INFOSEC.PUB &mdash; 03 Dec 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-12-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://sh.itjust.works/post/10346843" target="_blank" rel="noopener">DNS TXT Verification records</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 03 Dec 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-12-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/north-koreas-state-hackers-stole-3-billion-in-crypto-since-2017/" target="_blank" rel="noopener">North Korea's state hackers stole $3 billion in crypto since 2017</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 03 Dec 2023</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2023-12-03"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/new-proxy-malware-targets-mac-users-through-pirated-software/" target="_blank" rel="noopener">New proxy malware targets Mac users through pirated software</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 03 Dec 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-12-03"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/google/google-is-phasing-out-ad-personalization-for-some-adsense-products/" target="_blank" rel="noopener">Google is phasing out ad personalization for some AdSense products</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 03 Dec 2023</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="google patches security bugs in chrome, exploit out there" data-date="2023-12-03"><span class="headline-date">3 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.theregister.com/2023/11/30/chrome_zeroday/" target="_blank" rel="noopener">Google patches security bugs in Chrome, exploit out there</a><span class="article-summary">submitted by c0mmando to netsec 1 points | 1 comments https://www.theregister.com/2023/11/30/chrome_zeroday/ Google has rolled out six Chrome security fixes including one emergency patch for a bug for which exploit code is already out there. You’re encouraged to thus grab the lat…</span></span><span class="headline-source">THEREGISTER.COM</span></div>
+<div class="headline" data-title="weak session keys let snoops eavesdrop on bluetooth traffic" data-date="2023-12-03"><span class="headline-date">3 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.theregister.com/2023/11/30/bluetooth_bluffs_attacks_are_no/" target="_blank" rel="noopener">Weak session keys let snoops eavesdrop on Bluetooth traffic</a><span class="article-summary">submitted by c0mmando to netsec 2 points | 1 comments https://www.theregister.com/2023/11/30/bluetooth_bluffs_attacks_are_no/ Multiple Bluetooth chips from major vendors such as Qualcomm, Broadcom, Intel, and Apple are vulnerable to a pair of security flaws that allow a nearby mi…</span></span><span class="headline-source">THEREGISTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="60 us credit unions offline after cloud ransomware infection" data-date="2023-12-03"><span class="headline-date">3 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.theregister.com/2023/12/02/ransomware_infection_credit_unions/" target="_blank" rel="noopener">60 US credit unions offline after cloud ransomware infection</a><span class="article-summary">submitted by c0mmando to netsec 1 points | 1 comments https://www.theregister.com/2023/12/02/ransomware_infection_credit_unions/ A ransomware infection at a cloud IT provider has disrupted services for 60 or so credit unions across the US, all of which were relying on the attacke…</span></span><span class="headline-source">THEREGISTER.COM</span></div>
+<div class="headline" data-title="eu council president proposes ‘european cyber force’ with ‘offensive capabilities’" data-date="2023-12-03"><span class="headline-date">3 Dec</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/offensive-cyber-force-proposal-european-council-president" target="_blank" rel="noopener">EU Council president proposes ‘European cyber force’ with ‘offensive capabilities’</a><span class="article-summary">submitted by c0mmando to netsec 1 points | 0 comments https://therecord.media/offensive-cyber-force-proposal-european-council-president Charles Michel, the president of the European Council — the EU body that sets the bloc’s political direction — proposed on Thursday the creation…</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="xdspy hackers attack military-industrial companies in russia" data-date="2023-12-03"><span class="headline-date">3 Dec</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/xdspy-hackers-target-russian-military-industrial-companies" target="_blank" rel="noopener">XDSpy hackers attack military-industrial companies in Russia</a><span class="article-summary">submitted by c0mmando to netsec 5 points | 0 comments https://therecord.media/xdspy-hackers-target-russian-military-industrial-companies A cyberespionage group known as XDSpy recently targeted Russian military-industrial enterprises, according to new research. XDSpy is believed t…</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="us readies prison cell for another russian trickbot dev" data-date="2023-12-03"><span class="headline-date">3 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.theregister.com/2023/12/01/trickbot_dev_guilty_plea/" target="_blank" rel="noopener">US readies prison cell for another Russian Trickbot dev</a><span class="article-summary">submitted by c0mmando to netsec 2 points | 1 comments https://www.theregister.com/2023/12/01/trickbot_dev_guilty_plea/ Another member of the Trickbot malware crew now faces a lengthy prison sentence amid US law enforcement’s ongoing search for its leading members. Russian nationa…</span></span><span class="headline-source">THEREGISTER.COM</span></div>
+<div class="headline" data-title="more than $100 million in ransom paid to black basta gang over nearly 2 years" data-date="2023-12-03"><span class="headline-date">3 Dec</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/blackbasta-ransom-payments" target="_blank" rel="noopener">More than $100 million in ransom paid to Black Basta gang over nearly 2 years</a><span class="article-summary">submitted by c0mmando to netsec 2 points | 0 comments https://therecord.media/blackbasta-ransom-payments Key takeaways Joint research by Elliptic and Corvus Insurance has identified at least $107 million in Bitcoin ransom payments to the Black Basta ransomware group since early 2…</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="uefi flaws allow bootkits to pwn potentially hundreds of devices using images" data-date="2023-12-03"><span class="headline-date">3 Dec</span><span class="headline-body"><a class="headline-title" href="https://web.archive.org/web/20231202114431/https://binarly.io/posts/The_Far_Reaching_Consequences_of_LogoFAIL/index.html" target="_blank" rel="noopener">UEFI flaws allow bootkits to pwn potentially hundreds of devices using images</a><span class="article-summary">submitted by c0mmando to netsec 1 points | 0 comments https://web.archive.org/web/20231202114431/https://binarly.io/posts/The_Far_Reaching_Consequences_of_LogoFAIL/index.html LogoFAIL is a newly discovered set of security vulnerabilities affecting different image parsing librarie…</span></span><span class="headline-source">WEB.ARCHIVE.ORG</span></div>
+<div class="headline" data-title="new sugargh0st rat targets uzbekistan government and south korea" data-date="2023-12-03"><span class="headline-date">3 Dec</span><span class="headline-body"><a class="headline-title" href="https://blog.talosintelligence.com/new-sugargh0st-rat/" target="_blank" rel="noopener">New SugarGh0st RAT targets Uzbekistan government and South Korea</a><span class="article-summary">submitted by c0mmando to netsec 1 points | 0 comments https://blog.talosintelligence.com/new-sugargh0st-rat/ Cisco Talos recently discovered a malicious campaign that likely started as early as August 2023, delivering a new remote access trojan (RAT) we dubbed “SugarGh0st.” We fo…</span></span><span class="headline-source">TALOSINTELLIGENCE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="breaches by iran-affiliated hackers spanned multiple u.s. states, federal agencies say" data-date="2023-12-03"><span class="headline-date">3 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/breaches-by-iran-affiliated-hackers-spanned-multiple-u-s-states-federal-agencies-say/" target="_blank" rel="noopener">Breaches by Iran-Affiliated Hackers Spanned Multiple U.S. States, Federal Agencies Say</a><span class="article-summary">The Municipal Water Authority of Aliquippa was just one of multiple organizations breached in the U.S. by Iran-linked "Cyber Av3ngers" hackers The post Breaches by Iran-Affiliated Hackers Spanned Multiple U.S. States, Federal Agencies Say appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="soargames - 4,774,445 breached accounts" data-date="2023-12-03"><span class="headline-date">3 Dec</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/PwnedWebsites#SoarGames" target="_blank" rel="noopener">SoarGames - 4,774,445 breached accounts</a><span class="article-summary">In December 2019, the now defunct gaming website SoarGames suffered a data breach that exposed 4.8M unique email addresses. The impacted data included usernames, email and IP addresses and salted MD5 password hashes. A significant number of the email addresses appeared to have be…</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+<div class="headline" data-title="linux version of qilin ransomware focuses on vmware esxi" data-date="2023-12-03"><span class="headline-date">3 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/linux-version-of-qilin-ransomware-focuses-on-vmware-esxi/" target="_blank" rel="noopener">Linux version of Qilin ransomware focuses on VMware ESXi</a><span class="article-summary">A sample of the Qilin ransomware gang's VMware ESXi encryptor has been found and it could be one of the most advanced and customizable Linux encryptors seen to date. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="weekly update 376" data-date="2023-12-03"><span class="headline-date">3 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.troyhunt.com/weekly-update-376/" target="_blank" rel="noopener">Weekly Update 376</a><span class="article-summary">Presently sponsored by: Kolide ensures that if a device isn't secure, it can't access your apps. It's Device Trust for Okta. Watch the demo today! I&apos;m irrationally excited about the new Prusa 3D printer on order, and I think that&apos;s mostly to do with planning for the NDC…</span></span><span class="headline-source">TROYHUNT.COM</span></div>
+<div class="headline" data-title="it modernization efforts need to prioritize cybersecurity" data-date="2023-12-03"><span class="headline-date">3 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.cyberdefensemagazine.com/it-modernization-efforts-need-to-prioritize-cybersecurity/" target="_blank" rel="noopener">IT Modernization Efforts Need to Prioritize Cybersecurity</a><span class="article-summary">submitted by Lanky_Pomegranate530 to cybersecurity 1 points | 0 comments https://www.cyberdefensemagazine.com/it-modernization-efforts-need-to-prioritize-cybersecurity/</span></span><span class="headline-source">CYBERDEFENSEMAGAZINE.COM</span></div>
+<div class="headline" data-title="bsides toronto 2023 - 9 talks" data-date="2023-12-03"><span class="headline-date">3 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/pictrs/image/1bae1d65-7d2d-4b3d-8f0c-0a5f73f6002c.png" target="_blank" rel="noopener">BSides Toronto 2023 - 9 talks</a><span class="article-summary">submitted by ashar to security_cpe 1 points | 0 comments https://infosec.pub/pictrs/image/1bae1d65-7d2d-4b3d-8f0c-0a5f73f6002c.png BSides Toronto 2023 playlist of 9 talks 2023 BSides Toronto - 6 Lightning Talks BSides Toronto 2023 Schedule BSides Toronto 2023 website</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="dns txt verification records" data-date="2023-12-03"><span class="headline-date">3 Dec</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/10346843" target="_blank" rel="noopener">DNS TXT Verification records</a><span class="article-summary">submitted by 1boiledpotato to cybersecurity 1 points | 0 comments Today I checked DNSDumpster for my domain and realized that TXT verification records for my email are visible to everyone. Should I be worried? If yes how can I hide them?</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="north korea's state hackers stole $3 billion in crypto since 2017" data-date="2023-12-03"><span class="headline-date">3 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/north-koreas-state-hackers-stole-3-billion-in-crypto-since-2017/" target="_blank" rel="noopener">North Korea's state hackers stole $3 billion in crypto since 2017</a><span class="article-summary">North Korean-backed state hackers have stolen an estimated $3 billion in a long string of hacks targeting the cryptocurrency industry over the last six years since January 2017. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new proxy malware targets mac users through pirated software" data-date="2023-12-03"><span class="headline-date">3 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/new-proxy-malware-targets-mac-users-through-pirated-software/" target="_blank" rel="noopener">New proxy malware targets Mac users through pirated software</a><span class="article-summary">Cybercriminals are targeting Mac users with a new proxy trojan malware bundled with popular, copyrighted macOS software being offered on warez sites. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="google is phasing out ad personalization for some adsense products" data-date="2023-12-03"><span class="headline-date">3 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/google/google-is-phasing-out-ad-personalization-for-some-adsense-products/" target="_blank" rel="noopener">Google is phasing out ad personalization for some AdSense products</a><span class="article-summary">Google has announced significant changes to its Search Ads publisher products, including AdSense for Search (AFS), AdSense for Shopping (AFSh), and Programmable Search Engine (ProSE). [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

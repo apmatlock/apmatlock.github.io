@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-01-13</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,91 +109,86 @@
       <div class="stat"><span class="stat-value">8</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-01-13</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">29</span></button>
-<button class="filter-btn" data-cat="CISA KEV" onclick="filterCat('CISA KEV', this)">CISA KEV <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">8</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Cybersecurity Briefings" onclick="filterCat('Cybersecurity Briefings', this)">CYBERSECURITY BRIEFINGS <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">5</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="CISA KEV" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2025/01/13/cisa-adds-two-known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA Adds Two Known Exploited Vulnerabilities to Catalog</a><span class="article-summary">CISA has added two new vulnerabilities to its&nbsp; Known Exploited Vulnerabilities Catalog , based on evidence of active exploitation. CVE-2024-12686 &nbsp;BeyondTrust Privileged Remote Access (PRA) and Remote Support (RS) OS Command Injection Vulnerability CVE-2023-48365 &nbsp;…</span></div><span class="kev-badge">KEV</span><span class="article-meta">CISA.GOV &mdash; Mon, 13 Jan 25 1</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2025/01/hackers-exploit-aviatrix-controller.html" target="_blank" rel="noopener">Hackers Exploit Aviatrix Controller Vulnerability to Deploy Backdoors and Crypto Miners</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 13 Jan 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.microsoft.com/en-us/security/blog/2025/01/13/analyzing-cve-2024-44243-a-macos-system-integrity-protection-bypass-through-kernel-extensions/" target="_blank" rel="noopener">Analyzing CVE-2024-44243, a macOS System Integrity Protection bypass through kernel extensions</a></div><span class="article-meta">MICROSOFT.COM &mdash; 13 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/massive-data-breaches-hit-thousands-of-popular-mobile-apps-cyber-security-today-for-monday-january-13-2025" target="_blank" rel="noopener">Massive Data Breaches Hit Thousands Of Popular Mobile Apps: Cyber Security Today for Monday, January 13, 2025</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 13 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/01/wordpress-skimmers-evade-detection-by.html" target="_blank" rel="noopener">WordPress Skimmers Evade Detection by Injecting Themselves into Database Tables</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 13 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2025/01/13/cisa-and-us-and-international-partners-publish-guidance-priority-considerations-product-selection-ot" target="_blank" rel="noopener">CISA and US and International Partners Publish Guidance on Priority Considerations in Product Selection for OT Owners and Operators</a></div><span class="article-meta">CISA.GOV &mdash; Mon, 13 Jan 25 1</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://techcrunch.com/2025/01/13/uk-domain-giant-nominet-confirms-cybersecurity-incident-linked-to-ivanti-vpn-hacks/" target="_blank" rel="noopener">UK domain giant Nominet confirms cybersecurity incident linked to Ivanti VPN hacks</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 13 Jan 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2025/01/microsoft-takes-legal-action-against-ai-hacking-as-a-service-scheme.html" target="_blank" rel="noopener">Microsoft Takes Legal Action Against AI “Hacking as a Service” Scheme</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2025-01-13</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.troyhunt.com/experimenting-with-stealer-logs-in-have-i-been-pwned/" target="_blank" rel="noopener">Experimenting with Stealer Logs in Have I Been Pwned</a></div><span class="article-meta">TROYHUNT.COM &mdash; 13 Jan 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2025/01/ransomware-on-esxi-mechanization-of.html" target="_blank" rel="noopener">Ransomware on ESXi: The Mechanization of Virtualized Attacks</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 13 Jan 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2025/01/expired-domains-allowed-control-over.html" target="_blank" rel="noopener">Expired Domains Allowed Control Over 4,000 Backdoors on Compromised Systems</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 13 Jan 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2025/01/13/gravy-analytics-data-broker-breach-trove-of-location-data-threatens-privacy-millions/" target="_blank" rel="noopener">A breach of Gravy Analytics’ huge trove of location data threatens the privacy of millions</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 13 Jan 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://haveibeenpwned.com/PwnedWebsites#StealerLogsJan2025" target="_blank" rel="noopener">Stealer Logs, Jan 2025 - 71,039,833 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 13 Jan 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://haveibeenpwned.com/PwnedWebsites#Scholastic" target="_blank" rel="noopener">Scholastic - 4,247,768 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 13 Jan 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.kaspersky.com/blog/supply-chain-attacks-what-are-they-and-how-to-manage-the-risk/52852/" target="_blank" rel="noopener">Trusted-relationship cyberattacks and their prevention</a></div><span class="article-meta">KASPERSKY.COM &mdash; 13 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31588" target="_blank" rel="noopener">ISC Stormcast For Tuesday, January 14th, 2025 https://isc.sans.edu/podcastdetail/9278, (Mon, Jan 13th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 13 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31584" target="_blank" rel="noopener">ISC Stormcast For Monday, January 13th, 2025 https://isc.sans.edu/podcastdetail/9276, (Mon, Jan 13th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 13 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.microsoft.com/en-us/security/blog/2025/01/13/3-takeaways-from-red-teaming-100-generative-ai-products/" target="_blank" rel="noopener">3 takeaways from red teaming 100 generative AI products</a></div><span class="article-meta">MICROSOFT.COM &mdash; 13 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://blog.knowbe4.com/deepfakes-shallow-morals-the-real-issue-behind-the-uks-crackdown" target="_blank" rel="noopener">Waging War on Explicit Deepfakes. The Real Problem Behind the UK Crackdown</a></div><span class="article-meta">KNOWBE4.COM &mdash; 13 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://securityintelligence.com/articles/how-ctem-is-providing-better-cybersecurity-resilience-for-organizations/" target="_blank" rel="noopener">How CTEM is providing better cybersecurity resilience for organizations</a></div><span class="article-meta">SECURITYINTELLIGENCE.COM &mdash; 13 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/22398752" target="_blank" rel="noopener">New HHS nondiscrimination guidelines on AI use in Healthcare</a></div><span class="article-meta">INFOSEC.PUB &mdash; 13 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/22395346" target="_blank" rel="noopener">38C3 - We&amp;#x27;ve not been trained for this: life after the Newag DRM disclosure [Stream archive; Youtube]</a></div><span class="article-meta">INFOSEC.PUB &mdash; 13 Jan 2025</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/25/a/world-tour-cybersecurity-survey-2024.html" target="_blank" rel="noopener">World Tour Survey: Cloud Engineers Wrestle with Risk</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 13 Jan 2025</span></div>
-<div class="article-row" data-cat="Cybersecurity Briefings" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(68,170,136,0.5);background:rgba(68,170,136,0.10);" title="Cybersecurity Briefings">📰</span><div class="article-body"><a href="https://thehackernews.com/2025/01/thn-weekly-recap-top-cybersecurity_01424177917.html" target="_blank" rel="noopener">⚡ THN Weekly Recap: Top Cybersecurity Threats, Tools and Tips [13 January]</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 13 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.cisa.gov/news-events/news/building-secure-design-ecosystem" target="_blank" rel="noopener">Building a Secure by Design Ecosystem</a></div><span class="article-meta">CISA.GOV &mdash; Mon, 13 Jan 25 1</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.cisa.gov/news-events/news/securing-federal-networks-evolving-enterprise-approach" target="_blank" rel="noopener">Securing Federal Networks: Evolving to an Enterprise Approach</a></div><span class="article-meta">CISA.GOV &mdash; Mon, 13 Jan 25 1</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.securityweek.com/industry-moves/jan-13-2025/" target="_blank" rel="noopener">Industry Moves for the week of January 13, 2025 - SecurityWeek</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 13 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31586" target="_blank" rel="noopener">Hikvision Password Reset Brute Forcing, (Mon, Jan 13th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 13 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-13"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bitdefender.com/en-us/blog/hotforsecurity/pastors-dream-crypto-scheme-alleged-to-be-a-multi-million-dollar-scam" target="_blank" rel="noopener">Pastor’s “dream” crypto scheme alleged to be a multi-million dollar scam</a></div><span class="article-meta">BITDEFENDER.COM &mdash; 13 Jan 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa adds two known exploited vulnerabilities to catalog" data-date="2025-01-13"><span class="headline-date">13 Jan <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2025/01/13/cisa-adds-two-known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA Adds Two Known Exploited Vulnerabilities to Catalog</a><span class="article-summary">CISA has added two new vulnerabilities to its&nbsp; Known Exploited Vulnerabilities Catalog , based on evidence of active exploitation. CVE-2024-12686 &nbsp;BeyondTrust Privileged Remote Access (PRA) and Remote Support (RS) OS Command Injection Vulnerability CVE-2023-48365 &nbsp;…</span></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="hackers exploit aviatrix controller vulnerability to deploy backdoors and crypto miners" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/hackers-exploit-aviatrix-controller.html" target="_blank" rel="noopener">Hackers Exploit Aviatrix Controller Vulnerability to Deploy Backdoors and Crypto Miners</a><span class="article-summary">A recently disclosed critical security flaw impacting the Aviatrix Controller cloud networking platform has come under active exploitation in the wild to deploy backdoors and cryptocurrency miners. Cloud security firm Wiz said it's currently responding to "multiple incidents" inv…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="analyzing cve-2024-44243, a macos system integrity protection bypass through kernel extensions" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.microsoft.com/en-us/security/blog/2025/01/13/analyzing-cve-2024-44243-a-macos-system-integrity-protection-bypass-through-kernel-extensions/" target="_blank" rel="noopener">Analyzing CVE-2024-44243, a macOS System Integrity Protection bypass through kernel extensions</a><span class="article-summary">Microsoft discovered a macOS vulnerability allowing attackers to bypass System Integrity Protection (SIP) by loading third party kernel extensions, which could lead to serious consequences, such as allowing attackers to install rootkits, create persistent malware, bypass Transpar…</span></span><span class="headline-source">MICROSOFT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="massive data breaches hit thousands of popular mobile apps: cyber security today for monday, january 13, 2025" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/massive-data-breaches-hit-thousands-of-popular-mobile-apps-cyber-security-today-for-monday-january-13-2025" target="_blank" rel="noopener">Massive Data Breaches Hit Thousands Of Popular Mobile Apps: Cyber Security Today for Monday, January 13, 2025</a><span class="article-summary">Massive Data Breaches, Apple Targeted, Facebook Security Flaw - Cybersecurity Today In this episode of Cybersecurity Today, host Jim Love covers a massive breach revealing how location data is harvested through thousands of popular mobile apps on Android and iOS. Files leaked fro…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="wordpress skimmers evade detection by injecting themselves into database tables" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/wordpress-skimmers-evade-detection-by.html" target="_blank" rel="noopener">WordPress Skimmers Evade Detection by Injecting Themselves into Database Tables</a><span class="article-summary">Cybersecurity researchers are warning of a new stealthy credit card skimmer campaign that targets WordPress e-commerce checkout pages by inserting malicious JavaScript code into a database table associated with the content management system (CMS). "This credit card skimmer malwar…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="cisa and us and international partners publish guidance on priority considerations in product selection for ot owners and operators" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2025/01/13/cisa-and-us-and-international-partners-publish-guidance-priority-considerations-product-selection-ot" target="_blank" rel="noopener">CISA and US and International Partners Publish Guidance on Priority Considerations in Product Selection for OT Owners and Operators</a><span class="article-summary">Today, CISA—along with U.S. and international partners—released joint guidance Secure by Demand: Priority Considerations for Operational Technology Owners and Operators when Selecting Digital Products .&nbsp;As part of CISA’s Secure by Demand series, this guidance focuses on help…</span></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="uk domain giant nominet confirms cybersecurity incident linked to ivanti vpn hacks" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/01/13/uk-domain-giant-nominet-confirms-cybersecurity-incident-linked-to-ivanti-vpn-hacks/" target="_blank" rel="noopener">UK domain giant Nominet confirms cybersecurity incident linked to Ivanti VPN hacks</a><span class="article-summary">Nominet, the U.K. domain registry that maintains .co.uk domains, has experienced a cybersecurity incident that it confirmed is linked to the recent exploitation of a new Ivanti VPN vulnerability. In an email to customers, seen by TechCrunch, Nominet warned of an “ongoing security…</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">8</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="microsoft takes legal action against ai “hacking as a service” scheme" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2025/01/microsoft-takes-legal-action-against-ai-hacking-as-a-service-scheme.html" target="_blank" rel="noopener">Microsoft Takes Legal Action Against AI “Hacking as a Service” Scheme</a><span class="article-summary">Not sure this will matter in the end, but it&#8217;s a positive move : Microsoft is accusing three individuals of running a &#8220;hacking-as-a-service&#8221; scheme that was designed to allow the creation of harmful and illicit content using the company&#8217;s platform for AI-g…</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="experimenting with stealer logs in have i been pwned" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.troyhunt.com/experimenting-with-stealer-logs-in-have-i-been-pwned/" target="_blank" rel="noopener">Experimenting with Stealer Logs in Have I Been Pwned</a><span class="article-summary">Presently sponsored by: Report URI: Guarding you from rogue JavaScript! Don’t get pwned; get real-time alerts & prevent breaches #SecureYourSite TL;DR &#x2014;&#xa0;Email addresses in stealer logs can now be queried in HIBP to discover which websites they&apos;ve had credentials …</span></span><span class="headline-source">TROYHUNT.COM</span></div>
+<div class="headline" data-title="ransomware on esxi: the mechanization of virtualized attacks" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/ransomware-on-esxi-mechanization-of.html" target="_blank" rel="noopener">Ransomware on ESXi: The Mechanization of Virtualized Attacks</a><span class="article-summary">In 2024, ransomware attacks targeting VMware ESXi servers reached alarming levels, with the average ransom demand skyrocketing to $5 million. With approximately 8,000 ESXi hosts exposed directly to the internet (according to Shodan), the operational and business impact of these a…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="expired domains allowed control over 4,000 backdoors on compromised systems" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/expired-domains-allowed-control-over.html" target="_blank" rel="noopener">Expired Domains Allowed Control Over 4,000 Backdoors on Compromised Systems</a><span class="article-summary">No less than 4,000 unique web backdoors previously deployed by various threat actors have been hijacked by taking control of abandoned and expired infrastructure for as little as $20 per domain. Cybersecurity company watchTowr Labs said it pulled off the operation by registering …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="a breach of gravy analytics’ huge trove of location data threatens the privacy of millions" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/01/13/gravy-analytics-data-broker-breach-trove-of-location-data-threatens-privacy-millions/" target="_blank" rel="noopener">A breach of Gravy Analytics’ huge trove of location data threatens the privacy of millions</a><span class="article-summary">The company confirmed the breach after a hacker posted millions of location data records online. © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="stealer logs, jan 2025 - 71,039,833 breached accounts" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/PwnedWebsites#StealerLogsJan2025" target="_blank" rel="noopener">Stealer Logs, Jan 2025 - 71,039,833 breached accounts</a><span class="article-summary">In January 2025, stealer logs with 71M email addresses were added to HIBP . Consisting of email address, password and the website the credentials were entered against, this breach marks the launch of a new HIBP feature enabling the retrieval of the specific websites the logs were…</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+<div class="headline" data-title="scholastic - 4,247,768 breached accounts" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/PwnedWebsites#Scholastic" target="_blank" rel="noopener">Scholastic - 4,247,768 breached accounts</a><span class="article-summary">In January 2025, a data breach of the publishing company Scholastic surfaced . The breach contained 4.2M unique email addresses with many of the records also including name, phone number and physical address.</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+<div class="headline" data-title="trusted-relationship cyberattacks and their prevention" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.kaspersky.com/blog/supply-chain-attacks-what-are-they-and-how-to-manage-the-risk/52852/" target="_blank" rel="noopener">Trusted-relationship cyberattacks and their prevention</a><span class="article-summary">How to work with suppliers to reduce the risk of incidents related to supply-chain cyberattacks.</span></span><span class="headline-source">KASPERSKY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="isc stormcast for tuesday, january 14th, 2025 https://isc.sans.edu/podcastdetail/9278, (mon, jan 13th)" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31588" target="_blank" rel="noopener">ISC Stormcast For Tuesday, January 14th, 2025 https://isc.sans.edu/podcastdetail/9278, (Mon, Jan 13th)</a><span class="article-summary">(c) SANS Internet Storm Center. https://isc.sans.edu Creative Commons Attribution-Noncommercial 3.0 United States License.</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="isc stormcast for monday, january 13th, 2025 https://isc.sans.edu/podcastdetail/9276, (mon, jan 13th)" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31584" target="_blank" rel="noopener">ISC Stormcast For Monday, January 13th, 2025 https://isc.sans.edu/podcastdetail/9276, (Mon, Jan 13th)</a><span class="article-summary">(c) SANS Internet Storm Center. https://isc.sans.edu Creative Commons Attribution-Noncommercial 3.0 United States License.</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="3 takeaways from red teaming 100 generative ai products" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.microsoft.com/en-us/security/blog/2025/01/13/3-takeaways-from-red-teaming-100-generative-ai-products/" target="_blank" rel="noopener">3 takeaways from red teaming 100 generative AI products</a><span class="article-summary">Since 2018, Microsoft's AI Red Team has probed generative AI products for critical safety and security vulnerabilities. Read our latest blog for three lessons we've learned along the way. The post 3 takeaways from red teaming 100 generative AI products appeared first on Microsoft…</span></span><span class="headline-source">MICROSOFT.COM</span></div>
+<div class="headline" data-title="waging war on explicit deepfakes. the real problem behind the uk crackdown" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://blog.knowbe4.com/deepfakes-shallow-morals-the-real-issue-behind-the-uks-crackdown" target="_blank" rel="noopener">Waging War on Explicit Deepfakes. The Real Problem Behind the UK Crackdown</a><span class="article-summary">The UK government decided to wage war on explicit deepfakes. About time, right? But before we start celebrating, let's take a closer look.</span></span><span class="headline-source">KNOWBE4.COM</span></div>
+<div class="headline" data-title="how ctem is providing better cybersecurity resilience for organizations" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://securityintelligence.com/articles/how-ctem-is-providing-better-cybersecurity-resilience-for-organizations/" target="_blank" rel="noopener">How CTEM is providing better cybersecurity resilience for organizations</a><span class="article-summary">Organizations today continuously face a number of fast-moving cyber threats that regularly challenge the effectiveness of their cybersecurity defenses. However, to keep pace, businesses need a proactive and adaptive approach to their security planning and execution. Cyber threat …</span></span><span class="headline-source">SECURITYINTELLIGENCE.COM</span></div>
+<div class="headline" data-title="new hhs nondiscrimination guidelines on ai use in healthcare" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/22398752" target="_blank" rel="noopener">New HHS nondiscrimination guidelines on AI use in Healthcare</a><span class="article-summary">submitted by boatswain to cybersecurity 4 points | 3 comments Looks like they’re pretty concerned with the possibility of mass discrimination by AI, perhaps in the wake of the news about United Healthcare using AI to decline coverage. This could be useful to people: If you believ…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="38c3 - we&amp;#x27;ve not been trained for this: life after the newag drm disclosure [stream archive; youtube]" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/22395346" target="_blank" rel="noopener">38C3 - We&amp;#x27;ve not been trained for this: life after the Newag DRM disclosure [Stream archive; Youtube]</a><span class="article-summary">submitted by taaz to cybersecurity 15 points | 1 comments https://www.youtube.com/watch?v=8OB2NqcSDXQ cross-posted from: biglemmowski.win/post/4480202 This is a follow up to the DRM’d polish trains.</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="world tour survey: cloud engineers wrestle with risk" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/25/a/world-tour-cybersecurity-survey-2024.html" target="_blank" rel="noopener">World Tour Survey: Cloud Engineers Wrestle with Risk</a><span class="article-summary">Trend surveyed 750 cybersecurity professionals in 49 countries to learn more about the state of cybersecurity, from job pressures to the need for more advanced tools. Explore what cloud security engineers teams had to say.</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cybersecurity-briefings">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,170,136,0.5);" onclick="toggleSection(this)">📰 CYBERSECURITY BRIEFINGS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="⚡ thn weekly recap: top cybersecurity threats, tools and tips [13 january]" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/thn-weekly-recap-top-cybersecurity_01424177917.html" target="_blank" rel="noopener">⚡ THN Weekly Recap: Top Cybersecurity Threats, Tools and Tips [13 January]</a><span class="article-summary">The cyber world&rsquo;s been buzzing this week, and it&rsquo;s all about staying ahead of the bad guys. From sneaky software bugs to advanced hacking tricks, the risks are real, but so are the ways to protect yourself. In this recap, we&rsquo;ll break down what&rsquo;s happening,…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="building a secure by design ecosystem" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/news/building-secure-design-ecosystem" target="_blank" rel="noopener">Building a Secure by Design Ecosystem</a></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="securing federal networks: evolving to an enterprise approach" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/news/securing-federal-networks-evolving-enterprise-approach" target="_blank" rel="noopener">Securing Federal Networks: Evolving to an Enterprise Approach</a></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="industry moves for the week of january 13, 2025 - securityweek" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/industry-moves/jan-13-2025/" target="_blank" rel="noopener">Industry Moves for the week of January 13, 2025 - SecurityWeek</a><span class="article-summary">Explore industry moves and significant changes in the industry for the week of January 13, 2025. Stay updated with the latest industry trends and shifts.</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="hikvision password reset brute forcing, (mon, jan 13th)" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31586" target="_blank" rel="noopener">Hikvision Password Reset Brute Forcing, (Mon, Jan 13th)</a><span class="article-summary">One common pattern in password resets is sending a one-time password to the user to enable them to reset their password. The flow usually looks like: &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="pastor’s “dream” crypto scheme alleged to be a multi-million dollar scam" data-date="2025-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bitdefender.com/en-us/blog/hotforsecurity/pastors-dream-crypto-scheme-alleged-to-be-a-multi-million-dollar-scam" target="_blank" rel="noopener">Pastor’s “dream” crypto scheme alleged to be a multi-million dollar scam</a><span class="article-summary">Imagine trusting your pastor with your savings, only to find out he's running a crypto scam. Read more in my article on the Hot for Security blog.</span></span><span class="headline-source">BITDEFENDER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-08-03</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,70 +109,49 @@
       <div class="stat"><span class="stat-value">4</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-08-03</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">12</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">3</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-08-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/08/hackers-exploit-misconfigured-jupyter.html" target="_blank" rel="noopener">Hackers Exploit Misconfigured Jupyter Notebooks with Repurposed Minecraft DDoS Tool</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 03 Aug 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-08-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.lastwatchdog.com/black-hat-fireside-chat-black-girls-hack-emphasizes-diversity-as-effective-force-multiplier/" target="_blank" rel="noopener">Black Hat Fireside Chat: ‘Black Girls Hack’ emphasizes diversity as effective force multiplier</a></div><span class="article-meta">LASTWATCHDOG.COM &mdash; 03 Aug 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-08-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/linux-kernel-impacted-by-new-slubstick-cross-cache-attack/" target="_blank" rel="noopener">Linux kernel impacted by new SLUBStick cross-cache attack</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 03 Aug 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-08-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/hackers-breach-isp-to-poison-software-updates-with-malware/" target="_blank" rel="noopener">Hackers breach ISP to poison software updates with malware</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 03 Aug 2024</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-08-03"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/cybersecurity-today-week-in-review-for-august-3rd-2024-with-terry-cutler-david-shipley-and-host-jim-love" target="_blank" rel="noopener">Cybersecurity Today Week in Review for August 3rd, 2024 with Terry Cutler, David Shipley and host Jim Love</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 03 Aug 2024</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-08-03"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.securityweek.com/cisa-names-lisa-einstein-as-first-chief-ai-officer/" target="_blank" rel="noopener">CISA Names Lisa Einstein as First Chief AI Officer</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 03 Aug 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-08-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://appleinsider.com/articles/24/08/02/google-ads-used-to-distribute-mac-malware-disguised-as-loom-app" target="_blank" rel="noopener">Google Ads used to distribute Mac malware disguised as &amp;#x27;Loom&amp;#x27; app</a></div><span class="article-meta">APPLEINSIDER.COM &mdash; 3 Aug 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-08-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://sh.itjust.works/post/23170611" target="_blank" rel="noopener">Endless Microsoft one-time-use code emails.</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 3 Aug 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-08-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://kb.mailbox.org/en/private/account-article/how-to-use-two-factor-authentication-2fa" target="_blank" rel="noopener">Password reset disables 2FA</a></div><span class="article-meta">KB.MAILBOX.ORG &mdash; 3 Aug 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-08-03"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2024/08/02/how-the-theft-of-40-million-uk-voter-register-records-was-entirely-preventable/" target="_blank" rel="noopener">How the theft of 40M UK voter register records was entirely preventable</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 03 Aug 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-08-03"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.darkreading.com/vulnerabilities-threats/attacks-on-bytecode-interpreters-conceal-malicious-injection-activity?&web_view=true" target="_blank" rel="noopener">Attacks on Bytecode Interpreters Conceal Malicious Injection Activity</a></div><span class="article-meta">DARKREADING.COM &mdash; 03 Aug 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-08-03"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2024/08/doj-and-ftc-sue-tiktok-for-violating.html" target="_blank" rel="noopener">DOJ and FTC Sue TikTok for Violating Children's Privacy Laws</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 03 Aug 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="hackers exploit misconfigured jupyter notebooks with repurposed minecraft ddos tool" data-date="2024-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/08/hackers-exploit-misconfigured-jupyter.html" target="_blank" rel="noopener">Hackers Exploit Misconfigured Jupyter Notebooks with Repurposed Minecraft DDoS Tool</a><span class="article-summary">Cybersecurity researchers have disclosed details of a new distributed denial-of-service (DDoS) attack campaign targeting misconfigured Jupyter Notebooks. The activity, codenamed Panamorfi by cloud security firm Aqua, utilizes a Java-based tool called mineping to launch a TCP floo…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="black hat fireside chat: ‘black girls hack’ emphasizes diversity as effective force multiplier" data-date="2024-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.lastwatchdog.com/black-hat-fireside-chat-black-girls-hack-emphasizes-diversity-as-effective-force-multiplier/" target="_blank" rel="noopener">Black Hat Fireside Chat: ‘Black Girls Hack’ emphasizes diversity as effective force multiplier</a><span class="article-summary">When Tanisha Martin, a veteran software quality assurance analyst, sought to move over to a security team a few years ago, the doors should have been wide open, given the much-ballyhooed cybersecurity skills shortage . Related: Modernizing security training Instead, &#8230; (more…</span></span><span class="headline-source">LASTWATCHDOG.COM</span></div>
+<div class="headline" data-title="linux kernel impacted by new slubstick cross-cache attack" data-date="2024-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/linux-kernel-impacted-by-new-slubstick-cross-cache-attack/" target="_blank" rel="noopener">Linux kernel impacted by new SLUBStick cross-cache attack</a><span class="article-summary">A novel Linux Kernel cross-cache attack named SLUBStick has a 99% success in converting a limited heap vulnerability into an arbitrary memory read-and-write capability, letting the researchers elevate privileges or escape containers. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="hackers breach isp to poison software updates with malware" data-date="2024-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/hackers-breach-isp-to-poison-software-updates-with-malware/" target="_blank" rel="noopener">Hackers breach ISP to poison software updates with malware</a><span class="article-summary">A Chinese hacking group tracked as StormBamboo has compromised an undisclosed internet service provider (ISP) to poison automatic software updates with malware. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cybersecurity today week in review for august 3rd, 2024 with terry cutler, david shipley and host jim love" data-date="2024-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/cybersecurity-today-week-in-review-for-august-3rd-2024-with-terry-cutler-david-shipley-and-host-jim-love" target="_blank" rel="noopener">Cybersecurity Today Week in Review for August 3rd, 2024 with Terry Cutler, David Shipley and host Jim Love</a><span class="article-summary">In this episode of 'Cybersecurity Today: The Week in Review,' host Jim Love discusses critical cybersecurity incidents with guests Terry Cutler, CEO of Cyology Labs, and David Shipley from Beauceron Security. The panel delves into the devastating effects of a ransomware attack on…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="cisa names lisa einstein as first chief ai officer" data-date="2024-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/cisa-names-lisa-einstein-as-first-chief-ai-officer/" target="_blank" rel="noopener">CISA Names Lisa Einstein as First Chief AI Officer</a><span class="article-summary">Einstein has led CISA’s AI efforts since 2023 as CISA’s Senior Advisor for AI. The post CISA Names Lisa Einstein as First Chief AI Officer appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="google ads used to distribute mac malware disguised as &amp;#x27;loom&amp;#x27; app" data-date="2024-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://appleinsider.com/articles/24/08/02/google-ads-used-to-distribute-mac-malware-disguised-as-loom-app" target="_blank" rel="noopener">Google Ads used to distribute Mac malware disguised as &amp;#x27;Loom&amp;#x27; app</a><span class="article-summary">submitted by neme to cybersecurity 2 points | 0 comments https://appleinsider.com/articles/24/08/02/google-ads-used-to-distribute-mac-malware-disguised-as-loom-app</span></span><span class="headline-source">APPLEINSIDER.COM</span></div>
+<div class="headline" data-title="endless microsoft one-time-use code emails." data-date="2024-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/23170611" target="_blank" rel="noopener">Endless Microsoft one-time-use code emails.</a><span class="article-summary">submitted by schizo to cybersecurity 1 points | 0 comments I have a question for the hive mind: what is the point of this, exactly? I mean, I understand the attempt to gain access, and I understand why 2fa codes can be valuable to attempt to phish but that’s like, not the thing h…</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="password reset disables 2fa" data-date="2024-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://kb.mailbox.org/en/private/account-article/how-to-use-two-factor-authentication-2fa" target="_blank" rel="noopener">Password reset disables 2FA</a><span class="article-summary">submitted by faultypidgeon to cybersecurity 1 points | 0 comments https://kb.mailbox.org/en/private/account-article/how-to-use-two-factor-authentication-2fa I lost my token – what do I do? If you lose your token, it may still be possible to reset your password, provided you set u…</span></span><span class="headline-source">KB.MAILBOX.ORG</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="how the theft of 40m uk voter register records was entirely preventable" data-date="2024-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/08/02/how-the-theft-of-40-million-uk-voter-register-records-was-entirely-preventable/" target="_blank" rel="noopener">How the theft of 40M UK voter register records was entirely preventable</a><span class="article-summary">A scathing rebuke by the U.K. data protection watchdog reveals what led to the compromise of tens of millions of U.K. voters' information. © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="attacks on bytecode interpreters conceal malicious injection activity" data-date="2024-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.darkreading.com/vulnerabilities-threats/attacks-on-bytecode-interpreters-conceal-malicious-injection-activity?&web_view=true" target="_blank" rel="noopener">Attacks on Bytecode Interpreters Conceal Malicious Injection Activity</a><span class="article-summary">This type of attack, known as Bytecode Jiu-Jitsu, takes advantage of the fact that interpreters do not require execution privilege for bytecode, making it difficult for security tools to detect.</span></span><span class="headline-source">DARKREADING.COM</span></div>
+<div class="headline" data-title="doj and ftc sue tiktok for violating children's privacy laws" data-date="2024-08-03"><span class="headline-date">3 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/08/doj-and-ftc-sue-tiktok-for-violating.html" target="_blank" rel="noopener">DOJ and FTC Sue TikTok for Violating Children's Privacy Laws</a><span class="article-summary">The U.S. Department of Justice (DoJ), along with the Federal Trade Commission (FTC), filed a lawsuit against popular video-sharing platform TikTok for "flagrantly violating" children's privacy laws in the country. The agencies claimed the company knowingly permitted children to c…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

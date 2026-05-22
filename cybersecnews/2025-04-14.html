@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-04-14</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,82 +109,69 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-04-14</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">22</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">9</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/fortinet-exploits-windows-inet-folder-and-ai-code-risks-cyber-security-today-for-april-14" target="_blank" rel="noopener">Fortinet Exploits, Windows INET Folder, and AI Code Risks: Cyber Security Today for April 14</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 14 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/04/weekly-recap-windows-0-day-vpn-exploits.html" target="_blank" rel="noopener">⚡ Weekly Recap: Windows 0-Day, VPN Exploits, Weaponized AI, Hijacked Antivirus and More</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 14 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/04/cybersecurity-in-ai-era-evolve-faster.html" target="_blank" rel="noopener">Cybersecurity in the AI Era: Evolve Faster Than the Threats or Get Left Behind</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 14 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.paloaltonetworks.com/blog/2025/04/modernizing-federal-security-with-prisma-access/" target="_blank" rel="noopener">Modernizing Federal Security with Prisma Access</a></div><span class="article-meta">PALOALTONETWORKS.COM &mdash; 14 Apr 2025</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-04-14"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://thehackernews.com/2025/04/pakistan-linked-hackers-expand-targets.html" target="_blank" rel="noopener">Pakistan-Linked Hackers Expand Targets in India with CurlBack RAT and Spark RAT</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 14 Apr 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-04-14"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2025/04/china-sort-of-admits-to-being-behind-volt-typhoon.html" target="_blank" rel="noopener">China Sort of Admits to Being Behind Volt Typhoon</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2025-04-14</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-04-14"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2025/04/14/hertz-says-customers-personal-data-and-drivers-licenses-stolen-in-data-breach/" target="_blank" rel="noopener">Hertz says customers’ personal data and driver’s licenses stolen in data breach</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 14 Apr 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-04-14"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2025/04/14/silicon-valley-crosswalk-buttons-hacked-to-imitate-musk-zuckerberg-voices/" target="_blank" rel="noopener">Silicon Valley crosswalk buttons hacked to imitate Musk, Zuckerberg’s voices</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 14 Apr 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-04-14"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bitdefender.com/en-us/blog/hotforsecurity/medusa-ransomware-hacked-nascar" target="_blank" rel="noopener">Medusa ransomware gang claims to have hacked NASCAR</a></div><span class="article-meta">BITDEFENDER.COM &mdash; 14 Apr 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-04-14"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/25/d/bpfdoor-hidden-controller.html" target="_blank" rel="noopener">BPFDoor’s Hidden Controller Used Against Asia, Middle East Targets</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 14 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2025/04/upcoming-speaking-engagements-45.html" target="_blank" rel="noopener">Upcoming Speaking Engagements</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2025-04-14</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2025/04/resolverrat-campaign-targets-healthcare.html" target="_blank" rel="noopener">ResolverRAT Campaign Targets Healthcare, Pharma via Phishing and DLL Side-Loading</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 14 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31854" target="_blank" rel="noopener">xorsearch.py: Searching With Regexes, (Mon, Apr 14th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 14 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31852" target="_blank" rel="noopener">ISC Stormcast For Monday, April 14th, 2025 https://isc.sans.edu/podcastdetail/9406, (Mon, Apr 14th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 14 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://techcommunity.microsoft.com/blog/microsoft-security-blog/explore-how-to-secure-ai-by-attending-our-learn-live-series/4399703" target="_blank" rel="noopener">Explore how to secure AI by attending our Learn Live Series</a></div><span class="article-meta">TECHCOMMUNITY.MICROSOFT.COM &mdash; 14 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://blog.knowbe4.com/hidden-threats-in-our-power-grid-the-chinese-transformer-backdoor-scandal" target="_blank" rel="noopener">Hidden Threats in Our Power Grid: The Chinese Transformer Backdoor Scandal</a></div><span class="article-meta">KNOWBE4.COM &mdash; 14 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.lastwatchdog.com/news-alert-acceletrex-unveils-referral-exchange-that-turns-trusted-conversations-into-scalable-growth/" target="_blank" rel="noopener">News alert: AcceleTrex unveils referral exchange that turns trusted conversations into scalable growth</a></div><span class="article-meta">LASTWATCHDOG.COM &mdash; 14 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/26629378" target="_blank" rel="noopener">Mentorship Monday - Discussions for career and learning!</a></div><span class="article-meta">INFOSEC.PUB &mdash; 14 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/26613958" target="_blank" rel="noopener">In Secret Meeting, China Acknowledged Role in U.S. Infrastructure Hacks</a></div><span class="article-meta">INFOSEC.PUB &mdash; 14 Apr 2025</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-04-14"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.welivesecurity.com/en/business-security/attacks-education-sector-surging-cyber-defenders-respond/" target="_blank" rel="noopener">Attacks on the education sector are surging: How can cyber-defenders respond?</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 14 Apr 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-04-14"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.securityweek.com/industry-moves/apr-14-2025/" target="_blank" rel="noopener">Industry Moves for the week of April 14, 2025 - SecurityWeek</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 14 Apr 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-04-14"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2025/04/phishing-campaigns-use-real-time-checks.html" target="_blank" rel="noopener">Phishing Campaigns Use Real-Time Checks to Validate Victim Emails Before Credential Theft</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 14 Apr 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="fortinet exploits, windows inet folder, and ai code risks: cyber security today for april 14" data-date="2025-04-14"><span class="headline-date">14 Apr</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/fortinet-exploits-windows-inet-folder-and-ai-code-risks-cyber-security-today-for-april-14" target="_blank" rel="noopener">Fortinet Exploits, Windows INET Folder, and AI Code Risks: Cyber Security Today for April 14</a><span class="article-summary">In this episode of Cybersecurity Today, host David Shipley discusses several pressing concerns in the cybersecurity landscape. Attackers have been exploiting Fortinet VPN devices to maintain access even after patches were applied; administrators are urged to upgrade and follow re…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="⚡ weekly recap: windows 0-day, vpn exploits, weaponized ai, hijacked antivirus and more" data-date="2025-04-14"><span class="headline-date">14 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/weekly-recap-windows-0-day-vpn-exploits.html" target="_blank" rel="noopener">⚡ Weekly Recap: Windows 0-Day, VPN Exploits, Weaponized AI, Hijacked Antivirus and More</a><span class="article-summary">Attackers aren’t waiting for patches anymore — they are breaking in before defenses are ready. Trusted security tools are being hijacked to deliver malware. Even after a breach is detected and patched, some attackers stay hidden. This week’s events show a hard truth: it’s not eno…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="cybersecurity in the ai era: evolve faster than the threats or get left behind" data-date="2025-04-14"><span class="headline-date">14 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/cybersecurity-in-ai-era-evolve-faster.html" target="_blank" rel="noopener">Cybersecurity in the AI Era: Evolve Faster Than the Threats or Get Left Behind</a><span class="article-summary">AI is changing cybersecurity faster than many defenders realize. Attackers are already using AI to automate reconnaissance, generate sophisticated phishing lures, and exploit vulnerabilities before security teams can react. Meanwhile, defenders are overwhelmed by massive amounts …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="modernizing federal security with prisma access" data-date="2025-04-14"><span class="headline-date">14 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.paloaltonetworks.com/blog/2025/04/modernizing-federal-security-with-prisma-access/" target="_blank" rel="noopener">Modernizing Federal Security with Prisma Access</a><span class="article-summary">Prisma Access: Cloud-native SASE platform for U.S. Government modernization, cybersecurity, efficiency. Simplifies security ops, ensures policy enforcement. The post Modernizing Federal Security with Prisma Access appeared first on Palo Alto Networks Blog .</span></span><span class="headline-source">PALOALTONETWORKS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="pakistan-linked hackers expand targets in india with curlback rat and spark rat" data-date="2025-04-14"><span class="headline-date">14 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/pakistan-linked-hackers-expand-targets.html" target="_blank" rel="noopener">Pakistan-Linked Hackers Expand Targets in India with CurlBack RAT and Spark RAT</a><span class="article-summary">A threat actor with ties to Pakistan has been observed targeting various sectors in India with various remote access trojans like Xeno RAT, Spark RAT, and a previously undocumented malware family called CurlBack RAT. The activity, detected by SEQRITE in December 2024, targeted In…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="china sort of admits to being behind volt typhoon" data-date="2025-04-14"><span class="headline-date">14 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2025/04/china-sort-of-admits-to-being-behind-volt-typhoon.html" target="_blank" rel="noopener">China Sort of Admits to Being Behind Volt Typhoon</a><span class="article-summary">The Wall Street Journal has the story : Chinese officials acknowledged in a secret December meeting that Beijing was behind a widespread series of alarming cyberattacks on U.S. infrastructure, according to people familiar with the matter, underscoring how hostilities between the …</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="hertz says customers’ personal data and driver’s licenses stolen in data breach" data-date="2025-04-14"><span class="headline-date">14 Apr</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/04/14/hertz-says-customers-personal-data-and-drivers-licenses-stolen-in-data-breach/" target="_blank" rel="noopener">Hertz says customers’ personal data and driver’s licenses stolen in data breach</a><span class="article-summary">The car rental giant attributed the breach to Cleo, whose customers had data stolen by a ransomware gang in 2024.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="silicon valley crosswalk buttons hacked to imitate musk, zuckerberg’s voices" data-date="2025-04-14"><span class="headline-date">14 Apr</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/04/14/silicon-valley-crosswalk-buttons-hacked-to-imitate-musk-zuckerberg-voices/" target="_blank" rel="noopener">Silicon Valley crosswalk buttons hacked to imitate Musk, Zuckerberg’s voices</a><span class="article-summary">The crosswalk buttons, which include audio alerts, were hacked over the weekend.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="medusa ransomware gang claims to have hacked nascar" data-date="2025-04-14"><span class="headline-date">14 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.bitdefender.com/en-us/blog/hotforsecurity/medusa-ransomware-hacked-nascar" target="_blank" rel="noopener">Medusa ransomware gang claims to have hacked NASCAR</a><span class="article-summary">The Medusa ransomware-as-a-service (RaaS) claims to have compromised the computer systems of NASCAR, the United States' National Association for Stock Car Auto Racing, and made off with more than 1TB of data. Read more in my article on the Hot for Security blog.</span></span><span class="headline-source">BITDEFENDER.COM</span></div>
+<div class="headline" data-title="bpfdoor’s hidden controller used against asia, middle east targets" data-date="2025-04-14"><span class="headline-date">14 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/25/d/bpfdoor-hidden-controller.html" target="_blank" rel="noopener">BPFDoor’s Hidden Controller Used Against Asia, Middle East Targets</a><span class="article-summary">A controller linked to BPF backdoor can open a reverse shell, enabling deeper infiltration into compromised networks. Recent attacks have been observed targeting the telecommunications, finance, and retail sectors across South Korea, Hong Kong, Myanmar, Malaysia, and Egypt.</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">9</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="upcoming speaking engagements" data-date="2025-04-14"><span class="headline-date">14 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2025/04/upcoming-speaking-engagements-45.html" target="_blank" rel="noopener">Upcoming Speaking Engagements</a><span class="article-summary">This is a current list of where and when I am scheduled to speak: I&#8217;m giving an online talk on AI and trust for the Weizenbaum Institute on April 24, 2025 at 2:00 PM CEST (8:00 AM ET). The list is maintained on this page . &#160;</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="resolverrat campaign targets healthcare, pharma via phishing and dll side-loading" data-date="2025-04-14"><span class="headline-date">14 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/resolverrat-campaign-targets-healthcare.html" target="_blank" rel="noopener">ResolverRAT Campaign Targets Healthcare, Pharma via Phishing and DLL Side-Loading</a><span class="article-summary">Cybersecurity researchers have discovered a new, sophisticated remote access trojan called ResolverRAT that has been observed in attacks targeting healthcare and pharmaceutical sectors. "The threat actor leverages fear-based lures delivered via phishing emails, designed to pressu…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="xorsearch.py: searching with regexes, (mon, apr 14th)" data-date="2025-04-14"><span class="headline-date">14 Apr</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31854" target="_blank" rel="noopener">xorsearch.py: Searching With Regexes, (Mon, Apr 14th)</a><span class="article-summary">As promised in diary entry " XORsearch: Searching With Regexes ", I will outline another method to search with xorsearch and regexes. &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="isc stormcast for monday, april 14th, 2025 https://isc.sans.edu/podcastdetail/9406, (mon, apr 14th)" data-date="2025-04-14"><span class="headline-date">14 Apr</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31852" target="_blank" rel="noopener">ISC Stormcast For Monday, April 14th, 2025 https://isc.sans.edu/podcastdetail/9406, (Mon, Apr 14th)</a><span class="article-summary">(c) SANS Internet Storm Center. https://isc.sans.edu Creative Commons Attribution-Noncommercial 3.0 United States License.</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="explore how to secure ai by attending our learn live series" data-date="2025-04-14"><span class="headline-date">14 Apr</span><span class="headline-body"><a class="headline-title" href="https://techcommunity.microsoft.com/blog/microsoft-security-blog/explore-how-to-secure-ai-by-attending-our-learn-live-series/4399703" target="_blank" rel="noopener">Explore how to secure AI by attending our Learn Live Series</a><span class="article-summary">Register to attend one or all our Learn Live sessions to learn how to secure your environment for AI adoption. The post Explore how to secure AI by attending our Learn Live Series appeared first on Microsoft Security Blog .</span></span><span class="headline-source">TECHCOMMUNITY.MICROSOFT.COM</span></div>
+<div class="headline" data-title="hidden threats in our power grid: the chinese transformer backdoor scandal" data-date="2025-04-14"><span class="headline-date">14 Apr</span><span class="headline-body"><a class="headline-title" href="https://blog.knowbe4.com/hidden-threats-in-our-power-grid-the-chinese-transformer-backdoor-scandal" target="_blank" rel="noopener">Hidden Threats in Our Power Grid: The Chinese Transformer Backdoor Scandal</a><span class="article-summary">America's critical infrastructure faces an unprecedented threat, and it's already installed in hundreds of locations across the nation.</span></span><span class="headline-source">KNOWBE4.COM</span></div>
+<div class="headline" data-title="news alert: acceletrex unveils referral exchange that turns trusted conversations into scalable growth" data-date="2025-04-14"><span class="headline-date">14 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.lastwatchdog.com/news-alert-acceletrex-unveils-referral-exchange-that-turns-trusted-conversations-into-scalable-growth/" target="_blank" rel="noopener">News alert: AcceleTrex unveils referral exchange that turns trusted conversations into scalable growth</a><span class="article-summary">Miami, FL, Apr. 14, 2025 — Today, AcceleTrex Corporation officially emerged from stealth, unveiling a first-of-its-kind platform that transforms expert referrals into a powerful growth engine for innovators. Grounded in the belief that genuine relationships drive meaningful resul…</span></span><span class="headline-source">LASTWATCHDOG.COM</span></div>
+<div class="headline" data-title="mentorship monday - discussions for career and learning!" data-date="2025-04-14"><span class="headline-date">14 Apr</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/26629378" target="_blank" rel="noopener">Mentorship Monday - Discussions for career and learning!</a><span class="article-summary">submitted by shellsharks to cybersecurity 5 points | 0 comments Weekly thread for any and all career, learning and general guidance questions. Thinking of taking a training or going for a cert? Wondering how to level up your career? Wondering what NOT to do? Got other questions? …</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="in secret meeting, china acknowledged role in u.s. infrastructure hacks" data-date="2025-04-14"><span class="headline-date">14 Apr</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/26613958" target="_blank" rel="noopener">In Secret Meeting, China Acknowledged Role in U.S. Infrastructure Hacks</a><span class="article-summary">submitted by PhilipTheBucket to cybersecurity 21 points | 0 comments https://www.wsj.com/politics/national-security/in-secret-meeting-china-acknowledged-role-in-u-s-infrastructure-hacks-c5ab37cb</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="attacks on the education sector are surging: how can cyber-defenders respond?" data-date="2025-04-14"><span class="headline-date">14 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/en/business-security/attacks-education-sector-surging-cyber-defenders-respond/" target="_blank" rel="noopener">Attacks on the education sector are surging: How can cyber-defenders respond?</a><span class="article-summary">Academic institutions have a unique set of characteristics that makes them attractive to bad actors. What's the right antidote to cyber-risk?</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="industry moves for the week of april 14, 2025 - securityweek" data-date="2025-04-14"><span class="headline-date">14 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/industry-moves/apr-14-2025/" target="_blank" rel="noopener">Industry Moves for the week of April 14, 2025 - SecurityWeek</a><span class="article-summary">Explore industry moves and significant changes in the industry for the week of April 14, 2025. Stay updated with the latest industry trends and shifts.</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="phishing campaigns use real-time checks to validate victim emails before credential theft" data-date="2025-04-14"><span class="headline-date">14 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/phishing-campaigns-use-real-time-checks.html" target="_blank" rel="noopener">Phishing Campaigns Use Real-Time Checks to Validate Victim Emails Before Credential Theft</a><span class="article-summary">Cybersecurity researchers are calling attention to a new type of credential phishing scheme that ensures that the stolen information is associated with valid online accounts. The technique has been codenamed precision-validating phishing by Cofense, which it said employs real-tim…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

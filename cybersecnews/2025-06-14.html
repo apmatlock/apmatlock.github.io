@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-06-14</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,76 +109,55 @@
       <div class="stat"><span class="stat-value">4</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-06-14</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">18</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">8</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">3</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/06/discord-invite-link-hijacking-delivers.html" target="_blank" rel="noopener">Discord Invite Link Hijacking Delivers AsyncRAT and Skuld Stealer Targeting Crypto Wallets</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 14 Jun 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/O-HWaKlzr5E" target="_blank" rel="noopener">Why Developers Are Rethinking the Cloud!</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-14</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/nOB2qOWAGuQ" target="_blank" rel="noopener">Reviving Old Devices with AlmaLinux! 🔥</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-14</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-06-14"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/westjet-investigates-cyberattack-disrupting-internal-systems/" target="_blank" rel="noopener">WestJet investigates cyberattack disrupting internal systems</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 14 Jun 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-06-14"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/anubis-ransomware-adds-wiper-to-destroy-files-beyond-recovery/" target="_blank" rel="noopener">Anubis ransomware adds wiper to destroy files beyond recovery</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 14 Jun 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-06-14"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/shorts/RAExm_BeZLE" target="_blank" rel="noopener">A Cyberattack Stopped a Heart Attack Rescue... Here’s How 😨</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-14</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-06-14"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://grahamcluley.com/cybercriminals-left-hanging-as-victorias-secret-bounces-back/" target="_blank" rel="noopener">Cybercriminals left hanging as Victoria’s Secret bounces back</a></div><span class="article-meta">GRAHAMCLULEY.COM &mdash; 14 Jun 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/the-secret-ciso-navigating-the-human-and-technical-challenges-in-cybersecurity" target="_blank" rel="noopener">The Secret CISO: Navigating the Human and Technical Challenges in Cybersecurity</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 14 Jun 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/32044" target="_blank" rel="noopener">More Steganography&amp;#x21;, (Sat, Jun 14th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 14 Jun 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/bL7UOytyizs" target="_blank" rel="noopener">Adopting AI Without This? Cyber Suicide.</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-14</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/TqNVLVbbHmo" target="_blank" rel="noopener">Why Breaking the Build Might Actually Be a Good Thing 🤔</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-14</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/1rKtOjUWExM" target="_blank" rel="noopener">Are AI Bug Reports Just Fancy Lies? 🤯</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-14</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/29923870" target="_blank" rel="noopener">Fireside Chat: Gentleman Hackers with Thomas Dullien</a></div><span class="article-meta">INFOSEC.PUB &mdash; 14 Jun 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/x6oReBkjUdI" target="_blank" rel="noopener">Fake Intel is Everywhere! Here’s How to Spot It 🔍</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-14</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/I-VIoC_jbXo" target="_blank" rel="noopener">“Network = Net Worth” Hits Different When You're in Cybersecurity</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-14</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-06-14"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2025/06/14/anne-wojcickis-nonprofit-reaches-deal-to-acquire-23andme/" target="_blank" rel="noopener">Anne Wojcicki’s nonprofit reaches deal to acquire 23andMe</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 14 Jun 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-06-14"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/shorts/SlaputVOaaU" target="_blank" rel="noopener">NFTs &amp; Rug Pulls: Why Blockchain Got a Bad Name! 🚨</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-14</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-06-14"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/microsoft/windows-11-users-want-these-five-features-back/" target="_blank" rel="noopener">Windows 11 users want these five features back</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 14 Jun 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="discord invite link hijacking delivers asyncrat and skuld stealer targeting crypto wallets" data-date="2025-06-14"><span class="headline-date">14 Jun</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/06/discord-invite-link-hijacking-delivers.html" target="_blank" rel="noopener">Discord Invite Link Hijacking Delivers AsyncRAT and Skuld Stealer Targeting Crypto Wallets</a><span class="article-summary">A new malware campaign is exploiting a weakness in Discord's invitation system to deliver an information stealer called Skuld and the AsyncRAT remote access trojan. "Attackers hijacked the links through vanity link registration, allowing them to silently redirect users from trust…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="why developers are rethinking the cloud!" data-date="2025-06-14"><span class="headline-date">14 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/O-HWaKlzr5E" target="_blank" rel="noopener">Why Developers Are Rethinking the Cloud!</a><span class="article-summary">Cloud computing changed the game, but is it always the best choice for developers? 🤔 As local-first development gains traction, many are questioning the hidden trade-offs of cloud-based dev environments—latency, cost, security risks, and shared resources. 🚀 Watch as experts break…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="reviving old devices with almalinux! 🔥" data-date="2025-06-14"><span class="headline-date">14 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/nOB2qOWAGuQ" target="_blank" rel="noopener">Reviving Old Devices with AlmaLinux! 🔥</a><span class="article-summary">🚀 Reviving Old Devices with AlmaLinux! 🔥 Old hardware doesn’t have to be obsolete! When a Reddit user saw the announcement about AlmaLinux, he took on the challenge of upgrading five aging devices. The results? Four successfully made the leap to AlmaLinux 9, while one was stuck o…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="westjet investigates cyberattack disrupting internal systems" data-date="2025-06-14"><span class="headline-date">14 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/westjet-investigates-cyberattack-disrupting-internal-systems/" target="_blank" rel="noopener">WestJet investigates cyberattack disrupting internal systems</a><span class="article-summary">WestJet, Canada's second-largest airline, is investigating a cyberattack that has disrupted access to some internal systems as it responds to the breach. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="anubis ransomware adds wiper to destroy files beyond recovery" data-date="2025-06-14"><span class="headline-date">14 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/anubis-ransomware-adds-wiper-to-destroy-files-beyond-recovery/" target="_blank" rel="noopener">Anubis ransomware adds wiper to destroy files beyond recovery</a><span class="article-summary"><The Anubis ransomware-as-a-service (RaaS) operation has added to its file-encrypting malware a wiper module&nbsp;that destroys targeted files, making recovery impossible even if the ransom is paid. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="a cyberattack stopped a heart attack rescue... here’s how 😨" data-date="2025-06-14"><span class="headline-date">14 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/RAExm_BeZLE" target="_blank" rel="noopener">A Cyberattack Stopped a Heart Attack Rescue... Here’s How 😨</a><span class="article-summary">He was having a heart attack... Then Cybercriminals Intervened ⚠️ A ransomware attack didn’t just lock down data — it delayed an ambulance, risking a man's life. In cybersecurity, the stakes aren’t just about stolen information — sometimes, they’re about stolen time. Time that co…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="cybercriminals left hanging as victoria’s secret bounces back" data-date="2025-06-14"><span class="headline-date">14 Jun</span><span class="headline-body"><a class="headline-title" href="https://grahamcluley.com/cybercriminals-left-hanging-as-victorias-secret-bounces-back/" target="_blank" rel="noopener">Cybercriminals left hanging as Victoria’s Secret bounces back</a><span class="article-summary">Lingerie giant Victoria's Secret says that it has restored all of its critical systems and is fully operational again, three weeks after revealing it had been hit by a cyber attack.</span></span><span class="headline-source">GRAHAMCLULEY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">8</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the secret ciso: navigating the human and technical challenges in cybersecurity" data-date="2025-06-14"><span class="headline-date">14 Jun</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/the-secret-ciso-navigating-the-human-and-technical-challenges-in-cybersecurity" target="_blank" rel="noopener">The Secret CISO: Navigating the Human and Technical Challenges in Cybersecurity</a><span class="article-summary">In this episode of 'Cybersecurity Today,' hosts John Pinard and Jim Love introduce their unique show, 'The Secret CISO,' which aims to dive deep into the lives and thoughts of CISOs and similar roles, beyond the usual interview-style format. The guest for this episode is Priya Al…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="more steganography&amp;#x21;, (sat, jun 14th)" data-date="2025-06-14"><span class="headline-date">14 Jun</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/32044" target="_blank" rel="noopener">More Steganography&amp;#x21;, (Sat, Jun 14th)</a><span class="article-summary">I spotted another interesting file that uses, once again, steganography. It seems to be a trend (see one of my previous diaries&&#x23&#x3b;x26&#x3b;&#x23&#x3b;x5b&#x3b; 1 &&#x23&#x3b;x26&#x3b;&#x23&#x3b;x5d&#x3b;). The file is an malicious Excel sheet called blcopy.xls. Office do…</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="adopting ai without this? cyber suicide." data-date="2025-06-14"><span class="headline-date">14 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/bL7UOytyizs" target="_blank" rel="noopener">Adopting AI Without This? Cyber Suicide.</a><span class="article-summary">When it comes to AI in cybersecurity, most organizations are rushing in blind. In this short, Jess shares a candid take on the real danger of building AI policies without understanding the tech. It’s not about looking progressive — it’s about being precise. From ISO frameworks to…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="why breaking the build might actually be a good thing 🤔" data-date="2025-06-14"><span class="headline-date">14 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/TqNVLVbbHmo" target="_blank" rel="noopener">Why Breaking the Build Might Actually Be a Good Thing 🤔</a><span class="article-summary">Startups move fast — sometimes too fast for security teams to keep up. In this short, Tanya Janca reveals why she once loved breaking the build every time during DevOps, and how finding the right balance between speed and security is the ultimate challenge. Is breaking the build …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="are ai bug reports just fancy lies? 🤯" data-date="2025-06-14"><span class="headline-date">14 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/1rKtOjUWExM" target="_blank" rel="noopener">Are AI Bug Reports Just Fancy Lies? 🤯</a><span class="article-summary">AI-generated bug reports might sound like the future of cybersecurity, but are they actually useful—or just convincingly written nonsense? 🤯 In this short, Daniel Stenberg reveals how AI can create detailed, professional-looking security reports that seem alarming but often turn …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="fireside chat: gentleman hackers with thomas dullien" data-date="2025-06-14"><span class="headline-date">14 Jun</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/29923870" target="_blank" rel="noopener">Fireside Chat: Gentleman Hackers with Thomas Dullien</a><span class="article-summary">submitted by ashar to security_cpe 1 points | 0 comments https://youtu.be/qllU_B_Rmis Thomas Dullien, also known under the pseudonym Halvar Flake, has been in and around the low-level computer security field since the late 1990s. He has published highly-cited papers on technical …</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="fake intel is everywhere! here’s how to spot it 🔍" data-date="2025-06-14"><span class="headline-date">14 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/x6oReBkjUdI" target="_blank" rel="noopener">Fake Intel is Everywhere! Here’s How to Spot It 🔍</a><span class="article-summary">Fake Intel is Everywhere! Here’s How to Spot It 🔍 The rise of AI-generated intelligence means more fake data is circulating than ever before. But how do security experts separate fact from fiction? Cyber researchers at Intel 471 rely on human-driven verification to ensure intelli…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="“network = net worth” hits different when you're in cybersecurity" data-date="2025-06-14"><span class="headline-date">14 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/I-VIoC_jbXo" target="_blank" rel="noopener">“Network = Net Worth” Hits Different When You're in Cybersecurity</a><span class="article-summary">In this short clip, cybersecurity expert Mike Miller drops one of the most underrated truths in the industry. While many chase certifications and technical skills, Mike reminds us that real success in cybersecurity comes from one thing: relationships. No, not the TCP/IP kind — th…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="anne wojcicki’s nonprofit reaches deal to acquire 23andme" data-date="2025-06-14"><span class="headline-date">14 Jun</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/06/14/anne-wojcickis-nonprofit-reaches-deal-to-acquire-23andme/" target="_blank" rel="noopener">Anne Wojcicki’s nonprofit reaches deal to acquire 23andMe</a><span class="article-summary">Beleaguered genetic testing company 23andMe announced Friday that it has reached an agreement to sell itself to TTAM Research Institute, a nonprofit led by the company's co-founder and former CEO Anne Wojcicki.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="nfts &amp; rug pulls: why blockchain got a bad name! 🚨" data-date="2025-06-14"><span class="headline-date">14 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/SlaputVOaaU" target="_blank" rel="noopener">NFTs &amp; Rug Pulls: Why Blockchain Got a Bad Name! 🚨</a><span class="article-summary">Blockchain was supposed to revolutionize finance and security, but instead, it’s become a playground for scammers. From NFT rug pulls to massive fraud schemes, the technology’s reputation has taken a hit. In this short, cybersecurity expert Noam Krasniansky breaks down why blockc…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="windows 11 users want these five features back" data-date="2025-06-14"><span class="headline-date">14 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/microsoft/windows-11-users-want-these-five-features-back/" target="_blank" rel="noopener">Windows 11 users want these five features back</a><span class="article-summary">When Windows 11 was first released, many long-time users felt features they loved had been taken away overnight. Three and a half years later, the same complaints still rise to the top of the Feedback Hub with tens of thousands of votes. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

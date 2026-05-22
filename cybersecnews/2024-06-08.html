@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-06-08</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,68 +109,51 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-06-08</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">9</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-06-08"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2024/06/new-php-vulnerability-exposes-windows.html" target="_blank" rel="noopener">New PHP Vulnerability Exposes Windows Servers to Remote Code Execution</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 08 Jun 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-06-08"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/goldpickaxe-ios-malware/" target="_blank" rel="noopener">GoldPickaxe iOS Malware Harvests Facial Recognition Data &amp; Bank Accounts</a></div><span class="article-meta">GBHACKERS.COM &mdash; 08 Jun 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-06-08"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/critical-php-vulnerability-threatens-windows-servers-a-25460" target="_blank" rel="noopener">Critical PHP Vulnerability Threatens Windows Servers</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2024-06-08</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-06-08"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/new-york-times-source-code-stolen-using-exposed-github-token/" target="_blank" rel="noopener">New York Times source code stolen using exposed GitHub token</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 08 Jun 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-06-08"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://web.archive.org/web/20240608093812/https://www.theregister.com/2024/06/07/4chan_nyt_code/" target="_blank" rel="noopener">&amp;#x27;New York Times source code&amp;#x27; leaks online via 4chan</a></div><span class="article-meta">WEB.ARCHIVE.ORG &mdash; 8 Jun 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-06-08"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2024/06/07/snowflake-ticketmaster-lendingtree-customer-data-breach/" target="_blank" rel="noopener">What Snowflake isn’t saying about its customer data breaches</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 08 Jun 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-06-08"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2024/06/microsoft-revamps-controversial-ai.html" target="_blank" rel="noopener">Microsoft Revamps Controversial AI-Powered Recall Feature Amid Privacy Concerns</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 08 Jun 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-06-08"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/sticky-werewolf-lnk-files-attacks/" target="_blank" rel="noopener">Sticky Werewolf Weaponizing LNK Files Group Attacking To Attack Organizations</a></div><span class="article-meta">GBHACKERS.COM &mdash; 08 Jun 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-06-08"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/ddos-attacks-target-eu-political-parties-as-elections-begin/" target="_blank" rel="noopener">DDoS attacks target EU political parties as elections begin</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 08 Jun 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new php vulnerability exposes windows servers to remote code execution" data-date="2024-06-08"><span class="headline-date">8 Jun</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/06/new-php-vulnerability-exposes-windows.html" target="_blank" rel="noopener">New PHP Vulnerability Exposes Windows Servers to Remote Code Execution</a><span class="article-summary">Details have emerged about a new critical security flaw impacting PHP that could be exploited to achieve remote code execution under certain circumstances. The vulnerability, tracked as CVE-2024-4577, has been described as a CGI argument injection vulnerability affecting all vers…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="goldpickaxe ios malware harvests facial recognition data &amp; bank accounts" data-date="2024-06-08"><span class="headline-date">8 Jun</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/goldpickaxe-ios-malware/" target="_blank" rel="noopener">GoldPickaxe iOS Malware Harvests Facial Recognition Data &amp; Bank Accounts</a><span class="article-summary">Due to the growing popularity of Apple devices, cybercriminals are increasingly targeting iOS and macOS with malware. The App Store is no longer secure, and iCloud is a new target, as Apple&#8217;s allowance of third-party app stores in Europe is expected to be exploited.&#160; E…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="critical php vulnerability threatens windows servers" data-date="2024-06-08"><span class="headline-date">8 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/critical-php-vulnerability-threatens-windows-servers-a-25460" target="_blank" rel="noopener">Critical PHP Vulnerability Threatens Windows Servers</a><span class="article-summary">Remote Code Execution Exploit Found; Patch Now Available A critical remote code execution vulnerability in PHP for Windows, affecting all releases since version 5.x, requires immediate action from server administrators. The flaw enables attackers to execute arbitrary code on remo…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+<div class="headline" data-title="new york times source code stolen using exposed github token" data-date="2024-06-08"><span class="headline-date">8 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/new-york-times-source-code-stolen-using-exposed-github-token/" target="_blank" rel="noopener">New York Times source code stolen using exposed GitHub token</a><span class="article-summary">Internal source code and data belonging to The New York Times was leaked on the 4chan message board after being stolen from the company's GitHub repositories in January 2024, The Times confirmed to BleepingComputer. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="&amp;#x27;new york times source code&amp;#x27; leaks online via 4chan" data-date="2024-06-08"><span class="headline-date">8 Jun</span><span class="headline-body"><a class="headline-title" href="https://web.archive.org/web/20240608093812/https://www.theregister.com/2024/06/07/4chan_nyt_code/" target="_blank" rel="noopener">&amp;#x27;New York Times source code&amp;#x27; leaks online via 4chan</a><span class="article-summary">submitted by c0mmando to netsec 1 points | 0 comments https://web.archive.org/web/20240608093812/https://www.theregister.com/2024/06/07/4chan_nyt_code/ A 4chan user claims to have leaked 270GB of internal New York Times data, including source code, via the notorious image board. …</span></span><span class="headline-source">WEB.ARCHIVE.ORG</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="what snowflake isn’t saying about its customer data breaches" data-date="2024-06-08"><span class="headline-date">8 Jun</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/06/07/snowflake-ticketmaster-lendingtree-customer-data-breach/" target="_blank" rel="noopener">What Snowflake isn’t saying about its customer data breaches</a><span class="article-summary">As another Snowflake customer confirms a data breach, the cloud data company says its position "remains unchanged." © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="microsoft revamps controversial ai-powered recall feature amid privacy concerns" data-date="2024-06-08"><span class="headline-date">8 Jun</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/06/microsoft-revamps-controversial-ai.html" target="_blank" rel="noopener">Microsoft Revamps Controversial AI-Powered Recall Feature Amid Privacy Concerns</a><span class="article-summary">Microsoft on Friday said it will disable its much-criticized artificial intelligence (AI)-powered Recall feature by default and make it an opt-in. Recall, currently in preview and coming exclusively to Copilot+ PCs on June 18, 2024, functions as an "explorable visual timeline" by…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="sticky werewolf weaponizing lnk files group attacking to attack organizations" data-date="2024-06-08"><span class="headline-date">8 Jun</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/sticky-werewolf-lnk-files-attacks/" target="_blank" rel="noopener">Sticky Werewolf Weaponizing LNK Files Group Attacking To Attack Organizations</a><span class="article-summary">Sticky Werewolf, a cyber threat group, has shifted its targeting strategy from sending phishing emails with download links to malicious files to using archive attachments containing LNK files, which act as shortcuts to malicious executables hosted on WebDAV servers.&#160; When a …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ddos attacks target eu political parties as elections begin" data-date="2024-06-08"><span class="headline-date">8 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/ddos-attacks-target-eu-political-parties-as-elections-begin/" target="_blank" rel="noopener">DDoS attacks target EU political parties as elections begin</a><span class="article-summary">Hacktivists are conducting DDoS attacks on European political parties that represent and promote strategies opposing their interests, according to a report by Cloudflare. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

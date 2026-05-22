@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-04-07</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,68 +109,47 @@
       <div class="stat"><span class="stat-value">4</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-04-07</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">10</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-04-07"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.redpacketsecurity.com/cisa-cisa-publishes-new-webpage-dedicated-to-providing-resources-for-high-risk-communities-07-04-2024/" target="_blank" rel="noopener">CISA: CISA Publishes New Webpage Dedicated to Providing Resources for High-Risk Communities - RedPacket Security</a></div><span class="article-meta">REDPACKETSECURITY.COM &mdash; 7 Apr 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-04-07"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.msn.com/en-us/news/technology/what-can-be-done-to-protect-open-source-devs-from-next-xz-backdoor-drama/ar-BB1lb56z" target="_blank" rel="noopener">What can be done to protect open source devs from next xz backdoor drama?</a></div><span class="article-meta">MSN.COM &mdash; 7 Apr 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-04-07"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/10783268" target="_blank" rel="noopener">Asset and Vulnerability Scanning</a></div><span class="article-meta">INFOSEC.PUB &mdash; 7 Apr 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-04-07"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://infosec.pub/pictrs/image/dab4fd65-4411-40de-a965-3478788268af.jpeg" target="_blank" rel="noopener">Darknet Diaries EP 144: RACHEL</a></div><span class="article-meta">INFOSEC.PUB &mdash; 7 Apr 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-04-07"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/home-depot-confirms-third-party-data-breach-exposed-employee-info/" target="_blank" rel="noopener">Home Depot confirms third-party data breach exposed employee info</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 07 Apr 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-04-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://tmo.report/2024/04/new-ai-profiling-privacy-toggle-on-by-default-appears-in-t-mobile-app/" target="_blank" rel="noopener">T-Mobile&amp;#x27;s New AI &amp;quot;Profiling&amp;quot; Privacy Toggle Is On By Default</a></div><span class="article-meta">TMO.REPORT &mdash; 7 Apr 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-04-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.securityweek.com/enterprise-ai-security-firm-trojai-raises-5-75m-in-seed-funding/" target="_blank" rel="noopener">Enterprise AI Security Firm TrojAI Raises $5.75M in Seed Funding</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 07 Apr 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-04-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://cromwell-intl.com/cybersecurity/availability/cloud-archiving.html?s=mc" target="_blank" rel="noopener">Cloud Archiving — Cybersecurity</a></div><span class="article-meta">CROMWELL-INTL.COM &mdash; 7 Apr 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-04-07"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/microsoft/new-windows-driver-blocks-software-from-changing-default-web-browser/" target="_blank" rel="noopener">New Windows driver blocks software from changing default web browser</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 07 Apr 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-04-07"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/microsoft/the-new-features-coming-in-windows-11-24h2-expected-this-fall/" target="_blank" rel="noopener">The new features coming in Windows 11 24H2, expected this fall</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 07 Apr 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa: cisa publishes new webpage dedicated to providing resources for high-risk communities - redpacket security" data-date="2024-04-07"><span class="headline-date">7 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.redpacketsecurity.com/cisa-cisa-publishes-new-webpage-dedicated-to-providing-resources-for-high-risk-communities-07-04-2024/" target="_blank" rel="noopener">CISA: CISA Publishes New Webpage Dedicated to Providing Resources for High-Risk Communities - RedPacket Security</a><span class="article-summary">submitted by Lanky_Pomegranate530 to cybersecurity 1 points | 0 comments https://www.redpacketsecurity.com/cisa-cisa-publishes-new-webpage-dedicated-to-providing-resources-for-high-risk-communities-07-04-2024/</span></span><span class="headline-source">REDPACKETSECURITY.COM</span></div>
+<div class="headline" data-title="what can be done to protect open source devs from next xz backdoor drama?" data-date="2024-04-07"><span class="headline-date">7 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.msn.com/en-us/news/technology/what-can-be-done-to-protect-open-source-devs-from-next-xz-backdoor-drama/ar-BB1lb56z" target="_blank" rel="noopener">What can be done to protect open source devs from next xz backdoor drama?</a><span class="article-summary">submitted by Lanky_Pomegranate530 to cybersecurity 1 points | 0 comments https://www.msn.com/en-us/news/technology/what-can-be-done-to-protect-open-source-devs-from-next-xz-backdoor-drama/ar-BB1lb56z</span></span><span class="headline-source">MSN.COM</span></div>
+<div class="headline" data-title="asset and vulnerability scanning" data-date="2024-04-07"><span class="headline-date">7 Apr</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/10783268" target="_blank" rel="noopener">Asset and Vulnerability Scanning</a><span class="article-summary">submitted by redfox to cybersecurity 1 points | 0 comments This is not an ad. Does anyone have experience with Tenable products? I’m interested in real world experience regarding: cost effectiveness ease of use I’m playing with Tenable Security Center and Nessus Scanner. I’m earl…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="darknet diaries ep 144: rachel" data-date="2024-04-07"><span class="headline-date">7 Apr</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/pictrs/image/dab4fd65-4411-40de-a965-3478788268af.jpeg" target="_blank" rel="noopener">Darknet Diaries EP 144: RACHEL</a><span class="article-summary">submitted by ashar to security_cpe 1 points | 0 comments https://infosec.pub/pictrs/image/dab4fd65-4411-40de-a965-3478788268af.jpeg Darknet Diaries EP 144: RACHEL Rachel Tobac is a social engineer. In this episode we hear how she got started doing this and a few stories of how sh…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="home depot confirms third-party data breach exposed employee info" data-date="2024-04-07"><span class="headline-date">7 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/home-depot-confirms-third-party-data-breach-exposed-employee-info/" target="_blank" rel="noopener">Home Depot confirms third-party data breach exposed employee info</a><span class="article-summary">Home Depot has confirmed that it suffered a data breach after one of its SaaS vendors mistakenly exposed a small sample of limited employee data, which could potentially be used in targeted phishing attacks. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="t-mobile&amp;#x27;s new ai &amp;quot;profiling&amp;quot; privacy toggle is on by default" data-date="2024-04-07"><span class="headline-date">7 Apr</span><span class="headline-body"><a class="headline-title" href="https://tmo.report/2024/04/new-ai-profiling-privacy-toggle-on-by-default-appears-in-t-mobile-app/" target="_blank" rel="noopener">T-Mobile&amp;#x27;s New AI &amp;quot;Profiling&amp;quot; Privacy Toggle Is On By Default</a><span class="article-summary">submitted by Jman100 to cybersecurity 7 points | 0 comments https://tmo.report/2024/04/new-ai-profiling-privacy-toggle-on-by-default-appears-in-t-mobile-app/</span></span><span class="headline-source">TMO.REPORT</span></div>
+<div class="headline" data-title="enterprise ai security firm trojai raises $5.75m in seed funding" data-date="2024-04-07"><span class="headline-date">7 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/enterprise-ai-security-firm-trojai-raises-5-75m-in-seed-funding/" target="_blank" rel="noopener">Enterprise AI Security Firm TrojAI Raises $5.75M in Seed Funding</a><span class="article-summary">TrojAI, a provider of enterprise AI security solutions, announced a $5.75 million funding round of additional seed capital and the appointment of Lee Weiner as CEO. The post Enterprise AI Security Firm TrojAI Raises $5.75M in Seed Funding appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="cloud archiving — cybersecurity" data-date="2024-04-07"><span class="headline-date">7 Apr</span><span class="headline-body"><a class="headline-title" href="https://cromwell-intl.com/cybersecurity/availability/cloud-archiving.html?s=mc" target="_blank" rel="noopener">Cloud Archiving — Cybersecurity</a><span class="article-summary">submitted by Lanky_Pomegranate530 to cybersecurity 1 points | 0 comments https://cromwell-intl.com/cybersecurity/availability/cloud-archiving.html?s=mc</span></span><span class="headline-source">CROMWELL-INTL.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new windows driver blocks software from changing default web browser" data-date="2024-04-07"><span class="headline-date">7 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/microsoft/new-windows-driver-blocks-software-from-changing-default-web-browser/" target="_blank" rel="noopener">New Windows driver blocks software from changing default web browser</a><span class="article-summary">Microsoft is now using a Windows driver to prevent users from changing the Windows 10 and Windows 11 default browser manually or through software. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="the new features coming in windows 11 24h2, expected this fall" data-date="2024-04-07"><span class="headline-date">7 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/microsoft/the-new-features-coming-in-windows-11-24h2-expected-this-fall/" target="_blank" rel="noopener">The new features coming in Windows 11 24H2, expected this fall</a><span class="article-summary">Windows 11 24H2 is set to arrive on existing devices this fall with several new features, mostly Copilot-related improvements. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

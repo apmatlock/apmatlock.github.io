@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2026-03-21</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,87 +109,74 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2026-03-21</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">27</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">17</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.securityweek.com/critical-quest-kace-vulnerability-potentially-exploited-in-attacks/" target="_blank" rel="noopener">Critical Quest KACE Vulnerability Potentially Exploited in Attacks</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 21 Mar 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2026/03/oracle-patches-critical-cve-2026-21992.html" target="_blank" rel="noopener">Oracle Patches Critical CVE-2026-21992 Enabling Unauthenticated RCE in Identity Manager</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 21 Mar 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2026/03/cisa-flags-apple-craft-cms-laravel-bugs.html" target="_blank" rel="noopener">CISA Flags Apple, Craft CMS, Laravel Bugs in KEV, Orders Patching by April 3, 2026</a></div><span class="kev-badge">KEV</span><span class="article-meta">THEHACKERNEWS.COM &mdash; 21 Mar 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23204" target="_blank" rel="noopener">CVE-2026-23204 net/sched: cls_u32: use skb_header_pointer_careful()</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 21 Mar 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23274" target="_blank" rel="noopener">CVE-2026-23274 netfilter: xt_IDLETIMER: reject rev0 reuse of ALARM timer labels</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 21 Mar 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23278" target="_blank" rel="noopener">CVE-2026-23278 netfilter: nf_tables: always walk all pending catchall elements</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 21 Mar 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23272" target="_blank" rel="noopener">CVE-2026-23272 netfilter: nf_tables: unconditionally bump set-&gt;nelems before insertion</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 21 Mar 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23276" target="_blank" rel="noopener">CVE-2026-23276 net: add xmit recursion limit to tunnel xmit functions</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 21 Mar 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-3634" target="_blank" rel="noopener">CVE-2026-3634 Libsoup: libsoup: http header injection and response splitting via crlf injection in content-type header</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 21 Mar 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-3632" target="_blank" rel="noopener">CVE-2026-3632 Libsoup: libsoup: http smuggling and server-side request forgery via malformed hostnames</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 21 Mar 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-3479" target="_blank" rel="noopener">CVE-2026-3479 pkgutil.get_data() does not enforce documented restrictions</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 21 Mar 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-27135" target="_blank" rel="noopener">CVE-2026-27135 nghttp2 Denial of service: Assertion failure due to the missing state validation</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 21 Mar 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23277" target="_blank" rel="noopener">CVE-2026-23277 net/sched: teql: fix NULL pointer dereference in iptunnel_xmit on TEQL slave xmit</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 21 Mar 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23271" target="_blank" rel="noopener">CVE-2026-23271 perf: Fix __perf_event_overflow() vs perf_remove_from_context() race</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 21 Mar 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-32766" target="_blank" rel="noopener">CVE-2026-32766 astral-tokio-tar insufficiently validates PAX extensions during extraction</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 21 Mar 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-3633" target="_blank" rel="noopener">CVE-2026-3633 Libsoup: libsoup: header and http request injection via crlf injection</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 21 Mar 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-30922" target="_blank" rel="noopener">CVE-2026-30922 pyasn1 Vulnerable to Denial of Service via Unbounded Recursion</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 21 Mar 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/the-fundamental-mistake-in-cybersecurity-risk-management" target="_blank" rel="noopener">The Fundamental Mistake in Cybersecurity Risk Management</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 21 Mar 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/trivy-vulnerability-scanner-breach-pushed-infostealer-via-github-actions/" target="_blank" rel="noopener">Trivy vulnerability scanner breach pushed infostealer via GitHub Actions</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 21 Mar 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/4148317/trivy-vulnerability-scanner-backdoored-with-credential-stealer-in-supply-chain-attack.html" target="_blank" rel="noopener">Trivy vulnerability scanner backdoored with credential stealer in supply chain attack</a></div><span class="article-meta">CSOONLINE.COM &mdash; 21 Mar 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/azTrxqTkKJk" target="_blank" rel="noopener">Linux Telnet Vulnerability Exposed</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2026-03-21</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://thehackernews.com/2026/03/fbi-warns-russian-hackers-target-signal.html" target="_blank" rel="noopener">FBI Warns Russian Hackers Target Signal, WhatsApp in Mass Phishing Attacks</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 21 Mar 2026</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://thehackernews.com/2026/03/trivy-supply-chain-attack-triggers-self.html" target="_blank" rel="noopener">Trivy Supply Chain Attack Triggers Self-Spreading CanisterWorm Across 47 npm Packages</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 21 Mar 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.csoonline.com/article/4148273/are-nations-ready-to-be-the-cybersecurity-insurers-of-last-resort-2.html" target="_blank" rel="noopener">Are nations ready to be the cybersecurity insurers of last resort?</a></div><span class="article-meta">CSOONLINE.COM &mdash; 21 Mar 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.lastwatchdog.com/my-take-as-rsac-2026-opens-ai-has-bifurcated-cybersecurity-into-two-wars-the-clock-is-running/" target="_blank" rel="noopener">MY TAKE: As RSAC 2026 opens, AI has bifurcated cybersecurity into two wars—the clock is running</a></div><span class="article-meta">LASTWATCHDOG.COM &mdash; 21 Mar 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/google-adds-advanced-flow-for-safe-apk-sideloading-on-android/" target="_blank" rel="noopener">Google adds ‘Advanced Flow’ for safe APK sideloading on Android</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 21 Mar 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-03-21"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/microsoft-azure-monitor-alerts-abused-in-callback-phishing-campaigns/" target="_blank" rel="noopener">Microsoft Azure Monitor alerts abused for callback phishing attacks</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 21 Mar 2026</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">17</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="critical quest kace vulnerability potentially exploited in attacks" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/critical-quest-kace-vulnerability-potentially-exploited-in-attacks/" target="_blank" rel="noopener">Critical Quest KACE Vulnerability Potentially Exploited in Attacks</a><span class="article-summary">The vulnerability is tracked as CVE-2025-32975 and it may have been exploited in attacks against the education sector. The post Critical Quest KACE Vulnerability Potentially Exploited in Attacks appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="oracle patches critical cve-2026-21992 enabling unauthenticated rce in identity manager" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/03/oracle-patches-critical-cve-2026-21992.html" target="_blank" rel="noopener">Oracle Patches Critical CVE-2026-21992 Enabling Unauthenticated RCE in Identity Manager</a><span class="article-summary">Oracle has released security updates to address a critical security flaw impacting Identity Manager and Web Services Manager that could be exploited to achieve remote code execution. The vulnerability, tracked as CVE-2026-21992, carries a CVSS score of 9.8 out of a maximum of 10.…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="cisa flags apple, craft cms, laravel bugs in kev, orders patching by april 3, 2026" data-date="2026-03-21"><span class="headline-date">21 Mar <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/03/cisa-flags-apple-craft-cms-laravel-bugs.html" target="_blank" rel="noopener">CISA Flags Apple, Craft CMS, Laravel Bugs in KEV, Orders Patching by April 3, 2026</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) on Friday added five security flaws impacting Apple, Craft CMS, and Laravel Livewire to its Known Exploited Vulnerabilities (KEV) catalog, urging federal agencies to patch them by April 3, 2026. The vulnerabilities …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="cve-2026-23204 net/sched: cls_u32: use skb_header_pointer_careful()" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23204" target="_blank" rel="noopener">CVE-2026-23204 net/sched: cls_u32: use skb_header_pointer_careful()</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-23274 netfilter: xt_idletimer: reject rev0 reuse of alarm timer labels" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23274" target="_blank" rel="noopener">CVE-2026-23274 netfilter: xt_IDLETIMER: reject rev0 reuse of ALARM timer labels</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-23278 netfilter: nf_tables: always walk all pending catchall elements" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23278" target="_blank" rel="noopener">CVE-2026-23278 netfilter: nf_tables: always walk all pending catchall elements</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-23272 netfilter: nf_tables: unconditionally bump set-&gt;nelems before insertion" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23272" target="_blank" rel="noopener">CVE-2026-23272 netfilter: nf_tables: unconditionally bump set-&gt;nelems before insertion</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-23276 net: add xmit recursion limit to tunnel xmit functions" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23276" target="_blank" rel="noopener">CVE-2026-23276 net: add xmit recursion limit to tunnel xmit functions</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-3634 libsoup: libsoup: http header injection and response splitting via crlf injection in content-type header" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-3634" target="_blank" rel="noopener">CVE-2026-3634 Libsoup: libsoup: http header injection and response splitting via crlf injection in content-type header</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-3632 libsoup: libsoup: http smuggling and server-side request forgery via malformed hostnames" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-3632" target="_blank" rel="noopener">CVE-2026-3632 Libsoup: libsoup: http smuggling and server-side request forgery via malformed hostnames</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-3479 pkgutil.get_data() does not enforce documented restrictions" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-3479" target="_blank" rel="noopener">CVE-2026-3479 pkgutil.get_data() does not enforce documented restrictions</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-27135 nghttp2 denial of service: assertion failure due to the missing state validation" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-27135" target="_blank" rel="noopener">CVE-2026-27135 nghttp2 Denial of service: Assertion failure due to the missing state validation</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-23277 net/sched: teql: fix null pointer dereference in iptunnel_xmit on teql slave xmit" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23277" target="_blank" rel="noopener">CVE-2026-23277 net/sched: teql: fix NULL pointer dereference in iptunnel_xmit on TEQL slave xmit</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-23271 perf: fix __perf_event_overflow() vs perf_remove_from_context() race" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23271" target="_blank" rel="noopener">CVE-2026-23271 perf: Fix __perf_event_overflow() vs perf_remove_from_context() race</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-32766 astral-tokio-tar insufficiently validates pax extensions during extraction" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-32766" target="_blank" rel="noopener">CVE-2026-32766 astral-tokio-tar insufficiently validates PAX extensions during extraction</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-3633 libsoup: libsoup: header and http request injection via crlf injection" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-3633" target="_blank" rel="noopener">CVE-2026-3633 Libsoup: libsoup: header and http request injection via crlf injection</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-30922 pyasn1 vulnerable to denial of service via unbounded recursion" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-30922" target="_blank" rel="noopener">CVE-2026-30922 pyasn1 Vulnerable to Denial of Service via Unbounded Recursion</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the fundamental mistake in cybersecurity risk management" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/the-fundamental-mistake-in-cybersecurity-risk-management" target="_blank" rel="noopener">The Fundamental Mistake in Cybersecurity Risk Management</a><span class="article-summary">Cybersecurity Isn't Managing Risk—It's Managing Threats... And That's the Problem Host David Shipley speaks with Jeff Gardiner, a former university CISO and now at Morgan Stanley, about Gardiner's doctoral research arguing that cybersecurity has structurally misclassified "risk m…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="trivy vulnerability scanner breach pushed infostealer via github actions" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/trivy-vulnerability-scanner-breach-pushed-infostealer-via-github-actions/" target="_blank" rel="noopener">Trivy vulnerability scanner breach pushed infostealer via GitHub Actions</a><span class="article-summary">The Trivy vulnerability scanner was compromised in a supply-chain attack by threat actors known as TeamPCP, which distributed credential-stealing malware through official releases and GitHub Actions. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="trivy vulnerability scanner backdoored with credential stealer in supply chain attack" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4148317/trivy-vulnerability-scanner-backdoored-with-credential-stealer-in-supply-chain-attack.html" target="_blank" rel="noopener">Trivy vulnerability scanner backdoored with credential stealer in supply chain attack</a><span class="article-summary">Attackers have compromised the widely used open-source Trivy vulnerability scanner, injecting credential-stealing malware into official releases and GitHub Actions used by thousands of CI/CD workflows. The breach could trigger a cascade of additional supply-chain compromises if i…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="linux telnet vulnerability exposed" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/azTrxqTkKJk" target="_blank" rel="noopener">Linux Telnet Vulnerability Exposed</a><span class="article-summary">CVE 2026.32746 is a newly disclosed Linux vulnerability affecting all major distributions via common libraries like iNet utils. Despite being linked to Telnet, often dismissed as obsolete, this flaw poses a wide-reaching threat, including to AI and MCP servers that still rely on …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="fbi warns russian hackers target signal, whatsapp in mass phishing attacks" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/03/fbi-warns-russian-hackers-target-signal.html" target="_blank" rel="noopener">FBI Warns Russian Hackers Target Signal, WhatsApp in Mass Phishing Attacks</a><span class="article-summary">Threat actors affiliated with Russian Intelligence Services are conducting phishing campaigns to compromise commercial messaging applications (CMAs) like WhatsApp and Signal to seize control of accounts belonging to individuals with high intelligence value, the U.S. Cybersecurity…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="trivy supply chain attack triggers self-spreading canisterworm across 47 npm packages" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/03/trivy-supply-chain-attack-triggers-self.html" target="_blank" rel="noopener">Trivy Supply Chain Attack Triggers Self-Spreading CanisterWorm Across 47 npm Packages</a><span class="article-summary">The threat actors behind the supply chain attack targeting the popular Trivy scanner are suspected to be conducting follow-on attacks that have led to the compromise of a large number of npm packages with a previously undocumented self-propagating worm dubbed CanisterWorm. The na…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="are nations ready to be the cybersecurity insurers of last resort?" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4148273/are-nations-ready-to-be-the-cybersecurity-insurers-of-last-resort-2.html" target="_blank" rel="noopener">Are nations ready to be the cybersecurity insurers of last resort?</a><span class="article-summary">A senior member of the Cyber Monitoring Center (CMC), an organization formed last year to monitor, define and classify cyber events impacting UK organizations, this week questioned whether a £1.5 billion (about $2 billion) government loan guarantee provided to Jaguar Land Rover (…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="my take: as rsac 2026 opens, ai has bifurcated cybersecurity into two wars—the clock is running" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.lastwatchdog.com/my-take-as-rsac-2026-opens-ai-has-bifurcated-cybersecurity-into-two-wars-the-clock-is-running/" target="_blank" rel="noopener">MY TAKE: As RSAC 2026 opens, AI has bifurcated cybersecurity into two wars—the clock is running</a><span class="article-summary">SAN FRANCISCO &#8212; RSAC 2026 opens here Monday at Moscone Center, with upwards of 40,000 cybersecurity professionals, executives, and policy leaders, myself among them, filing in to take stock of an industry under acute pressure. Related: RSAC 2026&#8217;s full agenda &#8230; …</span></span><span class="headline-source">LASTWATCHDOG.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="google adds ‘advanced flow’ for safe apk sideloading on android" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/google-adds-advanced-flow-for-safe-apk-sideloading-on-android/" target="_blank" rel="noopener">Google adds ‘Advanced Flow’ for safe APK sideloading on Android</a><span class="article-summary">Google has announced a new mechanism in Android called Advanced Flow that will allow sideloading APKs from unverified developers for power users in a more secure way. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="microsoft azure monitor alerts abused for callback phishing attacks" data-date="2026-03-21"><span class="headline-date">21 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/microsoft-azure-monitor-alerts-abused-in-callback-phishing-campaigns/" target="_blank" rel="noopener">Microsoft Azure Monitor alerts abused for callback phishing attacks</a><span class="article-summary">Microsoft Azure Monitor alerts are being abused to send callback phishing emails that impersonate warnings from the Microsoft Security Team about unauthorized charges on your account. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

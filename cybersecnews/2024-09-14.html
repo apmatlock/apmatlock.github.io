@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-09-14</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,80 +109,75 @@
       <div class="stat"><span class="stat-value">8</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-09-14</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">18</span></button>
-<button class="filter-btn" data-cat="CISA KEV" onclick="filterCat('CISA KEV', this)">CISA KEV <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="CISA KEV" data-date="2024-09-14"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/cyber-security-today-week-in-review-for-september-14-2024" target="_blank" rel="noopener">Cyber Security Today Week in Review for September 14, 2024</a><span class="article-summary">Cybersecurity Insights: Vulnerabilities, Insider Threats, and the Future of Online Safety In this weekend edition of Cybersecurity Today, host Jim Love is joined by regulars Terry Cutler of Cyology Labs and David Shipley of Beauceron Security, alongside special guest Laura Payne …</span></div><span class="kev-badge">KEV</span><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 14 Sep 2024</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-09-14"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2024/09/ivanti-warns-of-active-exploitation-of.html" target="_blank" rel="noopener">Ivanti Warns of Active Exploitation of Newly Patched Cloud Appliance Vulnerability</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 14 Sep 2024</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-09-14"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://securityonline.info/citrix-workspace-app-users-urged-to-update-following-two-privilege-escalation-flaws/?&web_view=true" target="_blank" rel="noopener">Citrix Workspace App Users Urged to Update Following Two Privilege Escalation Flaws</a></div><span class="article-meta">SECURITYONLINE.INFO &mdash; 14 Sep 2024</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-09-14"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/24/i/whatsup-gold-rce.html?&web_view=true" target="_blank" rel="noopener">Update: Protecting Against RCE Attacks Abusing WhatsUp Gold Vulnerabilities</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 14 Sep 2024</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-09-14"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://therecord.media/hackers-four-microsoft-vulnerabilities-cisa?&web_view=true" target="_blank" rel="noopener">Hackers Have Sights Set on Four Microsoft Vulnerabilities, CISA Warns</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 14 Sep 2024</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-09-14"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://securityonline.info/fileless-remcos-rat-campaign-leverages-cve-2017-0199-flaw/?&web_view=true" target="_blank" rel="noopener">Fileless Remcos RAT Campaign Leverages CVE-2017-0199 Flaw</a></div><span class="article-meta">SECURITYONLINE.INFO &mdash; 14 Sep 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-09-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/09/trickmo-android-trojan-exploits.html?&web_view=true" target="_blank" rel="noopener">TrickMo Android Trojan Exploits Accessibility Services for On-Device Banking Fraud</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 14 Sep 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-09-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/gitlab-warns-of-critical-pipeline-execution-vulnerability/?&web_view=true" target="_blank" rel="noopener">GitLab Warns of Critical Pipeline Execution Vulnerability</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 14 Sep 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-09-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=ZGEh_5Jx5Tw" target="_blank" rel="noopener">Wait… They Made It Easier and It's FREE?! 😱</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-09-14</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-09-14"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/fbi-tells-public-to-ignore-false-claims-of-hacked-voter-data/" target="_blank" rel="noopener">FBI tells public to ignore false claims of hacked voter data</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 14 Sep 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-09-14"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://therecord.media/port-cranes-china-modems-republican-house-report?&web_view=true" target="_blank" rel="noopener">Chinese-Made Port Cranes in US Included ‘Backdoor’ Modems, House Report Says</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 14 Sep 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-09-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.domaintools.com/resources/blog/retail-targeted-campaigns-domain-fraud-brand-impersonation-and-ponzi-schemes/?&web_view=true" target="_blank" rel="noopener">Targeted Campaigns in Retail Sector Involve Domain Fraud, Brand Impersonation, and Ponzi Schemes</a></div><span class="article-meta">DOMAINTOOLS.COM &mdash; 14 Sep 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-09-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2024/09/upcoming-speaking-engagements-40.html" target="_blank" rel="noopener">Upcoming Speaking Engagements</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2024-09-14</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-09-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31258" target="_blank" rel="noopener">YARA 4.5.2 Release, (Sat, Sep 14th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 14 Sep 2024</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2024-09-14"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/new-vo1d-malware-infects-13-million-android-streaming-boxes/?&web_view=true" target="_blank" rel="noopener">New Vo1d Malware Infects 1.3 Million Android Streaming Boxes</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 14 Sep 2024</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2024-09-14"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://hackread.com/android-malware-ajina-banker-steal-2fa-codes-telegram/?&web_view=true" target="_blank" rel="noopener">New Android Malware Ajina.Banker Steals 2FA Codes, Spreads via Telegram</a></div><span class="article-meta">HACKREAD.COM &mdash; 14 Sep 2024</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2024-09-14"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/malware-locks-browser-in-kiosk-mode-to-steal-google-credentials/" target="_blank" rel="noopener">Malware locks browser in kiosk mode to steal Google credentials</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 14 Sep 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-09-14"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=X5ZTU77-SY4" target="_blank" rel="noopener">The Truth About AI Agents: Are They Safe?</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-09-14</span></div>
-    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cyber security today week in review for september 14, 2024" data-date="2024-09-14"><span class="headline-date">14 Sep <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/cyber-security-today-week-in-review-for-september-14-2024" target="_blank" rel="noopener">Cyber Security Today Week in Review for September 14, 2024</a><span class="article-summary">Cybersecurity Insights: Vulnerabilities, Insider Threats, and the Future of Online Safety In this weekend edition of Cybersecurity Today, host Jim Love is joined by regulars Terry Cutler of Cyology Labs and David Shipley of Beauceron Security, alongside special guest Laura Payne …</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ivanti warns of active exploitation of newly patched cloud appliance vulnerability" data-date="2024-09-14"><span class="headline-date">14 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/09/ivanti-warns-of-active-exploitation-of.html" target="_blank" rel="noopener">Ivanti Warns of Active Exploitation of Newly Patched Cloud Appliance Vulnerability</a><span class="article-summary">Ivanti has revealed that a newly patched security flaw in its Cloud Service Appliance (CSA) has come under active exploitation in the wild. The high-severity vulnerability in question is CVE-2024-8190 (CVSS score: 7.2), which allows remote code execution under certain circumstanc…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="citrix workspace app users urged to update following two privilege escalation flaws" data-date="2024-09-14"><span class="headline-date">14 Sep</span><span class="headline-body"><a class="headline-title" href="https://securityonline.info/citrix-workspace-app-users-urged-to-update-following-two-privilege-escalation-flaws/?&web_view=true" target="_blank" rel="noopener">Citrix Workspace App Users Urged to Update Following Two Privilege Escalation Flaws</a><span class="article-summary">Users of Citrix Workspace App are advised to update due to two privilege escalation flaws. Cloud Software Group disclosed vulnerabilities (CVE-2024-7889 & CVE-2024-7890) in the Windows app, allowing attackers to gain high-level access.</span></span><span class="headline-source">SECURITYONLINE.INFO</span></div>
+<div class="headline" data-title="update: protecting against rce attacks abusing whatsup gold vulnerabilities" data-date="2024-09-14"><span class="headline-date">14 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/24/i/whatsup-gold-rce.html?&web_view=true" target="_blank" rel="noopener">Update: Protecting Against RCE Attacks Abusing WhatsUp Gold Vulnerabilities</a><span class="article-summary">Trend Micro researchers uncovered remote code execution attacks targeting Progress Software's WhatsUp Gold using the vulnerabilities tracked as CVE-2024-6670 and CVE-2024-6671.</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+<div class="headline" data-title="hackers have sights set on four microsoft vulnerabilities, cisa warns" data-date="2024-09-14"><span class="headline-date">14 Sep</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/hackers-four-microsoft-vulnerabilities-cisa?&web_view=true" target="_blank" rel="noopener">Hackers Have Sights Set on Four Microsoft Vulnerabilities, CISA Warns</a><span class="article-summary">Federal civilian agencies have until the end of the month to address these issues. The vulnerabilities are part of Microsoft's monthly security release, with CVE-2024-43491 considered the most concerning due to its severity score.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="fileless remcos rat campaign leverages cve-2017-0199 flaw" data-date="2024-09-14"><span class="headline-date">14 Sep</span><span class="headline-body"><a class="headline-title" href="https://securityonline.info/fileless-remcos-rat-campaign-leverages-cve-2017-0199-flaw/?&web_view=true" target="_blank" rel="noopener">Fileless Remcos RAT Campaign Leverages CVE-2017-0199 Flaw</a><span class="article-summary">In a newly uncovered advanced malware campaign, threat actors are using a complex, fileless approach to deliver the Remcos Remote Access Trojan (RAT), leveraging a benign-looking Excel document as the attack vector.</span></span><span class="headline-source">SECURITYONLINE.INFO</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="trickmo android trojan exploits accessibility services for on-device banking fraud" data-date="2024-09-14"><span class="headline-date">14 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/09/trickmo-android-trojan-exploits.html?&web_view=true" target="_blank" rel="noopener">TrickMo Android Trojan Exploits Accessibility Services for On-Device Banking Fraud</a><span class="article-summary">Cybersecurity researchers at Cleafy discovered a new variant of the TrickMo Android banking trojan that evades analysis and displays fake login screens to steal banking credentials.</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="gitlab warns of critical pipeline execution vulnerability" data-date="2024-09-14"><span class="headline-date">14 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/gitlab-warns-of-critical-pipeline-execution-vulnerability/?&web_view=true" target="_blank" rel="noopener">GitLab Warns of Critical Pipeline Execution Vulnerability</a><span class="article-summary">GitLab released updates covering versions 17.1.7, 17.2.5, and 17.3.2 for GitLab Community Edition (CE) and Enterprise Edition (EE), addressing a total of 18 security issues.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="wait… they made it easier and it's free?! 😱" data-date="2024-09-14"><span class="headline-date">14 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=ZGEh_5Jx5Tw" target="_blank" rel="noopener">Wait… They Made It Easier and It's FREE?! 😱</a><span class="article-summary">🔍 Ever wonder why some tech tools are free but still super complex? 🤯 Check out John Kinsella's brain-teasing journey with a mysterious free tool! 🛠️🤔 From head-scratching confusion to surprising generosity, discover why two guys decided to make life easier for everyone. Plus, Jo…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="fbi tells public to ignore false claims of hacked voter data" data-date="2024-09-14"><span class="headline-date">14 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/fbi-tells-public-to-ignore-false-claims-of-hacked-voter-data/" target="_blank" rel="noopener">FBI tells public to ignore false claims of hacked voter data</a><span class="article-summary">The Federal Bureau of Investigation (FBI) and the Cybersecurity and Infrastructure Security Agency (CISA) are alerting the public of false claims that the U.S. voter registration data has been compromised in cyberattacks. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="chinese-made port cranes in us included ‘backdoor’ modems, house report says" data-date="2024-09-14"><span class="headline-date">14 Sep</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/port-cranes-china-modems-republican-house-report?&web_view=true" target="_blank" rel="noopener">Chinese-Made Port Cranes in US Included ‘Backdoor’ Modems, House Report Says</a><span class="article-summary">A recent congressional investigation revealed that Chinese-made port cranes in the United States contained hidden modems that could provide unauthorized access to the machines.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="targeted campaigns in retail sector involve domain fraud, brand impersonation, and ponzi schemes" data-date="2024-09-14"><span class="headline-date">14 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.domaintools.com/resources/blog/retail-targeted-campaigns-domain-fraud-brand-impersonation-and-ponzi-schemes/?&web_view=true" target="_blank" rel="noopener">Targeted Campaigns in Retail Sector Involve Domain Fraud, Brand Impersonation, and Ponzi Schemes</a><span class="article-summary">Threat actors are actively engaging in domain fraud, brand impersonation, and Ponzi schemes targeting the retail sector, which plays a significant role in the global economy.</span></span><span class="headline-source">DOMAINTOOLS.COM</span></div>
+<div class="headline" data-title="upcoming speaking engagements" data-date="2024-09-14"><span class="headline-date">14 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2024/09/upcoming-speaking-engagements-40.html" target="_blank" rel="noopener">Upcoming Speaking Engagements</a><span class="article-summary">This is a current list of where and when I am scheduled to speak: I’m speaking at eCrime 2024 in Boston, Massachusetts, USA. The event runs from September 24 through 26, 2024, and my keynote is at 8:45 AM ET on the 24th. I’m briefly speaking at the EPIC Champion of Freedom Awards…</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="yara 4.5.2 release, (sat, sep 14th)" data-date="2024-09-14"><span class="headline-date">14 Sep</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31258" target="_blank" rel="noopener">YARA 4.5.2 Release, (Sat, Sep 14th)</a><span class="article-summary">YARA 4.5.2 was released with 3 small changes and 4 bugfixes. &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new vo1d malware infects 1.3 million android streaming boxes" data-date="2024-09-14"><span class="headline-date">14 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/new-vo1d-malware-infects-13-million-android-streaming-boxes/?&web_view=true" target="_blank" rel="noopener">New Vo1d Malware Infects 1.3 Million Android Streaming Boxes</a><span class="article-summary">The Vo1d malware campaign targets specific Android firmware versions like Android 7.1.2 and Android 10.1. The malware modifies system files to launch itself on boot and persist on the device.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="new android malware ajina.banker steals 2fa codes, spreads via telegram" data-date="2024-09-14"><span class="headline-date">14 Sep</span><span class="headline-body"><a class="headline-title" href="https://hackread.com/android-malware-ajina-banker-steal-2fa-codes-telegram/?&web_view=true" target="_blank" rel="noopener">New Android Malware Ajina.Banker Steals 2FA Codes, Spreads via Telegram</a><span class="article-summary">Discovering the threat in May 2024, Group-IB highlighted that the malware is spread through Telegram channels disguised as legitimate banking and government service applications.</span></span><span class="headline-source">HACKREAD.COM</span></div>
+<div class="headline" data-title="malware locks browser in kiosk mode to steal google credentials" data-date="2024-09-14"><span class="headline-date">14 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/malware-locks-browser-in-kiosk-mode-to-steal-google-credentials/" target="_blank" rel="noopener">Malware locks browser in kiosk mode to steal Google credentials</a><span class="article-summary">A malware campaign uses the unusual method of locking users in their browser's kiosk mode to annoy them into entering their Google credentials, which are then stolen by information-stealing malware. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the truth about ai agents: are they safe?" data-date="2024-09-14"><span class="headline-date">14 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=X5ZTU77-SY4" target="_blank" rel="noopener">The Truth About AI Agents: Are They Safe?</a><span class="article-summary">AI is evolving fast, but can we really trust these AI agents with our data and decisions? 🚨 In this short, we dive into the world of AI agents, exploring if they're just machines or something far more powerful. Are they safe, or could they become a bigger threat than we think? Wa…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

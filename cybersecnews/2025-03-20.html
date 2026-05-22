@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-03-20</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,64 +109,43 @@
       <div class="stat"><span class="stat-value">4</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-03-20</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-03-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisecurity.org/advisory/a-vulnerability-in-veeam-backup-replication-could-allow-for-arbitrary-code-execution_2025-029" target="_blank" rel="noopener">A Vulnerability in Veeam Backup &amp; Replication Could Allow for Arbitrary Code Execution</a></div><span class="article-meta">CISECURITY.ORG &mdash; 20 Mar 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-03-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisecurity.org/advisory/a-vulnerability-in-ami-megarac-software-could-allow-for-remote-code-execution_2025-028" target="_blank" rel="noopener">A Vulnerability in AMI MegaRAC Software Could Allow for Remote Code Execution</a></div><span class="article-meta">CISECURITY.ORG &mdash; 20 Mar 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-03-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2025/03/20/cisa-releases-five-industrial-control-systems-advisories" target="_blank" rel="noopener">CISA Releases Five Industrial Control Systems Advisories</a></div><span class="article-meta">CISA.GOV &mdash; Thu, 20 Mar 25 1</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-03-20"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://krebsonsecurity.com/2025/03/doge-to-fired-cisa-staff-email-us-your-personal-data/" target="_blank" rel="noopener">DOGE to Fired CISA Staff: Email Us Your Personal Data</a></div><span class="article-meta">KREBSONSECURITY.COM &mdash; 20 Mar 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-03-20"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.tripwire.com/state-of-security/blacklock-ransomware-what-you-need-know" target="_blank" rel="noopener">BlackLock ransomware: What you need to know</a></div><span class="article-meta">TRIPWIRE.COM &mdash; 20 Mar 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-03-20"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.welivesecurity.com/en/eset-research/operation-fishmedley/" target="_blank" rel="noopener">Operation FishMedley</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 20 Mar 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="a vulnerability in veeam backup &amp; replication could allow for arbitrary code execution" data-date="2025-03-20"><span class="headline-date">20 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.cisecurity.org/advisory/a-vulnerability-in-veeam-backup-replication-could-allow-for-arbitrary-code-execution_2025-029" target="_blank" rel="noopener">A Vulnerability in Veeam Backup &amp; Replication Could Allow for Arbitrary Code Execution</a><span class="article-summary">A vulnerability has been discovered in Veeam Backup & Replication, which could allow for arbitrary code execution. Veeam Backup & Replication is a comprehensive data protection and disaster recovery solution. With Veeam Backup & Replication, you can create image-level backups of …</span></span><span class="headline-source">CISECURITY.ORG</span></div>
+<div class="headline" data-title="a vulnerability in ami megarac software could allow for remote code execution" data-date="2025-03-20"><span class="headline-date">20 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.cisecurity.org/advisory/a-vulnerability-in-ami-megarac-software-could-allow-for-remote-code-execution_2025-028" target="_blank" rel="noopener">A Vulnerability in AMI MegaRAC Software Could Allow for Remote Code Execution</a><span class="article-summary">A vulnerability has been discovered in AMI MegaRAC Software, which could allow for remote code execution. MegaRAC is a product line of BMC firmware packages and formerly service processors providing out-of-band, or lights-out remote management of computer systems. Successful expl…</span></span><span class="headline-source">CISECURITY.ORG</span></div>
+<div class="headline" data-title="cisa releases five industrial control systems advisories" data-date="2025-03-20"><span class="headline-date">20 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2025/03/20/cisa-releases-five-industrial-control-systems-advisories" target="_blank" rel="noopener">CISA Releases Five Industrial Control Systems Advisories</a><span class="article-summary">CISA released five Industrial Control Systems (ICS) advisories on March 20, 2025. These advisories provide timely information about current security issues, vulnerabilities, and exploits surrounding ICS. ICSA-25-079-01 Schneider Electric EcoStruxure™ ICSA-25-079-02 Schneider Elec…</span></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="doge to fired cisa staff: email us your personal data" data-date="2025-03-20"><span class="headline-date">20 Mar</span><span class="headline-body"><a class="headline-title" href="https://krebsonsecurity.com/2025/03/doge-to-fired-cisa-staff-email-us-your-personal-data/" target="_blank" rel="noopener">DOGE to Fired CISA Staff: Email Us Your Personal Data</a><span class="article-summary">A message posted on Monday to the homepage of the U.S. Cybersecurity &#038; Infrastructure Security Agency (CISA) is the latest exhibit in the Trump administration's continued disregard for basic cybersecurity protections. The message instructed recently-fired CISA employees to g…</span></span><span class="headline-source">KREBSONSECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="blacklock ransomware: what you need to know" data-date="2025-03-20"><span class="headline-date">20 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.tripwire.com/state-of-security/blacklock-ransomware-what-you-need-know" target="_blank" rel="noopener">BlackLock ransomware: What you need to know</a><span class="article-summary">BlackLock has become a big deal, very quickly. It has been predicted to be one of the biggest ransomware-as-a-service operations of 2025. Read more in my article on the Tripwire State of Security blog.</span></span><span class="headline-source">TRIPWIRE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="operation fishmedley" data-date="2025-03-20"><span class="headline-date">20 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/en/eset-research/operation-fishmedley/" target="_blank" rel="noopener">Operation FishMedley</a><span class="article-summary">ESET researchers detail a global espionage operation by FishMonger, the APT group run by I‑SOON</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

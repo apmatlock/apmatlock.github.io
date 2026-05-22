@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-01-18</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,107 +109,94 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-01-18</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">47</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">25</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">11</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.securityweek.com/tiktok-says-it-will-go-dark-unless-it-gets-clarity-from-biden-following-supreme-court-ruling/" target="_blank" rel="noopener">TikTok Says It Will ‘Go Dark’ Unless It Gets Clarity From Biden Following Supreme Court Ruling</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 18 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/hackers-bypass-active-directory-group-policy/" target="_blank" rel="noopener">Hackers Easily Bypass Active Directory Group Policy to Allow Vulnerable NTLMv1 Auth Protocol</a></div><span class="article-meta">GBHACKERS.COM &mdash; 18 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://techcrunch.com/2025/01/18/how-victims-of-powerschools-data-breach-helped-each-other-investigate-massive-hack/" target="_blank" rel="noopener">How victims of PowerSchool’s data breach helped each other investigate ‘massive’ hack</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 18 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://haveibeenpwned.com/PwnedWebsites#Otelier" target="_blank" rel="noopener">Otelier - 436,855 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 18 Jan 2025</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/control-systems-br-security-advisory-av25-025" target="_blank" rel="noopener">[Control systems] B&amp;R security advisory (AV25-025)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/control-systems-schneider-electric-security-advisory-av25-024" target="_blank" rel="noopener">[Control systems] Schneider Electric security advisory (AV25-024)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/adobe-security-advisory-av25-023" target="_blank" rel="noopener">Adobe security advisory (AV25–023)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/ivanti-security-advisory-av25-022" target="_blank" rel="noopener">Ivanti security advisory (AV25-022)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/microsoft-security-advisory-january-2025-monthly-rollup-av25-021" target="_blank" rel="noopener">Microsoft security advisory – January 2025 monthly rollup (AV25–021)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/fortinet-security-advisory-av25-020" target="_blank" rel="noopener">Fortinet security advisory (AV25-020)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/zyxel-security-advisory-av25-019" target="_blank" rel="noopener">Zyxel security advisory (AV25-019)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/control-systems-siemens-security-advisory-av25-018" target="_blank" rel="noopener">[Control systems] Siemens security advisory (AV25-018)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/sap-security-advisory-january-2025-monthly-rollup-av25-017" target="_blank" rel="noopener">SAP security advisory – January 2025 monthly rollup (AV25-017)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/red-hat-security-advisory-av25-016" target="_blank" rel="noopener">Red Hat security advisory (AV25-016)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/control-systems-cisa-ics-security-advisories-av25-015" target="_blank" rel="noopener">[Control systems] CISA ICS security advisories (AV25–015)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/dell-security-advisory-av25-014" target="_blank" rel="noopener">Dell security advisory (AV25-014)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/ubuntu-security-advisory-av25-013" target="_blank" rel="noopener">Ubuntu security advisory (AV25-013)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/ibm-security-advisory-av25-012" target="_blank" rel="noopener">IBM security advisory (AV25-012)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/juniper-networks-security-advisory-av25-011" target="_blank" rel="noopener">Juniper Networks security advisory (AV25-011)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/control-systems-abb-security-advisory-av25-010" target="_blank" rel="noopener">[Control systems] ABB security advisory (AV25-010)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/palo-alto-networks-security-advisory-av25-009" target="_blank" rel="noopener">Palo Alto Networks security advisory (AV25-009)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/ivanti-security-advisory-av25-008" target="_blank" rel="noopener">Ivanti security advisory (AV25-008)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/sonicwall-security-advisory-av25-007" target="_blank" rel="noopener">SonicWall security advisory (AV25-007)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/control-systems-cisa-ics-security-advisories-av25-006" target="_blank" rel="noopener">[Control systems] CISA ICS security advisories (AV25-006)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/android-security-advisory-january-2025-monthly-rollup-av25-005" target="_blank" rel="noopener">Android security advisory – January 2025 Monthly Rollup (AV25-005)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/control-systems-moxa-security-advisory-av25-004" target="_blank" rel="noopener">[Control Systems] Moxa security advisory (AV25-004)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/ibm-security-advisory-av25-003" target="_blank" rel="noopener">IBM security advisory (AV25-003)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/hpe-security-advisory-av25-002" target="_blank" rel="noopener">HPE security advisory (AV25-002)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/dell-security-advisory-av25-001" target="_blank" rel="noopener">Dell security advisory (AV25-001)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://cyber.gc.ca/en/incident-management" target="_blank" rel="noopener">Report a cyber incident</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.securityweek.com/treasury-levels-sanctions-tied-to-a-massive-hack-of-telecom-companies-and-breach-of-its-own-network/" target="_blank" rel="noopener">Treasury Levels Sanctions Tied to a Massive Hack of Telecom Companies and Breach of Its Own Network</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 18 Jan 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31598" target="_blank" rel="noopener">New tool: immutable.py, (Sat, Jan 18th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 18 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.infoworld.com/article/3805151/secure-ai-dream-on-says-ai-red-team.html" target="_blank" rel="noopener">Secure AI? Dream on, says AI red team</a></div><span class="article-meta">INFOWORLD.COM &mdash; 18 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=lQm4f7dcFK0" target="_blank" rel="noopener">How Scammers Steal Millions Without You Noticing</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/22586249" target="_blank" rel="noopener">Investigating USB-to-Ethernet Dongles With “Malware” Claims</a></div><span class="article-meta">INFOSEC.PUB &mdash; 18 Jan 2025</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/social-media-fraud-targets-truth-social-cyber-security-today-weekend-with-netcrafts-robert-duncan-jan-18-2025" target="_blank" rel="noopener">Social Media Fraud Targets Truth Social: Cyber Security Today Weekend with Netcraft's Robert Duncan - Jan 18, 2025</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 18 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://cyber.gc.ca/en/guidance/guidance-securely-configuring-network-protocols-itsp40062" target="_blank" rel="noopener">Guidance on securely configuring network protocols (ITSP.40.062)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://cyber.gc.ca/en/guidance/video-teleconferencing-itsap10216" target="_blank" rel="noopener">Video teleconferencing (ITSAP.10.216)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://cyber.gc.ca/en/news-events/joint-guidance-secure-demand-and-priority-considerations-operational-technology-owners-and-operators-when-selecting-digital-products" target="_blank" rel="noopener">Joint guidance on secure by demand and priority considerations for operational technology owners and operators when selecting digital products</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://cyber.gc.ca/en/news-events/cses-evolved-security-review-program" target="_blank" rel="noopener">CSE’s evolved Security Review Program</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2025/01/us-sanctions-chinese-cybersecurity-firm.html" target="_blank" rel="noopener">U.S. Sanctions Chinese Cybersecurity Firm Over Treasury Hack Tied to Silk Typhoon</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 18 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2025/01/18/doj-confirms-arrested-us-army-soldier-is-linked-to-att-and-verizon-hacks/" target="_blank" rel="noopener">DOJ confirms arrested US Army soldier is linked to AT&amp;T and Verizon hacks</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 18 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=1hDAnUydQq8" target="_blank" rel="noopener">From Leadership Lessons to DeLorean Dreams!</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/legal/ftc-orders-gm-to-stop-collecting-and-selling-drivers-data/" target="_blank" rel="noopener">FTC orders GM to stop collecting and selling driver’s data</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 18 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/microsoft/microsoft-removes-assassins-creed-windows-11-upgrade-blocks/" target="_blank" rel="noopener">Microsoft removes Assassin’s Creed Windows 11 upgrade blocks</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 18 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=gEJwdkIPsH8" target="_blank" rel="noopener">ERP Systems: Are You Sure They're Safe?" 🧐</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-01-18</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-18"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=ZCazyrpm3vc" target="_blank" rel="noopener">Is There a Perfect MDM? IT Pros Weigh In! 💻</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-01-18</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="tiktok says it will ‘go dark’ unless it gets clarity from biden following supreme court ruling" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/tiktok-says-it-will-go-dark-unless-it-gets-clarity-from-biden-following-supreme-court-ruling/" target="_blank" rel="noopener">TikTok Says It Will ‘Go Dark’ Unless It Gets Clarity From Biden Following Supreme Court Ruling</a><span class="article-summary">TikTok said it will have to “go dark” this weekend unless Biden assures the company it won’t enforce a shutdown after the Supreme Court upheld the ban. The post TikTok Says It Will &#8216;Go Dark&#8217; Unless It Gets Clarity From Biden Following Supreme Court Ruling appeared fir…</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="hackers easily bypass active directory group policy to allow vulnerable ntlmv1 auth protocol" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/hackers-bypass-active-directory-group-policy/" target="_blank" rel="noopener">Hackers Easily Bypass Active Directory Group Policy to Allow Vulnerable NTLMv1 Auth Protocol</a><span class="article-summary">Researchers have discovered a critical flaw in Active Directory’s NTLMv1 mitigation strategy, where misconfigured on-premises applications can bypass Group Policy settings intended to disable NTLMv1. This vulnerability enables attackers to exploit the outdated authentication prot…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="how victims of powerschool’s data breach helped each other investigate ‘massive’ hack" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/01/18/how-victims-of-powerschools-data-breach-helped-each-other-investigate-massive-hack/" target="_blank" rel="noopener">How victims of PowerSchool’s data breach helped each other investigate ‘massive’ hack</a><span class="article-summary">School workers say they resorted to crowdsourcing help among each other following PowerSchool's breach, fueled by solidarity and the slow response from PowerSchool. © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="otelier - 436,855 breached accounts" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/PwnedWebsites#Otelier" target="_blank" rel="noopener">Otelier - 436,855 breached accounts</a><span class="article-summary">In July 2024, a threat actor gained access to the hotel management platform Otelier and retrieved customer data from well-known hotel brands including Marriott, Hilton, and Hyatt . The data included 437k customer email addresses (a further 868k generated email addresses from the …</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">25</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="[control systems] b&amp;r security advisory (av25-025)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/control-systems-br-security-advisory-av25-025" target="_blank" rel="noopener">[Control systems] B&amp;R security advisory (AV25-025)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="[control systems] schneider electric security advisory (av25-024)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/control-systems-schneider-electric-security-advisory-av25-024" target="_blank" rel="noopener">[Control systems] Schneider Electric security advisory (AV25-024)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="adobe security advisory (av25–023)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/adobe-security-advisory-av25-023" target="_blank" rel="noopener">Adobe security advisory (AV25–023)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="ivanti security advisory (av25-022)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/ivanti-security-advisory-av25-022" target="_blank" rel="noopener">Ivanti security advisory (AV25-022)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="microsoft security advisory – january 2025 monthly rollup (av25–021)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/microsoft-security-advisory-january-2025-monthly-rollup-av25-021" target="_blank" rel="noopener">Microsoft security advisory – January 2025 monthly rollup (AV25–021)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="fortinet security advisory (av25-020)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/fortinet-security-advisory-av25-020" target="_blank" rel="noopener">Fortinet security advisory (AV25-020)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="zyxel security advisory (av25-019)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/zyxel-security-advisory-av25-019" target="_blank" rel="noopener">Zyxel security advisory (AV25-019)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="[control systems] siemens security advisory (av25-018)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/control-systems-siemens-security-advisory-av25-018" target="_blank" rel="noopener">[Control systems] Siemens security advisory (AV25-018)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="sap security advisory – january 2025 monthly rollup (av25-017)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/sap-security-advisory-january-2025-monthly-rollup-av25-017" target="_blank" rel="noopener">SAP security advisory – January 2025 monthly rollup (AV25-017)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="red hat security advisory (av25-016)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/red-hat-security-advisory-av25-016" target="_blank" rel="noopener">Red Hat security advisory (AV25-016)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="[control systems] cisa ics security advisories (av25–015)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/control-systems-cisa-ics-security-advisories-av25-015" target="_blank" rel="noopener">[Control systems] CISA ICS security advisories (AV25–015)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="dell security advisory (av25-014)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/dell-security-advisory-av25-014" target="_blank" rel="noopener">Dell security advisory (AV25-014)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="ubuntu security advisory (av25-013)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/ubuntu-security-advisory-av25-013" target="_blank" rel="noopener">Ubuntu security advisory (AV25-013)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="ibm security advisory (av25-012)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/ibm-security-advisory-av25-012" target="_blank" rel="noopener">IBM security advisory (AV25-012)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="juniper networks security advisory (av25-011)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/juniper-networks-security-advisory-av25-011" target="_blank" rel="noopener">Juniper Networks security advisory (AV25-011)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="[control systems] abb security advisory (av25-010)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/control-systems-abb-security-advisory-av25-010" target="_blank" rel="noopener">[Control systems] ABB security advisory (AV25-010)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="palo alto networks security advisory (av25-009)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/palo-alto-networks-security-advisory-av25-009" target="_blank" rel="noopener">Palo Alto Networks security advisory (AV25-009)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="ivanti security advisory (av25-008)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/ivanti-security-advisory-av25-008" target="_blank" rel="noopener">Ivanti security advisory (AV25-008)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="sonicwall security advisory (av25-007)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/sonicwall-security-advisory-av25-007" target="_blank" rel="noopener">SonicWall security advisory (AV25-007)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="[control systems] cisa ics security advisories (av25-006)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/control-systems-cisa-ics-security-advisories-av25-006" target="_blank" rel="noopener">[Control systems] CISA ICS security advisories (AV25-006)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="android security advisory – january 2025 monthly rollup (av25-005)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/android-security-advisory-january-2025-monthly-rollup-av25-005" target="_blank" rel="noopener">Android security advisory – January 2025 Monthly Rollup (AV25-005)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="[control systems] moxa security advisory (av25-004)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/control-systems-moxa-security-advisory-av25-004" target="_blank" rel="noopener">[Control Systems] Moxa security advisory (AV25-004)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="ibm security advisory (av25-003)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/ibm-security-advisory-av25-003" target="_blank" rel="noopener">IBM security advisory (AV25-003)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="hpe security advisory (av25-002)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/hpe-security-advisory-av25-002" target="_blank" rel="noopener">HPE security advisory (AV25-002)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="dell security advisory (av25-001)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/dell-security-advisory-av25-001" target="_blank" rel="noopener">Dell security advisory (AV25-001)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="report a cyber incident" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/incident-management" target="_blank" rel="noopener">Report a cyber incident</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="treasury levels sanctions tied to a massive hack of telecom companies and breach of its own network" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/treasury-levels-sanctions-tied-to-a-massive-hack-of-telecom-companies-and-breach-of-its-own-network/" target="_blank" rel="noopener">Treasury Levels Sanctions Tied to a Massive Hack of Telecom Companies and Breach of Its Own Network</a><span class="article-summary">The Treasury Department announced sanctions in connection with a massive Chinese hack of American telecommunications companies and a breach of its own computer network. The post Treasury Levels Sanctions Tied to a Massive Hack of Telecom Companies and Breach of Its Own Network ap…</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="new tool: immutable.py, (sat, jan 18th)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31598" target="_blank" rel="noopener">New tool: immutable.py, (Sat, Jan 18th)</a><span class="article-summary">When performing triage on a Linux system you suspect might be compromised, there are many aspects of the system that you may want to look at. In SANS FOR577 , we talk about some existing tools and even writing your own bash script to collect triage data. In a case I worked a year…</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="secure ai? dream on, says ai red team" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.infoworld.com/article/3805151/secure-ai-dream-on-says-ai-red-team.html" target="_blank" rel="noopener">Secure AI? Dream on, says AI red team</a><span class="article-summary">The group responsible for red teaming of over 100 generative AI products at Microsoft has concluded that the work of building safe and secure AI systems will never be complete. In a paper published this week, the authors, including Microsoft Azure CTO Mark Russinovich, described …</span></span><span class="headline-source">INFOWORLD.COM</span></div>
+<div class="headline" data-title="how scammers steal millions without you noticing" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=lQm4f7dcFK0" target="_blank" rel="noopener">How Scammers Steal Millions Without You Noticing</a><span class="article-summary">Scammers have taken their tricks to a whole new level, but the game hasn’t changed much. From old-school postcards to modern-day emails, they’ve adapted to stay one step ahead. Have you heard about the “simple task” scam? It promises easy money, but it’s designed to drain your wa…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="investigating usb-to-ethernet dongles with “malware” claims" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/22586249" target="_blank" rel="noopener">Investigating USB-to-Ethernet Dongles With “Malware” Claims</a><span class="article-summary">submitted by cm0002 to cybersecurity 13 points | 2 comments https://hackaday.com/2025/01/18/investigating-usb-to-ethernet-dongles-with-malware-claims/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="social media fraud targets truth social: cyber security today weekend with netcraft's robert duncan - jan 18, 2025" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/social-media-fraud-targets-truth-social-cyber-security-today-weekend-with-netcrafts-robert-duncan-jan-18-2025" target="_blank" rel="noopener">Social Media Fraud Targets Truth Social: Cyber Security Today Weekend with Netcraft's Robert Duncan - Jan 18, 2025</a><span class="article-summary">Addressing Social Media Fraud: Insights from Netcraft's Robert Duncan In this weekend edition of Cybersecurity Today, host Jim Love discusses the growing issue of fraud in the cybersecurity landscape. Jim interviews Robert Duncan, VP of Product Strategy at Netcraft, who sheds lig…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">11</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="guidance on securely configuring network protocols (itsp.40.062)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/guidance/guidance-securely-configuring-network-protocols-itsp40062" target="_blank" rel="noopener">Guidance on securely configuring network protocols (ITSP.40.062)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="video teleconferencing (itsap.10.216)" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/guidance/video-teleconferencing-itsap10216" target="_blank" rel="noopener">Video teleconferencing (ITSAP.10.216)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="joint guidance on secure by demand and priority considerations for operational technology owners and operators when selecting digital products" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/news-events/joint-guidance-secure-demand-and-priority-considerations-operational-technology-owners-and-operators-when-selecting-digital-products" target="_blank" rel="noopener">Joint guidance on secure by demand and priority considerations for operational technology owners and operators when selecting digital products</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="cse’s evolved security review program" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/news-events/cses-evolved-security-review-program" target="_blank" rel="noopener">CSE’s evolved Security Review Program</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="u.s. sanctions chinese cybersecurity firm over treasury hack tied to silk typhoon" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/us-sanctions-chinese-cybersecurity-firm.html" target="_blank" rel="noopener">U.S. Sanctions Chinese Cybersecurity Firm Over Treasury Hack Tied to Silk Typhoon</a><span class="article-summary">The U.S. Treasury Department's Office of Foreign Assets Control (OFAC) has imposed sanctions against a Chinese cybersecurity company and a Shanghai-based cyber actor for their alleged links to the Salt Typhoon group and the recent compromise of the federal agency. "People's Repub…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="doj confirms arrested us army soldier is linked to at&amp;t and verizon hacks" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/01/18/doj-confirms-arrested-us-army-soldier-is-linked-to-att-and-verizon-hacks/" target="_blank" rel="noopener">DOJ confirms arrested US Army soldier is linked to AT&amp;T and Verizon hacks</a><span class="article-summary">The alleged hacker claimed to have access to huge amounts of call records, including VP Kamala Harris and President Trump. © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="from leadership lessons to delorean dreams!" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=1hDAnUydQq8" target="_blank" rel="noopener">From Leadership Lessons to DeLorean Dreams!</a><span class="article-summary">Ever wondered what leadership and time travel have in common? 🤔 Join us in this hilarious and thought-provoking discussion as we dive into cigars, whiskey, and the real challenges of influencing organizations. From DeLoreans to hot tubs, this is the ultimate leadership talk with …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="ftc orders gm to stop collecting and selling driver’s data" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/legal/ftc-orders-gm-to-stop-collecting-and-selling-drivers-data/" target="_blank" rel="noopener">FTC orders GM to stop collecting and selling driver’s data</a><span class="article-summary">The Federal Trade Commission (FTC) has announced action against General Motors (GM) and its subsidiary, OnStar, for unlawful collection and sale of drivers' precise geolocation and driving behavior data without first obtaining their consent. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="microsoft removes assassin’s creed windows 11 upgrade blocks" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/microsoft/microsoft-removes-assassins-creed-windows-11-upgrade-blocks/" target="_blank" rel="noopener">Microsoft removes Assassin’s Creed Windows 11 upgrade blocks</a><span class="article-summary">​Earlier this week, Ubisoft released Assassin's Creed Valhalla and Assassin's Creed Origins patches to fix Windows 11 24H2 compatibility issues that caused crashes, freezes, and audio problems. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="erp systems: are you sure they're safe?&quot; 🧐" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=gEJwdkIPsH8" target="_blank" rel="noopener">ERP Systems: Are You Sure They're Safe?" 🧐</a><span class="article-summary">Are you confident your ERP system is secure? 🚨 From conflicting roles to unauthorized payroll access, many organizations face hidden vulnerabilities that could jeopardize their operations. Learn why elevated permissions and segregation of duties are critical for securing your ent…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="is there a perfect mdm? it pros weigh in! 💻" data-date="2025-01-18"><span class="headline-date">18 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=ZCazyrpm3vc" target="_blank" rel="noopener">Is There a Perfect MDM? IT Pros Weigh In! 💻</a><span class="article-summary">Finding the perfect Mobile Device Management (MDM) solution feels like chasing a myth! 🚀 IT experts Adrian Sanabria and Guillaume Ross dive into the challenges of managing devices across platforms. From the constant Slack chatter about what works best to the wild idea of needing …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

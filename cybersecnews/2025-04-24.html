@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-04-24</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,75 +109,58 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-04-24</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">16</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-24"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2025/04/critical-commvault-command-center-flaw.html" target="_blank" rel="noopener">Critical Commvault Command Center Flaw Enables Attackers to Execute Code Remotely</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 24 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-24"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.troyhunt.com/youll-soon-be-able-to-sign-in-to-have-i-been-pwned-but-not-login-log-in-or-log-on/" target="_blank" rel="noopener">You'll Soon Be Able to Sign in to Have I Been Pwned (but Not Login, Log in or Log On)</a></div><span class="article-meta">TROYHUNT.COM &mdash; 24 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-24"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/04/linux-iouring-poc-rootkit-bypasses.html" target="_blank" rel="noopener">Linux io_uring PoC Rootkit Bypasses System Call-Based Threat Detection Tools</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 24 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-24"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/04/automating-zero-trust-in-healthcare.html" target="_blank" rel="noopener">Automating Zero Trust in Healthcare: From Risk Scoring to Dynamic Policy Enforcement Without Network Redesign</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 24 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-24"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/04/159-cves-exploited-in-q1-2025-283.html" target="_blank" rel="noopener">159 CVEs Exploited in Q1 2025 — 28.3% Within 24 Hours of Disclosure</a></div><span class="kev-badge">KEV</span><span class="article-meta">THEHACKERNEWS.COM &mdash; 24 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-24"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2025/04/24/cisa-releases-seven-industrial-control-systems-advisories" target="_blank" rel="noopener">CISA Releases Seven Industrial Control Systems Advisories</a></div><span class="article-meta">CISA.GOV &mdash; Thu, 24 Apr 25 1</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-24"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.lastwatchdog.com/rsac-fireside-chat-the-ndr-evolution-story-from-open-source-start-to-kill-chain-clarity/" target="_blank" rel="noopener">RSAC Fireside Chat: The NDR evolution story—from open source start to kill chain clarity</a></div><span class="article-meta">LASTWATCHDOG.COM &mdash; 24 Apr 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-04-24"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://sh.itjust.works/post/36664615" target="_blank" rel="noopener">Trojanized Alpine Quest app geolocates Russian soldiers</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 24 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-24"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2025/04/new-linux-rootkit.html" target="_blank" rel="noopener">New Linux Rootkit</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2025-04-24</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-24"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2025/04/lazarus-hits-6-south-korean-firms-via.html" target="_blank" rel="noopener">Lazarus Hits 6 South Korean Firms via Cross EX, Innorix Flaws and ThreatNeedle Malware</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 24 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-24"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2025/04/darcula-adds-genai-to-phishing-toolkit.html" target="_blank" rel="noopener">Darcula Adds GenAI to Phishing Toolkit, Lowering the Barrier for Cybercriminals</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 24 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-24"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.microsoft.com/en-us/security/blog/2025/04/24/new-whitepaper-outlines-the-taxonomy-of-failure-modes-in-ai-agents/" target="_blank" rel="noopener">New whitepaper outlines the taxonomy of failure modes in AI agents</a></div><span class="article-meta">MICROSOFT.COM &mdash; 24 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-24"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.lastwatchdog.com/rsac-fireside-chat-x9-pki-emerges-to-help-financial-sector-interoperate-get-ready-for-q-day/" target="_blank" rel="noopener">RSAC Fireside Chat: X9 PKI emerges to help financial sector interoperate, get ready for ‘Q-Day’</a></div><span class="article-meta">LASTWATCHDOG.COM &mdash; 24 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-24"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.paloaltonetworks.com/blog/2025/04/bruce-byrd-on-public-private-partnerships-in-cybersecurity/" target="_blank" rel="noopener">Bruce Byrd on Public-Private Partnerships in Cybersecurity</a></div><span class="article-meta">PALOALTONETWORKS.COM &mdash; 24 Apr 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-04-24"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2025/04/whatsapp-adds-advanced-chat-privacy-to.html" target="_blank" rel="noopener">WhatsApp Adds Advanced Chat Privacy to Blocks Chat Exports and Auto-Downloads</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 24 Apr 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-04-24"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2025/04/24/speak-at-techcrunch-disrupt-2025-applications-now-open/" target="_blank" rel="noopener">Speak at TechCrunch Disrupt 2025: Applications now open</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 24 Apr 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="critical commvault command center flaw enables attackers to execute code remotely" data-date="2025-04-24"><span class="headline-date">24 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/critical-commvault-command-center-flaw.html" target="_blank" rel="noopener">Critical Commvault Command Center Flaw Enables Attackers to Execute Code Remotely</a><span class="article-summary">A critical security flaw has been disclosed in the Commvault Command Center that could allow arbitrary code execution on affected installations. The vulnerability, tracked as CVE-2025-34028, carries a CVSS score of 9.0 out of a maximum of 10.0. "A critical security vulnerability …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="you'll soon be able to sign in to have i been pwned (but not login, log in or log on)" data-date="2025-04-24"><span class="headline-date">24 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.troyhunt.com/youll-soon-be-able-to-sign-in-to-have-i-been-pwned-but-not-login-log-in-or-log-on/" target="_blank" rel="noopener">You'll Soon Be Able to Sign in to Have I Been Pwned (but Not Login, Log in or Log On)</a><span class="article-summary">Presently sponsored by: Malwarebytes Browser Guard blocks phishing, ads, scams, and trackers for safer, faster browsing How do seemingly little things manage to consume so much time?! We had a suggestion this week that instead of being able to login to the new HIBP website, you s…</span></span><span class="headline-source">TROYHUNT.COM</span></div>
+<div class="headline" data-title="linux io_uring poc rootkit bypasses system call-based threat detection tools" data-date="2025-04-24"><span class="headline-date">24 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/linux-iouring-poc-rootkit-bypasses.html" target="_blank" rel="noopener">Linux io_uring PoC Rootkit Bypasses System Call-Based Threat Detection Tools</a><span class="article-summary">Cybersecurity researchers have demonstrated a proof-of-concept (PoC) rootkit dubbed Curing that leverages a Linux asynchronous I/O mechanism called io_uring to bypass traditional system call monitoring. This causes a "major blind spot in Linux runtime security tools," ARMO said. …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="automating zero trust in healthcare: from risk scoring to dynamic policy enforcement without network redesign" data-date="2025-04-24"><span class="headline-date">24 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/automating-zero-trust-in-healthcare.html" target="_blank" rel="noopener">Automating Zero Trust in Healthcare: From Risk Scoring to Dynamic Policy Enforcement Without Network Redesign</a><span class="article-summary">The Evolving Healthcare Cybersecurity Landscape&nbsp; Healthcare organizations face unprecedented cybersecurity challenges in 2025. With operational technology (OT) environments increasingly targeted and the convergence of IT and medical systems creating an expanded attack surfac…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="159 cves exploited in q1 2025 — 28.3% within 24 hours of disclosure" data-date="2025-04-24"><span class="headline-date">24 Apr <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/159-cves-exploited-in-q1-2025-283.html" target="_blank" rel="noopener">159 CVEs Exploited in Q1 2025 — 28.3% Within 24 Hours of Disclosure</a><span class="article-summary">As many as 159 CVE identifiers have been flagged as exploited in the wild in the first quarter of 2025, up from 151 in Q4 2024. "We continue to see vulnerabilities being exploited at a fast pace with 28.3% of vulnerabilities being exploited within 1-day of their CVE disclosure," …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="cisa releases seven industrial control systems advisories" data-date="2025-04-24"><span class="headline-date">24 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2025/04/24/cisa-releases-seven-industrial-control-systems-advisories" target="_blank" rel="noopener">CISA Releases Seven Industrial Control Systems Advisories</a><span class="article-summary">CISA released seven Industrial Control Systems (ICS) advisories on April 24, 2025. These advisories provide timely information about current security issues, vulnerabilities, and exploits surrounding ICS. ICSA-25-114-01 Schneider Electric Modicon Controllers ICSA-25-114-02 ALBEDO…</span></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="rsac fireside chat: the ndr evolution story—from open source start to kill chain clarity" data-date="2025-04-24"><span class="headline-date">24 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.lastwatchdog.com/rsac-fireside-chat-the-ndr-evolution-story-from-open-source-start-to-kill-chain-clarity/" target="_blank" rel="noopener">RSAC Fireside Chat: The NDR evolution story—from open source start to kill chain clarity</a><span class="article-summary">As enterprises brace for a new wave of stealthy intrusions — so-called Typhoon attacks — security leaders are doubling down on network intelligence that goes beyond surface-level alerts. Related: What is NDR? In this RSAC 2025 Fireside Chat, I sat &#8230; (more…) The post RSAC Fi…</span></span><span class="headline-source">LASTWATCHDOG.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="trojanized alpine quest app geolocates russian soldiers" data-date="2025-04-24"><span class="headline-date">24 Apr</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/36664615" target="_blank" rel="noopener">Trojanized Alpine Quest app geolocates Russian soldiers</a><span class="article-summary">submitted by PhilipTheBucket to cybersecurity 10 points | 0 comments https://go.theregister.com/feed/www.theregister.com/2025/04/24/hacked_alpine_quest_android_app/</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new linux rootkit" data-date="2025-04-24"><span class="headline-date">24 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2025/04/new-linux-rootkit.html" target="_blank" rel="noopener">New Linux Rootkit</a><span class="article-summary">Interesting : The company has released a working rootkit called &#8220;Curing&#8221; that uses io_uring, a feature built into the Linux kernel, to stealthily perform malicious activities without being caught by many of the detection solutions currently on the market. At the heart…</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="lazarus hits 6 south korean firms via cross ex, innorix flaws and threatneedle malware" data-date="2025-04-24"><span class="headline-date">24 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/lazarus-hits-6-south-korean-firms-via.html" target="_blank" rel="noopener">Lazarus Hits 6 South Korean Firms via Cross EX, Innorix Flaws and ThreatNeedle Malware</a><span class="article-summary">At least six organizations in South Korea have been targeted by the prolific North Korea-linked Lazarus Group as part of a campaign dubbed Operation SyncHole. The activity targeted South Korea's software, IT, financial, semiconductor manufacturing, and telecommunications industri…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="darcula adds genai to phishing toolkit, lowering the barrier for cybercriminals" data-date="2025-04-24"><span class="headline-date">24 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/darcula-adds-genai-to-phishing-toolkit.html" target="_blank" rel="noopener">Darcula Adds GenAI to Phishing Toolkit, Lowering the Barrier for Cybercriminals</a><span class="article-summary">The threat actors behind the Darcula phishing-as-a-service (PhaaS) platform have released new updates to their cybercrime suite with generative artificial intelligence (GenAI) capabilities. "This addition lowers the technical barrier for creating phishing pages, enabling less tec…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="new whitepaper outlines the taxonomy of failure modes in ai agents" data-date="2025-04-24"><span class="headline-date">24 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.microsoft.com/en-us/security/blog/2025/04/24/new-whitepaper-outlines-the-taxonomy-of-failure-modes-in-ai-agents/" target="_blank" rel="noopener">New whitepaper outlines the taxonomy of failure modes in AI agents</a><span class="article-summary">Read the new whitepaper from the Microsoft AI Red Team to better understand the taxonomy of failure mode in agentic AI. The post New whitepaper outlines the taxonomy of failure modes in AI agents appeared first on Microsoft Security Blog .</span></span><span class="headline-source">MICROSOFT.COM</span></div>
+<div class="headline" data-title="rsac fireside chat: x9 pki emerges to help financial sector interoperate, get ready for ‘q-day’" data-date="2025-04-24"><span class="headline-date">24 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.lastwatchdog.com/rsac-fireside-chat-x9-pki-emerges-to-help-financial-sector-interoperate-get-ready-for-q-day/" target="_blank" rel="noopener">RSAC Fireside Chat: X9 PKI emerges to help financial sector interoperate, get ready for ‘Q-Day’</a><span class="article-summary">As RSAC 2025 convenes next week in San Francisco, digital trust is poised to take center stage. Related: PKI and the IoT cloud One quiet but consequential development now taking root in the financial sector could prove pivotal: the emergence &#8230; (more…) The post RSAC Fireside…</span></span><span class="headline-source">LASTWATCHDOG.COM</span></div>
+<div class="headline" data-title="bruce byrd on public-private partnerships in cybersecurity" data-date="2025-04-24"><span class="headline-date">24 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.paloaltonetworks.com/blog/2025/04/bruce-byrd-on-public-private-partnerships-in-cybersecurity/" target="_blank" rel="noopener">Bruce Byrd on Public-Private Partnerships in Cybersecurity</a><span class="article-summary">Bruce Byrd offers strategic insights on cybersecurity evolution including public-private partnerships and AI impact. The post Bruce Byrd on Public-Private Partnerships in Cybersecurity appeared first on Palo Alto Networks Blog .</span></span><span class="headline-source">PALOALTONETWORKS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="whatsapp adds advanced chat privacy to blocks chat exports and auto-downloads" data-date="2025-04-24"><span class="headline-date">24 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/whatsapp-adds-advanced-chat-privacy-to.html" target="_blank" rel="noopener">WhatsApp Adds Advanced Chat Privacy to Blocks Chat Exports and Auto-Downloads</a><span class="article-summary">WhatsApp has introduced an extra layer of privacy called Advanced Chat Privacy that allows users to block participants from sharing the contents of a conversation in traditional chats and groups. "This new setting available in both chats and groups helps prevent others from takin…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="speak at techcrunch disrupt 2025: applications now open" data-date="2025-04-24"><span class="headline-date">24 Apr</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/04/24/speak-at-techcrunch-disrupt-2025-applications-now-open/" target="_blank" rel="noopener">Speak at TechCrunch Disrupt 2025: Applications now open</a><span class="article-summary">TechCrunch Disrupt returns October 27-29 to Moscone West in San Francisco — and we’re inviting thought leaders, founders, VCs, and tech experts to apply for a chance to take the stage at one of the most anticipated tech events of the year. Applications are now open to speak at Di…</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

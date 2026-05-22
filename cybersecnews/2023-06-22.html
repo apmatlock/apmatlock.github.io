@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2023-06-22</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,68 +109,43 @@
       <div class="stat"><span class="stat-value">3</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2023-06-22</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">11</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-06-22"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisecurity.org/advisory/a-vulnerability-in-vmware-aria-operations-for-networks-could-allow-for-remote-code-execution_2023-067" target="_blank" rel="noopener">A Vulnerability in VMware Aria Operations for Networks Could Allow for Remote Code Execution</a></div><span class="article-meta">CISECURITY.ORG &mdash; 22 Jun 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-06-22"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://krebsonsecurity.com/2023/06/sms-phishers-harvested-phone-numbers-shipment-data-from-ups-tracking-tool/" target="_blank" rel="noopener">SMS Phishers Harvested Phone Numbers, Shipment Data from UPS Tracking Tool</a></div><span class="article-meta">KREBSONSECURITY.COM &mdash; 22 Jun 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-06-22"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="http://security.googleblog.com/2023/06/google-cloud-awards-313337-in-2022-vrp.html" target="_blank" rel="noopener">Google Cloud Awards $313,337 in 2022 VRP Prizes</a></div><span class="article-meta">SECURITY.GOOGLEBLOG.COM &mdash; 2023-06-22</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-06-22"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.welivesecurity.com/2023/06/22/maltego-check-exposed-online/" target="_blank" rel="noopener">Maltego: Check how exposed you are online</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 22 Jun 2023</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-06-22"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.cisa.gov/news-events/news/readout-cisas-2023-second-quarter-cybersecurity-advisory-committee-meeting" target="_blank" rel="noopener">Readout from CISA’s 2023 Second Quarter Cybersecurity Advisory Committee Meeting</a></div><span class="article-meta">CISA.GOV &mdash; Thu, 22 Jun 23 1</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-06-22"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.cisa.gov/news-events/news/cisa-welcomes-senior-leaders-drive-key-agency-cybersecurity-efforts" target="_blank" rel="noopener">CISA Welcomes Senior Leaders to Drive Key Agency Cybersecurity Efforts</a></div><span class="article-meta">CISA.GOV &mdash; Thu, 22 Jun 23 1</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-06-22"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.nist.gov/blogs/cybersecurity-insights/ssdf-and-iot-cybersecurity-guidance-building-blocks-iot-product" target="_blank" rel="noopener">SSDF and IoT Cybersecurity Guidance: Building Blocks for IoT Product Security</a></div><span class="article-meta">NIST.GOV &mdash; 22 Jun 2023</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-06-22"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="http://www.nist.gov/blogs/cybersecurity-insights/ssdf-and-iot-cybersecurity-guidance-building-blocks-iot-product" target="_blank" rel="noopener">SSDF and IoT Cybersecurity Guidance: Building Blocks for IoT Product Security</a></div><span class="article-meta">NIST.GOV &mdash; 22 Jun 2023</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-06-22"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.ncsc.gov.uk/report/cyber-threat-report-uk-legal-sector" target="_blank" rel="noopener">Cyber Threat Report: UK Legal Sector</a></div><span class="article-meta">NCSC.GOV.UK &mdash; 22 Jun 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-06-22"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.paloaltonetworks.com/blog/2023/06/agentless-malware-scanning/" target="_blank" rel="noopener">Agentless Workload Scanning Gets Supercharged with Malware Scanning</a></div><span class="article-meta">PALOALTONETWORKS.COM &mdash; 22 Jun 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-06-22"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.wiz.io/blog/kubernetes-grey-zone-risks-in-managed-cluster-middleware" target="_blank" rel="noopener">Kubernetes Grey Zone: Risks in Managed Cluster Middleware</a></div><span class="article-meta">WIZ.IO &mdash; 22 Jun 2023</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="a vulnerability in vmware aria operations for networks could allow for remote code execution" data-date="2023-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.cisecurity.org/advisory/a-vulnerability-in-vmware-aria-operations-for-networks-could-allow-for-remote-code-execution_2023-067" target="_blank" rel="noopener">A Vulnerability in VMware Aria Operations for Networks Could Allow for Remote Code Execution</a><span class="article-summary">A vulnerability has been discovered VMware Aria Operations for Networks which could allow for remote code execution. VMware Aria Operations for Networks is a network monitoring tool that collects and analyzes metrics, APIs, configurations, metadata, integrations, telemetry netflo…</span></span><span class="headline-source">CISECURITY.ORG</span></div>
+<div class="headline" data-title="sms phishers harvested phone numbers, shipment data from ups tracking tool" data-date="2023-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://krebsonsecurity.com/2023/06/sms-phishers-harvested-phone-numbers-shipment-data-from-ups-tracking-tool/" target="_blank" rel="noopener">SMS Phishers Harvested Phone Numbers, Shipment Data from UPS Tracking Tool</a><span class="article-summary">The United Parcel Service (UPS) says fraudsters have been harvesting phone numbers and other information from its online shipment tracking tool in Canada to send highly targeted SMS phishing (a.k.a. "smishing") messages that spoofed UPS and other top brands. The missives addresse…</span></span><span class="headline-source">KREBSONSECURITY.COM</span></div>
+<div class="headline" data-title="google cloud awards $313,337 in 2022 vrp prizes" data-date="2023-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="http://security.googleblog.com/2023/06/google-cloud-awards-313337-in-2022-vrp.html" target="_blank" rel="noopener">Google Cloud Awards $313,337 in 2022 VRP Prizes</a><span class="article-summary">Anthony Weems, Information Security Engineer 2022 was a successful year for Google's Vulnerability Reward Programs (VRPs), with over 2,900 security issues identified and fixed, and over $12 million in bounty rewards awarded to researchers. A significant amount of these vulnerabil…</span></span><span class="headline-source">SECURITY.GOOGLEBLOG.COM</span></div>
+<div class="headline" data-title="maltego: check how exposed you are online" data-date="2023-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/2023/06/22/maltego-check-exposed-online/" target="_blank" rel="noopener">Maltego: Check how exposed you are online</a><span class="article-summary">A primer on how to use this powerful tool for uncovering and connecting information from publicly available sources</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="readout from cisa’s 2023 second quarter cybersecurity advisory committee meeting" data-date="2023-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/news/readout-cisas-2023-second-quarter-cybersecurity-advisory-committee-meeting" target="_blank" rel="noopener">Readout from CISA’s 2023 Second Quarter Cybersecurity Advisory Committee Meeting</a></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="cisa welcomes senior leaders to drive key agency cybersecurity efforts" data-date="2023-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/news/cisa-welcomes-senior-leaders-drive-key-agency-cybersecurity-efforts" target="_blank" rel="noopener">CISA Welcomes Senior Leaders to Drive Key Agency Cybersecurity Efforts</a></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="ssdf and iot cybersecurity guidance: building blocks for iot product security" data-date="2023-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.nist.gov/blogs/cybersecurity-insights/ssdf-and-iot-cybersecurity-guidance-building-blocks-iot-product" target="_blank" rel="noopener">SSDF and IoT Cybersecurity Guidance: Building Blocks for IoT Product Security</a><span class="article-summary">NIST’s IoT cybersecurity guidance has long recognized the importance of secure software development (SSDF) practices, highlighted by the NIST IR 8259 series—such as the recommendation for documentation in Action 3.d of NIST IR 8259B, that manufacturers have considered and documen…</span></span><span class="headline-source">NIST.GOV</span></div>
+<div class="headline" data-title="ssdf and iot cybersecurity guidance: building blocks for iot product security" data-date="2023-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="http://www.nist.gov/blogs/cybersecurity-insights/ssdf-and-iot-cybersecurity-guidance-building-blocks-iot-product" target="_blank" rel="noopener">SSDF and IoT Cybersecurity Guidance: Building Blocks for IoT Product Security</a><span class="article-summary">NIST’s IoT cybersecurity guidance has long recognized the importance of secure software development (SSDF) practices, highlighted by the NIST IR 8259 series —such as the recommendation for documentation in Action 3.d of NIST IR 8259B , that manufacturers have considered and docum…</span></span><span class="headline-source">NIST.GOV</span></div>
+<div class="headline" data-title="cyber threat report: uk legal sector" data-date="2023-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.ncsc.gov.uk/report/cyber-threat-report-uk-legal-sector" target="_blank" rel="noopener">Cyber Threat Report: UK Legal Sector</a><span class="article-summary">An updated report from the NCSC explaining how UK law firms - of all sizes - can protect themselves from common cyber threats.</span></span><span class="headline-source">NCSC.GOV.UK</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="agentless workload scanning gets supercharged with malware scanning" data-date="2023-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.paloaltonetworks.com/blog/2023/06/agentless-malware-scanning/" target="_blank" rel="noopener">Agentless Workload Scanning Gets Supercharged with Malware Scanning</a><span class="article-summary">Enterprises now have 53% of their cloud workloads hosted on public clouds, according to our recent State of Cloud-Native Security Report 2023. The post Agentless Workload Scanning Gets Supercharged with Malware Scanning appeared first on Palo Alto Networks Blog .</span></span><span class="headline-source">PALOALTONETWORKS.COM</span></div>
+<div class="headline" data-title="kubernetes grey zone: risks in managed cluster middleware" data-date="2023-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.wiz.io/blog/kubernetes-grey-zone-risks-in-managed-cluster-middleware" target="_blank" rel="noopener">Kubernetes Grey Zone: Risks in Managed Cluster Middleware</a><span class="article-summary">submitted by 0xCBE to cloudsecurity 2 points | 0 comments https://www.wiz.io/blog/kubernetes-grey-zone-risks-in-managed-cluster-middleware</span></span><span class="headline-source">WIZ.IO</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

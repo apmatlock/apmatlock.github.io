@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2023-06-16</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,73 +109,56 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2023-06-16</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">14</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">4</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-06-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.cisecurity.org/advisory/a-vulnerability-in-moveit-transfer-could-allow-for-elevated-privileges-and-unauthorized-access_2023-064" target="_blank" rel="noopener">A vulnerability in MOVEit Transfer Could Allow for Elevated Privileges and Unauthorized Access</a></div><span class="article-meta">CISECURITY.ORG &mdash; 16 Jun 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-06-16"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="http://security.googleblog.com/2023/06/bringing-transparency-to-confidential.html" target="_blank" rel="noopener">Bringing Transparency to Confidential Computing with SLSA</a></div><span class="article-meta">SECURITY.GOOGLEBLOG.COM &mdash; 2023-06-16</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-06-16"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/cyber-security-today-week-in-review-for-friday-june-16-2023" target="_blank" rel="noopener">Cyber Security Today, Week in Review for Friday, June 16, 2023</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 16 Jun 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-06-16"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.theregister.com/2023/06/05/security_in_brief/" target="_blank" rel="noopener">Toyota admits to yet another cloud leak</a></div><span class="article-meta">THEREGISTER.COM &mdash; 16 Jun 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-06-16"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/cyber-security-today-june-16-2023-beware-of-fake-profiles-on-github-and-are-you-an-optimist-or-pessimist-ciso" target="_blank" rel="noopener">Cyber Security Today, June 16, 2023 - Beware of fake profiles on GitHub, and are you an optimist or pessimist CISO?</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 16 Jun 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-06-16"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://msrc.microsoft.com/blog/2023/06/microsoft-response-to-layer-7-distributed-denial-of-service-ddos-attacks/" target="_blank" rel="noopener">Microsoft Response to Layer 7 Distributed Denial of Service (DDoS) Attacks</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 Jun 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-06-16"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://securityblog.omegapoint.se/en/writeup-apigw/" target="_blank" rel="noopener">Writeup: AWS API Gateway header smuggling and cache confusion</a></div><span class="article-meta">SECURITYBLOG.OMEGAPOINT.SE &mdash; 16 Jun 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-06-16"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://slashparity.com/?p=938" target="_blank" rel="noopener">GCP Pentesting Guide</a></div><span class="article-meta">SLASHPARITY.COM &mdash; 16 Jun 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-06-16"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.felipecruz.es/exploring-firecracker-microvms-for-multi-tenant-dagger-ci-cd-pipelines/" target="_blank" rel="noopener">Exploring Firecracker MicroVMs for Multi-Tenant Dagger CI/CD Pipelines</a></div><span class="article-meta">FELIPECRUZ.ES &mdash; 16 Jun 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-06-16"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://securitylabs.datadoghq.com/articles/misconfiguration-spotlight-imds/" target="_blank" rel="noopener">Securing the EC2 Instance Metadata Service</a></div><span class="article-meta">SECURITYLABS.DATADOGHQ.COM &mdash; 16 Jun 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-06-16"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.welivesecurity.com/2023/06/16/is-a-rat-stealing-your-files-week-in-security-with-tony-anscombe/" target="_blank" rel="noopener">Is a RAT stealing your files? – Week in security with Tony Anscombe</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 16 Jun 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-06-16"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.welivesecurity.com/2023/06/16/cyberbullying-prevention-everyones-responsibility/" target="_blank" rel="noopener">Stop Cyberbullying Day: Prevention is everyone's responsibility</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 16 Jun 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-06-16"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.f5.com/labs/labs/articles/sensor-intel-series-top-cves-may-2023" target="_blank" rel="noopener">Sensor Intel Series: Top CVEs in May 2023</a></div><span class="article-meta">F5.COM &mdash; 16 Jun 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-06-16"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.f5.com/labs/articles/sensor-intel-series-top-cves-may-2023" target="_blank" rel="noopener">Sensor Intel Series: Top CVEs in May 2023</a></div><span class="article-meta">F5.COM &mdash; 16 Jun 2023</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="a vulnerability in moveit transfer could allow for elevated privileges and unauthorized access" data-date="2023-06-16"><span class="headline-date">16 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.cisecurity.org/advisory/a-vulnerability-in-moveit-transfer-could-allow-for-elevated-privileges-and-unauthorized-access_2023-064" target="_blank" rel="noopener">A vulnerability in MOVEit Transfer Could Allow for Elevated Privileges and Unauthorized Access</a><span class="article-summary">A Vulnerability has been discovered in Progress Moveit Transfer, which could allow for could allow for elevated privileges and unauthorized access. MOVEit Transfer is a managed file transfer software that allows the enterprise to securely transfer files between business partners …</span></span><span class="headline-source">CISECURITY.ORG</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="bringing transparency to confidential computing with slsa" data-date="2023-06-16"><span class="headline-date">16 Jun</span><span class="headline-body"><a class="headline-title" href="http://security.googleblog.com/2023/06/bringing-transparency-to-confidential.html" target="_blank" rel="noopener">Bringing Transparency to Confidential Computing with SLSA</a><span class="article-summary">Asra Ali, Razieh Behjati, Tiziano Santoro, Software Engineers Every day, personal data, such as location information, images, or text queries are passed between your device and remote, cloud-based services. Your data is encrypted when in transit and at rest, but as potential atta…</span></span><span class="headline-source">SECURITY.GOOGLEBLOG.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cyber security today, week in review for friday, june 16, 2023" data-date="2023-06-16"><span class="headline-date">16 Jun</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/cyber-security-today-week-in-review-for-friday-june-16-2023" target="_blank" rel="noopener">Cyber Security Today, Week in Review for Friday, June 16, 2023</a><span class="article-summary">This episode features a discussion on paying ransomware demands, a crimeware gang whose targets include small and medium businesses and why some developers are less than careful with their API keys.</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="toyota admits to yet another cloud leak" data-date="2023-06-16"><span class="headline-date">16 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.theregister.com/2023/06/05/security_in_brief/" target="_blank" rel="noopener">Toyota admits to yet another cloud leak</a><span class="article-summary">submitted by 0xCBE to cloudsecurity 10 points | 2 comments https://www.theregister.com/2023/06/05/security_in_brief/ &quot;Toyota said it had no evidence the data had been misused, and that it discovered the misconfigured cloud system while performing a wider investigation of Toy…</span></span><span class="headline-source">THEREGISTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cyber security today, june 16, 2023 - beware of fake profiles on github, and are you an optimist or pessimist ciso?" data-date="2023-06-16"><span class="headline-date">16 Jun</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/cyber-security-today-june-16-2023-beware-of-fake-profiles-on-github-and-are-you-an-optimist-or-pessimist-ciso" target="_blank" rel="noopener">Cyber Security Today, June 16, 2023 - Beware of fake profiles on GitHub, and are you an optimist or pessimist CISO?</a><span class="article-summary">This episode reports on GitHub being abused by a threat actor, surveys of infosec pros and more</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="microsoft response to layer 7 distributed denial of service (ddos) attacks" data-date="2023-06-16"><span class="headline-date">16 Jun</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/blog/2023/06/microsoft-response-to-layer-7-distributed-denial-of-service-ddos-attacks/" target="_blank" rel="noopener">Microsoft Response to Layer 7 Distributed Denial of Service (DDoS) Attacks</a><span class="article-summary">Summary Summary Beginning in early June 2023, Microsoft identified surges in traffic against some services that temporarily impacted availability. Microsoft promptly opened an investigation and subsequently began tracking ongoing DDoS activity by the threat actor that Microsoft t…</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="writeup: aws api gateway header smuggling and cache confusion" data-date="2023-06-16"><span class="headline-date">16 Jun</span><span class="headline-body"><a class="headline-title" href="https://securityblog.omegapoint.se/en/writeup-apigw/" target="_blank" rel="noopener">Writeup: AWS API Gateway header smuggling and cache confusion</a><span class="article-summary">submitted by Captain to cloudsecurity 5 points | 0 comments https://securityblog.omegapoint.se/en/writeup-apigw/ “This allowed us to completely bypass the application’s tenant isolation and access data from any tenant in the system” Official announcement from AWS: aws.amazon.com/…</span></span><span class="headline-source">SECURITYBLOG.OMEGAPOINT.SE</span></div>
+<div class="headline" data-title="gcp pentesting guide" data-date="2023-06-16"><span class="headline-date">16 Jun</span><span class="headline-body"><a class="headline-title" href="https://slashparity.com/?p=938" target="_blank" rel="noopener">GCP Pentesting Guide</a><span class="article-summary">submitted by 0xCBE to cloudsecurity 4 points | 0 comments https://slashparity.com/?p=938</span></span><span class="headline-source">SLASHPARITY.COM</span></div>
+<div class="headline" data-title="exploring firecracker microvms for multi-tenant dagger ci/cd pipelines" data-date="2023-06-16"><span class="headline-date">16 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.felipecruz.es/exploring-firecracker-microvms-for-multi-tenant-dagger-ci-cd-pipelines/" target="_blank" rel="noopener">Exploring Firecracker MicroVMs for Multi-Tenant Dagger CI/CD Pipelines</a><span class="article-summary">submitted by 0xCBE to cloudsecurity 4 points | 0 comments https://www.felipecruz.es/exploring-firecracker-microvms-for-multi-tenant-dagger-ci-cd-pipelines/</span></span><span class="headline-source">FELIPECRUZ.ES</span></div>
+<div class="headline" data-title="securing the ec2 instance metadata service" data-date="2023-06-16"><span class="headline-date">16 Jun</span><span class="headline-body"><a class="headline-title" href="https://securitylabs.datadoghq.com/articles/misconfiguration-spotlight-imds/" target="_blank" rel="noopener">Securing the EC2 Instance Metadata Service</a><span class="article-summary">submitted by 0xCBE to cloudsecurity 5 points | 0 comments https://securitylabs.datadoghq.com/articles/misconfiguration-spotlight-imds/</span></span><span class="headline-source">SECURITYLABS.DATADOGHQ.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="is a rat stealing your files? – week in security with tony anscombe" data-date="2023-06-16"><span class="headline-date">16 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/2023/06/16/is-a-rat-stealing-your-files-week-in-security-with-tony-anscombe/" target="_blank" rel="noopener">Is a RAT stealing your files? – Week in security with Tony Anscombe</a><span class="article-summary">Could your Android phone be home to a remote access tool (RAT) that steals WhatsApp backups or performs other shenanigans?</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+<div class="headline" data-title="stop cyberbullying day: prevention is everyone's responsibility" data-date="2023-06-16"><span class="headline-date">16 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/2023/06/16/cyberbullying-prevention-everyones-responsibility/" target="_blank" rel="noopener">Stop Cyberbullying Day: Prevention is everyone's responsibility</a><span class="article-summary">Strategies for stopping and responding to cyberbullying require a concerted, community-wide effort involving parents, educators and children themselves</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+<div class="headline" data-title="sensor intel series: top cves in may 2023" data-date="2023-06-16"><span class="headline-date">16 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.f5.com/labs/labs/articles/sensor-intel-series-top-cves-may-2023" target="_blank" rel="noopener">Sensor Intel Series: Top CVEs in May 2023</a><span class="article-summary">Relative stability in attacker activity this past month serves to highlight the ongoing importance of Exchange Server vulnerabilities and poorly-secured IoT devices to attackers.</span></span><span class="headline-source">F5.COM</span></div>
+<div class="headline" data-title="sensor intel series: top cves in may 2023" data-date="2023-06-16"><span class="headline-date">16 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.f5.com/labs/articles/sensor-intel-series-top-cves-may-2023" target="_blank" rel="noopener">Sensor Intel Series: Top CVEs in May 2023</a><span class="article-summary">Relative stability in attacker activity this past month serves to highlight the ongoing importance of Exchange Server vulnerabilities and poorly-secured IoT devices to attackers.</span></span><span class="headline-source">F5.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

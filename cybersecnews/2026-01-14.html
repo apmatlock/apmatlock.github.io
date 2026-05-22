@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2026-01-14</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,72 +109,59 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2026-01-14</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">12</span></button>
-<button class="filter-btn" data-cat="CISA KEV" onclick="filterCat('CISA KEV', this)">CISA KEV <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="CISA KEV" data-date="2026-01-14"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/hpe-open-view-vulnerability-hits-cisa-known-exploited-list" target="_blank" rel="noopener">HPE Open View Vulnerability Hits CISA Known Exploited List</a><span class="article-summary">Cybersecurity Today: Credit Card Skimming, Valley Rat Malware, WhatsApp Exploit & AI Defenses In this episode of Cybersecurity Today, hosted by Jim Love, we explore several critical cybersecurity threats and advancements. We cover a massive credit card skimming campaign active si…</span></div><span class="kev-badge">KEV</span><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 14 Jan 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-01-14"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-20958" target="_blank" rel="noopener">CVE-2026-20958 Microsoft SharePoint Information Disclosure Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 14 Jan 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-01-14"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://projectzero.google/2026/01/pixel-0-click-part-1.html" target="_blank" rel="noopener">A 0-click exploit chain for the Pixel 9 Part 1: Decoding Dolby</a></div><span class="article-meta">PROJECTZERO.GOOGLE &mdash; 2026-01-14</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-01-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisecurity.org/advisory/multiple-vulnerabilities-in-adobe-products-could-allow-for-arbitrary-code-execution_2026-005" target="_blank" rel="noopener">Multiple Vulnerabilities in Adobe Products Could Allow for Arbitrary Code Execution</a></div><span class="article-meta">CISECURITY.ORG &mdash; 14 Jan 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-01-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://krebsonsecurity.com/2026/01/patch-tuesday-january-2026-edition/" target="_blank" rel="noopener">Patch Tuesday, January 2026 Edition</a></div><span class="article-meta">KREBSONSECURITY.COM &mdash; 14 Jan 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-01-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://projectzero.google/2026/01/pixel-0-click-part-3.html" target="_blank" rel="noopener">A 0-click exploit chain for the Pixel 9 Part 3: Where do we go from here?</a></div><span class="article-meta">PROJECTZERO.GOOGLE &mdash; 2026-01-14</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-01-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://projectzero.google/2026/01/pixel-0-click-part-2.html" target="_blank" rel="noopener">A 0-click exploit chain for the Pixel 9 Part 2: Cracking the Sandbox with a Big Wave</a></div><span class="article-meta">PROJECTZERO.GOOGLE &mdash; 2026-01-14</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-01-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://github.blog/security/community-powered-security-with-ai-an-open-source-framework-for-security-research/" target="_blank" rel="noopener">Community-powered security with AI: an open source framework for security research</a></div><span class="article-meta">GITHUB.BLOG &mdash; 14 Jan 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-01-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://risky.biz/RB820/" target="_blank" rel="noopener">Risky Business #820 -- Asian fraud kingpin will face Chinese justice (pew pew!)</a></div><span class="article-meta">RISKY.BIZ &mdash; 14 Jan 2026</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2026-01-14"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.cisa.gov/news-events/news/cisa-uk-ncsc-fbi-unveil-principles-combat-cyber-risks-ot" target="_blank" rel="noopener">CISA, UK NCSC, FBI Unveil Principles to Combat Cyber Risks in OT</a></div><span class="article-meta">CISA.GOV &mdash; Wed, 14 Jan 26 1</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2026-01-14"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.sentinelone.com/labs/labscon25-replay-hacktivism-and-war-a-clarifying-discussion/" target="_blank" rel="noopener">LABScon25 Replay | Hacktivism and War: A Clarifying Discussion</a></div><span class="article-meta">SENTINELONE.COM &mdash; 14 Jan 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-01-14"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.welivesecurity.com/en/social-media/time-internet-services-adopt-identity-verification/" target="_blank" rel="noopener">Is it time for internet services to adopt identity verification?</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 14 Jan 2026</span></div>
-    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="hpe open view vulnerability hits cisa known exploited list" data-date="2026-01-14"><span class="headline-date">14 Jan <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/hpe-open-view-vulnerability-hits-cisa-known-exploited-list" target="_blank" rel="noopener">HPE Open View Vulnerability Hits CISA Known Exploited List</a><span class="article-summary">Cybersecurity Today: Credit Card Skimming, Valley Rat Malware, WhatsApp Exploit & AI Defenses In this episode of Cybersecurity Today, hosted by Jim Love, we explore several critical cybersecurity threats and advancements. We cover a massive credit card skimming campaign active si…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cve-2026-20958 microsoft sharepoint information disclosure vulnerability" data-date="2026-01-14"><span class="headline-date">14 Jan</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-20958" target="_blank" rel="noopener">CVE-2026-20958 Microsoft SharePoint Information Disclosure Vulnerability</a><span class="article-summary">Updated acknowledgment. This is an informational change only.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="a 0-click exploit chain for the pixel 9 part 1: decoding dolby" data-date="2026-01-14"><span class="headline-date">14 Jan</span><span class="headline-body"><a class="headline-title" href="https://projectzero.google/2026/01/pixel-0-click-part-1.html" target="_blank" rel="noopener">A 0-click exploit chain for the Pixel 9 Part 1: Decoding Dolby</a><span class="article-summary">Over the past few years, several AI-powered features have been added to mobile phones that allow users to better search and understand their messages. One effect of this change is increased 0-click attack surface, as efficient analysis often requires message media to be decoded b…</span></span><span class="headline-source">PROJECTZERO.GOOGLE</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="multiple vulnerabilities in adobe products could allow for arbitrary code execution" data-date="2026-01-14"><span class="headline-date">14 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.cisecurity.org/advisory/multiple-vulnerabilities-in-adobe-products-could-allow-for-arbitrary-code-execution_2026-005" target="_blank" rel="noopener">Multiple Vulnerabilities in Adobe Products Could Allow for Arbitrary Code Execution</a><span class="article-summary">Multiple vulnerabilities have been discovered in Adobe products, the most severe of which could allow for arbitrary code execution. Adobe Bridge is a creative asset manager that lets you preview, organize, edit, and publish multiple creative assets quickly and easily. Adobe Dream…</span></span><span class="headline-source">CISECURITY.ORG</span></div>
+<div class="headline" data-title="patch tuesday, january 2026 edition" data-date="2026-01-14"><span class="headline-date">14 Jan</span><span class="headline-body"><a class="headline-title" href="https://krebsonsecurity.com/2026/01/patch-tuesday-january-2026-edition/" target="_blank" rel="noopener">Patch Tuesday, January 2026 Edition</a><span class="article-summary">Microsoft today issued patches to plug at least 113 security holes in its various Windows operating systems and supported software. Eight of the vulnerabilities earned Microsoft's most-dire "critical" rating, and the company warns that attackers are already exploiting one of the …</span></span><span class="headline-source">KREBSONSECURITY.COM</span></div>
+<div class="headline" data-title="a 0-click exploit chain for the pixel 9 part 3: where do we go from here?" data-date="2026-01-14"><span class="headline-date">14 Jan</span><span class="headline-body"><a class="headline-title" href="https://projectzero.google/2026/01/pixel-0-click-part-3.html" target="_blank" rel="noopener">A 0-click exploit chain for the Pixel 9 Part 3: Where do we go from here?</a><span class="article-summary">While our previous two blog posts provided technical recommendations for increasing the effort required by attackers to develop 0-click exploit chains, our experience finding, reporting and exploiting these vulnerabilities highlighted some broader issues in the Android ecosystem.…</span></span><span class="headline-source">PROJECTZERO.GOOGLE</span></div>
+<div class="headline" data-title="a 0-click exploit chain for the pixel 9 part 2: cracking the sandbox with a big wave" data-date="2026-01-14"><span class="headline-date">14 Jan</span><span class="headline-body"><a class="headline-title" href="https://projectzero.google/2026/01/pixel-0-click-part-2.html" target="_blank" rel="noopener">A 0-click exploit chain for the Pixel 9 Part 2: Cracking the Sandbox with a Big Wave</a><span class="article-summary">With the advent of a potential Dolby Unified Decoder RCE exploit, it seemed prudent to see what kind of Linux kernel drivers might be accessible from the resulting userland context, the mediacodec context. As per the AOSP documentation, the mediacodec SELinux context is intended …</span></span><span class="headline-source">PROJECTZERO.GOOGLE</span></div>
+<div class="headline" data-title="community-powered security with ai: an open source framework for security research" data-date="2026-01-14"><span class="headline-date">14 Jan</span><span class="headline-body"><a class="headline-title" href="https://github.blog/security/community-powered-security-with-ai-an-open-source-framework-for-security-research/" target="_blank" rel="noopener">Community-powered security with AI: an open source framework for security research</a><span class="article-summary">Announcing GitHub Security Lab Taskflow Agent, an open source and collaborative framework for security research with AI. The post Community-powered security with AI: an open source framework for security research appeared first on The GitHub Blog .</span></span><span class="headline-source">GITHUB.BLOG</span></div>
+<div class="headline" data-title="risky business #820 -- asian fraud kingpin will face chinese justice (pew pew!)" data-date="2026-01-14"><span class="headline-date">14 Jan</span><span class="headline-body"><a class="headline-title" href="https://risky.biz/RB820/" target="_blank" rel="noopener">Risky Business #820 -- Asian fraud kingpin will face Chinese justice (pew pew!)</a><span class="article-summary">Risky Business returns for 2026! Patrick Gray and Adam Boileau talk through the week’s cybersecurity news, including: Santa brings hackers MongoDB memory leaks for Christmas Vercel pays out a million bucks to improve its React2Shell WAF defences 39C3 delivers; the pink Power Rang…</span></span><span class="headline-source">RISKY.BIZ</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa, uk ncsc, fbi unveil principles to combat cyber risks in ot" data-date="2026-01-14"><span class="headline-date">14 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/news/cisa-uk-ncsc-fbi-unveil-principles-combat-cyber-risks-ot" target="_blank" rel="noopener">CISA, UK NCSC, FBI Unveil Principles to Combat Cyber Risks in OT</a></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="labscon25 replay | hacktivism and war: a clarifying discussion" data-date="2026-01-14"><span class="headline-date">14 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.sentinelone.com/labs/labscon25-replay-hacktivism-and-war-a-clarifying-discussion/" target="_blank" rel="noopener">LABScon25 Replay | Hacktivism and War: A Clarifying Discussion</a><span class="article-summary">Jim Walter unpacks the hacktivist landscape and reveals how to distinguish different levels of threat based on persona characteristics.</span></span><span class="headline-source">SENTINELONE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="is it time for internet services to adopt identity verification?" data-date="2026-01-14"><span class="headline-date">14 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/en/social-media/time-internet-services-adopt-identity-verification/" target="_blank" rel="noopener">Is it time for internet services to adopt identity verification?</a><span class="article-summary">Should verified identities become the standard online? Australia’s social media ban for under-16s shows why the question matters.</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-02-24</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,78 +109,65 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-02-24</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">18</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">4</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-02-24"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://gbhackers.com/outlook-exploit-warning-0-day/" target="_blank" rel="noopener">Outlook Users Beware 0-Day Exploit Released On Hacking Forums</a></div><span class="article-meta">GBHACKERS.COM &mdash; 24 Feb 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-02-24"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://packetstormsecurity.com/news/view/35571/Apple-Shortcuts-Vulnerability-Exposes-Sensitive-Information.html" target="_blank" rel="noopener">Apple Shortcuts Vulnerability Exposes Sensitive Information</a></div><span class="article-meta">PACKETSTORMSECURITY.COM &mdash; 24 Feb 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-02-24"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/new-screenconnect-rce-flaw-exploited-in-ransomware-attacks/?&web_view=true" target="_blank" rel="noopener">Update: New ScreenConnect RCE Flaw Exploited in Ransomware Attacks</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 24 Feb 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-02-24"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/resilience-to-acquire-breachquest/" target="_blank" rel="noopener">Resilience to Acquire BreachQuest for an undisclosed price</a></div><span class="article-meta">GBHACKERS.COM &mdash; 24 Feb 2024</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-02-24"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://therecord.media/port-cybersecurity-china-cranes-biden-executive-order?&web_view=true" target="_blank" rel="noopener">President Biden's Executive Order Seeks to Bolster Port Cybersecurity</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 24 Feb 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-02-24"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://packetstormsecurity.com/news/view/35574/Rotech-Says-Third-Party-Hacked-Partner-Philips-Respironics.html" target="_blank" rel="noopener">Rotech Says Third Party Hacked Partner Philips Respironics</a></div><span class="article-meta">PACKETSTORMSECURITY.COM &mdash; 24 Feb 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-02-24"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.troyhunt.com/weekly-update-388/" target="_blank" rel="noopener">Weekly Update 388</a></div><span class="article-meta">TROYHUNT.COM &mdash; 24 Feb 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-02-24"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thecyberexpress.com/das-team-ag-cyberattack/?&web_view=true" target="_blank" rel="noopener">Recruitment Firm Das Team Ag Confirms Cyberattack by Black Basta Ransomware Group</a></div><span class="article-meta">THECYBEREXPRESS.COM &mdash; 24 Feb 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-02-24"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.theguardian.com/technology/2024/feb/22/second-accidental-sharing-of-confidential-information-regrettable-finance-department-says?&web_view=true" target="_blank" rel="noopener">Australia: Second Accidental Data Leak in Four Months ‘Regrettable’, Finance Department Says</a></div><span class="article-meta">THEGUARDIAN.COM &mdash; 24 Feb 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-02-24"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/ransomware-operation-lockbit-reestablishes-dark-web-leak-site-a-24442" target="_blank" rel="noopener">Ransomware Operation LockBit Reestablishes Dark Web Leak Site</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2024-02-24</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-02-24"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://sh.itjust.works/post/15132045" target="_blank" rel="noopener">Should you allow username to use Apostrophe (aka quotes )</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 24 Feb 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-02-24"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2024/02/microsoft-expands-free-logging.html" target="_blank" rel="noopener">Microsoft Expands Free Logging Capabilities for all U.S. Federal Agencies</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 24 Feb 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-02-24"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/pyrit/" target="_blank" rel="noopener">PyRIT – A Red Team Tool From Microsoft For Generative AI Systems</a></div><span class="article-meta">GBHACKERS.COM &mdash; 24 Feb 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-02-24"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.securityweek.com/white-house-wades-into-debate-on-open-versus-closed-artificial-intelligence-systems/" target="_blank" rel="noopener">White House Wades Into Debate on ‘Open’ Versus ‘Closed’ Artificial Intelligence Systems</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 24 Feb 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-02-24"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://packetstormsecurity.com/news/view/35575/Avast-Ordered-To-Stop-Selling-Browsing-Data-From-Its-Browsing-Privacy-Apps.html" target="_blank" rel="noopener">Avast Ordered To Stop Selling Browsing Data From Its Browsing Privacy Apps</a></div><span class="article-meta">PACKETSTORMSECURITY.COM &mdash; 24 Feb 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-02-24"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://packetstormsecurity.com/news/view/35573/U-Haul-Tells-67k-Customers-Crooks-Drove-Away-With-Their-Personal-Data.html" target="_blank" rel="noopener">U-Haul Tells 67k Customers Crooks Drove Away With Their Personal Data</a></div><span class="article-meta">PACKETSTORMSECURITY.COM &mdash; 24 Feb 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-02-24"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://packetstormsecurity.com/news/view/35572/The-U.S.-Military-Is-Monitoring-Another-High-Altitude-Balloon.html" target="_blank" rel="noopener">The U.S. Military Is Monitoring Another High Altitude Balloon</a></div><span class="article-meta">PACKETSTORMSECURITY.COM &mdash; 24 Feb 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-02-24"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/apple-adds-pq3-quantum-resistant-encryption-to-imessage/" target="_blank" rel="noopener">Apple adds PQ3 quantum-resistant encryption to iMessage</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 24 Feb 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="outlook users beware 0-day exploit released on hacking forums" data-date="2024-02-24"><span class="headline-date">24 Feb</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/outlook-exploit-warning-0-day/" target="_blank" rel="noopener">Outlook Users Beware 0-Day Exploit Released On Hacking Forums</a><span class="article-summary">Outlook has identified a security flaw that affects how it handles certain hyperlinks. Malware actors actively exploit the vulnerability in real-world attacks. The assigned CVE number for this vulnerability is CVE-2024-21413, with a severity rating of 9.8 (Critical). Microsoft ha…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="apple shortcuts vulnerability exposes sensitive information" data-date="2024-02-24"><span class="headline-date">24 Feb</span><span class="headline-body"><a class="headline-title" href="https://packetstormsecurity.com/news/view/35571/Apple-Shortcuts-Vulnerability-Exposes-Sensitive-Information.html" target="_blank" rel="noopener">Apple Shortcuts Vulnerability Exposes Sensitive Information</a></span><span class="headline-source">PACKETSTORMSECURITY.COM</span></div>
+<div class="headline" data-title="update: new screenconnect rce flaw exploited in ransomware attacks" data-date="2024-02-24"><span class="headline-date">24 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/new-screenconnect-rce-flaw-exploited-in-ransomware-attacks/?&web_view=true" target="_blank" rel="noopener">Update: New ScreenConnect RCE Flaw Exploited in Ransomware Attacks</a><span class="article-summary">LockBit ransomware attacks are still occurring despite law enforcement takedown efforts, with threat actors exploiting ScreenConnect vulnerabilities to deploy the ransomware on compromised networks.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="resilience to acquire breachquest for an undisclosed price" data-date="2024-02-24"><span class="headline-date">24 Feb</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/resilience-to-acquire-breachquest/" target="_blank" rel="noopener">Resilience to Acquire BreachQuest for an undisclosed price</a><span class="article-summary">In a strategic move to enhance its cyber risk management capabilities, Resilience has announced the acquisition of BreachQuest, an innovative incident response technology firm. This acquisition marks a significant step in Resilience&#8217;s efforts to combat the escalating threat…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="president biden's executive order seeks to bolster port cybersecurity" data-date="2024-02-24"><span class="headline-date">24 Feb</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/port-cybersecurity-china-cranes-biden-executive-order?&web_view=true" target="_blank" rel="noopener">President Biden's Executive Order Seeks to Bolster Port Cybersecurity</a><span class="article-summary">The White House issued an executive order to improve maritime port security, including bolstering cybersecurity policies and investing in infrastructure, while addressing concerns about Chinese-owned cranes' potential cybersecurity threats.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="rotech says third party hacked partner philips respironics" data-date="2024-02-24"><span class="headline-date">24 Feb</span><span class="headline-body"><a class="headline-title" href="https://packetstormsecurity.com/news/view/35574/Rotech-Says-Third-Party-Hacked-Partner-Philips-Respironics.html" target="_blank" rel="noopener">Rotech Says Third Party Hacked Partner Philips Respironics</a></span><span class="headline-source">PACKETSTORMSECURITY.COM</span></div>
+<div class="headline" data-title="weekly update 388" data-date="2024-02-24"><span class="headline-date">24 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.troyhunt.com/weekly-update-388/" target="_blank" rel="noopener">Weekly Update 388</a><span class="article-summary">Presently sponsored by: Report URI: Guarding you from rogue JavaScript! Don’t get pwned; get real-time alerts & prevent breaches #SecureYourSite It&apos;s just been a joy to watch the material produced by the NCA and friends following the LockBit takedown this week. So much good …</span></span><span class="headline-source">TROYHUNT.COM</span></div>
+<div class="headline" data-title="recruitment firm das team ag confirms cyberattack by black basta ransomware group" data-date="2024-02-24"><span class="headline-date">24 Feb</span><span class="headline-body"><a class="headline-title" href="https://thecyberexpress.com/das-team-ag-cyberattack/?&web_view=true" target="_blank" rel="noopener">Recruitment Firm Das Team Ag Confirms Cyberattack by Black Basta Ransomware Group</a><span class="article-summary">The cyberattack on Das Team Ag by the Black Basta ransomware group highlights the increasing threat to recruitment agencies and the potential consequences for affected individuals.</span></span><span class="headline-source">THECYBEREXPRESS.COM</span></div>
+<div class="headline" data-title="australia: second accidental data leak in four months ‘regrettable’, finance department says" data-date="2024-02-24"><span class="headline-date">24 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.theguardian.com/technology/2024/feb/22/second-accidental-sharing-of-confidential-information-regrettable-finance-department-says?&web_view=true" target="_blank" rel="noopener">Australia: Second Accidental Data Leak in Four Months ‘Regrettable’, Finance Department Says</a><span class="article-summary">The Australian government has experienced a significant increase in data breaches, with human error being the leading cause, highlighting the need for improved detection and response systems.</span></span><span class="headline-source">THEGUARDIAN.COM</span></div>
+<div class="headline" data-title="ransomware operation lockbit reestablishes dark web leak site" data-date="2024-02-24"><span class="headline-date">24 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/ransomware-operation-lockbit-reestablishes-dark-web-leak-site-a-24442" target="_blank" rel="noopener">Ransomware Operation LockBit Reestablishes Dark Web Leak Site</a><span class="article-summary">LockBit Leader Vows to Continue Hacking Russian-speaking ransomware operation LockBit reestablished a dark web leak site Saturday afternoon, posting a lengthy screed apparently authored by its leader, who vowed not to retreat from the criminal underground world. The FBI had no co…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="should you allow username to use apostrophe (aka quotes )" data-date="2024-02-24"><span class="headline-date">24 Feb</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/15132045" target="_blank" rel="noopener">Should you allow username to use Apostrophe (aka quotes )</a><span class="article-summary">submitted by Rick_C137 to cybersecurity 4 points | 0 comments cross-posted from: programming.dev/post/10497245 Hi, For websites I’ve always restricted username to use Apostrophe ’ and &quot; and some times even space . If a website necessitate special character then I prefer to c…</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="microsoft expands free logging capabilities for all u.s. federal agencies" data-date="2024-02-24"><span class="headline-date">24 Feb</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/02/microsoft-expands-free-logging.html" target="_blank" rel="noopener">Microsoft Expands Free Logging Capabilities for all U.S. Federal Agencies</a><span class="article-summary">Microsoft has expanded free logging capabilities to all U.S. federal agencies using Microsoft Purview Audit irrespective of the license tier, more than six months after a China-linked cyber espionage campaign targeting two dozen organizations came to light. "Microsoft will automa…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="pyrit – a red team tool from microsoft for generative ai systems" data-date="2024-02-24"><span class="headline-date">24 Feb</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/pyrit/" target="_blank" rel="noopener">PyRIT – A Red Team Tool From Microsoft For Generative AI Systems</a><span class="article-summary">In a significant move to bolster the security of generative AI systems, Microsoft has announced the release of an open automation framework named PyRIT (Python Risk Identification Toolkit). This innovative toolkit enables security professionals and machine learning engineers to p…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="white house wades into debate on ‘open’ versus ‘closed’ artificial intelligence systems" data-date="2024-02-24"><span class="headline-date">24 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/white-house-wades-into-debate-on-open-versus-closed-artificial-intelligence-systems/" target="_blank" rel="noopener">White House Wades Into Debate on ‘Open’ Versus ‘Closed’ Artificial Intelligence Systems</a><span class="article-summary">The White House is seeking public comment on the risks and benefits of having an AI system’s key components publicly available for anyone to use and modify. The post White House Wades Into Debate on ‘Open’ Versus ‘Closed’ Artificial Intelligence Systems appeared first on Security…</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="avast ordered to stop selling browsing data from its browsing privacy apps" data-date="2024-02-24"><span class="headline-date">24 Feb</span><span class="headline-body"><a class="headline-title" href="https://packetstormsecurity.com/news/view/35575/Avast-Ordered-To-Stop-Selling-Browsing-Data-From-Its-Browsing-Privacy-Apps.html" target="_blank" rel="noopener">Avast Ordered To Stop Selling Browsing Data From Its Browsing Privacy Apps</a></span><span class="headline-source">PACKETSTORMSECURITY.COM</span></div>
+<div class="headline" data-title="u-haul tells 67k customers crooks drove away with their personal data" data-date="2024-02-24"><span class="headline-date">24 Feb</span><span class="headline-body"><a class="headline-title" href="https://packetstormsecurity.com/news/view/35573/U-Haul-Tells-67k-Customers-Crooks-Drove-Away-With-Their-Personal-Data.html" target="_blank" rel="noopener">U-Haul Tells 67k Customers Crooks Drove Away With Their Personal Data</a></span><span class="headline-source">PACKETSTORMSECURITY.COM</span></div>
+<div class="headline" data-title="the u.s. military is monitoring another high altitude balloon" data-date="2024-02-24"><span class="headline-date">24 Feb</span><span class="headline-body"><a class="headline-title" href="https://packetstormsecurity.com/news/view/35572/The-U.S.-Military-Is-Monitoring-Another-High-Altitude-Balloon.html" target="_blank" rel="noopener">The U.S. Military Is Monitoring Another High Altitude Balloon</a></span><span class="headline-source">PACKETSTORMSECURITY.COM</span></div>
+<div class="headline" data-title="apple adds pq3 quantum-resistant encryption to imessage" data-date="2024-02-24"><span class="headline-date">24 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/apple-adds-pq3-quantum-resistant-encryption-to-imessage/" target="_blank" rel="noopener">Apple adds PQ3 quantum-resistant encryption to iMessage</a><span class="article-summary">Apple is adding to the iMessage instant messaging service a new post-quantum cryptographic protocol named PQ3, designed to defend encryption from quantum attacks. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

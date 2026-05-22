@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-12-07</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,78 +109,57 @@
       <div class="stat"><span class="stat-value">4</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-12-07</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">20</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">9</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-07"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/damagecard-attack/" target="_blank" rel="noopener">DaMAgeCard Attack – New SD Card Attack Lets Hackers Directly Access System Memory</a></div><span class="article-meta">GBHACKERS.COM &mdash; 07 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-07"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=GmuusVUpLJc" target="_blank" rel="noopener">Hackers Are Exploiting These HR Emails… Beware! ⚠️</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-07</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-07"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/cyber-security-today-weekend-panel-month-in-review-december-7th-2024" target="_blank" rel="noopener">Cyber Security Today Weekend Panel: Month In Review, December 7th, 2024</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 07 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-07"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2024/12/learn-how-experts-secure-privileged.html" target="_blank" rel="noopener">Learn How Experts Secure Privileged Accounts—Proven PAS Strategies Webinar</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 07 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-07"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://gbhackers.com/deloitte-denies-breach-claims-only-single-system-affected/" target="_blank" rel="noopener">Deloitte Denies Breach, Claims Only Single System Affected</a></div><span class="article-meta">GBHACKERS.COM &mdash; 07 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-07"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2024/12/ultralytics-ai-library-compromised.html" target="_blank" rel="noopener">Ultralytics AI Library Compromised: Cryptocurrency Miner Found in PyPI Versions</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 07 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-07"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/watch?v=y_GS63Dfggg" target="_blank" rel="noopener">Deloitte Hacked?! Inside the Brain Cipher Ransomware Attack 🧠💻</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-07</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-07"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://sh.itjust.works/post/29172395" target="_blank" rel="noopener">Romania&amp;#x27;s election systems targeted in over 85,000 cyberattacks</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 7 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-07"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/anna-jaques-hospital-ransomware-breach-exposed-data-of-300k-patients/" target="_blank" rel="noopener">Anna Jaques Hospital ransomware breach exposed data of 300K patients</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 07 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/20904290" target="_blank" rel="noopener">How to Bypass WhatsApp Web&amp;#x27;s Locked Chat Feature</a></div><span class="article-meta">INFOSEC.PUB &mdash; 7 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/20914060" target="_blank" rel="noopener">The Dark Web: An Overview</a></div><span class="article-meta">INFOSEC.PUB &mdash; 7 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/20914114" target="_blank" rel="noopener">Network Abuses Leveraging High-Profile Events: Suspicious Domain Registrations and Other Scams</a></div><span class="article-meta">INFOSEC.PUB &mdash; 7 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2024/12/hackers-using-fake-video-conferencing.html" target="_blank" rel="noopener">Hackers Using Fake Video Conferencing Apps to Steal Web3 Professionals' Data</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 07 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/20915008" target="_blank" rel="noopener">Meeten Malware: A Cross-Platform Threat to Crypto Wallets on macOS and Windows</a></div><span class="article-meta">INFOSEC.PUB &mdash; 7 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/20916799" target="_blank" rel="noopener">Killing Windows Kernel Mitigations</a></div><span class="article-meta">INFOSEC.PUB &mdash; 7 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/20919987" target="_blank" rel="noopener">Terminal DiLLMa: LLM-powered Apps Can Hijack Your Terminal Via Prompt Injection</a></div><span class="article-meta">INFOSEC.PUB &mdash; 7 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/20919984" target="_blank" rel="noopener">Fileless Malware Evades Detection-Based Security</a></div><span class="article-meta">INFOSEC.PUB &mdash; 7 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=Wt3GcfO54vM" target="_blank" rel="noopener">How a PowerPoint Took Down a Criminal Empire!</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-07</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-07"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2024/12/romania-cancels-presidential-election.html" target="_blank" rel="noopener">Romania Cancels Presidential Election Results After Alleged Russian Meddling on TikTok</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 07 Dec 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-07"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=WCsLgx06tko" target="_blank" rel="noopener">Why Zero Trust Will Face the Same Fate as MFA! 🚨</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-07</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="damagecard attack – new sd card attack lets hackers directly access system memory" data-date="2024-12-07"><span class="headline-date">7 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/damagecard-attack/" target="_blank" rel="noopener">DaMAgeCard Attack – New SD Card Attack Lets Hackers Directly Access System Memory</a><span class="article-summary">Security researchers have identified a significant vulnerability dubbed &#8220;DaMAgeCard Attack&#8221; in the new SD Express card standard that could allow attackers to directly access system memory through Direct Memory Access (DMA) attacks. The vulnerability stems from SD Expr…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="hackers are exploiting these hr emails… beware! ⚠️" data-date="2024-12-07"><span class="headline-date">7 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=GmuusVUpLJc" target="_blank" rel="noopener">Hackers Are Exploiting These HR Emails… Beware! ⚠️</a><span class="article-summary">Hackers are getting smarter, and their latest trick is targeting your paycheck! These phishing scams come disguised as HR emails about your salary or benefits, complete with malicious QR codes. Once scanned, you’re led to fake Microsoft login pages designed to steal your credenti…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cyber security today weekend panel: month in review, december 7th, 2024" data-date="2024-12-07"><span class="headline-date">7 Dec</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/cyber-security-today-weekend-panel-month-in-review-december-7th-2024" target="_blank" rel="noopener">Cyber Security Today Weekend Panel: Month In Review, December 7th, 2024</a><span class="article-summary">Cyber Security Today: Navigating Novel Phishing Campaigns and Ransomware Tactics Join host Jim Love and the Cyber Security Today panel featuring Terry Cutler of Cyology Labs, David Shipley of Beauceron Security, and cybersecurity executive John Pinard. In this episode, they delve…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="learn how experts secure privileged accounts—proven pas strategies webinar" data-date="2024-12-07"><span class="headline-date">7 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/learn-how-experts-secure-privileged.html" target="_blank" rel="noopener">Learn How Experts Secure Privileged Accounts—Proven PAS Strategies Webinar</a><span class="article-summary">Cybercriminals know that privileged accounts are the keys to your kingdom. One compromised account can lead to stolen data, disrupted operations, and massive business losses. Even top organizations struggle to secure privileged accounts. Why? Traditional Privileged Access Managem…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="deloitte denies breach, claims only single system affected" data-date="2024-12-07"><span class="headline-date">7 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/deloitte-denies-breach-claims-only-single-system-affected/" target="_blank" rel="noopener">Deloitte Denies Breach, Claims Only Single System Affected</a><span class="article-summary">Ransomware group Brain Cipher claimed to have breached Deloitte UK and threatened to publish the data it had stolen earlier this week. However, despite the claims, a Deloitte spokesperson said that its investigation indicates that the allegations relate to a single client&#8217;s…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="ultralytics ai library compromised: cryptocurrency miner found in pypi versions" data-date="2024-12-07"><span class="headline-date">7 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/ultralytics-ai-library-compromised.html" target="_blank" rel="noopener">Ultralytics AI Library Compromised: Cryptocurrency Miner Found in PyPI Versions</a><span class="article-summary">In yet another software supply chain attack, it has come to light that two versions of a popular Python artificial intelligence (AI) library named ultralytics were compromised to deliver a cryptocurrency miner. The versions, 8.3.41 and 8.3.42, have since been removed from the Pyt…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="deloitte hacked?! inside the brain cipher ransomware attack 🧠💻" data-date="2024-12-07"><span class="headline-date">7 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=y_GS63Dfggg" target="_blank" rel="noopener">Deloitte Hacked?! Inside the Brain Cipher Ransomware Attack 🧠💻</a><span class="article-summary">Deloitte, one of the Big Four, has reportedly fallen victim to a massive cyberattack by the Brain Cipher ransomware gang. Over 1 terabyte of compressed data—including client contracts and cybersecurity protocol failures—may have been exposed on the dark web. Is this the biggest c…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="romania&amp;#x27;s election systems targeted in over 85,000 cyberattacks" data-date="2024-12-07"><span class="headline-date">7 Dec</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/29172395" target="_blank" rel="noopener">Romania&amp;#x27;s election systems targeted in over 85,000 cyberattacks</a><span class="article-summary">submitted by BrikoX to cybersecurity 1 points | 0 comments https://www.bleepingcomputer.com/news/security/romanias-election-systems-targeted-in-over-85-000-cyberattacks/ A declassified report from Romania’s Intelligence Service says that the country’s election infrastructure was …</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="anna jaques hospital ransomware breach exposed data of 300k patients" data-date="2024-12-07"><span class="headline-date">7 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/anna-jaques-hospital-ransomware-breach-exposed-data-of-300k-patients/" target="_blank" rel="noopener">Anna Jaques Hospital ransomware breach exposed data of 300K patients</a><span class="article-summary">Anna Jaques Hospital has confirmed on its website that a ransomware attack it suffered almost precisely a year ago, on December 25, 2023, has exposed sensitive health data for over 316,000 patients. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">9</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="how to bypass whatsapp web&amp;#x27;s locked chat feature" data-date="2024-12-07"><span class="headline-date">7 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/20904290" target="_blank" rel="noopener">How to Bypass WhatsApp Web&amp;#x27;s Locked Chat Feature</a><span class="article-summary">submitted by Joker to cybersecurity 1 points | 0 comments https://lcat.dev/post.php?id=3cf8e1b9-e5e3-4a6d-af27-12720c5b2d54</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="the dark web: an overview" data-date="2024-12-07"><span class="headline-date">7 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/20914060" target="_blank" rel="noopener">The Dark Web: An Overview</a><span class="article-summary">submitted by Joker to cybersecurity 1 points | 0 comments https://www.everycrsreport.com/reports/IF12172.html</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="network abuses leveraging high-profile events: suspicious domain registrations and other scams" data-date="2024-12-07"><span class="headline-date">7 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/20914114" target="_blank" rel="noopener">Network Abuses Leveraging High-Profile Events: Suspicious Domain Registrations and Other Scams</a><span class="article-summary">submitted by Joker to cybersecurity 1 points | 0 comments https://unit42.paloaltonetworks.com/suspicious-domain-registration-campaigns/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="hackers using fake video conferencing apps to steal web3 professionals' data" data-date="2024-12-07"><span class="headline-date">7 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/hackers-using-fake-video-conferencing.html" target="_blank" rel="noopener">Hackers Using Fake Video Conferencing Apps to Steal Web3 Professionals' Data</a><span class="article-summary">Cybersecurity researchers have warned of a new scam campaign that leverages fake video conferencing apps to deliver an information stealer called Realst targeting people working in Web3 under the guise of fake business meetings. "The threat actors behind the malware have set up f…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="meeten malware: a cross-platform threat to crypto wallets on macos and windows" data-date="2024-12-07"><span class="headline-date">7 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/20915008" target="_blank" rel="noopener">Meeten Malware: A Cross-Platform Threat to Crypto Wallets on macOS and Windows</a><span class="article-summary">submitted by Joker to cybersecurity 1 points | 0 comments https://www.cadosecurity.com/blog/meeten-malware-threat</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="killing windows kernel mitigations" data-date="2024-12-07"><span class="headline-date">7 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/20916799" target="_blank" rel="noopener">Killing Windows Kernel Mitigations</a><span class="article-summary">submitted by Joker to cybersecurity 1 points | 0 comments https://wetw0rk.github.io/posts/0x01-killing-windows-kernel-mitigations/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="terminal dillma: llm-powered apps can hijack your terminal via prompt injection" data-date="2024-12-07"><span class="headline-date">7 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/20919987" target="_blank" rel="noopener">Terminal DiLLMa: LLM-powered Apps Can Hijack Your Terminal Via Prompt Injection</a><span class="article-summary">submitted by Joker to cybersecurity 3 points | 0 comments https://embracethered.com/blog/posts/2024/terminal-dillmas-prompt-injection-ansi-sequences/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="fileless malware evades detection-based security" data-date="2024-12-07"><span class="headline-date">7 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/20919984" target="_blank" rel="noopener">Fileless Malware Evades Detection-Based Security</a><span class="article-summary">submitted by Joker to cybersecurity 1 points | 0 comments https://blog.morphisec.com/fileless-malware-attacks</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="how a powerpoint took down a criminal empire!" data-date="2024-12-07"><span class="headline-date">7 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=Wt3GcfO54vM" target="_blank" rel="noopener">How a PowerPoint Took Down a Criminal Empire!</a><span class="article-summary">A stolen laptop, secret PowerPoint slides, and a $100 million crime operation unraveled. 🌐 This Wall Street VP teamed up with hackers in Ukraine and Russia to steal press releases and make millions in illegal trades. But when one of the hackers got caught, the evidence blew the w…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="romania cancels presidential election results after alleged russian meddling on tiktok" data-date="2024-12-07"><span class="headline-date">7 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/romania-cancels-presidential-election.html" target="_blank" rel="noopener">Romania Cancels Presidential Election Results After Alleged Russian Meddling on TikTok</a><span class="article-summary">In a historic decision, Romania's constitutional court has annulled the result of the first round of voting in the presidential election amid allegations of Russian interference. As a result, the second round vote, which was scheduled for December 8, 2024, will no longer take pla…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="why zero trust will face the same fate as mfa! 🚨" data-date="2024-12-07"><span class="headline-date">7 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=WCsLgx06tko" target="_blank" rel="noopener">Why Zero Trust Will Face the Same Fate as MFA! 🚨</a><span class="article-summary">Zero Trust is the future... or is it? 🤔 In this clip, Adrian Sanabria and Dr. Dustin Sachs unravel the buzz around Zero Trust. Is it just another 'MFA moment' waiting to happen? 🚨 Watch as they explain why no security measure is invincible and how every control eventually faces i…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-07-06</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,78 +109,65 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-07-06</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">18</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">8</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-07-06"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://links.hackliberty.org/post/2034234" target="_blank" rel="noopener">‘RegreSSHion’ bug raises alarms but experts question chances of widespread exploitation</a></div><span class="article-meta">LINKS.HACKLIBERTY.ORG &mdash; 6 Jul 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-07-06"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://haveibeenpwned.com/PwnedWebsites#RobloxDeveloperConference2024" target="_blank" rel="noopener">Roblox Developer Conference (2024) - 10,386 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 06 Jul 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-07-06"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://links.hackliberty.org/post/2034233" target="_blank" rel="noopener">Cobalt Strike: International law enforcement operation tackles illegal uses of ‘Swiss army knife’ pentesting tool</a></div><span class="article-meta">LINKS.HACKLIBERTY.ORG &mdash; 6 Jul 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-07-06"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://links.hackliberty.org/post/2034236" target="_blank" rel="noopener">Caught in the Net: Using Infostealer Logs to Unmask CSAM Consumers</a></div><span class="article-meta">LINKS.HACKLIBERTY.ORG &mdash; 6 Jul 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-07-06"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://links.hackliberty.org/post/2034397" target="_blank" rel="noopener">Police allege &amp;#x27;evil twin&amp;#x27; in-flight Wi-Fi used to steal info</a></div><span class="article-meta">LINKS.HACKLIBERTY.ORG &mdash; 6 Jul 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-07-06"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://links.hackliberty.org/post/2034395" target="_blank" rel="noopener">TeamViewer: Hackers copied employee directory data and encrypted passwords</a></div><span class="article-meta">LINKS.HACKLIBERTY.ORG &mdash; 6 Jul 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-07-06"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.darkreading.com/cloud-security/passkey-redaction-attacks-subvert-github-microsoft-authentication?&web_view=true" target="_blank" rel="noopener">Passkey Redaction Attacks Subvert GitHub, Microsoft Authentication</a></div><span class="article-meta">DARKREADING.COM &mdash; 06 Jul 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-07-06"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://links.hackliberty.org/post/2034399" target="_blank" rel="noopener">Crimea warns of internet disruptions following DDoS attacks on local telecom operators</a></div><span class="article-meta">LINKS.HACKLIBERTY.ORG &mdash; 6 Jul 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-07-06"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.theregister.com/2024/07/05/ghostscript_vulnerability_severity/?&web_view=true" target="_blank" rel="noopener">Latest Ghostscript Vulnerability Haunts Experts as the Next Big Breach Enabler</a></div><span class="article-meta">THEREGISTER.COM &mdash; 06 Jul 2024</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-07-06"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://links.hackliberty.org/post/2034396" target="_blank" rel="noopener">Poland to probe Russia-linked cyberattack on state news agency</a></div><span class="article-meta">LINKS.HACKLIBERTY.ORG &mdash; 6 Jul 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-07-06"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.troyhunt.com/weekly-update-407/" target="_blank" rel="noopener">Weekly Update 407</a></div><span class="article-meta">TROYHUNT.COM &mdash; 06 Jul 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-07-06"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/cyber-security-today-week-in-review-for-week-ending-july-5-2024" target="_blank" rel="noopener">Cyber Security Today, Week in Review for week ending July 5, 2024</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 06 Jul 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-07-06"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://links.hackliberty.org/post/2034231" target="_blank" rel="noopener">Ticketmaster discredits dark web claims of stolen barcodes for Taylor Swift concerts</a></div><span class="article-meta">LINKS.HACKLIBERTY.ORG &mdash; 6 Jul 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-07-06"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/new-eldorado-ransomware-targets-windows-vmware-esxi-vms/?&web_view=true" target="_blank" rel="noopener">New Eldorado Ransomware Targets Windows, VMware ESXi VMs</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 06 Jul 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-07-06"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/the-problem-with-bug-bounties/" target="_blank" rel="noopener">The Problem With Bug Bounties</a></div><span class="article-meta">GBHACKERS.COM &mdash; 06 Jul 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-07-06"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=UHxQC95syc0" target="_blank" rel="noopener">[Gamers Nexus] Zotac&amp;#x27;s Big Mistake | Consumer Warranty &amp;amp; Business Data Exposure</a></div><span class="article-meta">YOUTUBE.COM &mdash; 6 Jul 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-07-06"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.securityweek.com/russian-linked-cybercampaigns-put-a-bulls-eye-on-france-their-focus-the-olympics-and-elections/" target="_blank" rel="noopener">Russian-Linked Cybercampaigns put a Bull’s-Eye on France. Their Focus? The Olympics and Elections</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 06 Jul 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-07-06"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.theregister.com/2024/07/03/traeger_security_bugs/?&web_view=true" target="_blank" rel="noopener">Traeger Security Bugs Threatening Grillers' Hard Work</a></div><span class="article-meta">THEREGISTER.COM &mdash; 06 Jul 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="‘regresshion’ bug raises alarms but experts question chances of widespread exploitation" data-date="2024-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://links.hackliberty.org/post/2034234" target="_blank" rel="noopener">‘RegreSSHion’ bug raises alarms but experts question chances of widespread exploitation</a><span class="article-summary">submitted by c0mmando to netsec 1 points | 0 comments https://web.archive.org/web/20240703090032/https://therecord.media/regresshion-bug-raises-alarms-qualys A new vulnerability affecting Linux systems has caused alarm over the last 48 hours among security researchers, although s…</span></span><span class="headline-source">LINKS.HACKLIBERTY.ORG</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">8</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="roblox developer conference (2024) - 10,386 breached accounts" data-date="2024-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/PwnedWebsites#RobloxDeveloperConference2024" target="_blank" rel="noopener">Roblox Developer Conference (2024) - 10,386 breached accounts</a><span class="article-summary">In July 2024, Roblox disclosed a data breach related to a vendor inadvertently exposing user information from a 2022-2024 Roblox Developer Conference registration list . The data included 10k unique email addresses alongside names and IP addresses.</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+<div class="headline" data-title="cobalt strike: international law enforcement operation tackles illegal uses of ‘swiss army knife’ pentesting tool" data-date="2024-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://links.hackliberty.org/post/2034233" target="_blank" rel="noopener">Cobalt Strike: International law enforcement operation tackles illegal uses of ‘Swiss army knife’ pentesting tool</a><span class="article-summary">submitted by c0mmando to netsec 1 points | 0 comments https://web.archive.org/web/20240705012536/https://therecord.media/cobalt-strike-law-enforcement-takedown An international coalition of law enforcement agencies have taken action against hundreds of installations of the Cobalt…</span></span><span class="headline-source">LINKS.HACKLIBERTY.ORG</span></div>
+<div class="headline" data-title="caught in the net: using infostealer logs to unmask csam consumers" data-date="2024-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://links.hackliberty.org/post/2034236" target="_blank" rel="noopener">Caught in the Net: Using Infostealer Logs to Unmask CSAM Consumers</a><span class="article-summary">submitted by c0mmando to netsec 1 points | 0 comments https://web.archive.org/web/20240703201209/https://www.recordedfuture.com/caught-in-the-net-using-infostealer-logs-to-unmask-csam-consumers Summary In this proof-of-concept report, Recorded Future’s Identity Intelligence analy…</span></span><span class="headline-source">LINKS.HACKLIBERTY.ORG</span></div>
+<div class="headline" data-title="police allege &amp;#x27;evil twin&amp;#x27; in-flight wi-fi used to steal info" data-date="2024-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://links.hackliberty.org/post/2034397" target="_blank" rel="noopener">Police allege &amp;#x27;evil twin&amp;#x27; in-flight Wi-Fi used to steal info</a><span class="article-summary">submitted by c0mmando to netsec 2 points | 0 comments https://web.archive.org/web/20240705145749/https://www.theregister.com/2024/07/01/australia_evil_twin_wifi_airline_attack/ Australia’s Federal Police (AFP) has charged a man with running a fake Wi-Fi network on at least one co…</span></span><span class="headline-source">LINKS.HACKLIBERTY.ORG</span></div>
+<div class="headline" data-title="teamviewer: hackers copied employee directory data and encrypted passwords" data-date="2024-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://links.hackliberty.org/post/2034395" target="_blank" rel="noopener">TeamViewer: Hackers copied employee directory data and encrypted passwords</a><span class="article-summary">submitted by c0mmando to netsec 3 points | 0 comments https://web.archive.org/web/20240702182830/https://therecord.media/teamviewer-cyberattack-employee-directory-encrypted-passwords Software company TeamViewer says that a compromised employee account is what enabled hackers to b…</span></span><span class="headline-source">LINKS.HACKLIBERTY.ORG</span></div>
+<div class="headline" data-title="passkey redaction attacks subvert github, microsoft authentication" data-date="2024-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.darkreading.com/cloud-security/passkey-redaction-attacks-subvert-github-microsoft-authentication?&web_view=true" target="_blank" rel="noopener">Passkey Redaction Attacks Subvert GitHub, Microsoft Authentication</a><span class="article-summary">Online accounts are increasingly protected by passkey technology, but many platforms like banking, e-commerce, social media, and software development can still be compromised using adversary-in-the-middle (AitM) attacks.</span></span><span class="headline-source">DARKREADING.COM</span></div>
+<div class="headline" data-title="crimea warns of internet disruptions following ddos attacks on local telecom operators" data-date="2024-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://links.hackliberty.org/post/2034399" target="_blank" rel="noopener">Crimea warns of internet disruptions following DDoS attacks on local telecom operators</a><span class="article-summary">submitted by c0mmando to netsec 1 points | 0 comments https://web.archive.org/web/20240629151819/https://therecord.media/crimea-internet-disruptions-ddos-telecom Local authorities in Crimea are warning of internet disruptions from distributed denial-of-service (DDoS) attacks targ…</span></span><span class="headline-source">LINKS.HACKLIBERTY.ORG</span></div>
+<div class="headline" data-title="latest ghostscript vulnerability haunts experts as the next big breach enabler" data-date="2024-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.theregister.com/2024/07/05/ghostscript_vulnerability_severity/?&web_view=true" target="_blank" rel="noopener">Latest Ghostscript Vulnerability Haunts Experts as the Next Big Breach Enabler</a><span class="article-summary">The vulnerability could be exploited to compromise systems without requiring user interaction, contrary to some severity assessments initially made by Tenable and Red Hat.</span></span><span class="headline-source">THEREGISTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="poland to probe russia-linked cyberattack on state news agency" data-date="2024-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://links.hackliberty.org/post/2034396" target="_blank" rel="noopener">Poland to probe Russia-linked cyberattack on state news agency</a><span class="article-summary">submitted by c0mmando to netsec 1 points | 0 comments https://web.archive.org/web/20240704162450/https://therecord.media/poland-cyberattack-investigation-state-agency Polish prosecutors are investigating a suspected Russian cyberattack on the country’s state news agency. The like…</span></span><span class="headline-source">LINKS.HACKLIBERTY.ORG</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="weekly update 407" data-date="2024-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.troyhunt.com/weekly-update-407/" target="_blank" rel="noopener">Weekly Update 407</a><span class="article-summary">Presently sponsored by: Report URI: Guarding you from rogue JavaScript! Don’t get pwned; get real-time alerts & prevent breaches #SecureYourSite It&apos;s a long one this week, in part due to the constant flood of new breaches and disclosures I discuss. I regularly have disclosur…</span></span><span class="headline-source">TROYHUNT.COM</span></div>
+<div class="headline" data-title="cyber security today, week in review for week ending july 5, 2024" data-date="2024-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/cyber-security-today-week-in-review-for-week-ending-july-5-2024" target="_blank" rel="noopener">Cyber Security Today, Week in Review for week ending July 5, 2024</a><span class="article-summary">This episode features an interview with a cybersecurity and privacy lawyer about responding to cyber attacks Navigating Ransomware Response: Insights from Cybersecurity Expert Imran Ahmad In this episode features an interview between Howard Solomon and Imran Ahmad, a partner at N…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="ticketmaster discredits dark web claims of stolen barcodes for taylor swift concerts" data-date="2024-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://links.hackliberty.org/post/2034231" target="_blank" rel="noopener">Ticketmaster discredits dark web claims of stolen barcodes for Taylor Swift concerts</a><span class="article-summary">submitted by c0mmando to netsec 1 points | 0 comments https://web.archive.org/web/20240706003641/https://therecord.media/ticketmaster-discredits-dark-web-claims-taylor-swift Ticketmaster shot down claims made on the dark web that hackers have access to working ticket barcodes for…</span></span><span class="headline-source">LINKS.HACKLIBERTY.ORG</span></div>
+<div class="headline" data-title="new eldorado ransomware targets windows, vmware esxi vms" data-date="2024-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/new-eldorado-ransomware-targets-windows-vmware-esxi-vms/?&web_view=true" target="_blank" rel="noopener">New Eldorado Ransomware Targets Windows, VMware ESXi VMs</a><span class="article-summary">Eldorado also encrypts network shares using the SMB protocol, deletes shadow volume copies, and skips certain file types to prevent system damage. Affiliates can customize attacks on Windows, while Linux customization is limited.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the problem with bug bounties" data-date="2024-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/the-problem-with-bug-bounties/" target="_blank" rel="noopener">The Problem With Bug Bounties</a><span class="article-summary">A Technically Skilled individual who finds a bug faces an ethical decision: report the bug or profit from it. This is nowhere more relevant than in crypto. In this article, with the help of&#160;Ilan Abitbol&#160;from&#160;Resonance Security, I look at the recent debacle between …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="[gamers nexus] zotac&amp;#x27;s big mistake | consumer warranty &amp;amp; business data exposure" data-date="2024-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=UHxQC95syc0" target="_blank" rel="noopener">[Gamers Nexus] Zotac&amp;#x27;s Big Mistake | Consumer Warranty &amp;amp; Business Data Exposure</a><span class="article-summary">submitted by recursive_recursion to cybersecurity 4 points | 0 comments https://www.youtube.com/watch?v=UHxQC95syc0 Within the first minute of the vid I’m thinking holy shit Zotac! easily googlable private customer and B2B info is publicly available They’re gonna have one hell of…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="russian-linked cybercampaigns put a bull’s-eye on france. their focus? the olympics and elections" data-date="2024-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/russian-linked-cybercampaigns-put-a-bulls-eye-on-france-their-focus-the-olympics-and-elections/" target="_blank" rel="noopener">Russian-Linked Cybercampaigns put a Bull’s-Eye on France. Their Focus? The Olympics and Elections</a><span class="article-summary">Baptiste Robert, a French cybersecurity expert, called on his government – and especially lawmakers – to prepare for the digital threats to come. The post Russian-Linked Cybercampaigns put a Bull’s-Eye on France. Their Focus? The Olympics and Elections appeared first on SecurityW…</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="traeger security bugs threatening grillers' hard work" data-date="2024-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.theregister.com/2024/07/03/traeger_security_bugs/?&web_view=true" target="_blank" rel="noopener">Traeger Security Bugs Threatening Grillers' Hard Work</a><span class="article-summary">Traeger grills face security bugs that could spell trouble for BBQ enthusiasts. High-severity vulnerabilities in the Traeger Grill D2 Wi-Fi Controller could allow remote attackers to control the grill's temperature or shut it down.</span></span><span class="headline-source">THEREGISTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

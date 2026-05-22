@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-07-26</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,79 +109,58 @@
       <div class="stat"><span class="stat-value">4</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-07-26</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">21</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">11</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-07-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/arizona-woman-sentenced/" target="_blank" rel="noopener">Arizona Woman Sentenced for Aiding North Korean IT Workers in Cyber Operations</a></div><span class="article-meta">GBHACKERS.COM &mdash; 26 Jul 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-07-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/microsoft-investigates-leak-in-early-warning-system-used/" target="_blank" rel="noopener">Microsoft Investigates Leak in Early Warning System Used by Chinese Hackers to Exploit SharePoint Vulnerabilities</a></div><span class="article-meta">GBHACKERS.COM &mdash; 26 Jul 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-07-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/hackers-exploit-official-gaming-mouse-software/" target="_blank" rel="noopener">Hackers Exploit Official Gaming Mouse Software to Spread Windows-based Xred Malware</a></div><span class="article-meta">GBHACKERS.COM &mdash; 26 Jul 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-07-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/V4sfTy0mQ3M" target="_blank" rel="noopener">If You Can’t Find Your Data… You Can’t Protect It 😬</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-07-26</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-07-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/pdn5pMMy0-g" target="_blank" rel="noopener">10,000 Vulns. 1 Mistake. Your Fault.</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-07-26</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-07-26"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/post-smtp-plugin-flaw-exposes-200k-wordpress-sites-to-hijacking-attacks/" target="_blank" rel="noopener">Post SMTP plugin flaw exposes 200K WordPress sites to hijacking attacks</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 26 Jul 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-07-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/the-evolution-and-defense-against-advanced-phishing-attacks" target="_blank" rel="noopener">The Evolution and Defense Against Advanced Phishing Attacks</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 26 Jul 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-07-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2025/07/26/allianz-life-says-majority-of-customers-personal-data-stolen-in-cyberattack/" target="_blank" rel="noopener">Allianz Life says ‘majority’ of customers’ personal data stolen in cyberattack</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 26 Jul 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-07-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2025/07/26/dating-safety-app-tea-breached-exposing-72000-user-images/" target="_blank" rel="noopener">Dating safety app Tea breached, exposing 72,000 user images</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 26 Jul 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-07-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/allianz-life-confirms-data-breach-impacts-majority-of-14-million-customers/" target="_blank" rel="noopener">Allianz Life confirms data breach impacts majority of 1.4 million customers</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 26 Jul 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-07-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/32033119" target="_blank" rel="noopener">UNC3944 Attacking VMware vSphere and Enabling SSH on ESXi Hosts to Reset &amp;#x27;root&amp;#x27; Passwords</a></div><span class="article-meta">INFOSEC.PUB &mdash; 26 Jul 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-07-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.paloaltonetworks.com/blog/2025/07/muddled-libra-social-engineering-enterprise-scale-disruption/" target="_blank" rel="noopener">Muddled Libra: From Social Engineering to Enterprise-Scale Disruption</a></div><span class="article-meta">PALOALTONETWORKS.COM &mdash; 26 Jul 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-07-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/goqW2gLh8io" target="_blank" rel="noopener">What Happens If You Clone a Voice Without Consent? 😳</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-07-26</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-07-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/E9TjAAYNnZM" target="_blank" rel="noopener">DDoS, Bots, APIs… Modern WAFs Handle It All</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-07-26</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-07-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/MnGwOKd0Bv0" target="_blank" rel="noopener">Security Tip: Don’t Let Hype Decide Your AI Stack</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-07-26</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-07-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/32058707" target="_blank" rel="noopener">DNS security is important but DNSSEC may be a failed experiment</a></div><span class="article-meta">INFOSEC.PUB &mdash; 26 Jul 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-07-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/6rX59XED95I" target="_blank" rel="noopener">Is “Powered By AI” Just Corporate Lipstick?</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-07-26</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-07-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/32061392" target="_blank" rel="noopener">Microsoft Copilot Rooted to Gain Unauthorized Root Access to its Backend System</a></div><span class="article-meta">INFOSEC.PUB &mdash; 26 Jul 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-07-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/d6dqzP2hCx4" target="_blank" rel="noopener">Instant Approval, Maximum Security — Too Good to Be True?</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-07-26</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-07-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/Ubkus_rL8lw" target="_blank" rel="noopener">The DARK Side of Secrets in Cybersecurity 🌒</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-07-26</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-07-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/1IvesHiJeEw" target="_blank" rel="noopener">If You’re Not Reading the SLA, You’re in Trouble 😬</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-07-26</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="arizona woman sentenced for aiding north korean it workers in cyber operations" data-date="2025-07-26"><span class="headline-date">26 Jul</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/arizona-woman-sentenced/" target="_blank" rel="noopener">Arizona Woman Sentenced for Aiding North Korean IT Workers in Cyber Operations</a><span class="article-summary">Christina Marie Chapman, a 50-year-old Arizona woman, has been sentenced to 102 months in prison for her role in an elaborate fraud scheme that helped North Korean IT workers pose as U.S. citizens to obtain remote positions at over 300 American companies. The scheme generated mor…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="microsoft investigates leak in early warning system used by chinese hackers to exploit sharepoint vulnerabilities" data-date="2025-07-26"><span class="headline-date">26 Jul</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/microsoft-investigates-leak-in-early-warning-system-used/" target="_blank" rel="noopener">Microsoft Investigates Leak in Early Warning System Used by Chinese Hackers to Exploit SharePoint Vulnerabilities</a><span class="article-summary">Chinese laws requiring vulnerability disclosure to the government create transparency issues and potential conflicts for international cybersecurity efforts. Microsoft is probing whether a leak from its confidential early warning system enabled Chinese state-sponsored hackers to …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="hackers exploit official gaming mouse software to spread windows-based xred malware" data-date="2025-07-26"><span class="headline-date">26 Jul</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/hackers-exploit-official-gaming-mouse-software/" target="_blank" rel="noopener">Hackers Exploit Official Gaming Mouse Software to Spread Windows-based Xred Malware</a><span class="article-summary">Gaming peripheral manufacturer Endgame Gear has disclosed a security incident involving malware-infected software distributed through their official website, affecting users who downloaded the OP1w 4k v2 mouse configuration tool between June 26 and July 9, 2025. The company has i…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="if you can’t find your data… you can’t protect it 😬" data-date="2025-07-26"><span class="headline-date">26 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/V4sfTy0mQ3M" target="_blank" rel="noopener">If You Can’t Find Your Data… You Can’t Protect It 😬</a><span class="article-summary">In this short but powerful cybersecurity moment, Melina Scotto drops a truth bomb that hits every cyber pro hard: if you don’t know where your data lives, you can’t protect it. Jessica Hoffman questions the often-overlooked practice of data classification — revealing just how ess…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="10,000 vulns. 1 mistake. your fault." data-date="2025-07-26"><span class="headline-date">26 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/pdn5pMMy0-g" target="_blank" rel="noopener">10,000 Vulns. 1 Mistake. Your Fault.</a><span class="article-summary">When cybersecurity pro Matthew Toussain dropped this truth bomb on vulnerability management, jaws dropped. With over 10,000 vulnerabilities to handle, teams often skip the most crucial step—validation. In this short, Matthew breaks down how relying solely on authenticated scans c…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="post smtp plugin flaw exposes 200k wordpress sites to hijacking attacks" data-date="2025-07-26"><span class="headline-date">26 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/post-smtp-plugin-flaw-exposes-200k-wordpress-sites-to-hijacking-attacks/" target="_blank" rel="noopener">Post SMTP plugin flaw exposes 200K WordPress sites to hijacking attacks</a><span class="article-summary">More than 200,000 WordPress websites are using a vulnerable version of the Post SMTP plugin that allows hackers to take control of the administrator account. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the evolution and defense against advanced phishing attacks" data-date="2025-07-26"><span class="headline-date">26 Jul</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/the-evolution-and-defense-against-advanced-phishing-attacks" target="_blank" rel="noopener">The Evolution and Defense Against Advanced Phishing Attacks</a><span class="article-summary">This is repeat of a broadcast from last October, still relevant, especially in the light of so many current breaches which have begun not with technical weaknesses but with phishing and social engineering. In this deeper dive episode of 'Cybersecurity Today,' hosts Jim Love and D…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="allianz life says ‘majority’ of customers’ personal data stolen in cyberattack" data-date="2025-07-26"><span class="headline-date">26 Jul</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/07/26/allianz-life-says-majority-of-customers-personal-data-stolen-in-cyberattack/" target="_blank" rel="noopener">Allianz Life says ‘majority’ of customers’ personal data stolen in cyberattack</a><span class="article-summary">Exclusive: Allianz Life said the "majority" of its customers and employees had data stolen in the July cyberattack. The insurance giant has more than 125 million customers worldwide.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="dating safety app tea breached, exposing 72,000 user images" data-date="2025-07-26"><span class="headline-date">26 Jul</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/07/26/dating-safety-app-tea-breached-exposing-72000-user-images/" target="_blank" rel="noopener">Dating safety app Tea breached, exposing 72,000 user images</a><span class="article-summary">Tea, an app that allows women to post anonymous comments about men they’ve supposedly dated, announced Friday that it has suffered a data breach, with hackers gaining access to 72,000 images.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="allianz life confirms data breach impacts majority of 1.4 million customers" data-date="2025-07-26"><span class="headline-date">26 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/allianz-life-confirms-data-breach-impacts-majority-of-14-million-customers/" target="_blank" rel="noopener">Allianz Life confirms data breach impacts majority of 1.4 million customers</a><span class="article-summary">Insurance company Allianz Life has confirmed that the personal information for the "majority" of its 1.4 million customers was exposed in a data breach that occurred earlier this month. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">11</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="unc3944 attacking vmware vsphere and enabling ssh on esxi hosts to reset &amp;#x27;root&amp;#x27; passwords" data-date="2025-07-26"><span class="headline-date">26 Jul</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/32033119" target="_blank" rel="noopener">UNC3944 Attacking VMware vSphere and Enabling SSH on ESXi Hosts to Reset &amp;#x27;root&amp;#x27; Passwords</a><span class="article-summary">submitted by cm0002 to cybersecurity 1 points | 0 comments https://cybersecuritynews.com/unc3944-attacking-vmware-vsphere/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="muddled libra: from social engineering to enterprise-scale disruption" data-date="2025-07-26"><span class="headline-date">26 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.paloaltonetworks.com/blog/2025/07/muddled-libra-social-engineering-enterprise-scale-disruption/" target="_blank" rel="noopener">Muddled Libra: From Social Engineering to Enterprise-Scale Disruption</a><span class="article-summary">Unit 42's latest research reveals how Muddled Libra (AKA Scattered Spider) has transformed into teams that pose risks to organizations worldwide. The post Muddled Libra: From Social Engineering to Enterprise-Scale Disruption appeared first on Palo Alto Networks Blog .</span></span><span class="headline-source">PALOALTONETWORKS.COM</span></div>
+<div class="headline" data-title="what happens if you clone a voice without consent? 😳" data-date="2025-07-26"><span class="headline-date">26 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/goqW2gLh8io" target="_blank" rel="noopener">What Happens If You Clone a Voice Without Consent? 😳</a><span class="article-summary">When it comes to AI and cybersecurity, one question changes everything: What happens if a company clones your voice without asking? In this short clip, Martin Tschammer shares how his team built a governance model around Consent, Control, and Collaboration to protect identity in …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="ddos, bots, apis… modern wafs handle it all" data-date="2025-07-26"><span class="headline-date">26 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/E9TjAAYNnZM" target="_blank" rel="noopener">DDoS, Bots, APIs… Modern WAFs Handle It All</a><span class="article-summary">Web application firewalls have come a long way—this short breaks down how today’s WAFs do way more than just filter traffic. Sandy Carielli from Forrester shares how top vendors are stacking up in bot management, API protection, DDoS defense, and more. If your last look at WAFs w…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="security tip: don’t let hype decide your ai stack" data-date="2025-07-26"><span class="headline-date">26 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/MnGwOKd0Bv0" target="_blank" rel="noopener">Security Tip: Don’t Let Hype Decide Your AI Stack</a><span class="article-summary">When it comes to AI in cybersecurity, not every solution needs to be cutting-edge. In this short, Pravallika Devineni shares a powerful insight from the utilities industry—where traditional AI outperforms LLMs for narrow, well-defined problems with clean data. It’s a reminder tha…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="dns security is important but dnssec may be a failed experiment" data-date="2025-07-26"><span class="headline-date">26 Jul</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/32058707" target="_blank" rel="noopener">DNS security is important but DNSSEC may be a failed experiment</a><span class="article-summary">submitted by cm0002 to cybersecurity 1 points | 0 comments https://www.theregister.com/2025/07/25/systems_approach_column_dns_security/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="is “powered by ai” just corporate lipstick?" data-date="2025-07-26"><span class="headline-date">26 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/6rX59XED95I" target="_blank" rel="noopener">Is “Powered By AI” Just Corporate Lipstick?</a><span class="article-summary">Boards are now pressuring CIOs to slap “AI-powered” labels on every tech project—whether it makes sense or not. In this short, cybersecurity experts reveal how companies are turning AI into a meaningless checkbox just to meet boardroom KPIs. Is it innovation or just marketing flu…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="microsoft copilot rooted to gain unauthorized root access to its backend system" data-date="2025-07-26"><span class="headline-date">26 Jul</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/32061392" target="_blank" rel="noopener">Microsoft Copilot Rooted to Gain Unauthorized Root Access to its Backend System</a><span class="article-summary">submitted by cm0002 to cybersecurity 7 points | 0 comments https://cybersecuritynews.com/microsoft-copilot-rooted/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="instant approval, maximum security — too good to be true?" data-date="2025-07-26"><span class="headline-date">26 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/d6dqzP2hCx4" target="_blank" rel="noopener">Instant Approval, Maximum Security — Too Good to Be True?</a><span class="article-summary">When Bob tries to install a printer without admin rights, ThreatLocker steps in—blocking the executable instantly. But here’s the twist: with just one tap, IT grants temporary access remotely, letting Bob finish the job securely. No passwords. No hassle. Just streamlined cybersec…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="the dark side of secrets in cybersecurity 🌒" data-date="2025-07-26"><span class="headline-date">26 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/Ubkus_rL8lw" target="_blank" rel="noopener">The DARK Side of Secrets in Cybersecurity 🌒</a><span class="article-summary">Most developers think secrets are just static API tokens... but that’s only scratching the surface. In this short, Vlad breaks down the real dangers behind secrets—like ephemeral credentials, certificates, encryption keys, and the messy lifecycle behind machine authentication. Th…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="if you’re not reading the sla, you’re in trouble 😬" data-date="2025-07-26"><span class="headline-date">26 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/1IvesHiJeEw" target="_blank" rel="noopener">If You’re Not Reading the SLA, You’re in Trouble 😬</a><span class="article-summary">Sheena Thomas, a cybersecurity expert, shares a chilling reminder for anyone trusting cloud service providers: read the fine print or risk everything. In this short clip, she breaks down why due diligence and understanding SLAs (Service Level Agreements) are non-negotiable in the…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

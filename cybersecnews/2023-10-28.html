@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2023-10-28</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,70 +109,49 @@
       <div class="stat"><span class="stat-value">4</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2023-10-28</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">12</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-10-28"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.armosec.io/blog/cve-2023-5043-nginx-ingress/" target="_blank" rel="noopener">Three new NGINX ingress controller vulnerabilities were just reported and how they affect Kubernetes</a></div><span class="article-meta">ARMOSEC.IO &mdash; 28 Oct 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-10-28"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://techcrunch.com/2023/10/27/ccleaner-says-hackers-stole-users-personal-data-during-moveit-mass-hack/?&web_view=true" target="_blank" rel="noopener">CCleaner Says Hackers Stole Users’ Personal Data During MOVEit Mass-Hack</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 28 Oct 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-10-28"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2023/10/researchers-uncover-wiretapping-of-xmpp.html" target="_blank" rel="noopener">Researchers Uncover Wiretapping of XMPP-Based Instant Messaging Service</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 28 Oct 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-10-28"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/d-link-sql-injection-vulnerability/" target="_blank" rel="noopener">D-LINK SQL Injection Vulnerability Let Attacker Gain Admin Privileges</a></div><span class="article-meta">GBHACKERS.COM &mdash; 28 Oct 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-10-28"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/hackerone-paid-ethical-hackers-over-300-million-in-bug-bounties/" target="_blank" rel="noopener">HackerOne paid ethical hackers over $300 million in bug bounties</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 28 Oct 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-10-28"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://tech.hindustantimes.com/tech/news/a-new-ransomware-uses-virtual-machine-to-dodge-security-71590409211492.html" target="_blank" rel="noopener">A new ransomware uses virtual machine to dodge security</a></div><span class="article-meta">TECH.HINDUSTANTIMES.COM &mdash; 28 Oct 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-10-28"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://therecord.media/stanford-investigating-cyberattack-after-ransomware?&web_view=true" target="_blank" rel="noopener">Stanford University Investigating Cyberattack After Akira Ransomware Claims</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 28 Oct 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-10-28"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://securityaffairs.com/153149/cyber-crime/lockbit-ransomware-gang-boeing.html?&web_view=true" target="_blank" rel="noopener">LockBit Ransomware Gang Claims to Have Stolen Data From Boeing</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 28 Oct 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-10-28"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.securityweek.com/kansas-court-system-down-nearly-2-weeks-in-security-incident-that-has-hallmarks-of-ransomware/?&web_view=true" target="_blank" rel="noopener">Update: Kansas Court System Down Nearly Two Weeks in ‘Security Incident’ That Has Hallmarks of Ransomware</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 28 Oct 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-10-28"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/hackers-email-stolen-student-data-to-parents-of-nevada-school-district/" target="_blank" rel="noopener">Hackers email stolen student data to parents of Nevada school district</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 28 Oct 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-10-28"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/30352" target="_blank" rel="noopener">Size Matters for Many Security Controls, (Sat, Oct 28th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 28 Oct 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-10-28"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.helpnetsecurity.com/2023/10/26/goad-game-of-active-directory/" target="_blank" rel="noopener">GOAD: Vulnerable Active Directory environment for practicing attack techniques - Help Net Security</a></div><span class="article-meta">HELPNETSECURITY.COM &mdash; 28 Oct 2023</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="three new nginx ingress controller vulnerabilities were just reported and how they affect kubernetes" data-date="2023-10-28"><span class="headline-date">28 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.armosec.io/blog/cve-2023-5043-nginx-ingress/" target="_blank" rel="noopener">Three new NGINX ingress controller vulnerabilities were just reported and how they affect Kubernetes</a><span class="article-summary">submitted by L4s to secops 1 points | 0 comments https://www.armosec.io/blog/cve-2023-5043-nginx-ingress/ Three new NGINX ingress controller vulnerabilities were just reported and how they affect Kubernetes::CVE-2023-5043, CVE-2023-5044 and CVE-2022-4886 can be exploited by attac…</span></span><span class="headline-source">ARMOSEC.IO</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ccleaner says hackers stole users’ personal data during moveit mass-hack" data-date="2023-10-28"><span class="headline-date">28 Oct</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2023/10/27/ccleaner-says-hackers-stole-users-personal-data-during-moveit-mass-hack/?&web_view=true" target="_blank" rel="noopener">CCleaner Says Hackers Stole Users’ Personal Data During MOVEit Mass-Hack</a><span class="article-summary">The hackers exploited a vulnerability in the MOVEit file transfer tool, used by CCleaner, to access sensitive data. The stolen information includes names, contact details, and product purchase information. Less than 2% of users were affected.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="researchers uncover wiretapping of xmpp-based instant messaging service" data-date="2023-10-28"><span class="headline-date">28 Oct</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/10/researchers-uncover-wiretapping-of-xmpp.html" target="_blank" rel="noopener">Researchers Uncover Wiretapping of XMPP-Based Instant Messaging Service</a><span class="article-summary">New findings have shed light on what's said to be a lawful attempt to covertly intercept traffic originating from jabber[.]ru (aka xmpp[.]ru), an XMPP-based instant messaging service, via servers hosted on Hetzner and Linode (a subsidiary of Akamai) in Germany. "The attacker has …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="d-link sql injection vulnerability let attacker gain admin privileges" data-date="2023-10-28"><span class="headline-date">28 Oct</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/d-link-sql-injection-vulnerability/" target="_blank" rel="noopener">D-LINK SQL Injection Vulnerability Let Attacker Gain Admin Privileges</a><span class="article-summary">A security flaw called SQL injection has been uncovered in the D-Link DAR-7000 device. SQL injection is a malicious attack that exploits vulnerabilities in web applications to inject malicious SQL statements and gain unauthorized access to the database. This technique allows an a…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="hackerone paid ethical hackers over $300 million in bug bounties" data-date="2023-10-28"><span class="headline-date">28 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/hackerone-paid-ethical-hackers-over-300-million-in-bug-bounties/" target="_blank" rel="noopener">HackerOne paid ethical hackers over $300 million in bug bounties</a><span class="article-summary">HackerOne has announced that its bug bounty programs have awarded over $300 million in rewards to ethical hackers and vulnerability researchers since the platform's inception. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="a new ransomware uses virtual machine to dodge security" data-date="2023-10-28"><span class="headline-date">28 Oct</span><span class="headline-body"><a class="headline-title" href="https://tech.hindustantimes.com/tech/news/a-new-ransomware-uses-virtual-machine-to-dodge-security-71590409211492.html" target="_blank" rel="noopener">A new ransomware uses virtual machine to dodge security</a><span class="article-summary">submitted by L4s to secops 1 points | 0 comments https://tech.hindustantimes.com/tech/news/a-new-ransomware-uses-virtual-machine-to-dodge-security-71590409211492.html A new ransomware uses virtual machine to dodge security::Ragnar Locker remains out of reach of the security softw…</span></span><span class="headline-source">TECH.HINDUSTANTIMES.COM</span></div>
+<div class="headline" data-title="stanford university investigating cyberattack after akira ransomware claims" data-date="2023-10-28"><span class="headline-date">28 Oct</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/stanford-investigating-cyberattack-after-ransomware?&web_view=true" target="_blank" rel="noopener">Stanford University Investigating Cyberattack After Akira Ransomware Claims</a><span class="article-summary">Stanford University is currently investigating a cybersecurity incident within its Department of Public Safety after a ransomware gang claimed to have attacked the school. The Akira ransomware gang has claimed to have stolen 430 GB of data.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="lockbit ransomware gang claims to have stolen data from boeing" data-date="2023-10-28"><span class="headline-date">28 Oct</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/153149/cyber-crime/lockbit-ransomware-gang-boeing.html?&web_view=true" target="_blank" rel="noopener">LockBit Ransomware Gang Claims to Have Stolen Data From Boeing</a><span class="article-summary">The LockBit group has a history of listing companies as victims, even if it was actually a vendor to the compromised company, so further investigation is needed to confirm the extent of the breach.</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+<div class="headline" data-title="update: kansas court system down nearly two weeks in ‘security incident’ that has hallmarks of ransomware" data-date="2023-10-28"><span class="headline-date">28 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/kansas-court-system-down-nearly-2-weeks-in-security-incident-that-has-hallmarks-of-ransomware/?&web_view=true" target="_blank" rel="noopener">Update: Kansas Court System Down Nearly Two Weeks in ‘Security Incident’ That Has Hallmarks of Ransomware</a><span class="article-summary">The outage has hindered electronic filings, payment processing, case management, public access to records, and applications for various legal services, leading to delays and a reliance on paper-based processes.</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="hackers email stolen student data to parents of nevada school district" data-date="2023-10-28"><span class="headline-date">28 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/hackers-email-stolen-student-data-to-parents-of-nevada-school-district/" target="_blank" rel="noopener">Hackers email stolen student data to parents of Nevada school district</a><span class="article-summary">The Clark County School District (CCSD) in Nevada is dealing with a potentially massive data breach, as hackers email parents their children's' data that was allegedly stolen during a recent cyberattack. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="size matters for many security controls, (sat, oct 28th)" data-date="2023-10-28"><span class="headline-date">28 Oct</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/30352" target="_blank" rel="noopener">Size Matters for Many Security Controls, (Sat, Oct 28th)</a><span class="article-summary">This week, I&&#x23&#x3b;x26&#x3b;&#x23&#x3b;39&#x3b;m teaching FOR610 in Manchester, and while my students are busy resolving some challenges, I&&#x23&#x3b;x26&#x3b;&#x23&#x3b;39&#x3b;m looking at my hunting results from the previous days. I found an interesting sample. The file …</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="goad: vulnerable active directory environment for practicing attack techniques - help net security" data-date="2023-10-28"><span class="headline-date">28 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2023/10/26/goad-game-of-active-directory/" target="_blank" rel="noopener">GOAD: Vulnerable Active Directory environment for practicing attack techniques - Help Net Security</a><span class="article-summary">submitted by MajorTom to cybersecurity 2 points | 0 comments https://www.helpnetsecurity.com/2023/10/26/goad-game-of-active-directory/</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

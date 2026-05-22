@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2023-08-19</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,78 +109,61 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2023-08-19</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">19</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-08-19"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/cyber-criminals-hide-malicious-traffic/" target="_blank" rel="noopener">Cyber Criminals Exploiting Google Drive, OneDrive to Hide Malicious Traffic</a></div><span class="article-meta">GBHACKERS.COM &mdash; 19 Aug 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-08-19"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/winrar-flaw-lets-hackers-run-programs-when-you-open-rar-archives/?&web_view=true" target="_blank" rel="noopener">WinRAR Flaw Lets Hackers Run Programs When You Open RAR Archives</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 19 Aug 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-08-19"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.securityweek.com/companies-respond-to-downfall-intel-cpu-vulnerability/?&web_view=true" target="_blank" rel="noopener">Update: Companies Respond to ‘Downfall’ Intel CPU Vulnerability</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 19 Aug 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-08-19"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2023/08/new-juniper-junos-os-flaws-expose.html" target="_blank" rel="noopener">New Juniper Junos OS Flaws Expose Devices to Remote Attacks - Patch Now</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 19 Aug 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-08-19"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisecurity.org/advisory/multiple-vulnerabilities-in-junos-os-could-allow-for-remote-code-execution_2023-093" target="_blank" rel="noopener">Multiple Vulnerabilities in Junos OS Could Allow for Remote Code Execution</a></div><span class="article-meta">CISECURITY.ORG &mdash; 19 Aug 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-08-19"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://blogs.blackberry.com/en/2023/08/cuba-ransomware-deploys-new-tools-targets-critical-infrastructure-sector-in-the-usa-and-it-integrator-in-latin-america?&web_view=true" target="_blank" rel="noopener">Cuba Ransomware Deploys New Tools to Target U.S. Critical Infrastructure Sector and IT Integrator in Latin America</a></div><span class="article-meta">BLOGS.BLACKBERRY.COM &mdash; 19 Aug 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-08-19"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.theregister.com/2023/08/17/man_arrested_in_ni_police/?&web_view=true" target="_blank" rel="noopener">Update: Man Arrested in Northern Ireland Police Data Leak</a></div><span class="article-meta">THEREGISTER.COM &mdash; 19 Aug 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-08-19"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://therecord.media/raleigh-housing-authority-black-basta-ransomware-group?&web_view=true" target="_blank" rel="noopener">Ransomware Gang Threatens Raleigh Housing Authority Months After Devastating Attack</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 19 Aug 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-08-19"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://therecord.media/illinois-hospital-notifies-patients-employees-of-cyber-incident?&web_view=true" target="_blank" rel="noopener">Illinois Hospital Notifies Patients, Employees of Data Breach After Royal Gang Posting</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 19 Aug 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-08-19"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2023/08/wooflocker-toolkit-hides-malicious.html" target="_blank" rel="noopener">WoofLocker Toolkit Hides Malicious Codes in Images to Run Tech Support Scams</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 19 Aug 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-08-19"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://therecord.media/german-national-bar-association-investigating-cyberattack?&web_view=true" target="_blank" rel="noopener">Germany’s National Bar Association Investigating Ransomware Attack</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 19 Aug 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-08-19"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2023/08/new-blackcat-ransomware-variant-adopts.html?m=1" target="_blank" rel="noopener">New BlackCat Ransomware Variant Adopts Advanced Impacket and RemCom Tools</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 19 Aug 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-08-19"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2023/08/thousands-of-android-malware-apps-using.html" target="_blank" rel="noopener">Thousands of Android Malware Apps Using Stealthy APK Compression to Evade Detection</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 19 Aug 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-08-19"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/linux-distros/" target="_blank" rel="noopener">10 Best Linux Distributions In 2023</a></div><span class="article-meta">GBHACKERS.COM &mdash; 19 Aug 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-08-19"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/foreign-intelligence-entities-eyeing-us-space-agencies-a-22877" target="_blank" rel="noopener">Foreign Intelligence Entities Eyeing US Space Agencies</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-08-19</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-08-19"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/hackers-use-vpn-providers-code-certificate-to-sign-malware/" target="_blank" rel="noopener">Hackers use VPN provider's code certificate to sign malware</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 19 Aug 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-08-19"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://docs.google.com/spreadsheets/d/1n8pdECu4ucPUay2q1iJ98CI2BT-89nqjpzBVuyRZ0K8/" target="_blank" rel="noopener">Search Engines for Researchers</a></div><span class="article-meta">DOCS.GOOGLE.COM &mdash; 19 Aug 2023</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2023-08-19"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/rust-devs-push-back-as-serde-project-ships-precompiled-binaries/" target="_blank" rel="noopener">Rust devs push back as Serde project ships precompiled binaries</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 19 Aug 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-08-19"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2023/08/19/cellebrite-asks-cops-to-keep-its-phone-hacking-tech-hush-hush/" target="_blank" rel="noopener">Cellebrite asks cops to keep its phone hacking tech ‘hush hush’</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 19 Aug 2023</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cyber criminals exploiting google drive, onedrive to hide malicious traffic" data-date="2023-08-19"><span class="headline-date">19 Aug</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/cyber-criminals-hide-malicious-traffic/" target="_blank" rel="noopener">Cyber Criminals Exploiting Google Drive, OneDrive to Hide Malicious Traffic</a><span class="article-summary">Threat actors are actively modifying their TTPs to counter the advanced security mechanisms and tools to accomplish their illicit goals for several malicious purposes. Hiding malicious traffic in cloud storage platforms is not a new concept completely, and it seems that threat ac…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="winrar flaw lets hackers run programs when you open rar archives" data-date="2023-08-19"><span class="headline-date">19 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/winrar-flaw-lets-hackers-run-programs-when-you-open-rar-archives/?&web_view=true" target="_blank" rel="noopener">WinRAR Flaw Lets Hackers Run Programs When You Open RAR Archives</a><span class="article-summary">A high-severity vulnerability has been fixed in WinRAR, the popular file archiver utility for Windows used by millions, that can execute commands on a computer simply by opening an archive.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="update: companies respond to ‘downfall’ intel cpu vulnerability" data-date="2023-08-19"><span class="headline-date">19 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/companies-respond-to-downfall-intel-cpu-vulnerability/?&web_view=true" target="_blank" rel="noopener">Update: Companies Respond to ‘Downfall’ Intel CPU Vulnerability</a><span class="article-summary">AWS said its customers’ data and cloud instances are not affected by Downfall and no action is required. The cloud giant did note that it has “designed and implemented its infrastructure with protections against this class of issues”.</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="new juniper junos os flaws expose devices to remote attacks - patch now" data-date="2023-08-19"><span class="headline-date">19 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/08/new-juniper-junos-os-flaws-expose.html" target="_blank" rel="noopener">New Juniper Junos OS Flaws Expose Devices to Remote Attacks - Patch Now</a><span class="article-summary">Networking hardware company Juniper Networks has released an "out-of-cycle" security update to address multiple flaws in the J-Web component of Junos OS that could be combined to achieve remote code execution on susceptible installations. The four vulnerabilities have a cumulativ…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="multiple vulnerabilities in junos os could allow for remote code execution" data-date="2023-08-19"><span class="headline-date">19 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.cisecurity.org/advisory/multiple-vulnerabilities-in-junos-os-could-allow-for-remote-code-execution_2023-093" target="_blank" rel="noopener">Multiple Vulnerabilities in Junos OS Could Allow for Remote Code Execution</a><span class="article-summary">Multiple vulnerabilities have been discovered in Junos OS, which. when chained together. could allow for remote code execution. Junos OS is an operating system that runs across all Juniper routing, switching, and security infrastructure. Successful chain exploitation of these vul…</span></span><span class="headline-source">CISECURITY.ORG</span></div>
+<div class="headline" data-title="cuba ransomware deploys new tools to target u.s. critical infrastructure sector and it integrator in latin america" data-date="2023-08-19"><span class="headline-date">19 Aug</span><span class="headline-body"><a class="headline-title" href="https://blogs.blackberry.com/en/2023/08/cuba-ransomware-deploys-new-tools-targets-critical-infrastructure-sector-in-the-usa-and-it-integrator-in-latin-america?&web_view=true" target="_blank" rel="noopener">Cuba Ransomware Deploys New Tools to Target U.S. Critical Infrastructure Sector and IT Integrator in Latin America</a><span class="article-summary">The group's toolkit includes custom and off-the-shelf parts, such as the BUGHATCH downloader and the Metasploit framework. The attacks often start with the compromise of valid credentials through a credentials reuse scheme or vulnerability exploits.</span></span><span class="headline-source">BLOGS.BLACKBERRY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="update: man arrested in northern ireland police data leak" data-date="2023-08-19"><span class="headline-date">19 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.theregister.com/2023/08/17/man_arrested_in_ni_police/?&web_view=true" target="_blank" rel="noopener">Update: Man Arrested in Northern Ireland Police Data Leak</a><span class="article-summary">The unnamed man was questioned by detectives who were said to be "investigating criminality linked to last week's freedom of information data breach," but has now been released on bail to allow for further inquiries, the PSNI stated.</span></span><span class="headline-source">THEREGISTER.COM</span></div>
+<div class="headline" data-title="ransomware gang threatens raleigh housing authority months after devastating attack" data-date="2023-08-19"><span class="headline-date">19 Aug</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/raleigh-housing-authority-black-basta-ransomware-group?&web_view=true" target="_blank" rel="noopener">Ransomware Gang Threatens Raleigh Housing Authority Months After Devastating Attack</a><span class="article-summary">A ransomware gang has started posting sensitive personal information connected to a devastating attack on the Raleigh Housing Authority (RHA) that disrupted the organization for weeks in May.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="illinois hospital notifies patients, employees of data breach after royal gang posting" data-date="2023-08-19"><span class="headline-date">19 Aug</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/illinois-hospital-notifies-patients-employees-of-cyber-incident?&web_view=true" target="_blank" rel="noopener">Illinois Hospital Notifies Patients, Employees of Data Breach After Royal Gang Posting</a><span class="article-summary">In late May, reports said the Royal ransomware gang had posted data from the organization on its leak site. As of May 23, the hospital had said it was still investigating the incident.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="wooflocker toolkit hides malicious codes in images to run tech support scams" data-date="2023-08-19"><span class="headline-date">19 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/08/wooflocker-toolkit-hides-malicious.html" target="_blank" rel="noopener">WoofLocker Toolkit Hides Malicious Codes in Images to Run Tech Support Scams</a><span class="article-summary">Cybersecurity researchers have detailed an updated version of an advanced fingerprinting and redirection toolkit called WoofLocker that's engineered to conduct tech support scams. The sophisticated traffic redirection scheme was first documented by Malwarebytes in January 2020, l…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="germany’s national bar association investigating ransomware attack" data-date="2023-08-19"><span class="headline-date">19 Aug</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/german-national-bar-association-investigating-cyberattack?&web_view=true" target="_blank" rel="noopener">Germany’s National Bar Association Investigating Ransomware Attack</a><span class="article-summary">The German Federal Bar (BRAK) Association discovered the attack on August 2. The group is an umbrella organization overseeing 28 regional bars across Germany and representing about 166,000 lawyers nationally and internationally.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="new blackcat ransomware variant adopts advanced impacket and remcom tools" data-date="2023-08-19"><span class="headline-date">19 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/08/new-blackcat-ransomware-variant-adopts.html?m=1" target="_blank" rel="noopener">New BlackCat Ransomware Variant Adopts Advanced Impacket and RemCom Tools</a><span class="article-summary">submitted by Lanky_Pomegranate530 to cybersecurity -21 points | 0 comments https://thehackernews.com/2023/08/new-blackcat-ransomware-variant-adopts.html?m=1</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="thousands of android malware apps using stealthy apk compression to evade detection" data-date="2023-08-19"><span class="headline-date">19 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/08/thousands-of-android-malware-apps-using.html" target="_blank" rel="noopener">Thousands of Android Malware Apps Using Stealthy APK Compression to Evade Detection</a><span class="article-summary">Threat actors are using Android Package (APK) files with unknown or unsupported compression methods to elude malware analysis. That's according to findings from Zimperium, which found 3,300 artifacts leveraging such compression algorithms in the wild. 71 of the identified samples…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="10 best linux distributions in 2023" data-date="2023-08-19"><span class="headline-date">19 Aug</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/linux-distros/" target="_blank" rel="noopener">10 Best Linux Distributions In 2023</a><span class="article-summary">The Linux Distros is generally acknowledged as the third of the holy triplet of PC programs, along with Windows and macOS. Here we have provided you with a top 10 best Linux distros in 2023 for all professionals. Hence Linux can be defined as the most rebellious among the three, …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="foreign intelligence entities eyeing us space agencies" data-date="2023-08-19"><span class="headline-date">19 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/foreign-intelligence-entities-eyeing-us-space-agencies-a-22877" target="_blank" rel="noopener">Foreign Intelligence Entities Eyeing US Space Agencies</a><span class="article-summary">China, Russia Are Leading Foreign Intelligence Threats to the U.S. Space Industry U.S. intelligence agencies are warning about unnamed foreign intelligence entities targeting the private space sector to steal sensitive data related to satellite payloads and disrupting and degradi…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+<div class="headline" data-title="hackers use vpn provider's code certificate to sign malware" data-date="2023-08-19"><span class="headline-date">19 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/hackers-use-vpn-providers-code-certificate-to-sign-malware/" target="_blank" rel="noopener">Hackers use VPN provider's code certificate to sign malware</a><span class="article-summary">The China-aligned APT (advanced persistent threat) group known as 'Bronze Starlight' was seen targeting the Southeast Asian gambling industry with malware signed using a valid certificate used by the Ivacy VPN provider. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="search engines for researchers" data-date="2023-08-19"><span class="headline-date">19 Aug</span><span class="headline-body"><a class="headline-title" href="https://docs.google.com/spreadsheets/d/1n8pdECu4ucPUay2q1iJ98CI2BT-89nqjpzBVuyRZ0K8/" target="_blank" rel="noopener">Search Engines for Researchers</a><span class="article-summary">submitted by L4s to secops 2 points | 0 comments https://docs.google.com/spreadsheets/d/1n8pdECu4ucPUay2q1iJ98CI2BT-89nqjpzBVuyRZ0K8/ Search Engines for Researchers::undefined</span></span><span class="headline-source">DOCS.GOOGLE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="rust devs push back as serde project ships precompiled binaries" data-date="2023-08-19"><span class="headline-date">19 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/rust-devs-push-back-as-serde-project-ships-precompiled-binaries/" target="_blank" rel="noopener">Rust devs push back as Serde project ships precompiled binaries</a><span class="article-summary">Serde, a popular Rust (de)serialization project, has decided to ship its serde_derive macro as a precompiled binary. This has generated a fair amount of concern among some developers who highlight the future legal and technical issues this may pose, along with a potential for sup…</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cellebrite asks cops to keep its phone hacking tech ‘hush hush’" data-date="2023-08-19"><span class="headline-date">19 Aug</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2023/08/19/cellebrite-asks-cops-to-keep-its-phone-hacking-tech-hush-hush/" target="_blank" rel="noopener">Cellebrite asks cops to keep its phone hacking tech ‘hush hush’</a><span class="article-summary">For years, cops and other government authorities all over the world have been using phone hacking technology provided by Cellebrite to unlock phones and obtain the data within. And the company has been keen on keeping the use of its technology “hush hush.” As part of the deal wit…</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

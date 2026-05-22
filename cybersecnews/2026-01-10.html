@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2026-01-10</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,73 +109,56 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2026-01-10</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">14</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Security Bulletins" onclick="filterCat('Security Bulletins', this)">SECURITY BULLETINS <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-01-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/4115151/trend-micro-patches-critical-flaws-in-its-apex-central-software.html" target="_blank" rel="noopener">Trend Micro patches critical flaws in its Apex Central software</a></div><span class="article-meta">CSOONLINE.COM &mdash; 10 Jan 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-01-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/cybersecurity-today-the-month-in-review-key-stories-and-insights" target="_blank" rel="noopener">Cybersecurity Today: The Month in Review - Key Stories and Insights</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 10 Jan 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-01-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/cybercriminals-exploit-maduro-news-spread-malware/" target="_blank" rel="noopener">Cybercriminals Exploit Maduro Arrest News to Spread Backdoor Malware</a></div><span class="article-meta">GBHACKERS.COM &mdash; 10 Jan 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-01-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2026/01/europol-arrests-34-black-axe-members-in.html" target="_blank" rel="noopener">Europol Arrests 34 Black Axe Members in Spain Over €5.9M Fraud and Organized Crime</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 10 Jan 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-01-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://haveibeenpwned.com/Breach/BreachForums2025" target="_blank" rel="noopener">BreachForums (2025) - 324,449 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 10 Jan 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-01-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/0aiFgZP1M30" target="_blank" rel="noopener">Remote Control Risk: n8n Vulnerability</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2026-01-10</span></div>
-<div class="article-row" data-cat="Security Bulletins" data-date="2026-01-10"><span class="cat-badge" style="border:1px solid rgba(255,170,0,0.5);background:rgba(255,170,0,0.10);" title="Security Bulletins">📋</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/ireland-recalls-almost-13-000-passports-over-missing-irl-code/" target="_blank" rel="noopener">Ireland recalls almost 13,000 passports over missing 'IRL' code</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 10 Jan 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-01-10"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://gbhackers.com/massive-instagram-data-breach/" target="_blank" rel="noopener">Massive Instagram Data Breach Exposes Personal Details of 17.5 Million Users</a></div><span class="article-meta">GBHACKERS.COM &mdash; 10 Jan 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-01-10"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/breachforums-hacking-forum-database-leaked-exposing-324-000-accounts/" target="_blank" rel="noopener">BreachForums hacking forum database leaked, exposing 324,000 accounts</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 10 Jan 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-01-10"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/40303521" target="_blank" rel="noopener">Cyberwarfare: China-Linked UAT-7290 usually active in South Asia expands its espionage-focused intrusions into Southeastern Europe, targeting telecoms</a></div><span class="article-meta">INFOSEC.PUB &mdash; 10 Jan 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-01-10"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://sh.itjust.works/post/53157048" target="_blank" rel="noopener">Cyberwarfare: China-Linked UAT-7290 usually active in South Asia expands its espionage-focused intrusions into Southeastern Europe, targeting telecoms</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 10 Jan 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-01-10"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2026/01/muddywater-launches-rustywater-rat-via.html" target="_blank" rel="noopener">MuddyWater Launches RustyWater RAT via Spear-Phishing Across Middle East Sectors</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 10 Jan 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-01-10"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/spain-arrests-34-suspects-linked-to-black-axe-cyber-crime/" target="_blank" rel="noopener">Spain arrests 34 suspects linked to Black Axe cyber crime</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 10 Jan 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-01-10"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/microsoft/microsoft-is-retiring-send-to-kindle-in-word/" target="_blank" rel="noopener">Microsoft is retiring 'Send to Kindle' in Word</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 10 Jan 2026</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="trend micro patches critical flaws in its apex central software" data-date="2026-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4115151/trend-micro-patches-critical-flaws-in-its-apex-central-software.html" target="_blank" rel="noopener">Trend Micro patches critical flaws in its Apex Central software</a><span class="article-summary">Security company Trend Micro has been compelled to issue a patch for its own Apex Central software management tool after vulnerability management platform Tenable identified several security flaws . The bugs affect all versions of Apex Central (on-premises) earlier than build 719…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="cybersecurity today: the month in review - key stories and insights" data-date="2026-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/cybersecurity-today-the-month-in-review-key-stories-and-insights" target="_blank" rel="noopener">Cybersecurity Today: The Month in Review - Key Stories and Insights</a><span class="article-summary">In this episode of Cybersecurity Today, brought to you by Meter, we review key events and stories from the past few weeks. Join host Jim along with experts Tammy Harper from Flair, Laura Payne from White Tuque, and David Shipley from Beauceron Security as they discuss major cyber…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="cybercriminals exploit maduro arrest news to spread backdoor malware" data-date="2026-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/cybercriminals-exploit-maduro-news-spread-malware/" target="_blank" rel="noopener">Cybercriminals Exploit Maduro Arrest News to Spread Backdoor Malware</a><span class="article-summary">Cybercriminals are leveraging reports of Venezuelan President Nicolás Maduro&#8217;s arrest on January 3, 2025, to distribute backdoor malware through a sophisticated social engineering campaign. Security researchers at Darktrace have uncovered a malicious operation that exploits…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="europol arrests 34 black axe members in spain over €5.9m fraud and organized crime" data-date="2026-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/01/europol-arrests-34-black-axe-members-in.html" target="_blank" rel="noopener">Europol Arrests 34 Black Axe Members in Spain Over €5.9M Fraud and Organized Crime</a><span class="article-summary">Europol on Friday announced the arrest of 34 individuals in Spain who are alleged to be part of an international criminal organization called Black Axe. As part of an operation conducted by the Spanish National Police, in coordination with the Bavarian State Criminal Police Offic…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="breachforums (2025) - 324,449 breached accounts" data-date="2026-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/Breach/BreachForums2025" target="_blank" rel="noopener">BreachForums (2025) - 324,449 breached accounts</a><span class="article-summary">In October 2025, a reincarnation of the hacking forum BreachForums, which had previously been shut down multiple times, was taken offline by a coalition of law enforcement agencies . In the months leading up to the takedown, the site itself suffered a data breach that exposed 324…</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+<div class="headline" data-title="remote control risk: n8n vulnerability" data-date="2026-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/0aiFgZP1M30" target="_blank" rel="noopener">Remote Control Risk: n8n Vulnerability</a><span class="article-summary">A critical vulnerability in the n8n platform allows remote attackers to take control. Ignoring this risk could lead to severe security breaches. How can organizations safeguard against such threats? Subscribe to our podcasts: https://securityweekly.com/subscribe #TechAlert #n8n #…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-bulletins">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,170,0,0.5);" onclick="toggleSection(this)">📋 SECURITY BULLETINS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ireland recalls almost 13,000 passports over missing 'irl' code" data-date="2026-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/ireland-recalls-almost-13-000-passports-over-missing-irl-code/" target="_blank" rel="noopener">Ireland recalls almost 13,000 passports over missing 'IRL' code</a><span class="article-summary">Ireland's Department of Foreign Affairs has recalled nearly 13,000 passports after a software update caused a printing defect. The printing error makes the documents non-compliant with international travel standards and potentially unreadable at automated border gates. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="massive instagram data breach exposes personal details of 17.5 million users" data-date="2026-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/massive-instagram-data-breach/" target="_blank" rel="noopener">Massive Instagram Data Breach Exposes Personal Details of 17.5 Million Users</a><span class="article-summary">A staggering cybersecurity incident has come to light, with 17.5 million Instagram users&#8217; personal information exposed in a data breach advertised on dark web marketplaces. Cybersecurity firm Malwarebytes first alerted the public via X (formerly Twitter), confirming the lea…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="breachforums hacking forum database leaked, exposing 324,000 accounts" data-date="2026-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/breachforums-hacking-forum-database-leaked-exposing-324-000-accounts/" target="_blank" rel="noopener">BreachForums hacking forum database leaked, exposing 324,000 accounts</a><span class="article-summary">The latest incarnation of the notorious BreachForums hacking forum has suffered a data breach, with its user database table leaked online. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cyberwarfare: china-linked uat-7290 usually active in south asia expands its espionage-focused intrusions into southeastern europe, targeting telecoms" data-date="2026-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/40303521" target="_blank" rel="noopener">Cyberwarfare: China-Linked UAT-7290 usually active in South Asia expands its espionage-focused intrusions into Southeastern Europe, targeting telecoms</a><span class="article-summary">submitted by Sepia to cybersecurity 1 points | 0 comments https://thehackernews.com/2026/01/china-linked-uat-7290-targets-telecoms.html cross-posted from: mander.xyz/post/45241581 TL;DR: China-linked threat actor UAT-7290 has been active since at least 2022 in South Asia but is n…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="cyberwarfare: china-linked uat-7290 usually active in south asia expands its espionage-focused intrusions into southeastern europe, targeting telecoms" data-date="2026-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/53157048" target="_blank" rel="noopener">Cyberwarfare: China-Linked UAT-7290 usually active in South Asia expands its espionage-focused intrusions into Southeastern Europe, targeting telecoms</a><span class="article-summary">submitted by Sepia to cybersecurity 2 points | 0 comments https://thehackernews.com/2026/01/china-linked-uat-7290-targets-telecoms.html cross-posted from: mander.xyz/post/45241581 TL;DR: China-linked threat actor UAT-7290 has been active since at least 2022 in South Asia but is n…</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="muddywater launches rustywater rat via spear-phishing across middle east sectors" data-date="2026-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/01/muddywater-launches-rustywater-rat-via.html" target="_blank" rel="noopener">MuddyWater Launches RustyWater RAT via Spear-Phishing Across Middle East Sectors</a><span class="article-summary">The Iranian threat actor known as MuddyWater has been attributed to a spear-phishing campaign targeting diplomatic, maritime, financial, and telecom entities in the Middle East with a Rust-based implant codenamed RustyWater. "The campaign uses icon spoofing and malicious Word doc…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="spain arrests 34 suspects linked to black axe cyber crime" data-date="2026-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/spain-arrests-34-suspects-linked-to-black-axe-cyber-crime/" target="_blank" rel="noopener">Spain arrests 34 suspects linked to Black Axe cyber crime</a><span class="article-summary">Authorities in Spain have arrested 34 individuals allegedly part of a criminal network involved in cyber fraud and believed to be connected to the Black Axe group responsible for illicit activities across Europe. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="microsoft is retiring 'send to kindle' in word" data-date="2026-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/microsoft/microsoft-is-retiring-send-to-kindle-in-word/" target="_blank" rel="noopener">Microsoft is retiring 'Send to Kindle' in Word</a><span class="article-summary">Microsoft is retiring a feature that allowed you to send your documents to Kindle straight from Microsoft Word. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2026-05-02</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -23,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
-<a href="index.html" class="active">Today</a>
-<a href="2026-05-01.html">2026-05-01</a>
-<a href="2026-04-30.html">2026-04-30</a>
-<a href="2026-04-29.html">2026-04-29</a>
-<a href="2026-04-28.html">2026-04-28</a>
-<a href="2026-04-27.html">2026-04-27</a>
-<a href="2026-04-26.html">2026-04-26</a>
+<a href="2026-05-23.html">23 May</a>
+<a href="index.html">Today</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -39,75 +109,58 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2026-05-02</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">16</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-02"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://gbhackers.com/cpanelsniper-poc-exploit-disclosed/" target="_blank" rel="noopener">cPanelSniper PoC Exploit Disclosed as 44,000 Servers Reportedly Compromised</a></div><span class="article-meta">GBHACKERS.COM &mdash; 02 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-02"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-28532" target="_blank" rel="noopener">CVE-2026-28532 FRRouting &lt; 10.5.3 Integer Overflow in OSPF TLV Parser Functions</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 02 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-02"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-4948" target="_blank" rel="noopener">CVE-2026-4948 Firewalld: firewalld: local unprivileged user can modify firewall state due to d-bus setter mis-authorization</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 02 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-02"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://cyberinsider.com/massive-cpanel-campaign-compromised-44000-servers-worldwide/" target="_blank" rel="noopener">Massive cPanel campaign compromised 44,000 servers worldwide</a></div><span class="article-meta">CYBERINSIDER.COM &mdash; 02 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/connected-cars-are-rolling-spy-networks-and-they-can-be-hacked" target="_blank" rel="noopener">Connected Cars Are Rolling Spy Networks — And They Can Be Hacked</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 02 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thecyberwire.com/podcasts/research-saturday/423/notes" target="_blank" rel="noopener">Double-edged threat.</a></div><span class="article-meta">THECYBERWIRE.COM &mdash; 02 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thecyberwire.com/newsletters/week-that-was/10/17" target="_blank" rel="noopener">OpenAI and Anthropic brief Congress on cyber-capable AI models.</a></div><span class="article-meta">THECYBERWIRE.COM &mdash; 02 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2026/05/trellix-confirms-source-code-breach.html" target="_blank" rel="noopener">Trellix Confirms Source Code Breach With Unauthorized Repository Access</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 02 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://haveibeenpwned.com/Breach/ZenBusiness" target="_blank" rel="noopener">ZenBusiness - 5,118,184 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 02 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-02"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://securityaffairs.com/191584/data-breach/trellix-discloses-the-breach-of-a-code-repository.html" target="_blank" rel="noopener">Trellix discloses the breach of a code repository</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 02 May 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-05-02"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://gbhackers.com/massive-facebook-phishing-operation/" target="_blank" rel="noopener">Massive Facebook Phishing Operation Leverages AppSheet, Netlify, and Telegram</a></div><span class="article-meta">GBHACKERS.COM &mdash; 02 May 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-05-02"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://securityaffairs.com/191567/malware/new-deepdoor-rat-uses-stealth-and-persistence-to-target-windows.html" target="_blank" rel="noopener">New Deep#Door RAT uses stealth and persistence to target Windows</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 02 May 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-05-02"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://securityaffairs.com/191591/cyber-crime/two-us-cybersecurity-experts-sentenced-in-ransomware-case-third-awaits-july-ruling.html" target="_blank" rel="noopener">Two US cybersecurity experts sentenced in ransomware case, third awaits July ruling</a></div><span class="kev-badge">KEV</span><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 02 May 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-05-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/R_Gi-NA6IDw" target="_blank" rel="noopener">The Data That Actually Matters</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2026-05-02</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-05-02"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/3Y1vFE0b8nE" target="_blank" rel="noopener">What Could Go Wrong With AI Audit</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2026-05-02</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-05-02"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.wired.com/story/security-news-this-week-disneyland-now-uses-face-recognition-on-visitors/" target="_blank" rel="noopener">Disneyland Now Uses Face Recognition on Visitors</a></div><span class="article-meta">WIRED.COM &mdash; 02 May 2026</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cpanelsniper poc exploit disclosed as 44,000 servers reportedly compromised" data-date="2026-05-02"><span class="headline-date">2 May</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/cpanelsniper-poc-exploit-disclosed/" target="_blank" rel="noopener">cPanelSniper PoC Exploit Disclosed as 44,000 Servers Reportedly Compromised</a><span class="article-summary">A critical zero-day vulnerability in cPanel and WebHost Manager (WHM) is under massive active exploitation following the public release of a sophisticated proof-of-concept exploit. Tracked as CVE-2026-41940, this flaw has already compromised tens of thousands of servers worldwide…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="cve-2026-28532 frrouting &lt; 10.5.3 integer overflow in ospf tlv parser functions" data-date="2026-05-02"><span class="headline-date">2 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-28532" target="_blank" rel="noopener">CVE-2026-28532 FRRouting &lt; 10.5.3 Integer Overflow in OSPF TLV Parser Functions</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-4948 firewalld: firewalld: local unprivileged user can modify firewall state due to d-bus setter mis-authorization" data-date="2026-05-02"><span class="headline-date">2 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-4948" target="_blank" rel="noopener">CVE-2026-4948 Firewalld: firewalld: local unprivileged user can modify firewall state due to d-bus setter mis-authorization</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="massive cpanel campaign compromised 44,000 servers worldwide" data-date="2026-05-02"><span class="headline-date">2 May</span><span class="headline-body"><a class="headline-title" href="https://cyberinsider.com/massive-cpanel-campaign-compromised-44000-servers-worldwide/" target="_blank" rel="noopener">Massive cPanel campaign compromised 44,000 servers worldwide</a><span class="article-summary">A surge in attacks exploiting the critical cPanel &#038; WHM vulnerability CVE-2026-41940 has resulted in at least 44,000 compromised systems now actively scanning and launching attacks. The warning was issued by Shadowserver, which reported a sharp spike in malicious traffic tar…</span></span><span class="headline-source">CYBERINSIDER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="connected cars are rolling spy networks — and they can be hacked" data-date="2026-05-02"><span class="headline-date">2 May</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/connected-cars-are-rolling-spy-networks-and-they-can-be-hacked" target="_blank" rel="noopener">Connected Cars Are Rolling Spy Networks — And They Can Be Hacked</a><span class="article-summary">Connected cars are no longer just vehicles — they are rolling networks of sensors, cameras, microphones, and constant data transmission. In this Cybersecurity Today Weekend Edition, David Shipley is joined by former CSIS intelligence officer Neil Bisson and cybersecurity expert F…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="double-edged threat." data-date="2026-05-02"><span class="headline-date">2 May</span><span class="headline-body"><a class="headline-title" href="https://thecyberwire.com/podcasts/research-saturday/423/notes" target="_blank" rel="noopener">Double-edged threat.</a><span class="article-summary">Today we are joined by ⁠Justin Albrecht⁠, Principal Researcher at ⁠Lookout⁠, discussing "Attackers Wielding DarkSword Threaten iOS Users." DarkSword is a highly sophisticated iOS exploit chain discovered by Lookout that targets iPhones (iOS 18.4–18.6.2), enabling near zero-click …</span></span><span class="headline-source">THECYBERWIRE.COM</span></div>
+<div class="headline" data-title="openai and anthropic brief congress on cyber-capable ai models." data-date="2026-05-02"><span class="headline-date">2 May</span><span class="headline-body"><a class="headline-title" href="https://thecyberwire.com/newsletters/week-that-was/10/17" target="_blank" rel="noopener">OpenAI and Anthropic brief Congress on cyber-capable AI models.</a><span class="article-summary">"Copy Fail" flaw leads to privilege escalation on Linux. FISA Section 702 gets another stopgap extension.</span></span><span class="headline-source">THECYBERWIRE.COM</span></div>
+<div class="headline" data-title="trellix confirms source code breach with unauthorized repository access" data-date="2026-05-02"><span class="headline-date">2 May</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/05/trellix-confirms-source-code-breach.html" target="_blank" rel="noopener">Trellix Confirms Source Code Breach With Unauthorized Repository Access</a><span class="article-summary">Cybersecurity company Trellix has announced that it suffered a breach that enabled unauthorized access to a "portion" of its source code. It said it "recently identified" the compromise of its source code repository and that it began working with "leading forensic experts" to res…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="zenbusiness - 5,118,184 breached accounts" data-date="2026-05-02"><span class="headline-date">2 May</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/Breach/ZenBusiness" target="_blank" rel="noopener">ZenBusiness - 5,118,184 breached accounts</a><span class="article-summary">In March 2026, the hacker and extortion group "ShinyHunters" claimed to have obtained a substantial corpus of data from ZenBusiness , a business formation and compliance platform. The group claimed the data had been exfiltrated from platforms including Snowflake, Mixpanel and Sal…</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+<div class="headline" data-title="trellix discloses the breach of a code repository" data-date="2026-05-02"><span class="headline-date">2 May</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/191584/data-breach/trellix-discloses-the-breach-of-a-code-repository.html" target="_blank" rel="noopener">Trellix discloses the breach of a code repository</a><span class="article-summary">Trellix disclosed a security breach affecting part of its source code repository, however, the company says there’s no sign of code misuse. Trellix revealed a breach that allowed unauthorized access to part of its source code repository. The company said it quickly launched an in…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="massive facebook phishing operation leverages appsheet, netlify, and telegram" data-date="2026-05-02"><span class="headline-date">2 May</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/massive-facebook-phishing-operation/" target="_blank" rel="noopener">Massive Facebook Phishing Operation Leverages AppSheet, Netlify, and Telegram</a><span class="article-summary">Cybersecurity researchers at Guardio Labs have uncovered a massive phishing operation dubbed AccountDumpling that has compromised more than 30,000 Facebook accounts worldwide. Unlike conventional phishing campaigns that rely on spoofed domains or compromised SMTP servers, this Vi…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="new deep#door rat uses stealth and persistence to target windows" data-date="2026-05-02"><span class="headline-date">2 May</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/191567/malware/new-deepdoor-rat-uses-stealth-and-persistence-to-target-windows.html" target="_blank" rel="noopener">New Deep#Door RAT uses stealth and persistence to target Windows</a><span class="article-summary">Deep#Door hides a Python RAT inside a batch file, kills Windows defenses, survives via multiple persistence methods, and exfiltrates data through a public TCP tunnel. Security researchers at Securonix uncovered a sophisticated malware campaign called Deep#Door. Threat actors empl…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+<div class="headline" data-title="two us cybersecurity experts sentenced in ransomware case, third awaits july ruling" data-date="2026-05-02"><span class="headline-date">2 May <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/191591/cyber-crime/two-us-cybersecurity-experts-sentenced-in-ransomware-case-third-awaits-july-ruling.html" target="_blank" rel="noopener">Two US cybersecurity experts sentenced in ransomware case, third awaits July ruling</a><span class="article-summary">Two US security experts were sentenced to 4 years for helping ransomware attacks. A third accomplice pleaded guilty and awaits sentencing. Two US cybersecurity professionals, Ryan Goldberg and Kevin Martin, were sentenced to four years in prison for their role in supporting ranso…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the data that actually matters" data-date="2026-05-02"><span class="headline-date">2 May</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/R_Gi-NA6IDw" target="_blank" rel="noopener">The Data That Actually Matters</a><span class="article-summary">Post-quantum risk isn’t about breaking everything instantly. Attackers still need time, storage, and compute to decrypt data—even after Q-Day. That shifts the priority. Short-lived data like passwords may not matter much. But long-lived secrets—financial records, intellectual pro…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="what could go wrong with ai audit" data-date="2026-05-02"><span class="headline-date">2 May</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/3Y1vFE0b8nE" target="_blank" rel="noopener">What Could Go Wrong With AI Audit</a><span class="article-summary">AI in financial auditing introduces three primary risk categories: deficient outputs, misuse of outputs, and non-compliant methodology. Even when AI produces accurate results, downstream human interpretation or flawed underlying processes can lead to audit failure. In regulated f…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="disneyland now uses face recognition on visitors" data-date="2026-05-02"><span class="headline-date">2 May</span><span class="headline-body"><a class="headline-title" href="https://www.wired.com/story/security-news-this-week-disneyland-now-uses-face-recognition-on-visitors/" target="_blank" rel="noopener">Disneyland Now Uses Face Recognition on Visitors</a><span class="article-summary">Plus: The NSA tests Anthropic’s Mythos Preview to find vulnerabilities, a Finnish teen is charged over the Scattered Spider hacking spree, and more.</span></span><span class="headline-source">WIRED.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-05-02 23:01<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

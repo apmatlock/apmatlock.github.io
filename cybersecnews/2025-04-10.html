@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-04-10</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,79 +109,70 @@
       <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-04-10</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">18</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">4</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-10"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2025/04/incomplete-patch-in-nvidia-toolkit.html" target="_blank" rel="noopener">Incomplete Patch in NVIDIA Toolkit Leaves CVE-2024-0132 Open to Container Escapes</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 10 Apr 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-10"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/25/d/incomplete-nvidia-patch.html" target="_blank" rel="noopener">Incomplete NVIDIA Patch to CVE-2024-0132 Exposes AI Infrastructure and Data to Critical Risks</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 10 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/04/europol-arrests-five-smokeloader.html" target="_blank" rel="noopener">Europol Arrests Five SmokeLoader Clients Linked by Seized Database Evidence</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 10 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/04/akirabot-targets-420000-sites-with.html" target="_blank" rel="noopener">AkiraBot Targets 420,000 Sites with OpenAI-Generated Spam, Bypassing CAPTCHA Protections</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 10 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2025/04/10/cisa-releases-ten-industrial-control-systems-advisories" target="_blank" rel="noopener">CISA Releases Ten Industrial Control Systems Advisories</a></div><span class="article-meta">CISA.GOV &mdash; Thu, 10 Apr 25 1</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="http://blog.quarkslab.com/security-audit-of-php-src.html" target="_blank" rel="noopener">Security audit of PHP-SRC</a></div><span class="article-meta">QUARKSLAB.COM &mdash; 2025-04-10</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-04-10"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://techcrunch.com/2025/04/10/trump-orders-federal-investigation-into-former-cisa-director-chris-krebs/" target="_blank" rel="noopener">Trump orders federal investigation into former CISA director Chris Krebs</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 10 Apr 2025</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-04-10"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://risky.biz/WWC8/" target="_blank" rel="noopener">Wide World of Cyber: How the Trump admin is changing the cybersecurity landscape</a></div><span class="article-meta">RISKY.BIZ &mdash; 10 Apr 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-04-10"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2025/04/gamaredon-uses-infected-removable.html" target="_blank" rel="noopener">Gamaredon Uses Infected Removable Drives to Breach Western Military Mission in Ukraine</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 10 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-10"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2025/04/malicious-npm-package-targets-atomic.html" target="_blank" rel="noopener">Malicious npm Package Targets Atomic Wallet, Exodus Users by Swapping Crypto Addresses</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 10 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-10"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://techcommunity.microsoft.com/blog/microsoft-security-blog/the-ultimate-guide-to-microsoft-security-at-rsac-2025/4402554" target="_blank" rel="noopener">The ultimate guide to Microsoft Security at RSAC 2025</a></div><span class="article-meta">TECHCOMMUNITY.MICROSOFT.COM &mdash; 10 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-10"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.lastwatchdog.com/my-take-ntts-physicists-tackle-the-question-ai-engineers-keep-dodging-what-are-we-creating/" target="_blank" rel="noopener">My Take: NTT’s physicists confront the mystery Big Tech keep dodging — what are we really creating?</a></div><span class="article-meta">LASTWATCHDOG.COM &mdash; 10 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-10"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.lastwatchdog.com/news-alert-ntt-unveils-ai-inference-chip-enabling-real-time-4k-processing-of-ultra-high-def-video/" target="_blank" rel="noopener">News alert: NTT unveils AI inference chip enabling real-time 4K processing of ultra-high-def video</a></div><span class="article-meta">LASTWATCHDOG.COM &mdash; 10 Apr 2025</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-04-10"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.kaspersky.com/blog/archive-and-disk-image-threats-and-security-policies/53295/" target="_blank" rel="noopener">Protecting against attacks in ZIP, RAR, CAB, MSI, ISO and other archives | Kaspersky official blog</a></div><span class="article-meta">KASPERSKY.COM &mdash; 10 Apr 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-04-10"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://krebsonsecurity.com/2025/04/china-based-sms-phishing-triad-pivots-to-banks/" target="_blank" rel="noopener">China-based SMS Phishing Triad Pivots to Banks</a></div><span class="article-meta">KREBSONSECURITY.COM &mdash; 10 Apr 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-04-10"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2025/04/playpraetor-reloaded-ctm360-uncovers.html" target="_blank" rel="noopener">PlayPraetor Reloaded: CTM360 Uncovers a Play Masquerading Party</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 10 Apr 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-04-10"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2025/04/the-identities-behind-ai-agents-deep.html" target="_blank" rel="noopener">The Identities Behind AI Agents: A Deep Dive Into AI &amp; NHI</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 10 Apr 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-04-10"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.welivesecurity.com/en/cybersecurity/watch-out-traps-lurking-search-results/" target="_blank" rel="noopener">Watch out for these traps lurking in search results</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 10 Apr 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="incomplete patch in nvidia toolkit leaves cve-2024-0132 open to container escapes" data-date="2025-04-10"><span class="headline-date">10 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/incomplete-patch-in-nvidia-toolkit.html" target="_blank" rel="noopener">Incomplete Patch in NVIDIA Toolkit Leaves CVE-2024-0132 Open to Container Escapes</a><span class="article-summary">Cybersecurity researchers have detailed a case of an incomplete patch for a previously addressed security flaw impacting the NVIDIA Container Toolkit that, if successfully exploited, could put sensitive data at risk. The original vulnerability CVE-2024-0132 (CVSS score: 9.0) is a…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="incomplete nvidia patch to cve-2024-0132 exposes ai infrastructure and data to critical risks" data-date="2025-04-10"><span class="headline-date">10 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/25/d/incomplete-nvidia-patch.html" target="_blank" rel="noopener">Incomplete NVIDIA Patch to CVE-2024-0132 Exposes AI Infrastructure and Data to Critical Risks</a><span class="article-summary">A previously disclosed vulnerability in NVIDIA Container Toolkit has an incomplete patch, which, if exploited, could put a wide range of AI infrastructure and sensitive data at risk.</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="europol arrests five smokeloader clients linked by seized database evidence" data-date="2025-04-10"><span class="headline-date">10 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/europol-arrests-five-smokeloader.html" target="_blank" rel="noopener">Europol Arrests Five SmokeLoader Clients Linked by Seized Database Evidence</a><span class="article-summary">Law enforcement authorities have announced that they tracked down the customers of the SmokeLoader malware and detained at least five individuals. "In a coordinated series of actions, customers of the Smokeloader pay-per-install botnet, operated by the actor known as 'Superstar,'…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="akirabot targets 420,000 sites with openai-generated spam, bypassing captcha protections" data-date="2025-04-10"><span class="headline-date">10 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/akirabot-targets-420000-sites-with.html" target="_blank" rel="noopener">AkiraBot Targets 420,000 Sites with OpenAI-Generated Spam, Bypassing CAPTCHA Protections</a><span class="article-summary">Cybersecurity researchers have disclosed details of an artificial intelligence (AI) powered platform called AkiraBot that's used to spam website chats, comment sections, and contact forms to promote dubious search engine optimization (SEO) services such as Akira and ServicewrapGO…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="cisa releases ten industrial control systems advisories" data-date="2025-04-10"><span class="headline-date">10 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2025/04/10/cisa-releases-ten-industrial-control-systems-advisories" target="_blank" rel="noopener">CISA Releases Ten Industrial Control Systems Advisories</a><span class="article-summary">CISA released ten Industrial Control Systems (ICS) advisories on April 10, 2025. These advisories provide timely information about current security issues, vulnerabilities, and exploits surrounding ICS. ICSA-25-100-01 Siemens License Server ICSA-25-100-02 Siemens SIDIS Prime ICSA…</span></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="security audit of php-src" data-date="2025-04-10"><span class="headline-date">10 Apr</span><span class="headline-body"><a class="headline-title" href="http://blog.quarkslab.com/security-audit-of-php-src.html" target="_blank" rel="noopener">Security audit of PHP-SRC</a><span class="article-summary">The Open Source Technology Improvement Fund, Inc , thanks to funding provided by Sovereign Tech Fund , engaged with Quarkslab to perform a security audit of PHP-SRC , the interpreter of the PHP language.</span></span><span class="headline-source">QUARKSLAB.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="trump orders federal investigation into former cisa director chris krebs" data-date="2025-04-10"><span class="headline-date">10 Apr</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/04/10/trump-orders-federal-investigation-into-former-cisa-director-chris-krebs/" target="_blank" rel="noopener">Trump orders federal investigation into former CISA director Chris Krebs</a><span class="article-summary">Trump fired Krebs by tweet in 2020 after he publicly debunked Trump's false claims of election fraud.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="wide world of cyber: how the trump admin is changing the cybersecurity landscape" data-date="2025-04-10"><span class="headline-date">10 Apr</span><span class="headline-body"><a class="headline-title" href="https://risky.biz/WWC8/" target="_blank" rel="noopener">Wide World of Cyber: How the Trump admin is changing the cybersecurity landscape</a><span class="article-summary">In this podcast, Patrick Gray chats with SentinelOne’s Chris Krebs and Alex Stamos about the huge changes afoot in the United States government and what they mean for the threat environment. From the director of NSA being fired to massive job cuts at CISA and huge foreign policy …</span></span><span class="headline-source">RISKY.BIZ</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="gamaredon uses infected removable drives to breach western military mission in ukraine" data-date="2025-04-10"><span class="headline-date">10 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/gamaredon-uses-infected-removable.html" target="_blank" rel="noopener">Gamaredon Uses Infected Removable Drives to Breach Western Military Mission in Ukraine</a><span class="article-summary">The Russia-linked threat actor known as Gamaredon (aka Shuckworm) has been attributed to a cyber attack targeting a foreign military mission based in Ukraine with an aim to deliver an updated version of a known malware called GammaSteel. The group targeted the military mission of…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="malicious npm package targets atomic wallet, exodus users by swapping crypto addresses" data-date="2025-04-10"><span class="headline-date">10 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/malicious-npm-package-targets-atomic.html" target="_blank" rel="noopener">Malicious npm Package Targets Atomic Wallet, Exodus Users by Swapping Crypto Addresses</a><span class="article-summary">Threat actors are continuing to upload malicious packages to the npm registry so as to tamper with already-installed local versions of legitimate libraries and execute malicious code in what's seen as a sneakier attempt to stage a software supply chain attack. The newly discovere…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="the ultimate guide to microsoft security at rsac 2025" data-date="2025-04-10"><span class="headline-date">10 Apr</span><span class="headline-body"><a class="headline-title" href="https://techcommunity.microsoft.com/blog/microsoft-security-blog/the-ultimate-guide-to-microsoft-security-at-rsac-2025/4402554" target="_blank" rel="noopener">The ultimate guide to Microsoft Security at RSAC 2025</a><span class="article-summary">For RSAC 2025, Microsoft Security is bringing an exciting lineup of sessions, expert panels, and exclusive networking opportunities to empower security professionals in the era of AI. The post The ultimate guide to Microsoft Security at RSAC 2025 appeared first on Microsoft Secur…</span></span><span class="headline-source">TECHCOMMUNITY.MICROSOFT.COM</span></div>
+<div class="headline" data-title="my take: ntt’s physicists confront the mystery big tech keep dodging — what are we really creating?" data-date="2025-04-10"><span class="headline-date">10 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.lastwatchdog.com/my-take-ntts-physicists-tackle-the-question-ai-engineers-keep-dodging-what-are-we-creating/" target="_blank" rel="noopener">My Take: NTT’s physicists confront the mystery Big Tech keep dodging — what are we really creating?</a><span class="article-summary">SAN FRANCISCO — If large language AI models are shaping our digital reality, then who—exactly—is shaping those models? And how the heck are they doing it? Related: What exactly is GenAI? Those are the questions Dr. Hidenori Tanaka wants to &#8230; (more…) The post My Take: NTT’s …</span></span><span class="headline-source">LASTWATCHDOG.COM</span></div>
+<div class="headline" data-title="news alert: ntt unveils ai inference chip enabling real-time 4k processing of ultra-high-def video" data-date="2025-04-10"><span class="headline-date">10 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.lastwatchdog.com/news-alert-ntt-unveils-ai-inference-chip-enabling-real-time-4k-processing-of-ultra-high-def-video/" target="_blank" rel="noopener">News alert: NTT unveils AI inference chip enabling real-time 4K processing of ultra-high-def video</a><span class="article-summary">TOKYO, Apr. 10, 2025 — Today, NTT Corporation ( NTT ) announced a new, large-scale integration (LSI) for the real-time AI inference processing of ultra-high-definition video up to 4K resolution and 30 frames per second (fps). This low-power technology is &#8230; (more…) The post …</span></span><span class="headline-source">LASTWATCHDOG.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="protecting against attacks in zip, rar, cab, msi, iso and other archives | kaspersky official blog" data-date="2025-04-10"><span class="headline-date">10 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.kaspersky.com/blog/archive-and-disk-image-threats-and-security-policies/53295/" target="_blank" rel="noopener">Protecting against attacks in ZIP, RAR, CAB, MSI, ISO and other archives | Kaspersky official blog</a><span class="article-summary">How attackers disguise malware in archives, and what to do to protect your business</span></span><span class="headline-source">KASPERSKY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="china-based sms phishing triad pivots to banks" data-date="2025-04-10"><span class="headline-date">10 Apr</span><span class="headline-body"><a class="headline-title" href="https://krebsonsecurity.com/2025/04/china-based-sms-phishing-triad-pivots-to-banks/" target="_blank" rel="noopener">China-based SMS Phishing Triad Pivots to Banks</a><span class="article-summary">China-based purveyors of SMS phishing kits are enjoying remarkable success converting phished payment card data into mobile wallets from Apple and Google. Until recently, the so-called “Smishing Triad” mainly impersonated toll road operators and shipping companies. But experts sa…</span></span><span class="headline-source">KREBSONSECURITY.COM</span></div>
+<div class="headline" data-title="playpraetor reloaded: ctm360 uncovers a play masquerading party" data-date="2025-04-10"><span class="headline-date">10 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/playpraetor-reloaded-ctm360-uncovers.html" target="_blank" rel="noopener">PlayPraetor Reloaded: CTM360 Uncovers a Play Masquerading Party</a><span class="article-summary">Overview of the PlayPraetor Masquerading Party Variants CTM360 has now identified a much larger extent of the ongoing Play Praetor campaign. What started with 6000+ URLs of a very specific banking attack has now grown to 16,000+ with multiple variants. This research is ongoing, a…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="the identities behind ai agents: a deep dive into ai &amp; nhi" data-date="2025-04-10"><span class="headline-date">10 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/the-identities-behind-ai-agents-deep.html" target="_blank" rel="noopener">The Identities Behind AI Agents: A Deep Dive Into AI &amp; NHI</a><span class="article-summary">AI agents have rapidly evolved from experimental technology to essential business tools. The OWASP framework explicitly recognizes that Non-Human Identities play a key role in agentic AI security. Their analysis highlights how these autonomous software entities can make decisions…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="watch out for these traps lurking in search results" data-date="2025-04-10"><span class="headline-date">10 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/en/cybersecurity/watch-out-traps-lurking-search-results/" target="_blank" rel="noopener">Watch out for these traps lurking in search results</a><span class="article-summary">Here’s how to avoid being hit by fraudulent websites that scammers can catapult directly to the top of your search results</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

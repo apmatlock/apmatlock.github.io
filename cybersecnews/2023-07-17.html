@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2023-07-17</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,83 +109,74 @@
       <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2023-07-17</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">22</span></button>
-<button class="filter-btn" data-cat="CISA KEV" onclick="filterCat('CISA KEV', this)">CISA KEV <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Podcasts" onclick="filterCat('Podcasts', this)">PODCASTS <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">5</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="CISA KEV" data-date="2023-07-17"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2023/07/17/cisa-adds-one-known-exploited-vulnerability-catalog" target="_blank" rel="noopener">CISA Adds One Known Exploited Vulnerability to Catalog</a><span class="article-summary">CISA has added one new vulnerability to its Known Exploited Vulnerabilities Catalog , based on evidence of active exploitation. CVE-2023-36884 Microsoft Office and Windows HTML Remote Code Execution Vulnerability These types of vulnerabilities are frequent attack vectors for mali…</span></div><span class="kev-badge">KEV</span><span class="article-meta">CISA.GOV &mdash; Mon, 17 Jul 23 1</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-07-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisecurity.org/advisory/a-vulnerability-in-fortios-and-fortiproxy-could-allow-for-remote-code-execution_2023-079" target="_blank" rel="noopener">A Vulnerability in FortiOS and FortiProxy Could Allow for Remote Code Execution</a></div><span class="article-meta">CISECURITY.ORG &mdash; 17 Jul 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-07-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisecurity.org/advisory/a-vulnerability-in-adobe-coldfusion-could-allow-for-arbitrary-code-execution_2023-078" target="_blank" rel="noopener">A Vulnerability in Adobe Coldfusion Could Allow for Arbitrary Code Execution</a></div><span class="article-meta">CISECURITY.ORG &mdash; 17 Jul 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-07-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisecurity.org/advisory/a-vulnerability-in-apple-products-could-allow-for-arbitrary-code-execution_2023-077" target="_blank" rel="noopener">A Vulnerability in Apple Products Could Allow for Arbitrary Code Execution</a></div><span class="article-meta">CISECURITY.ORG &mdash; 17 Jul 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-07-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/hackers-exploiting-critical-wordpress-woocommerce-payments-bug/" target="_blank" rel="noopener">Hackers exploiting critical WordPress WooCommerce Payments bug</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 17 Jul 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-07-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/critical-coldfusion-flaws-exploited-in-attacks-to-drop-webshells/" target="_blank" rel="noopener">Critical ColdFusion flaws exploited in attacks to drop webshells</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 17 Jul 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-07-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2023/07/hackers-exploit-webapk-to-deceive.html" target="_blank" rel="noopener">Hackers Exploit WebAPK to Deceive Android Users into Installing Malicious Apps</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 17 Jul 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-07-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2023/07/cybercriminals-exploit-microsoft-word.html" target="_blank" rel="noopener">Cybercriminals Exploit Microsoft Word Vulnerabilities to Deploy LokiBot Malware</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 17 Jul 2023</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-07-17"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/cisa-shares-free-tools-to-help-secure-data-in-the-cloud/" target="_blank" rel="noopener">CISA shares free tools to help secure data in the cloud</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 17 Jul 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-07-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/it-worker-jailed-for-impersonating-ransomware-gang-to-extort-employer/" target="_blank" rel="noopener">IT worker jailed for impersonating ransomware gang to extort employer</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 17 Jul 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-07-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/meet-noescape-avaddon-ransomware-gangs-likely-successor/" target="_blank" rel="noopener">Meet NoEscape: Avaddon ransomware gang's likely successor</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 17 Jul 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-07-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.securityweek.com/embracing-consolidation-and-squashing-silos/" target="_blank" rel="noopener">Embracing Consolidation and Squashing Silos</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 17 Jul 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-07-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2023/07/malicious-usb-drives-targetinging.html" target="_blank" rel="noopener">Malicious USB Drives Targetinging Global Targets with SOGU and SNOWYDRIVE Malware</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 17 Jul 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-07-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2023/07/cert-ua-uncovers-gamaredons-rapid-data.html" target="_blank" rel="noopener">CERT-UA Uncovers Gamaredon's Rapid Data Exfiltration Tactics Following Initial Compromise</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 17 Jul 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-07-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2023/07/tracking-down-a-suspect-through-cell-phone-records.html" target="_blank" rel="noopener">Tracking Down a Suspect through Cell Phone Records</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2023-07-17</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-07-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.cshub.com/attacks/news/microsoft-hack-sees-emails-stolen-from-us-agencies?utm_medium=RSS" target="_blank" rel="noopener">Microsoft hack sees emails stolen from US agencies</a></div><span class="article-meta">CSHUB.COM &mdash; 17 Jul 2023</span></div>
-<div class="article-row" data-cat="Podcasts" data-date="2023-07-17"><span class="cat-badge" style="border:1px solid rgba(85,170,204,0.5);background:rgba(85,170,204,0.10);" title="Podcasts">🎙️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/cyber-security-today-july-17-2023-usb-based-attacks-rising-attacks-on-aws-increasing-and-more" target="_blank" rel="noopener">Cyber Security Today, July 17, 2023 - USB-based attacks rising, attacks on AWS increasing and more</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 17 Jul 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-07-17"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/police-arrests-ukrainian-scareware-developer-after-10-year-hunt/" target="_blank" rel="noopener">Police arrests Ukrainian scareware developer after 10-year hunt</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 17 Jul 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-07-17"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/frontline-security-practitioners-reveal-the-latest-about-ai/" target="_blank" rel="noopener">Frontline Security Practitioners Reveal the Latest About AI</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 17 Jul 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-07-17"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2023/07/these-6-questions-will-help-you-choose.html" target="_blank" rel="noopener">These 6 Questions Will Help You Choose the Best Attack Surface Management Platform</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 17 Jul 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-07-17"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/23/g/fight-against-cyber-criminals.html" target="_blank" rel="noopener">Taking the Fight to the Cyber-Criminals</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 17 Jul 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-07-17"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://msrc.microsoft.com/blog/2023/07/from-bounty-leaderboards-to-microsoft-security-researcher-meet-cameron-vincent/" target="_blank" rel="noopener">From Bounty Leaderboards to Microsoft Security Researcher, Meet Cameron Vincent!</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 17 Jul 2023</span></div>
-    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa adds one known exploited vulnerability to catalog" data-date="2023-07-17"><span class="headline-date">17 Jul <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2023/07/17/cisa-adds-one-known-exploited-vulnerability-catalog" target="_blank" rel="noopener">CISA Adds One Known Exploited Vulnerability to Catalog</a><span class="article-summary">CISA has added one new vulnerability to its Known Exploited Vulnerabilities Catalog , based on evidence of active exploitation. CVE-2023-36884 Microsoft Office and Windows HTML Remote Code Execution Vulnerability These types of vulnerabilities are frequent attack vectors for mali…</span></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="a vulnerability in fortios and fortiproxy could allow for remote code execution" data-date="2023-07-17"><span class="headline-date">17 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.cisecurity.org/advisory/a-vulnerability-in-fortios-and-fortiproxy-could-allow-for-remote-code-execution_2023-079" target="_blank" rel="noopener">A Vulnerability in FortiOS and FortiProxy Could Allow for Remote Code Execution</a><span class="article-summary">A vulnerability has been discovered in Fortinet FortiOS and FortiProxy, which could allow for remote code execution. FortiOS is the Fortinet’s proprietary Operation System which is utilized across multiple product lines. FortiProxy is a secure web gateway that attempts to protect…</span></span><span class="headline-source">CISECURITY.ORG</span></div>
+<div class="headline" data-title="a vulnerability in adobe coldfusion could allow for arbitrary code execution" data-date="2023-07-17"><span class="headline-date">17 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.cisecurity.org/advisory/a-vulnerability-in-adobe-coldfusion-could-allow-for-arbitrary-code-execution_2023-078" target="_blank" rel="noopener">A Vulnerability in Adobe Coldfusion Could Allow for Arbitrary Code Execution</a><span class="article-summary">A vulnerability has been discovered in Adobe Coldfusion which could allow for arbitrary code execution. Adobe ColdFusion is a commercial web-application development platform designed to build and deploy web applications. Successful exploitation of this vulnerabilities could allow…</span></span><span class="headline-source">CISECURITY.ORG</span></div>
+<div class="headline" data-title="a vulnerability in apple products could allow for arbitrary code execution" data-date="2023-07-17"><span class="headline-date">17 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.cisecurity.org/advisory/a-vulnerability-in-apple-products-could-allow-for-arbitrary-code-execution_2023-077" target="_blank" rel="noopener">A Vulnerability in Apple Products Could Allow for Arbitrary Code Execution</a><span class="article-summary">A vulnerability has been discovered in Apple products, which could allow for arbitrary code execution. iOS is a mobile operating system for mobile devices, including the iPhone, iPad, and iPod touch. iPadOS is the successor to iOS 12 and is a mobile operating system for iPads. ma…</span></span><span class="headline-source">CISECURITY.ORG</span></div>
+<div class="headline" data-title="hackers exploiting critical wordpress woocommerce payments bug" data-date="2023-07-17"><span class="headline-date">17 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/hackers-exploiting-critical-wordpress-woocommerce-payments-bug/" target="_blank" rel="noopener">Hackers exploiting critical WordPress WooCommerce Payments bug</a><span class="article-summary">Hackers are conducting widespread exploitation of a critical WooCommerce Payments plugin to gain the privileges of any users, including administrators, on vulnerable WordPress installation. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="critical coldfusion flaws exploited in attacks to drop webshells" data-date="2023-07-17"><span class="headline-date">17 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/critical-coldfusion-flaws-exploited-in-attacks-to-drop-webshells/" target="_blank" rel="noopener">Critical ColdFusion flaws exploited in attacks to drop webshells</a><span class="article-summary">Hackers are actively exploiting two ColdFusion vulnerabilities to bypass authentication and remotely execute commands to install webshells on vulnerable servers. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="hackers exploit webapk to deceive android users into installing malicious apps" data-date="2023-07-17"><span class="headline-date">17 Jul</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/07/hackers-exploit-webapk-to-deceive.html" target="_blank" rel="noopener">Hackers Exploit WebAPK to Deceive Android Users into Installing Malicious Apps</a><span class="article-summary">Threat actors are taking advantage of Android's WebAPK technology to trick unsuspecting users into installing malicious web apps on Android phones that are designed to capture sensitive personal information. "The attack began with victims receiving SMS messages suggesting the nee…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="cybercriminals exploit microsoft word vulnerabilities to deploy lokibot malware" data-date="2023-07-17"><span class="headline-date">17 Jul</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/07/cybercriminals-exploit-microsoft-word.html" target="_blank" rel="noopener">Cybercriminals Exploit Microsoft Word Vulnerabilities to Deploy LokiBot Malware</a><span class="article-summary">Microsoft Word documents exploiting known remote code execution flaws are being used as phishing lures to drop malware called LokiBot on compromised systems. "LokiBot, also known as Loki PWS, has been a well-known information-stealing Trojan active since 2015," Fortinet FortiGuar…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa shares free tools to help secure data in the cloud" data-date="2023-07-17"><span class="headline-date">17 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/cisa-shares-free-tools-to-help-secure-data-in-the-cloud/" target="_blank" rel="noopener">CISA shares free tools to help secure data in the cloud</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) has shared a factsheet providing details on free tools and guidance for securing digital assets after switching to the cloud from on-premises environments. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="it worker jailed for impersonating ransomware gang to extort employer" data-date="2023-07-17"><span class="headline-date">17 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/it-worker-jailed-for-impersonating-ransomware-gang-to-extort-employer/" target="_blank" rel="noopener">IT worker jailed for impersonating ransomware gang to extort employer</a><span class="article-summary">28-year-old Ashley Liles, a former IT employee, has been sentenced to over three years in prison for attempting to blackmail his employer during a ransomware attack. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="meet noescape: avaddon ransomware gang's likely successor" data-date="2023-07-17"><span class="headline-date">17 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/meet-noescape-avaddon-ransomware-gangs-likely-successor/" target="_blank" rel="noopener">Meet NoEscape: Avaddon ransomware gang's likely successor</a><span class="article-summary">The new NoEscape ransomware operation is believed to be a rebrand of Avaddon, a ransomware gang that shut down and released its decryption keys in 2021. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="embracing consolidation and squashing silos" data-date="2023-07-17"><span class="headline-date">17 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/embracing-consolidation-and-squashing-silos/" target="_blank" rel="noopener">Embracing Consolidation and Squashing Silos</a><span class="article-summary">While silos pose significant dangers to an enterprise's cybersecurity posture, consolidation serves as a powerful solution to overcome these risks, offering improved visibility, efficiency, incident response capabilities, and risk management. The post Embracing Consolidation and …</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="malicious usb drives targetinging global targets with sogu and snowydrive malware" data-date="2023-07-17"><span class="headline-date">17 Jul</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/07/malicious-usb-drives-targetinging.html" target="_blank" rel="noopener">Malicious USB Drives Targetinging Global Targets with SOGU and SNOWYDRIVE Malware</a><span class="article-summary">Cyber attacks using infected USB infection drives as an initial access vector have witnessed a three-fold increase in the first half of 2023, That's according to new findings from Mandiant, which detailed two such campaigns – SOGU and SNOWYDRIVE – targeting both public and privat…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="cert-ua uncovers gamaredon's rapid data exfiltration tactics following initial compromise" data-date="2023-07-17"><span class="headline-date">17 Jul</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/07/cert-ua-uncovers-gamaredons-rapid-data.html" target="_blank" rel="noopener">CERT-UA Uncovers Gamaredon's Rapid Data Exfiltration Tactics Following Initial Compromise</a><span class="article-summary">The Russia-linked threat actor known as Gamaredon has been observed conducting data exfiltration activities within an hour of the initial compromise. "As a vector of primary compromise, for the most part, emails and messages in messengers (Telegram, WhatsApp, Signal) are used, in…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="tracking down a suspect through cell phone records" data-date="2023-07-17"><span class="headline-date">17 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2023/07/tracking-down-a-suspect-through-cell-phone-records.html" target="_blank" rel="noopener">Tracking Down a Suspect through Cell Phone Records</a><span class="article-summary">Interesting forensics in connection with a serial killer arrest: Investigators went through phone records collected from both midtown Manhattan and the Massapequa Park area of Long Island&#8212;two areas connected to a &#8220;burner phone&#8221; they had tied to the killings. (In…</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="microsoft hack sees emails stolen from us agencies" data-date="2023-07-17"><span class="headline-date">17 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.cshub.com/attacks/news/microsoft-hack-sees-emails-stolen-from-us-agencies?utm_medium=RSS" target="_blank" rel="noopener">Microsoft hack sees emails stolen from US agencies</a><span class="article-summary">Microsoft said that a “China-based threat actor with espionage objectives” was responsible for the hack</span></span><span class="headline-source">CSHUB.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-podcasts">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(85,170,204,0.5);" onclick="toggleSection(this)">🎙️ PODCASTS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cyber security today, july 17, 2023 - usb-based attacks rising, attacks on aws increasing and more" data-date="2023-07-17"><span class="headline-date">17 Jul</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/cyber-security-today-july-17-2023-usb-based-attacks-rising-attacks-on-aws-increasing-and-more" target="_blank" rel="noopener">Cyber Security Today, July 17, 2023 - USB-based attacks rising, attacks on AWS increasing and more</a><span class="article-summary">This episode reports on attacks on AWS, Azure and Google Cloud environments, Russia's attempt to disconnect from the global internet and more</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="police arrests ukrainian scareware developer after 10-year hunt" data-date="2023-07-17"><span class="headline-date">17 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/police-arrests-ukrainian-scareware-developer-after-10-year-hunt/" target="_blank" rel="noopener">Police arrests Ukrainian scareware developer after 10-year hunt</a><span class="article-summary">The Spanish National Police has apprehended a Ukrainian national wanted internationally for his involvement in a scareware operation spanning from 2006 to 2011. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="frontline security practitioners reveal the latest about ai" data-date="2023-07-17"><span class="headline-date">17 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/frontline-security-practitioners-reveal-the-latest-about-ai/" target="_blank" rel="noopener">Frontline Security Practitioners Reveal the Latest About AI</a><span class="article-summary">Organizers at mWISE, the anticipated cybersecurity conference from Mandiant, now part of Google Cloud, have released this year's session catalog. Learn more from Mandiant about the upcoming mWise sessions. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="these 6 questions will help you choose the best attack surface management platform" data-date="2023-07-17"><span class="headline-date">17 Jul</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/07/these-6-questions-will-help-you-choose.html" target="_blank" rel="noopener">These 6 Questions Will Help You Choose the Best Attack Surface Management Platform</a><span class="article-summary">The hype around different security categories can make it difficult to discern features and capabilities from bias when researching new platforms. You want to advance your security measures, but what steps actually make sense for your business? For anyone ready to find an attack …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="taking the fight to the cyber-criminals" data-date="2023-07-17"><span class="headline-date">17 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/23/g/fight-against-cyber-criminals.html" target="_blank" rel="noopener">Taking the Fight to the Cyber-Criminals</a><span class="article-summary">Trend Micro and INTERPOL collaborate to create a safer digital world</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+<div class="headline" data-title="from bounty leaderboards to microsoft security researcher, meet cameron vincent!" data-date="2023-07-17"><span class="headline-date">17 Jul</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/blog/2023/07/from-bounty-leaderboards-to-microsoft-security-researcher-meet-cameron-vincent/" target="_blank" rel="noopener">From Bounty Leaderboards to Microsoft Security Researcher, Meet Cameron Vincent!</a><span class="article-summary">Fun Facts: Game you binged: Guitar Hero and Rock Band fanatic. Go to snack: Nutri-Grain Bars. Favorite Drink: Soda – Coca Cola specifically. Favorite Place: Singapore – stayed an extra week after a hacking collaboration and truly fell in love and hopes to get back as soon as poss…</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-01-07</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,73 +109,64 @@
       <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-01-07</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">12</span></button>
-<button class="filter-btn" data-cat="CISA KEV" onclick="filterCat('CISA KEV', this)">CISA KEV <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Podcasts" onclick="filterCat('Podcasts', this)">PODCASTS <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="CISA KEV" data-date="2025-01-07"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2025/01/07/cisa-adds-three-known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA Adds Three Known Exploited Vulnerabilities to Catalog</a><span class="article-summary">CISA has added three new vulnerabilities to its&nbsp; Known Exploited Vulnerabilities Catalog , based on evidence of active exploitation. CVE-2024-41713 &nbsp;Mitel MiCollab Path Traversal Vulnerability CVE-2024-55550 &nbsp;Mitel MiCollab Path Traversal Vulnerability CVE-2020-288…</span></div><span class="kev-badge">KEV</span><span class="article-meta">CISA.GOV &mdash; Tue, 07 Jan 25 1</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-07"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://darknetdiaries.com/episode/153/" target="_blank" rel="noopener">153: Bike Index</a></div><span class="article-meta">DARKNETDIARIES.COM &mdash; 07 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-07"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://krebsonsecurity.com/2025/01/a-day-in-the-life-of-a-prolific-voice-phishing-crew/" target="_blank" rel="noopener">A Day in the Life of a Prolific Voice Phishing Crew</a></div><span class="article-meta">KREBSONSECURITY.COM &mdash; 07 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-07"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2025/01/07/cisa-releases-two-industrial-control-systems-advisories" target="_blank" rel="noopener">CISA Releases Two Industrial Control Systems Advisories</a></div><span class="article-meta">CISA.GOV &mdash; Tue, 07 Jan 25 1</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-07"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://securityintelligence.com/posts/mobile-device-security-why-protection-is-critical-hybrid-workforce/" target="_blank" rel="noopener">Mobile device security: Why protection is critical in the hybrid workforce</a></div><span class="article-meta">SECURITYINTELLIGENCE.COM &mdash; 07 Jan 2025</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-07"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.cisa.gov/news-events/news/cisa-releases-new-sector-specific-goals-it-and-product-design" target="_blank" rel="noopener">CISA Releases New Sector Specific Goals for IT and Product Design</a></div><span class="article-meta">CISA.GOV &mdash; Tue, 07 Jan 25 1</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-07"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.welivesecurity.com/en/business-security/state-aligned-apt-groups-increasingly-deploying-ransomware/" target="_blank" rel="noopener">State-aligned actors are increasingly deploying ransomware – and that’s bad news for everyone</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 07 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.lastwatchdog.com/news-alert-security-risk-advisors-joins-microsoft-intelligent-security-association-misa/" target="_blank" rel="noopener">News Alert: Security Risk Advisors joins Microsoft Intelligent Security Association (MISA)</a></div><span class="article-meta">LASTWATCHDOG.COM &mdash; 07 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.lastwatchdog.com/news-alert-cytwist-launches-threat-detection-engine-tuned-to-identify-ai-driven-malware-in-minutes/" target="_blank" rel="noopener">News alert: CyTwist launches threat detection engine tuned to identify AI-driven malware in minutes</a></div><span class="article-meta">LASTWATCHDOG.COM &mdash; 07 Jan 2025</span></div>
-<div class="article-row" data-cat="Podcasts" data-date="2025-01-07"><span class="cat-badge" style="border:1px solid rgba(85,170,204,0.5);background:rgba(85,170,204,0.10);" title="Podcasts">🎙️</span><div class="article-body"><a href="https://grahamcluley.com/the-ai-fix-32/" target="_blank" rel="noopener">The AI Fix #32: Agentic AI, killer robot fridges, and the robosexual revolution</a></div><span class="article-meta">GRAHAMCLULEY.COM &mdash; 07 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-07"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/25/a/mitre-attack-container-security-detection.html" target="_blank" rel="noopener">Trend Micro Contributes and Maps Container Security to MITRE ATT&amp;CK: A Game-Changer for Cyber Defense</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 07 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-07"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/24/l/ultimate-aws-reinvent-2024-recap.html" target="_blank" rel="noopener">2024 Perspective: The Ultimate re:Invent Recap</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 07 Jan 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa adds three known exploited vulnerabilities to catalog" data-date="2025-01-07"><span class="headline-date">7 Jan <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2025/01/07/cisa-adds-three-known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA Adds Three Known Exploited Vulnerabilities to Catalog</a><span class="article-summary">CISA has added three new vulnerabilities to its&nbsp; Known Exploited Vulnerabilities Catalog , based on evidence of active exploitation. CVE-2024-41713 &nbsp;Mitel MiCollab Path Traversal Vulnerability CVE-2024-55550 &nbsp;Mitel MiCollab Path Traversal Vulnerability CVE-2020-288…</span></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="153: bike index" data-date="2025-01-07"><span class="headline-date">7 Jan</span><span class="headline-body"><a class="headline-title" href="https://darknetdiaries.com/episode/153/" target="_blank" rel="noopener">153: Bike Index</a><span class="article-summary">Have you ever got your bike stolen? In this episode we dive into the world of stolen bikes. Who does it and where do the bikes go? We talk with Bryan from Bike Index who investigates this. https://bikeindex.org Sponsors Support for this show comes from ThreatLocker® . ThreatLocke…</span></span><span class="headline-source">DARKNETDIARIES.COM</span></div>
+<div class="headline" data-title="a day in the life of a prolific voice phishing crew" data-date="2025-01-07"><span class="headline-date">7 Jan</span><span class="headline-body"><a class="headline-title" href="https://krebsonsecurity.com/2025/01/a-day-in-the-life-of-a-prolific-voice-phishing-crew/" target="_blank" rel="noopener">A Day in the Life of a Prolific Voice Phishing Crew</a><span class="article-summary">Besieged by scammers seeking to phish user accounts over the telephone, Apple and Google frequently caution that they will never reach out unbidden to users this way. However, new details about the internal operations of a prolific voice phishing gang show the group routinely abu…</span></span><span class="headline-source">KREBSONSECURITY.COM</span></div>
+<div class="headline" data-title="cisa releases two industrial control systems advisories" data-date="2025-01-07"><span class="headline-date">7 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2025/01/07/cisa-releases-two-industrial-control-systems-advisories" target="_blank" rel="noopener">CISA Releases Two Industrial Control Systems Advisories</a><span class="article-summary">CISA released two Industrial Control Systems (ICS) advisories on January 7, 2025. These advisories provide timely information about current security issues, vulnerabilities, and exploits surrounding ICS. ICSA-25-007-01 ABB ASPECT-Enterprise, NEXUS, and MATRIX Series Products ICSA…</span></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="mobile device security: why protection is critical in the hybrid workforce" data-date="2025-01-07"><span class="headline-date">7 Jan</span><span class="headline-body"><a class="headline-title" href="https://securityintelligence.com/posts/mobile-device-security-why-protection-is-critical-hybrid-workforce/" target="_blank" rel="noopener">Mobile device security: Why protection is critical in the hybrid workforce</a><span class="article-summary">In our mobile-first/mobile-last world, many employees&#8217; work days both start and end on a mobile device. Mobile devices are now essential tools for productivity and communication. As many organizations transition to hybrid work environments, mobile devices offer a rich targe…</span></span><span class="headline-source">SECURITYINTELLIGENCE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa releases new sector specific goals for it and product design" data-date="2025-01-07"><span class="headline-date">7 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/news/cisa-releases-new-sector-specific-goals-it-and-product-design" target="_blank" rel="noopener">CISA Releases New Sector Specific Goals for IT and Product Design</a></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="state-aligned actors are increasingly deploying ransomware – and that’s bad news for everyone" data-date="2025-01-07"><span class="headline-date">7 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/en/business-security/state-aligned-apt-groups-increasingly-deploying-ransomware/" target="_blank" rel="noopener">State-aligned actors are increasingly deploying ransomware – and that’s bad news for everyone</a><span class="article-summary">The blurring of lines between cybercrime and state-sponsored attacks underscores the increasingly fluid and multifaceted nature of today’s cyberthreats</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="news alert: security risk advisors joins microsoft intelligent security association (misa)" data-date="2025-01-07"><span class="headline-date">7 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.lastwatchdog.com/news-alert-security-risk-advisors-joins-microsoft-intelligent-security-association-misa/" target="_blank" rel="noopener">News Alert: Security Risk Advisors joins Microsoft Intelligent Security Association (MISA)</a><span class="article-summary">Philadelphia, Pa., Jan. 7, 2025, CyberNewswire &#8212; Security Risk Advisors today announced it has become a member of the Microsoft Intelligent Security Association (MISA), an ecosystem of independent software vendors (ISVs) and managed security service providers (MSSPs) that h…</span></span><span class="headline-source">LASTWATCHDOG.COM</span></div>
+<div class="headline" data-title="news alert: cytwist launches threat detection engine tuned to identify ai-driven malware in minutes" data-date="2025-01-07"><span class="headline-date">7 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.lastwatchdog.com/news-alert-cytwist-launches-threat-detection-engine-tuned-to-identify-ai-driven-malware-in-minutes/" target="_blank" rel="noopener">News alert: CyTwist launches threat detection engine tuned to identify AI-driven malware in minutes</a><span class="article-summary">Ramat Gan, Israel, January 7th, 2025, CyberNewswire &#8212; CyTwist , a leader in advanced next-generation threat detection solutions, has launched its patented detection engine to combat the insidious rise of AI-generated malware. The cybersecurity landscape is evolving as attac…</span></span><span class="headline-source">LASTWATCHDOG.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-podcasts">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(85,170,204,0.5);" onclick="toggleSection(this)">🎙️ PODCASTS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the ai fix #32: agentic ai, killer robot fridges, and the robosexual revolution" data-date="2025-01-07"><span class="headline-date">7 Jan</span><span class="headline-body"><a class="headline-title" href="https://grahamcluley.com/the-ai-fix-32/" target="_blank" rel="noopener">The AI Fix #32: Agentic AI, killer robot fridges, and the robosexual revolution</a><span class="article-summary">In episode 32 of The AI Fix, our hosts learn the meaning of "poronkusema", Mark discovers his dream job, a school tries using AI instead of teachers, the "Godfather of AI" says AI will see us as toddlers, and Graham lifts the lid on the hidden threat of killer robot fridges. Mark…</span></span><span class="headline-source">GRAHAMCLULEY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="trend micro contributes and maps container security to mitre att&amp;ck: a game-changer for cyber defense" data-date="2025-01-07"><span class="headline-date">7 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/25/a/mitre-attack-container-security-detection.html" target="_blank" rel="noopener">Trend Micro Contributes and Maps Container Security to MITRE ATT&amp;CK: A Game-Changer for Cyber Defense</a><span class="article-summary">Trend Micro leads the way by mapping its Container Security detection capabilities to the MITRE ATT&amp;CK framework for Containers and contributing real-world attack data.</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+<div class="headline" data-title="2024 perspective: the ultimate re:invent recap" data-date="2025-01-07"><span class="headline-date">7 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/24/l/ultimate-aws-reinvent-2024-recap.html" target="_blank" rel="noopener">2024 Perspective: The Ultimate re:Invent Recap</a><span class="article-summary">Ashley & Danielle's Ultimate Recap</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

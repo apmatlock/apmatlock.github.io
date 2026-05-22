@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-12-01</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,66 +109,41 @@
       <div class="stat"><span class="stat-value">3</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-12-01</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">9</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">5</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/ransomware-developer-arrested/" target="_blank" rel="noopener">Ransomware Developer Mikhail Matveev Arrested in Russia</a></div><span class="article-meta">GBHACKERS.COM &mdash; 01 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.troyhunt.com/weekly-update-428/" target="_blank" rel="noopener">Weekly Update 428</a></div><span class="article-meta">TROYHUNT.COM &mdash; 01 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/20689872" target="_blank" rel="noopener">SpyLoan: A Global Threat Exploiting Social Engineering</a></div><span class="article-meta">INFOSEC.PUB &mdash; 1 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-01"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/watch?v=8ZkhP6ioR44" target="_blank" rel="noopener">FTC Secrets: How Starwood's Breaches Cost Marriott Millions</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-01</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-01"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=E72BolfmvdA" target="_blank" rel="noopener">Millennials vs. Gen Z: Do You Know THIS Pop Song?</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-01</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-01"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=-el7hUvzuqw" target="_blank" rel="noopener">DIY McRib: A Delicious Disaster? 😅🍖</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-01</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-01"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/novel-phising-campaign-uses-corrupted-word-documents-to-evade-security/" target="_blank" rel="noopener">Novel phising campaign uses corrupted Word documents to evade security</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 01 Dec 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-01"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/novel-phishing-campaign-uses-corrupted-word-documents-to-evade-security/" target="_blank" rel="noopener">Novel phishing campaign uses corrupted Word documents to evade security</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 01 Dec 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-01"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/24/l/good-agentic-ai.html" target="_blank" rel="noopener">AI Pulse: The Good from AI and the Promise of Agentic</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 01 Dec 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ransomware developer mikhail matveev arrested in russia" data-date="2024-12-01"><span class="headline-date">1 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/ransomware-developer-arrested/" target="_blank" rel="noopener">Ransomware Developer Mikhail Matveev Arrested in Russia</a><span class="article-summary">Russian authorities have arrested Mikhail Matveev, a notorious Russian hacker linked to multiple ransomware attacks worldwide. Matveev, who was also known by online aliases such as Wazawaka, Uhodiransomwar, m1x, and Boriselcin, was detained in Kaliningrad, Russia, following an in…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="weekly update 428" data-date="2024-12-01"><span class="headline-date">1 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.troyhunt.com/weekly-update-428/" target="_blank" rel="noopener">Weekly Update 428</a><span class="article-summary">Presently sponsored by: 1Password Extended Access Management: Secure every sign-in for every app on every device. I wouldn&apos;t say this is a list of my favourite breaches from this year as that&apos;s a bit of a disingenuous term, but oh boy were there some memorable ones. So …</span></span><span class="headline-source">TROYHUNT.COM</span></div>
+<div class="headline" data-title="spyloan: a global threat exploiting social engineering" data-date="2024-12-01"><span class="headline-date">1 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/20689872" target="_blank" rel="noopener">SpyLoan: A Global Threat Exploiting Social Engineering</a><span class="article-summary">submitted by Joker to cybersecurity 1 points | 0 comments https://www.mcafee.com/blogs/other-blogs/mcafee-labs/spyloan-a-global-threat-exploiting-social-engineering/ The McAfee mobile research team recently identified a significant global increase of SpyLoan, also known as predat…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ftc secrets: how starwood's breaches cost marriott millions" data-date="2024-12-01"><span class="headline-date">1 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=8ZkhP6ioR44" target="_blank" rel="noopener">FTC Secrets: How Starwood's Breaches Cost Marriott Millions</a><span class="article-summary">Discover the untold story of how Starwood's cybersecurity flaws became Marriott's nightmare. 🚨 This video dives into the FTC complaint that reveals the critical mistakes behind one of the most notorious data breaches ever. Learn what went wrong, why it matters, and how it changed…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="millennials vs. gen z: do you know this pop song?" data-date="2024-12-01"><span class="headline-date">1 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=E72BolfmvdA" target="_blank" rel="noopener">Millennials vs. Gen Z: Do You Know THIS Pop Song?</a><span class="article-summary">Ever felt the generational gap hit you in the feels? 🤯 Join Tyler, Adrian, Katie, and Darwin as they hilariously debate the pop songs that defined their youth. Tyler reflects on the days when radio ruled our lives, while Darwin gets grilled for his Gen Z knowledge. It's a clash o…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="diy mcrib: a delicious disaster? 😅🍖" data-date="2024-12-01"><span class="headline-date">1 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=-el7hUvzuqw" target="_blank" rel="noopener">DIY McRib: A Delicious Disaster? 😅🍖</a><span class="article-summary">Ever wondered what happens when you try to recreate the infamous McRib at home? From the tangy BBQ sauce to the essential pickles (yes, they’re a MUST 🥒), things can get messy—fast!</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="novel phising campaign uses corrupted word documents to evade security" data-date="2024-12-01"><span class="headline-date">1 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/novel-phising-campaign-uses-corrupted-word-documents-to-evade-security/" target="_blank" rel="noopener">Novel phising campaign uses corrupted Word documents to evade security</a><span class="article-summary">A novel phishing attack abuses Microsoft's Word file recovery feature by sending corrupted Word documents as email attachments, allowing them to bypass security software due to their damaged state but still be recoverable by the application. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="novel phishing campaign uses corrupted word documents to evade security" data-date="2024-12-01"><span class="headline-date">1 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/novel-phishing-campaign-uses-corrupted-word-documents-to-evade-security/" target="_blank" rel="noopener">Novel phishing campaign uses corrupted Word documents to evade security</a><span class="article-summary">A novel phishing attack abuses Microsoft's Word file recovery feature by sending corrupted Word documents as email attachments, allowing them to bypass security software due to their damaged state but still be recoverable by the application. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="ai pulse: the good from ai and the promise of agentic" data-date="2024-12-01"><span class="headline-date">1 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/24/l/good-agentic-ai.html" target="_blank" rel="noopener">AI Pulse: The Good from AI and the Promise of Agentic</a><span class="article-summary">The perils of AI get a lot of airtime, but what are the upsides? This issue of AI Pulse looks at some of the good AI can bring, from strengthening cybersecurity to driving health breakthroughs—and how the coming wave of agentic AI is going to take those possibilities to a whole n…</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

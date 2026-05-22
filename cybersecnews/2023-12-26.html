@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2023-12-26</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,81 +109,64 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2023-12-26</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">22</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">4</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/android-malware-actively-infecting-devices/" target="_blank" rel="noopener">Android Malware Actively Infecting Devices to Take Full Control</a></div><span class="article-meta">GBHACKERS.COM &mdash; 26 Dec 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/cisco-acquire-isovalent/" target="_blank" rel="noopener">Cisco to Acquire Cloud Networking and Security Startup Isovalent</a></div><span class="article-meta">GBHACKERS.COM &mdash; 26 Dec 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/hackers-attacking-linux-ssh-servers/" target="_blank" rel="noopener">Hackers Attacking Linux SSH Servers to Deploy Scanner Malware</a></div><span class="article-meta">GBHACKERS.COM &mdash; 26 Dec 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/1272516/how-the-new-instegogram-threat-creates-liability-for-organizations.html" target="_blank" rel="noopener">How the new Instegogram threat creates liability for organizations</a></div><span class="article-meta">CSOONLINE.COM &mdash; 26 Dec 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://web.archive.org/web/20231223011509/https://www.theregister.com/2023/12/22/how_to_infiltrate_ransomware_gangs/" target="_blank" rel="noopener">Cybercrime experts reveal how to infiltrate ransomware gangs</a></div><span class="article-meta">WEB.ARCHIVE.ORG &mdash; 26 Dec 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://web.archive.org/web/20231222214630/https://therecord.media/europol-identifies-hundreds-ecommerce-skimmers" target="_blank" rel="noopener">Europol identifies hundreds of e-commerce platforms used in digital skimming attacks</a></div><span class="article-meta">WEB.ARCHIVE.ORG &mdash; 26 Dec 2023</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-12-26"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://web.archive.org/web/20231224000511/https://therecord.media/countries-brace-influence-operations-hacking-campaigns-ahead-historic-2024-election-cycle" target="_blank" rel="noopener">Countries brace for influence operations, hacking campaigns ahead of historic 2024 election cycle</a></div><span class="article-meta">WEB.ARCHIVE.ORG &mdash; 26 Dec 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-12-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/integris-health-patients-get-extortion-emails-after-cyberattack/" target="_blank" rel="noopener">Integris Health patients get extortion emails after cyberattack</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 26 Dec 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-12-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2023/12/carbanak-banking-malware-resurfaces.html" target="_blank" rel="noopener">Carbanak Banking Malware Resurfaces with New Ransomware Tactics</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 26 Dec 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-12-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://blog.knowbe4.com/the-ai-threat-how-americas-2024-election-could-be-compromised" target="_blank" rel="noopener">The AI Threat: How America's 2024 Election Could Be Compromised</a></div><span class="article-meta">KNOWBE4.COM &mdash; 26 Dec 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-12-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2023/12/26/cbs-paramount-owner-national-amusements-hacked/" target="_blank" rel="noopener">CBS, Paramount owner National Amusements says it was hacked</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 26 Dec 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-12-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2023/12/26/hackers-stole-2-billion-in-crypto-in-2023-data-shows/" target="_blank" rel="noopener">Hackers stole $2 billion in crypto in 2023, data shows</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 26 Dec 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-12-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2023/12/google-stops-collecting-location-data-from-maps.html" target="_blank" rel="noopener">Google Stops Collecting Location Data from Maps</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2023-12-26</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-12-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://blog.knowbe4.com/nice-i-made-it-in-the-top-25-cybersecurity-ceos-to-watch-in-2024" target="_blank" rel="noopener">Nice! I The Top 25 Cybersecurity CEOs to Watch in 2024</a></div><span class="article-meta">KNOWBE4.COM &mdash; 26 Dec 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-12-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/apis-from-bot-attacks/" target="_blank" rel="noopener">How Do You Protect Your APIs from Bot Attacks?</a></div><span class="article-meta">GBHACKERS.COM &mdash; 26 Dec 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-12-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=PSobppBs0a4" target="_blank" rel="noopener">Crypto Identity - SWN Vault</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2023-12-26</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-12-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=VZlijtxM3WY" target="_blank" rel="noopener">High Consequences Cyber: Make or Break the CISO’s Reputation - Andy Jaquith - CSP #154</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2023-12-26</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-12-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/a-comprehensive-guide/" target="_blank" rel="noopener">A Comprehensive Guide on How to Choose a Cryptocurrency Payment Processor</a></div><span class="article-meta">GBHACKERS.COM &mdash; 26 Dec 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-12-26"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/software/github-warns-users-to-enable-2fa-before-upcoming-deadline/" target="_blank" rel="noopener">GitHub warns users to enable 2FA before upcoming deadline</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 26 Dec 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-12-26"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2023/12/26/what-vcs-are-looking-for-in-the-next-wave-of-cybersecurity-startups/" target="_blank" rel="noopener">What VCs are looking for in the next wave of cybersecurity startups</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 26 Dec 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-12-26"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://packetstormsecurity.com/news/view/35334/Hackers-Use-Six-Year-Old-Microsoft-Office-Bug-To-Spread-Agent-Tesla.html" target="_blank" rel="noopener">Hackers Use Six Year Old Microsoft Office Bug To Spread Agent Tesla</a></div><span class="article-meta">PACKETSTORMSECURITY.COM &mdash; 26 Dec 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-12-26"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://packetstormsecurity.com/news/view/35333/2023-Rewind-The-Year-In-Cybersecurity.html" target="_blank" rel="noopener">2023 Rewind: The Year In Cybersecurity</a></div><span class="article-meta">PACKETSTORMSECURITY.COM &mdash; 26 Dec 2023</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="android malware actively infecting devices to take full control" data-date="2023-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/android-malware-actively-infecting-devices/" target="_blank" rel="noopener">Android Malware Actively Infecting Devices to Take Full Control</a><span class="article-summary">Android malware infects devices to take full control for various illicit purposes like:-&#160; By gaining complete control, threat actors can exploit the device for their illicit activities, posing significant threats to:- Cybersecurity analysts at McAfee Mobile Research recently…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="cisco to acquire cloud networking and security startup isovalent" data-date="2023-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/cisco-acquire-isovalent/" target="_blank" rel="noopener">Cisco to Acquire Cloud Networking and Security Startup Isovalent</a><span class="article-summary">In a strategic move destined to fortify its dominance in the ever-evolving realm of cloud security, Cisco has officially declared its intent to acquire Isovalent, a trailblazer in open-source cloud-native networking and security.&#160; This bold acquisition underscores Cisco&#821…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="hackers attacking linux ssh servers to deploy scanner malware" data-date="2023-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/hackers-attacking-linux-ssh-servers/" target="_blank" rel="noopener">Hackers Attacking Linux SSH Servers to Deploy Scanner Malware</a><span class="article-summary">Hackers often target Linux SSH servers due to their widespread use in hosting critical services, and the following loopholes make them vulnerable, providing opportunities to hackers for unauthorized access and potential exploitation:- Cybersecurity researchers at AhnLab Security …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="how the new instegogram threat creates liability for organizations" data-date="2023-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/1272516/how-the-new-instegogram-threat-creates-liability-for-organizations.html" target="_blank" rel="noopener">How the new Instegogram threat creates liability for organizations</a><span class="article-summary">Writing in 2017, one of the authors of this article noted that, "Social media networks represent the largest, most dynamic risk to organizational security and allocating liability." Unfortunately, with the growth of social media networks since then, this threat has only increased…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="cybercrime experts reveal how to infiltrate ransomware gangs" data-date="2023-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://web.archive.org/web/20231223011509/https://www.theregister.com/2023/12/22/how_to_infiltrate_ransomware_gangs/" target="_blank" rel="noopener">Cybercrime experts reveal how to infiltrate ransomware gangs</a><span class="article-summary">submitted by c0mmando to netsec 21 points | 0 comments https://web.archive.org/web/20231223011509/https://www.theregister.com/2023/12/22/how_to_infiltrate_ransomware_gangs/ When AlphV/BlackCat’s website went dark this month, it was like Chrimbo came early for cybersecurity defend…</span></span><span class="headline-source">WEB.ARCHIVE.ORG</span></div>
+<div class="headline" data-title="europol identifies hundreds of e-commerce platforms used in digital skimming attacks" data-date="2023-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://web.archive.org/web/20231222214630/https://therecord.media/europol-identifies-hundreds-ecommerce-skimmers" target="_blank" rel="noopener">Europol identifies hundreds of e-commerce platforms used in digital skimming attacks</a><span class="article-summary">submitted by c0mmando to netsec 4 points | 0 comments https://web.archive.org/web/20231222214630/https://therecord.media/europol-identifies-hundreds-ecommerce-skimmers Europol joined law enforcement agencies from 17 countries in warning 443 online sellers that the payment card da…</span></span><span class="headline-source">WEB.ARCHIVE.ORG</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="countries brace for influence operations, hacking campaigns ahead of historic 2024 election cycle" data-date="2023-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://web.archive.org/web/20231224000511/https://therecord.media/countries-brace-influence-operations-hacking-campaigns-ahead-historic-2024-election-cycle" target="_blank" rel="noopener">Countries brace for influence operations, hacking campaigns ahead of historic 2024 election cycle</a><span class="article-summary">submitted by c0mmando to netsec 17 points | 0 comments https://web.archive.org/web/20231224000511/https://therecord.media/countries-brace-influence-operations-hacking-campaigns-ahead-historic-2024-election-cycle Billions of people around the world are expected to go to the polls …</span></span><span class="headline-source">WEB.ARCHIVE.ORG</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="integris health patients get extortion emails after cyberattack" data-date="2023-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/integris-health-patients-get-extortion-emails-after-cyberattack/" target="_blank" rel="noopener">Integris Health patients get extortion emails after cyberattack</a><span class="article-summary">Integris Health patients in Oklahoma are receiving blackmail emails stating that their data was stolen in a cyberattack on the healthcare network, and if they did not pay an extortion demand, the data would be sold to other threat actors. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="carbanak banking malware resurfaces with new ransomware tactics" data-date="2023-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/12/carbanak-banking-malware-resurfaces.html" target="_blank" rel="noopener">Carbanak Banking Malware Resurfaces with New Ransomware Tactics</a><span class="article-summary">The banking malware known as&nbsp;Carbanak&nbsp;has been observed being used in&nbsp;ransomware attacks&nbsp;with updated tactics. "The malware has adapted to incorporate attack vendors and techniques to diversify its effectiveness," cybersecurity firm NCC Group&nbsp;said&nbsp;in…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="the ai threat: how america's 2024 election could be compromised" data-date="2023-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://blog.knowbe4.com/the-ai-threat-how-americas-2024-election-could-be-compromised" target="_blank" rel="noopener">The AI Threat: How America's 2024 Election Could Be Compromised</a><span class="article-summary">I found an interesting article at THE HILL that discusses the rising concerns about how AI might influence the upcoming U.S. 2024 elections.</span></span><span class="headline-source">KNOWBE4.COM</span></div>
+<div class="headline" data-title="cbs, paramount owner national amusements says it was hacked" data-date="2023-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2023/12/26/cbs-paramount-owner-national-amusements-hacked/" target="_blank" rel="noopener">CBS, Paramount owner National Amusements says it was hacked</a><span class="article-summary">National Amusements, the cinema chain and corporate parent giant of media giants Paramount and CBS, has confirmed it experienced a data breach in which hackers stole the personal information of tens of thousands of people. The private media conglomerate said in a legally required…</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="hackers stole $2 billion in crypto in 2023, data shows" data-date="2023-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2023/12/26/hackers-stole-2-billion-in-crypto-in-2023-data-shows/" target="_blank" rel="noopener">Hackers stole $2 billion in crypto in 2023, data shows</a><span class="article-summary">For yet another year, hackers stole billions of dollars in crypto. But for the first time since 2020, the trend is downwards, according to crypto security firms. This year, hackers stole around $2 billion dollars in crypto across dozens of cyberattacks and thefts, according to De…</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="google stops collecting location data from maps" data-date="2023-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2023/12/google-stops-collecting-location-data-from-maps.html" target="_blank" rel="noopener">Google Stops Collecting Location Data from Maps</a><span class="article-summary">Google Maps now stores location data locally on your device, meaning that Google no longer has that data to turn over to the police.</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="nice! i the top 25 cybersecurity ceos to watch in 2024" data-date="2023-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://blog.knowbe4.com/nice-i-made-it-in-the-top-25-cybersecurity-ceos-to-watch-in-2024" target="_blank" rel="noopener">Nice! I The Top 25 Cybersecurity CEOs to Watch in 2024</a><span class="article-summary">The CyberExpress is a VC-backed cyber security news mag that provides the latest news and analysis about the information security industry. They published an article December 20, 2023 titled "Top 25 Cybersecurity CEOs to Watch in 2024." "These leaders have demonstrated an unwaver…</span></span><span class="headline-source">KNOWBE4.COM</span></div>
+<div class="headline" data-title="how do you protect your apis from bot attacks?" data-date="2023-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/apis-from-bot-attacks/" target="_blank" rel="noopener">How Do You Protect Your APIs from Bot Attacks?</a><span class="article-summary">Organizations face an escalating threat of bot attacks in the rapidly evolving digital landscape. As revealed in our latest AppSec report, there has been a staggering 56% increase in bot attacks compared to Q2 2023. Previously associated with DDoS attacks, bots are becoming incre…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="crypto identity - swn vault" data-date="2023-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=PSobppBs0a4" target="_blank" rel="noopener">Crypto Identity - SWN Vault</a><span class="article-summary">Doug and Russ talk about digital fingerprints, hashing, digital DNA, and passwords. Visit https://www.securityweekly.com/swn for all the latest episodes! Show Notes: https://securityweekly.com/vault-swn-7</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="high consequences cyber: make or break the ciso’s reputation - andy jaquith - csp #154" data-date="2023-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=VZlijtxM3WY" target="_blank" rel="noopener">High Consequences Cyber: Make or Break the CISO’s Reputation - Andy Jaquith - CSP #154</a><span class="article-summary">“High Consequences Cyber” are high-risk, high-stakes cyber projects that can make or break a company or make or break the CISO’s reputation. These include issues such as, how do you architect your networks if you are a multinational with exposure to high-risk countries? What are …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="a comprehensive guide on how to choose a cryptocurrency payment processor" data-date="2023-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/a-comprehensive-guide/" target="_blank" rel="noopener">A Comprehensive Guide on How to Choose a Cryptocurrency Payment Processor</a><span class="article-summary">In today&#8217;s digital age, the adoption of cryptocurrencies as a means of payment is on the rise. As a result, businesses of all sizes are seeking to integrate cryptocurrency payment processing solutions into their operations. Choosing the right crypto payment processor is ess…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="github warns users to enable 2fa before upcoming deadline" data-date="2023-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/software/github-warns-users-to-enable-2fa-before-upcoming-deadline/" target="_blank" rel="noopener">GitHub warns users to enable 2FA before upcoming deadline</a><span class="article-summary">GitHub is warning users that they will soon have limited functionality on the site if they do not enable two-factor authentication (2FA) on their accounts. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="what vcs are looking for in the next wave of cybersecurity startups" data-date="2023-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2023/12/26/what-vcs-are-looking-for-in-the-next-wave-of-cybersecurity-startups/" target="_blank" rel="noopener">What VCs are looking for in the next wave of cybersecurity startups</a><span class="article-summary">The next wave of successful startups will help companies harness GenAI to improve organizational productivity while preventing attacks. © 2023 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="hackers use six year old microsoft office bug to spread agent tesla" data-date="2023-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://packetstormsecurity.com/news/view/35334/Hackers-Use-Six-Year-Old-Microsoft-Office-Bug-To-Spread-Agent-Tesla.html" target="_blank" rel="noopener">Hackers Use Six Year Old Microsoft Office Bug To Spread Agent Tesla</a></span><span class="headline-source">PACKETSTORMSECURITY.COM</span></div>
+<div class="headline" data-title="2023 rewind: the year in cybersecurity" data-date="2023-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://packetstormsecurity.com/news/view/35333/2023-Rewind-The-Year-In-Cybersecurity.html" target="_blank" rel="noopener">2023 Rewind: The Year In Cybersecurity</a></span><span class="headline-source">PACKETSTORMSECURITY.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-04-19</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,86 +109,77 @@
       <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-04-19</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">25</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Security Bulletins" onclick="filterCat('Security Bulletins', this)">SECURITY BULLETINS <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">4</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-19"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/public-exploits-released-for-critical-erlang-otp-ssh-flaw-patch-now/" target="_blank" rel="noopener">Critical Erlang/OTP SSH RCE bug now has public exploits, patch now</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 19 Apr 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-19"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2025/04/asus-confirms-critical-flaw-in-aicloud.html" target="_blank" rel="noopener">ASUS Confirms Critical Flaw in AiCloud Routers; Users Urged to Update Firmware</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 19 Apr 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-19"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://gbhackers.com/hackers-exploit-ivanti-connect-secure-flaw/" target="_blank" rel="noopener">Chinese Hackers Exploit Ivanti Connect Secure Flaw to Gain Unauthorized Access</a></div><span class="article-meta">GBHACKERS.COM &mdash; 19 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-19"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/gorilla-android-malware/" target="_blank" rel="noopener">Gorilla Android Malware Intercepts SMS to Steal One-Time Passwords</a></div><span class="article-meta">GBHACKERS.COM &mdash; 19 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-19"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/ransomware-gangs-exploit-cloud-environments/" target="_blank" rel="noopener">Microsoft Warns of Ransomware Gangs Exploit Cloud Environments with New Techniques</a></div><span class="article-meta">GBHACKERS.COM &mdash; 19 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-19"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/how-to-hunt-web-and-network-based-threats-from-packet-capture-to-payload/" target="_blank" rel="noopener">How To Hunt Web And Network-Based Threats From Packet Capture To Payload</a></div><span class="article-meta">GBHACKERS.COM &mdash; 19 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-19"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/how-smbs-can-improve-soc-maturity-with-limited-resources/" target="_blank" rel="noopener">How SMBs Can Improve SOC Maturity With Limited Resources</a></div><span class="article-meta">GBHACKERS.COM &mdash; 19 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-19"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=6tjdpI2WOgI" target="_blank" rel="noopener">Rust Is Eating C Code Alive 🦀💥</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-04-19</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-19"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=cZB8v2V1XX0" target="_blank" rel="noopener">Doug’s Drink Choices Are a Data Breach Waiting to Happen</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-04-19</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-19"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=rO4BGqfNVsI" target="_blank" rel="noopener">Deepfake Scams Are Getting Too Real!</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-04-19</span></div>
-<div class="article-row" data-cat="Security Bulletins" data-date="2025-04-19"><span class="cat-badge" style="border:1px solid rgba(255,170,0,0.5);background:rgba(255,170,0,0.10);" title="Security Bulletins">📋</span><div class="article-body"><a href="https://gbhackers.com/best-patch-management-tools/" target="_blank" rel="noopener">10 Best Patch Management Tools 2025</a></div><span class="article-meta">GBHACKERS.COM &mdash; 19 Apr 2025</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-04-19"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/microsoft/widespread-microsoft-entra-lockouts-tied-to-new-security-feature-rollout/" target="_blank" rel="noopener">Widespread Microsoft Entra lockouts tied to new security feature rollout</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 19 Apr 2025</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-04-19"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://gbhackers.com/best-cloud-security-solutions/" target="_blank" rel="noopener">10 Best Cloud Security Solutions 2025</a></div><span class="article-meta">GBHACKERS.COM &mdash; 19 Apr 2025</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-04-19"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.youtube.com/watch?v=iMQgeogO0jg" target="_blank" rel="noopener">The Compliance Work You Hate? It’s Getting Replaced by AI</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-04-19</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-04-19"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/supercard-x-android-malware-use-stolen-cards-in-nfc-relay-attacks/" target="_blank" rel="noopener">New Android malware steals your credit cards for NFC relay attacks</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 19 Apr 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-04-19"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2025/04/rogue-npm-packages-mimic-telegram-bot.html" target="_blank" rel="noopener">Rogue npm Packages Mimic Telegram Bot API to Plant SSH Backdoors on Linux Systems</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 19 Apr 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-04-19"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/watch?v=u6wS8UXRrWY" target="_blank" rel="noopener">DARPA’s Real-Life “Skynet” For WMDs 🧠⚠️ #CyberOps</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-04-19</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-04-19"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/watch?v=7J3HERbfm_c" target="_blank" rel="noopener">Misalignment in Cybersecurity: The $10M Mistake</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-04-19</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-19"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/new-android-supercard-x-malware/" target="_blank" rel="noopener">New Android SuperCard X Malware Uses NFC-Relay Technique for POS &amp; ATM Transactions</a></div><span class="article-meta">GBHACKERS.COM &mdash; 19 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-19"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/shebyte-phishing-as-a-service/" target="_blank" rel="noopener">SheByte PaaS Launches $199 Subscription Service for Cybercriminals</a></div><span class="article-meta">GBHACKERS.COM &mdash; 19 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-19"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/26893336" target="_blank" rel="noopener">What are your methods to harden *nix servers?</a></div><span class="article-meta">INFOSEC.PUB &mdash; 19 Apr 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-04-19"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/artificial-intelligence/google-gemini-ai-is-getting-chatgpt-like-scheduled-actions-feature/" target="_blank" rel="noopener">Google Gemini AI is getting ChatGPT-like Scheduled Actions feature</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 19 Apr 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-04-19"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=rlIN2XI3du0" target="_blank" rel="noopener">Opt-In? More Like Trap-In – Windows Recall Warning!</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-04-19</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-04-19"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=73iGWUGmHQc" target="_blank" rel="noopener">What Happens When Horror Meets Hacking 💀</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-04-19</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-04-19"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=Lca3OuCh8RM" target="_blank" rel="noopener">Why Jailbreak Papers Might Be Useless Now 🤯</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-04-19</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="critical erlang/otp ssh rce bug now has public exploits, patch now" data-date="2025-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/public-exploits-released-for-critical-erlang-otp-ssh-flaw-patch-now/" target="_blank" rel="noopener">Critical Erlang/OTP SSH RCE bug now has public exploits, patch now</a><span class="article-summary">Public exploits are now available for a critical Erlang/OTP SSH vulnerability tracked as CVE-2025-32433, allowing unauthenticated attackers to remotely execute code on impacted devices. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="asus confirms critical flaw in aicloud routers; users urged to update firmware" data-date="2025-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/asus-confirms-critical-flaw-in-aicloud.html" target="_blank" rel="noopener">ASUS Confirms Critical Flaw in AiCloud Routers; Users Urged to Update Firmware</a><span class="article-summary">ASUS has disclosed a critical security flaw impacting routers with AiCloud enabled that could permit remote attackers to perform unauthorized execution of functions on susceptible devices. The vulnerability, tracked as CVE-2025-2492, has a CVSS score of 9.2 out of a maximum of 10…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="chinese hackers exploit ivanti connect secure flaw to gain unauthorized access" data-date="2025-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/hackers-exploit-ivanti-connect-secure-flaw/" target="_blank" rel="noopener">Chinese Hackers Exploit Ivanti Connect Secure Flaw to Gain Unauthorized Access</a><span class="article-summary">In a sophisticated cyber-espionage operation, a group known as UNC5221, suspected to have China-nexus, has exploited a critical vulnerability in Ivanti Connect Secure VPN appliances. The exploit, identified as CVE-2025-22457, represents a stack-based buffer overflow affecting mul…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="gorilla android malware intercepts sms to steal one-time passwords" data-date="2025-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/gorilla-android-malware/" target="_blank" rel="noopener">Gorilla Android Malware Intercepts SMS to Steal One-Time Passwords</a><span class="article-summary">In a concerning development within the Android ecosystem, a new malware variant known as &#8220;Gorilla&#8221; has been identified, primarily targeting financial and personal information through SMS interception. Written in Kotlin, Gorilla appears to be in its developmental infan…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="microsoft warns of ransomware gangs exploit cloud environments with new techniques" data-date="2025-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/ransomware-gangs-exploit-cloud-environments/" target="_blank" rel="noopener">Microsoft Warns of Ransomware Gangs Exploit Cloud Environments with New Techniques</a><span class="article-summary">In a comprehensive analysis of the ransomware landscape in the first quarter of 2025, Microsoft Threat Intelligence has highlighted significant shifts in tactics by threat actors, marking a strategic evolution in their operations. The analysis reveals a growing trend where ransom…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="how to hunt web and network-based threats from packet capture to payload" data-date="2025-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/how-to-hunt-web-and-network-based-threats-from-packet-capture-to-payload/" target="_blank" rel="noopener">How To Hunt Web And Network-Based Threats From Packet Capture To Payload</a><span class="article-summary">Modern cyberattacks increasingly exploit network protocols and web applications to bypass traditional security controls. To counter these threats, security teams must adopt advanced techniques for analyzing raw network traffic, from packet-level metadata to payload content. This …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="how smbs can improve soc maturity with limited resources" data-date="2025-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/how-smbs-can-improve-soc-maturity-with-limited-resources/" target="_blank" rel="noopener">How SMBs Can Improve SOC Maturity With Limited Resources</a><span class="article-summary">Small and Medium-sized Businesses (SMBs) have become prime targets for cybercriminals, being three times more likely to be targeted by phishing attacks than larger organizations. These attacks often serve as entry points for ransomware infections that can devastate operations. As…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="rust is eating c code alive 🦀💥" data-date="2025-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=6tjdpI2WOgI" target="_blank" rel="noopener">Rust Is Eating C Code Alive 🦀💥</a><span class="article-summary">Rust is officially making waves in the Linux Kernel, and cybersecurity pros are paying attention. In this powerful KubeConf keynote, Greg KH highlights how over 5,000 developers from 350+ companies are shaping the future of open-source. This short dives into why Rust’s integratio…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="doug’s drink choices are a data breach waiting to happen" data-date="2025-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=cZB8v2V1XX0" target="_blank" rel="noopener">Doug’s Drink Choices Are a Data Breach Waiting to Happen</a><span class="article-summary">Doug’s cocktail experiments might be more dangerous than a zero-day exploit 😅 In this hilarious moment from a cybersecurity chat, Doug suggests mixing chartreuse and heavy cream—aka a “Gold Cadillac”—while Josh, the voice of reason, warns him like a built-in firewall. From AI sar…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="deepfake scams are getting too real!" data-date="2025-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=rO4BGqfNVsI" target="_blank" rel="noopener">Deepfake Scams Are Getting Too Real!</a><span class="article-summary">Deepfake scams are getting terrifyingly real! 😱 Cybercriminals are now using AI to create ultra-realistic fake videos and voices, making it harder than ever to tell what's real and what's a scam. With remote work on the rise and security systems struggling to keep up, bad actors …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-bulletins">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,170,0,0.5);" onclick="toggleSection(this)">📋 SECURITY BULLETINS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="10 best patch management tools 2025" data-date="2025-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/best-patch-management-tools/" target="_blank" rel="noopener">10 Best Patch Management Tools 2025</a><span class="article-summary">In today&#8217;s digital landscape, maintaining secure and efficient IT systems is critical for organizations. Patch management tools play a vital role in achieving this by automating the process of identifying, testing, and deploying software updates and security patches across …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="widespread microsoft entra lockouts tied to new security feature rollout" data-date="2025-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/microsoft/widespread-microsoft-entra-lockouts-tied-to-new-security-feature-rollout/" target="_blank" rel="noopener">Widespread Microsoft Entra lockouts tied to new security feature rollout</a><span class="article-summary">Windows administrators from numerous organizations report widespread account lockouts triggered by false positives in the rollout of a new Microsoft Entra ID's "leaked credentials" detection app called MACE. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="10 best cloud security solutions 2025" data-date="2025-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/best-cloud-security-solutions/" target="_blank" rel="noopener">10 Best Cloud Security Solutions 2025</a><span class="article-summary">In today’s digital era, businesses are increasingly adopting cloud computing to store data, run applications, and manage infrastructure. However, as organizations shift to the cloud, they face new security challenges such as cyber threats, data breaches, and compliance risks. Thi…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="the compliance work you hate? it’s getting replaced by ai" data-date="2025-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=iMQgeogO0jg" target="_blank" rel="noopener">The Compliance Work You Hate? It’s Getting Replaced by AI</a><span class="article-summary">Compliance tasks are evolving—and fast. In this short, cybersecurity expert Adrian Sanabria highlights how the rise of APIs and AI is making outdated GRC processes obsolete. From risk questionnaires to vendor management, the old checkbox mentality is being replaced by real-time a…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new android malware steals your credit cards for nfc relay attacks" data-date="2025-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/supercard-x-android-malware-use-stolen-cards-in-nfc-relay-attacks/" target="_blank" rel="noopener">New Android malware steals your credit cards for NFC relay attacks</a><span class="article-summary">A new malware-as-a-service (MaaS) platform named 'SuperCard X' has emerged, targeting Android devices via NFC relay attacks that enable point-of-sale and ATM transactions using compromised payment card data. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="rogue npm packages mimic telegram bot api to plant ssh backdoors on linux systems" data-date="2025-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/rogue-npm-packages-mimic-telegram-bot.html" target="_blank" rel="noopener">Rogue npm Packages Mimic Telegram Bot API to Plant SSH Backdoors on Linux Systems</a><span class="article-summary">Cybersecurity researchers have uncovered three malicious packages in the npm registry that masquerade as a popular Telegram bot library but harbor SSH backdoors and data exfiltration capabilities. The packages in question are listed below - node-telegram-utils (132 downloads) nod…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="darpa’s real-life “skynet” for wmds 🧠⚠️ #cyberops" data-date="2025-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=u6wS8UXRrWY" target="_blank" rel="noopener">DARPA’s Real-Life “Skynet” For WMDs 🧠⚠️ #CyberOps</a><span class="article-summary">DARPA isn’t just working on futuristic tech—it’s building real-life early warning systems to detect chemical, biological, radiological, and nuclear threats before they happen. In this short, cybersecurity experts reveal how a sigma network inspired by cyber defense is now being u…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="misalignment in cybersecurity: the $10m mistake" data-date="2025-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=7J3HERbfm_c" target="_blank" rel="noopener">Misalignment in Cybersecurity: The $10M Mistake</a><span class="article-summary">82% of CISOs report to CEOs, but does that really mean cybersecurity is a business priority? 🤔 The data tells a different story! Despite what companies claim, there’s a major misalignment when it comes to treating cybersecurity as a strategic risk. This gap could cost businesses …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new android supercard x malware uses nfc-relay technique for pos &amp; atm transactions" data-date="2025-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/new-android-supercard-x-malware/" target="_blank" rel="noopener">New Android SuperCard X Malware Uses NFC-Relay Technique for POS &amp; ATM Transactions</a><span class="article-summary">A new malware strain known as SuperCard X has emerged, utilizing an innovative Near-Field Communication (NFC)-relay attack to execute unauthorized transactions at Point-of-Sale (POS) systems and Automated Teller Machines (ATMs). Detailed in a recent report by the Cleafy Threat In…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="shebyte paas launches $199 subscription service for cybercriminals" data-date="2025-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/shebyte-phishing-as-a-service/" target="_blank" rel="noopener">SheByte PaaS Launches $199 Subscription Service for Cybercriminals</a><span class="article-summary">The landscape of cyber threats targeting Canadian financial institutions saw significant shifts after LabHost, a prominent phishing-as-a-service (PhaaS) platform, was shut down. LabHost, known for its extensive Interac-branded phishing kits, was responsible for around three-fourt…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="what are your methods to harden *nix servers?" data-date="2025-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/26893336" target="_blank" rel="noopener">What are your methods to harden *nix servers?</a><span class="article-summary">submitted by fishynoob to cybersecurity 4 points | 7 comments I have been looking at hardening *nix servers for my lab and maybe carry some of that over to work. CIS benchmarks are something I like doing but that’s barely scratching the surface. What do you do for your servers? I…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="google gemini ai is getting chatgpt-like scheduled actions feature" data-date="2025-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/artificial-intelligence/google-gemini-ai-is-getting-chatgpt-like-scheduled-actions-feature/" target="_blank" rel="noopener">Google Gemini AI is getting ChatGPT-like Scheduled Actions feature</a><span class="article-summary">Google Gemini is testing a ChatGPT-like scheduled tasks feature called "Scheduled Actions," which will allow you to create tasks that Gemini will execute later. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="opt-in? more like trap-in – windows recall warning!" data-date="2025-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=rlIN2XI3du0" target="_blank" rel="noopener">Opt-In? More Like Trap-In – Windows Recall Warning!</a><span class="article-summary">Microsoft just introduced a new Windows feature called Recall — and cybersecurity pros aren’t having it. In this short, Doug White breaks down why this so-called “opt-in” tool is raising red flags. From automatic desktop screenshots to questions about local storage privacy, it so…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="what happens when horror meets hacking 💀" data-date="2025-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=73iGWUGmHQc" target="_blank" rel="noopener">What Happens When Horror Meets Hacking 💀</a><span class="article-summary">When horror legends and hacker scams collide, the result is as wild as it is hilarious 😱💻 In this bizarre story, Doug White drops a darkly funny warning about crypto schemes, fake investments, and… Canadian organ harvesting?! 🤯 Would you trust Vincent Price with your kidneys? Thi…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="why jailbreak papers might be useless now 🤯" data-date="2025-04-19"><span class="headline-date">19 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=Lca3OuCh8RM" target="_blank" rel="noopener">Why Jailbreak Papers Might Be Useless Now 🤯</a><span class="article-summary">Cybersecurity expert Mike shares a mind-blowing insight from a recent Mindguard.ai article, questioning the industry's obsession with jailbreak and prompt injection testing. He argues that model testing alone isn’t enough—and that the real problem lies deeper in the app layer. Th…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-04-03</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,83 +109,74 @@
       <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-04-03</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">22</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">13</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-25001" target="_blank" rel="noopener">CVE-2025-25001 Microsoft Edge for iOS Spoofing Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 Apr 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-3074" target="_blank" rel="noopener">Chromium: CVE-2025-3074 Inappropriate implementation in Downloads</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 Apr 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-3072" target="_blank" rel="noopener">Chromium: CVE-2025-3072 Inappropriate implementation in Custom Tabs</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 Apr 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-3071" target="_blank" rel="noopener">Chromium: CVE-2025-3071 Inappropriate implementation in Navigations</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 Apr 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-3070" target="_blank" rel="noopener">Chromium: CVE-2025-3070 Insufficient validation of untrusted input in Extensions</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 Apr 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-3069" target="_blank" rel="noopener">Chromium: CVE-2025-3069 Inappropriate implementation in Extensions</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 Apr 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-3068" target="_blank" rel="noopener">Chromium: CVE-2025-3068 Inappropriate implementation in Intents</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 Apr 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-3067" target="_blank" rel="noopener">Chromium: CVE-2025-3067 Inappropriate implementation in Custom Tabs</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 Apr 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-29815" target="_blank" rel="noopener">CVE-2025-29815 Microsoft Edge (Chromium-based) Remote Code Execution Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 Apr 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-3073" target="_blank" rel="noopener">Chromium: CVE-2025-3073 Inappropriate implementation in Autofill</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 Apr 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-3066" target="_blank" rel="noopener">Chromium: CVE-2025-3066 Use after free in Navigations</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 Apr 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-29796" target="_blank" rel="noopener">CVE-2025-29796 Microsoft Edge for iOS Spoofing Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 Apr 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-03"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-24071" target="_blank" rel="noopener">CVE-2025-24071 Microsoft Windows File Explorer Spoofing Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 03 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisecurity.org/advisory/a-vulnerability-in-ivanti-products-could-allow-for-remote-code-execution_2025-034" target="_blank" rel="noopener">A Vulnerability in Ivanti Products Could Allow for Remote Code Execution</a></div><span class="article-meta">CISECURITY.ORG &mdash; 03 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2025/04/03/cisa-releases-five-industrial-control-systems-advisories" target="_blank" rel="noopener">CISA Releases Five Industrial Control Systems Advisories</a></div><span class="article-meta">CISA.GOV &mdash; Thu, 03 Apr 25 1</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-03"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2025/04/03/nsa-cisa-fbi-and-international-partners-release-cybersecurity-advisory-fast-flux-national-security" target="_blank" rel="noopener">NSA, CISA, FBI, and International Partners Release Cybersecurity Advisory on “Fast Flux,” a National Security Threat</a></div><span class="article-meta">CISA.GOV &mdash; Thu, 03 Apr 25 1</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-04-03"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.cisa.gov/news-events/news/cisa-and-partners-issue-fast-flux-cybersecurity-advisory" target="_blank" rel="noopener">CISA and Partners Issue Fast Flux Cybersecurity Advisory</a></div><span class="article-meta">CISA.GOV &mdash; Thu, 03 Apr 25 1</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-04-03"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.tripwire.com/state-of-security/hellcat-ransomware-what-you-need-know" target="_blank" rel="noopener">HellCat ransomware: what you need to know</a></div><span class="article-meta">TRIPWIRE.COM &mdash; 03 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-03"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://techcrunch.com/2025/04/03/openai-just-made-its-first-cybersecurity-investment/" target="_blank" rel="noopener">OpenAI just made its first cybersecurity investment</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 03 Apr 2025</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-04-03"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://techcrunch.com/2025/04/03/this-sneaky-android-spyware-needs-a-password-to-uninstall-heres-how-to-remove-it-without-one/" target="_blank" rel="noopener">This sneaky Android spyware needs a password to uninstall. Here’s how to remove it without one.</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 03 Apr 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-04-03"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2025/04/03/ted-schleins-ballistic-ventures-is-raising-100m-for-a-new-fund/" target="_blank" rel="noopener">Ted Schlein’s Ballistic Ventures is raising $100M for a new fund</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 03 Apr 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-04-03"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.welivesecurity.com/en/we-live-science/good-bad-unknown-ai-qa-maria-bielikova/" target="_blank" rel="noopener">The good, the bad and the unknown of AI: A Q&amp;A with Mária Bieliková</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 03 Apr 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">13</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cve-2025-25001 microsoft edge for ios spoofing vulnerability" data-date="2025-04-03"><span class="headline-date">3 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-25001" target="_blank" rel="noopener">CVE-2025-25001 Microsoft Edge for iOS Spoofing Vulnerability</a><span class="article-summary">Improper neutralization of input during web page generation ('cross-site scripting') in Microsoft Edge (Chromium-based) allows an unauthorized attacker to perform spoofing over a network.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2025-3074 inappropriate implementation in downloads" data-date="2025-04-03"><span class="headline-date">3 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-3074" target="_blank" rel="noopener">Chromium: CVE-2025-3074 Inappropriate implementation in Downloads</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2025-3072 inappropriate implementation in custom tabs" data-date="2025-04-03"><span class="headline-date">3 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-3072" target="_blank" rel="noopener">Chromium: CVE-2025-3072 Inappropriate implementation in Custom Tabs</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2025-3071 inappropriate implementation in navigations" data-date="2025-04-03"><span class="headline-date">3 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-3071" target="_blank" rel="noopener">Chromium: CVE-2025-3071 Inappropriate implementation in Navigations</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2025-3070 insufficient validation of untrusted input in extensions" data-date="2025-04-03"><span class="headline-date">3 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-3070" target="_blank" rel="noopener">Chromium: CVE-2025-3070 Insufficient validation of untrusted input in Extensions</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2025-3069 inappropriate implementation in extensions" data-date="2025-04-03"><span class="headline-date">3 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-3069" target="_blank" rel="noopener">Chromium: CVE-2025-3069 Inappropriate implementation in Extensions</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2025-3068 inappropriate implementation in intents" data-date="2025-04-03"><span class="headline-date">3 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-3068" target="_blank" rel="noopener">Chromium: CVE-2025-3068 Inappropriate implementation in Intents</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2025-3067 inappropriate implementation in custom tabs" data-date="2025-04-03"><span class="headline-date">3 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-3067" target="_blank" rel="noopener">Chromium: CVE-2025-3067 Inappropriate implementation in Custom Tabs</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-29815 microsoft edge (chromium-based) remote code execution vulnerability" data-date="2025-04-03"><span class="headline-date">3 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-29815" target="_blank" rel="noopener">CVE-2025-29815 Microsoft Edge (Chromium-based) Remote Code Execution Vulnerability</a><span class="article-summary">Use after free in Microsoft Edge (Chromium-based) allows an authorized attacker to execute code over a network.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2025-3073 inappropriate implementation in autofill" data-date="2025-04-03"><span class="headline-date">3 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-3073" target="_blank" rel="noopener">Chromium: CVE-2025-3073 Inappropriate implementation in Autofill</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2025-3066 use after free in navigations" data-date="2025-04-03"><span class="headline-date">3 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-3066" target="_blank" rel="noopener">Chromium: CVE-2025-3066 Use after free in Navigations</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-29796 microsoft edge for ios spoofing vulnerability" data-date="2025-04-03"><span class="headline-date">3 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-29796" target="_blank" rel="noopener">CVE-2025-29796 Microsoft Edge for iOS Spoofing Vulnerability</a><span class="article-summary">User interface (ui) misrepresentation of critical information in Microsoft Edge for iOS allows an unauthorized attacker to perform spoofing over a network.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-24071 microsoft windows file explorer spoofing vulnerability" data-date="2025-04-03"><span class="headline-date">3 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-24071" target="_blank" rel="noopener">CVE-2025-24071 Microsoft Windows File Explorer Spoofing Vulnerability</a><span class="article-summary">Added an FAQ and updated the CVSS score. This is an informational change only.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="a vulnerability in ivanti products could allow for remote code execution" data-date="2025-04-03"><span class="headline-date">3 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.cisecurity.org/advisory/a-vulnerability-in-ivanti-products-could-allow-for-remote-code-execution_2025-034" target="_blank" rel="noopener">A Vulnerability in Ivanti Products Could Allow for Remote Code Execution</a><span class="article-summary">A Vulnerability has been discovered in Ivanti Connect Secure, Policy Secure, and ZTA Gateways which could allow for remote code execution. Ivanti Connect Secure (formerly Pulse Connect Secure) is a widely deployed SSL VPN solution that provides secure and controlled access to cor…</span></span><span class="headline-source">CISECURITY.ORG</span></div>
+<div class="headline" data-title="cisa releases five industrial control systems advisories" data-date="2025-04-03"><span class="headline-date">3 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2025/04/03/cisa-releases-five-industrial-control-systems-advisories" target="_blank" rel="noopener">CISA Releases Five Industrial Control Systems Advisories</a><span class="article-summary">CISA released five Industrial Control Systems (ICS) advisories on April 3, 2025. These advisories provide timely information about current security issues, vulnerabilities, and exploits surrounding ICS. ICSA-25-093-01 Hitachi Energy RTU500 Series ICSA-25-093-02 Hitachi Energy TRM…</span></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="nsa, cisa, fbi, and international partners release cybersecurity advisory on “fast flux,” a national security threat" data-date="2025-04-03"><span class="headline-date">3 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2025/04/03/nsa-cisa-fbi-and-international-partners-release-cybersecurity-advisory-fast-flux-national-security" target="_blank" rel="noopener">NSA, CISA, FBI, and International Partners Release Cybersecurity Advisory on “Fast Flux,” a National Security Threat</a><span class="article-summary">Today, CISA—in partnership with the National Security Agency (NSA), Federal Bureau of Investigation (FBI), Australian Signals Directorate’s Australian Cyber Security Centre (ASD’s ACSC), Canadian Centre for Cyber Security (CCCS), and New Zealand’s National Cyber Security Centre (…</span></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa and partners issue fast flux cybersecurity advisory" data-date="2025-04-03"><span class="headline-date">3 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/news/cisa-and-partners-issue-fast-flux-cybersecurity-advisory" target="_blank" rel="noopener">CISA and Partners Issue Fast Flux Cybersecurity Advisory</a></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="hellcat ransomware: what you need to know" data-date="2025-04-03"><span class="headline-date">3 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.tripwire.com/state-of-security/hellcat-ransomware-what-you-need-know" target="_blank" rel="noopener">HellCat ransomware: what you need to know</a><span class="article-summary">HellCat - the ransomware gang that has been known to demand payment... in baguettes! Are they rolling in the dough? Bread it and weep in my article on the Tripwire State of Security blog.</span></span><span class="headline-source">TRIPWIRE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="openai just made its first cybersecurity investment" data-date="2025-04-03"><span class="headline-date">3 Apr</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/04/03/openai-just-made-its-first-cybersecurity-investment/" target="_blank" rel="noopener">OpenAI just made its first cybersecurity investment</a><span class="article-summary">OpenAI just co-led a $43 million Series A into deepfake defense startup Adaptive Security.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="this sneaky android spyware needs a password to uninstall. here’s how to remove it without one." data-date="2025-04-03"><span class="headline-date">3 Apr</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/04/03/this-sneaky-android-spyware-needs-a-password-to-uninstall-heres-how-to-remove-it-without-one/" target="_blank" rel="noopener">This sneaky Android spyware needs a password to uninstall. Here’s how to remove it without one.</a><span class="article-summary">A simple trick can remove malicious Android spyware apps that require a password to uninstall.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ted schlein’s ballistic ventures is raising $100m for a new fund" data-date="2025-04-03"><span class="headline-date">3 Apr</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/04/03/ted-schleins-ballistic-ventures-is-raising-100m-for-a-new-fund/" target="_blank" rel="noopener">Ted Schlein’s Ballistic Ventures is raising $100M for a new fund</a><span class="article-summary">Ted Schlein's cybersecurity-focused Ballistic Ventures is raising $100 million for a new fund, TechCrunch has exclusively learned.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="the good, the bad and the unknown of ai: a q&amp;a with mária bieliková" data-date="2025-04-03"><span class="headline-date">3 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/en/we-live-science/good-bad-unknown-ai-qa-maria-bielikova/" target="_blank" rel="noopener">The good, the bad and the unknown of AI: A Q&amp;A with Mária Bieliková</a><span class="article-summary">The computer scientist and AI researcher shares her thoughts on the technology’s potential and pitfalls – and what may lie ahead for us</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

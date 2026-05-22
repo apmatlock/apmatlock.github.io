@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2026-04-25</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
-<a href="index.html" class="active">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-23.html">23 May</a>
+<a href="index.html">Today</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,84 +109,79 @@
       <div class="stat"><span class="stat-value">8</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2026-04-25</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">22</span></button>
-<button class="filter-btn" data-cat="CISA KEV" onclick="filterCat('CISA KEV', this)">CISA KEV <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">11</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Podcasts" onclick="filterCat('Podcasts', this)">PODCASTS <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="CISA KEV" data-date="2026-04-25"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://thehackernews.com/2026/04/cisa-adds-4-exploited-flaws-to-kev-sets.html" target="_blank" rel="noopener">CISA Adds 4 Exploited Flaws to KEV, Sets May 2026 Federal Deadline</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) on Friday added four vulnerabilities impacting SimpleHelp, Samsung MagicINFO 9 Server, and D-Link DIR-823X series routers to its Known Exploited Vulnerabilities (KEV) catalog, citing evidence of active exploitation.…</span></div><span class="kev-badge">KEV</span><span class="article-meta">THEHACKERNEWS.COM &mdash; 25 Apr 2026</span></div>
-<div class="article-row" data-cat="CISA KEV" data-date="2026-04-25"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://securityaffairs.com/191281/security/u-s-cisa-adds-simplehelp-samsung-and-d-link-flaws-to-its-known-exploited-vulnerabilities-catalog.html" target="_blank" rel="noopener">U.S. CISA adds SimpleHelp, Samsung, and D-Link flaws to its Known Exploited Vulnerabilities catalog</a><span class="article-summary">U.S. Cybersecurity and Infrastructure Security Agency (CISA) adds SimpleHelp, Samsung, and D-Link flaws to its Known Exploited Vulnerabilities catalog. The U.S. Cybersecurity and Infrastructure Security Agency (CISA) added SimpleHelp, Samsung, and D-Link flaws to its Known Exploi…</span></div><span class="kev-badge">KEV</span><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 25 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-25"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-41080" target="_blank" rel="noopener">CVE-2026-41080</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 25 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-25"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23438" target="_blank" rel="noopener">CVE-2026-23438 net: mvpp2: guard flow control update with global_tx_fc in buffer switching</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 25 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-25"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23439" target="_blank" rel="noopener">CVE-2026-23439 udp_tunnel: fix NULL deref caused by udp_sock_create6 when CONFIG_IPV6=n</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 25 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-25"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23446" target="_blank" rel="noopener">CVE-2026-23446 net: usb: aqc111: Do not perform PM inside suspend callback</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 25 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-25"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23447" target="_blank" rel="noopener">CVE-2026-23447 net: usb: cdc_ncm: add ndpoffset to NDP32 nframes bounds check</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 25 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-25"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-5450" target="_blank" rel="noopener">CVE-2026-5450 scanf %mc off-by-one heap buffer overflow</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 25 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-25"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23428" target="_blank" rel="noopener">CVE-2026-23428 ksmbd: fix use-after-free of share_conf in compound request</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 25 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-25"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23434" target="_blank" rel="noopener">CVE-2026-23434 mtd: rawnand: serialize lock/unlock against other NAND operations</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 25 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-25"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-41205" target="_blank" rel="noopener">CVE-2026-41205 Mako: Path traversal via double-slash URI prefix in TemplateLookup</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 25 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-25"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-13763" target="_blank" rel="noopener">CVE-2025-13763 Libopensc: opensc: multiple uses of uninitialized variable</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 25 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-25"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://securityaffairs.com/191267/uncategorized/over-400000-sites-at-risk-as-hackers-exploit-breeze-cache-plugin-flaw-cve-2026-3844.html" target="_blank" rel="noopener">Over 400,000 sites at risk as hackers exploit Breeze Cache plugin flaw (CVE-2026-3844)</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 25 Apr 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-04-25"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/4mRtgld7q5s" target="_blank" rel="noopener">The Patch Gap Is the Problem</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2026-04-25</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-04-25"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thecyberwire.com/newsletters/week-that-was/10/16" target="_blank" rel="noopener">Governments and industry race to harness AI for vulnerability discovery.</a></div><span class="article-meta">THECYBERWIRE.COM &mdash; 25 Apr 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-04-25"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cyberinsider.com/firefox-is-quietly-experimenting-with-braves-ad-blocking-engine/" target="_blank" rel="noopener">Firefox is quietly experimenting with Brave’s ad-blocking engine</a></div><span class="article-meta">CYBERINSIDER.COM &mdash; 25 Apr 2026</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2026-04-25"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://securityaffairs.com/191241/hacking/cisa-reports-persistent-firestarter-backdoor-on-cisco-asa-device-in-federal-network.html" target="_blank" rel="noopener">CISA reports persistent FIRESTARTER backdoor on Cisco ASA device in federal network</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 25 Apr 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-04-25"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.wired.com/story/security-news-this-week-discord-sleuths-gained-unauthorized-access-to-anthropics-mythos/" target="_blank" rel="noopener">Discord Sleuths Gained Unauthorized Access to Anthropic’s Mythos</a></div><span class="article-meta">WIRED.COM &mdash; 25 Apr 2026</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2026-04-25"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://thehackernews.com/2026/04/researchers-uncover-pre-stuxnet-fast16.html" target="_blank" rel="noopener">Researchers Uncover Pre-Stuxnet ‘fast16’ Malware Targeting Engineering Software</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 25 Apr 2026</span></div>
-<div class="article-row" data-cat="Podcasts" data-date="2026-04-25"><span class="cat-badge" style="border:1px solid rgba(85,170,204,0.5);background:rgba(85,170,204,0.10);" title="Podcasts">🎙️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/cybersecurity-today-weekend-deepfakes-the-death-of-truth-and-verifying-ai-in-the-enterprise" target="_blank" rel="noopener">Cybersecurity Today Weekend: Deepfakes, the Death of Truth, and Verifying AI in the Enterprise</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 25 Apr 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-04-25"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.elastic.co/security-labs/claude-code-cowork-monitoring-otel-elastic" target="_blank" rel="noopener">Monitoring Claude Code/Cowork at scale with OTel in Elastic</a></div><span class="article-meta">ELASTIC.CO &mdash; 25 Apr 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-04-25"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thecyberwire.com/podcasts/research-saturday/422/notes" target="_blank" rel="noopener">A QRazy clever scam.</a></div><span class="article-meta">THECYBERWIRE.COM &mdash; 25 Apr 2026</span></div>
-    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa adds 4 exploited flaws to kev, sets may 2026 federal deadline" data-date="2026-04-25"><span class="headline-date">25 Apr <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/04/cisa-adds-4-exploited-flaws-to-kev-sets.html" target="_blank" rel="noopener">CISA Adds 4 Exploited Flaws to KEV, Sets May 2026 Federal Deadline</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) on Friday added four vulnerabilities impacting SimpleHelp, Samsung MagicINFO 9 Server, and D-Link DIR-823X series routers to its Known Exploited Vulnerabilities (KEV) catalog, citing evidence of active exploitation.…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="u.s. cisa adds simplehelp, samsung, and d-link flaws to its known exploited vulnerabilities catalog" data-date="2026-04-25"><span class="headline-date">25 Apr <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/191281/security/u-s-cisa-adds-simplehelp-samsung-and-d-link-flaws-to-its-known-exploited-vulnerabilities-catalog.html" target="_blank" rel="noopener">U.S. CISA adds SimpleHelp, Samsung, and D-Link flaws to its Known Exploited Vulnerabilities catalog</a><span class="article-summary">U.S. Cybersecurity and Infrastructure Security Agency (CISA) adds SimpleHelp, Samsung, and D-Link flaws to its Known Exploited Vulnerabilities catalog. The U.S. Cybersecurity and Infrastructure Security Agency (CISA) added SimpleHelp, Samsung, and D-Link flaws to its Known Exploi…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">11</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cve-2026-41080" data-date="2026-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-41080" target="_blank" rel="noopener">CVE-2026-41080</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-23438 net: mvpp2: guard flow control update with global_tx_fc in buffer switching" data-date="2026-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23438" target="_blank" rel="noopener">CVE-2026-23438 net: mvpp2: guard flow control update with global_tx_fc in buffer switching</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-23439 udp_tunnel: fix null deref caused by udp_sock_create6 when config_ipv6=n" data-date="2026-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23439" target="_blank" rel="noopener">CVE-2026-23439 udp_tunnel: fix NULL deref caused by udp_sock_create6 when CONFIG_IPV6=n</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-23446 net: usb: aqc111: do not perform pm inside suspend callback" data-date="2026-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23446" target="_blank" rel="noopener">CVE-2026-23446 net: usb: aqc111: Do not perform PM inside suspend callback</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-23447 net: usb: cdc_ncm: add ndpoffset to ndp32 nframes bounds check" data-date="2026-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23447" target="_blank" rel="noopener">CVE-2026-23447 net: usb: cdc_ncm: add ndpoffset to NDP32 nframes bounds check</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-5450 scanf %mc off-by-one heap buffer overflow" data-date="2026-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-5450" target="_blank" rel="noopener">CVE-2026-5450 scanf %mc off-by-one heap buffer overflow</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-23428 ksmbd: fix use-after-free of share_conf in compound request" data-date="2026-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23428" target="_blank" rel="noopener">CVE-2026-23428 ksmbd: fix use-after-free of share_conf in compound request</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-23434 mtd: rawnand: serialize lock/unlock against other nand operations" data-date="2026-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-23434" target="_blank" rel="noopener">CVE-2026-23434 mtd: rawnand: serialize lock/unlock against other NAND operations</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-41205 mako: path traversal via double-slash uri prefix in templatelookup" data-date="2026-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-41205" target="_blank" rel="noopener">CVE-2026-41205 Mako: Path traversal via double-slash URI prefix in TemplateLookup</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-13763 libopensc: opensc: multiple uses of uninitialized variable" data-date="2026-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-13763" target="_blank" rel="noopener">CVE-2025-13763 Libopensc: opensc: multiple uses of uninitialized variable</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="over 400,000 sites at risk as hackers exploit breeze cache plugin flaw (cve-2026-3844)" data-date="2026-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/191267/uncategorized/over-400000-sites-at-risk-as-hackers-exploit-breeze-cache-plugin-flaw-cve-2026-3844.html" target="_blank" rel="noopener">Over 400,000 sites at risk as hackers exploit Breeze Cache plugin flaw (CVE-2026-3844)</a><span class="article-summary">Attackers exploit a Breeze Cache flaw (CVE-2026-3844) to upload files without login. Wordfence researchers detected over 170 attacks. Threat actors are exploiting a critical flaw, tracked as CVE-2026-3844 (CVSS score of 9.8), in the Breeze Cache WordPress plugin, allowing them to…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the patch gap is the problem" data-date="2026-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/4mRtgld7q5s" target="_blank" rel="noopener">The Patch Gap Is the Problem</a><span class="article-summary">Multiple public exploits are targeting Microsoft Defender’s internal privilege workflows, with confirmed use in active attacks. Some vulnerabilities have been patched, while others remain exposed. Security tools themselves can become attack surfaces. The delay between exploit rel…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="governments and industry race to harness ai for vulnerability discovery." data-date="2026-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://thecyberwire.com/newsletters/week-that-was/10/16" target="_blank" rel="noopener">Governments and industry race to harness AI for vulnerability discovery.</a><span class="article-summary">FIRESTARTER malware remained on Cisco devices after patches were applied. Cloud development platform Vercel confirms breach.</span></span><span class="headline-source">THECYBERWIRE.COM</span></div>
+<div class="headline" data-title="firefox is quietly experimenting with brave’s ad-blocking engine" data-date="2026-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://cyberinsider.com/firefox-is-quietly-experimenting-with-braves-ad-blocking-engine/" target="_blank" rel="noopener">Firefox is quietly experimenting with Brave’s ad-blocking engine</a><span class="article-summary">Mozilla has quietly begun experimenting with Brave’s Rust-based ad-blocking engine in Firefox, signaling a potential shift in how the browser handles ads and trackers. The change was first spotted in Firefox 149 under Bugzilla entry 2013888, where Mozilla engineers introduced adb…</span></span><span class="headline-source">CYBERINSIDER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa reports persistent firestarter backdoor on cisco asa device in federal network" data-date="2026-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/191241/hacking/cisa-reports-persistent-firestarter-backdoor-on-cisco-asa-device-in-federal-network.html" target="_blank" rel="noopener">CISA reports persistent FIRESTARTER backdoor on Cisco ASA device in federal network</a><span class="article-summary">CISA said a federal Cisco Firepower ASA device was infected with the FIRESTARTER backdoor in Sept 2025, and it survived security patches. CISA revealed that a U.S. federal civilian agency’s Cisco Firepower device running ASA software was compromised in September 2025 by the FIRES…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="discord sleuths gained unauthorized access to anthropic’s mythos" data-date="2026-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.wired.com/story/security-news-this-week-discord-sleuths-gained-unauthorized-access-to-anthropics-mythos/" target="_blank" rel="noopener">Discord Sleuths Gained Unauthorized Access to Anthropic’s Mythos</a><span class="article-summary">Plus: Spy firms tap into a global telecom weakness to track targets, 500,000 UK health records go up for sale on Alibaba, Apple patches a revealing notification bug, and more.</span></span><span class="headline-source">WIRED.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="researchers uncover pre-stuxnet ‘fast16’ malware targeting engineering software" data-date="2026-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/04/researchers-uncover-pre-stuxnet-fast16.html" target="_blank" rel="noopener">Researchers Uncover Pre-Stuxnet ‘fast16’ Malware Targeting Engineering Software</a><span class="article-summary">Cybersecurity researchers have discovered a new Lua-based malware created years before the notorious Stuxnet worm that aimed to sabotage Iran's nuclear program by destroying uranium enrichment centrifuges. According to a new report published by SentinelOne, the previously undocum…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-podcasts">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(85,170,204,0.5);" onclick="toggleSection(this)">🎙️ PODCASTS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cybersecurity today weekend: deepfakes, the death of truth, and verifying ai in the enterprise" data-date="2026-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/cybersecurity-today-weekend-deepfakes-the-death-of-truth-and-verifying-ai-in-the-enterprise" target="_blank" rel="noopener">Cybersecurity Today Weekend: Deepfakes, the Death of Truth, and Verifying AI in the Enterprise</a><span class="article-summary">📍 again, we'd like to thank Meter for their support in bringing you this podcast Meter delivers full stack networking infrastructure, wired, wireless, and cellular to leading enterprises. Working with their partners, meter designs, deploys and manages everything required to get p…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="monitoring claude code/cowork at scale with otel in elastic" data-date="2026-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.elastic.co/security-labs/claude-code-cowork-monitoring-otel-elastic" target="_blank" rel="noopener">Monitoring Claude Code/Cowork at scale with OTel in Elastic</a><span class="article-summary">How Elastic's InfoSec team built a monitoring pipeline for Claude Code and Claude Cowork using their native OTel export capabilities and Elastic's OTel ingestion infrastructure.</span></span><span class="headline-source">ELASTIC.CO</span></div>
+<div class="headline" data-title="a qrazy clever scam." data-date="2026-04-25"><span class="headline-date">25 Apr</span><span class="headline-body"><a class="headline-title" href="https://thecyberwire.com/podcasts/research-saturday/422/notes" target="_blank" rel="noopener">A QRazy clever scam.</a><span class="article-summary">This week, we are joined by ⁠Juliana Testa⁠, Senior Security Engineer from ⁠7AI⁠, sharing their work on "Quish Splash - When the QR Code Is the Weapon: A Multi-Wave Phishing Campaign That Slipped Past Every Filter." A large-scale “quishing” campaign used QR codes embedded in imag…</span></span><span class="headline-source">THECYBERWIRE.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 23:01<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2026-04-11</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,94 +109,77 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2026-04-11</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">35</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">18</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">8</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">3</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/jeff-williams-cto-cofounder-of-contrast-security-and-owasp-co-founder-on-mythos-and-ai-security" target="_blank" rel="noopener">Jeff Williams CTO Cofounder of Contrast Security and OWASP co-founder on Mythos and AI Security</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-28810" target="_blank" rel="noopener">CVE-2026-28810 Predictable DNS Transaction IDs Enable Cache Poisoning in Built-in Resolver</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-29181" target="_blank" rel="noopener">CVE-2026-29181 OpenTelemetry-Go multi-value `baggage` header extraction causes excessive allocations (remote dos amplification)</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-27144" target="_blank" rel="noopener">CVE-2026-27144 Miscompilation allows memory corruption via CONVNOP-wrapped array copy in cmd/compile</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-32282" target="_blank" rel="noopener">CVE-2026-32282 TOCTOU permits root escape on Linux via Root.Chmod in os in internal/syscall/unix</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-33810" target="_blank" rel="noopener">CVE-2026-33810 Case-sensitive excludedSubtrees name constraints cause Auth Bypass in crypto/x509</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-4878" target="_blank" rel="noopener">CVE-2026-4878 Libcap: libcap: privilege escalation via toctou race condition in cap_set_file()</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-35611" target="_blank" rel="noopener">CVE-2026-35611 Addressable has a Regular Expression Denial of Service in Addressable templates</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-28389" target="_blank" rel="noopener">CVE-2026-28389 Possible NULL Dereference When Processing CMS KeyAgreeRecipientInfo</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-28390" target="_blank" rel="noopener">CVE-2026-28390 Possible NULL Dereference When Processing CMS KeyTransportRecipientInfo</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-39882" target="_blank" rel="noopener">CVE-2026-39882 OpenTelemetry-Go OTLP HTTP exporters read unbounded HTTP response bodies</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-32288" target="_blank" rel="noopener">CVE-2026-32288 Unbounded allocation for old GNU sparse in archive/tar</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-32281" target="_blank" rel="noopener">CVE-2026-32281 Inefficient policy validation in crypto/x509</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-32289" target="_blank" rel="noopener">CVE-2026-32289 JsBraceDepth Context Tracking Bugs (XSS) in html/template</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-32283" target="_blank" rel="noopener">CVE-2026-32283 Unauthenticated TLS 1.3 KeyUpdate record can cause persistent connection retention and DoS in crypto/tls</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-32280" target="_blank" rel="noopener">CVE-2026-32280 Unexpected work during chain building in crypto/x509</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-27143" target="_blank" rel="noopener">CVE-2026-27143 Missing bound checks can lead to memory corruption in safe Go in cmd/compile</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-27140" target="_blank" rel="noopener">CVE-2026-27140 Code execution vulnerability in SWIG code generation in cmd/go</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/claude-and-chatgpt-exploited/" target="_blank" rel="noopener">Claude and ChatGPT Exploited in Sweeping Cyber Campaign Against Government Agencies</a></div><span class="article-meta">GBHACKERS.COM &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2026/04/citizen-lab-law-enforcement-used-webloc.html" target="_blank" rel="noopener">Citizen Lab: Law Enforcement Used Webloc to Track 500 Million Devices via Ad Data</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/police-identifies-20-000-victims-in-international-crypto-fraud-crackdown/" target="_blank" rel="noopener">Over 20,000 crypto fraud victims identified in international crackdown</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/44819210" target="_blank" rel="noopener">Two different attackers poisoned popular open source tools - and showed us the future of supply chain compromise</a></div><span class="article-meta">INFOSEC.PUB &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://infosec.pub/post/44807533" target="_blank" rel="noopener">HWMonitor &amp; CPU-Z users were exposed to malware through fake downloads after CPUID breach</a></div><span class="article-meta">INFOSEC.PUB &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://sh.itjust.works/post/58369609" target="_blank" rel="noopener">Security PSA: Popular Tools CPU-Z and HWMonitor Were Briefly Compromised</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/44785544" target="_blank" rel="noopener">CPUID site hijacked to serve malware instead of HWMonitor downloads</a></div><span class="article-meta">INFOSEC.PUB &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/44785138" target="_blank" rel="noopener">Google rolls out end-to-end encryption for Gmail on Android and iOS devices for enterprise users, letting them read and compose emails without additional tools</a></div><span class="article-meta">INFOSEC.PUB &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://programming.dev/post/48627736" target="_blank" rel="noopener">Google rolls out end-to-end encryption for Gmail on Android and iOS devices for enterprise users, letting them read and compose emails without additional tools</a></div><span class="article-meta">PROGRAMMING.DEV &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://sh.itjust.works/post/58321525" target="_blank" rel="noopener">Google rolls out end-to-end encryption for Gmail on Android and iOS devices for enterprise users, letting them read and compose emails without additional tools</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/44787689" target="_blank" rel="noopener">Google rolls out end-to-end encryption for Gmail on Android and iOS devices for enterprise users, letting them read and compose emails without additional tools</a></div><span class="article-meta">INFOSEC.PUB &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/chrome-sessions-to-devices-to-stop-cookie-theft/" target="_blank" rel="noopener">Google Locks Chrome Sessions to Devices to Stop Cookie Theft</a></div><span class="article-meta">GBHACKERS.COM &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/44807123" target="_blank" rel="noopener">Supply chain nightmare: How Rust will be attacked and what we can do to mitigate the inevitable</a></div><span class="article-meta">INFOSEC.PUB &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/44819420" target="_blank" rel="noopener">AI Cybersecurity After Mythos: The Jagged Frontier</a></div><span class="article-meta">INFOSEC.PUB &mdash; 11 Apr 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.heise.de/news/Jetzt-patchen-Adobe-veroeffentlicht-Notfall-Sicherheitsupdate-fuer-Acrobat-Reader-11253367.html" target="_blank" rel="noopener">Jetzt patchen! Adobe veröffentlicht Notfall-Sicherheitsupdate für Acrobat Reader</a></div><span class="article-meta">HEISE.DE &mdash; 2026-04-11</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.heise.de/news/Ueberwachung-gegen-Ladendiebstahl-Einzelhandel-fordert-digitale-Aufruestung-11253325.html" target="_blank" rel="noopener">Einzelhändler frustriert über strenge Regeln bei KI-Kameras</a></div><span class="article-meta">HEISE.DE &mdash; 2026-04-11</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-04-11"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.heise.de/news/US-Regierung-traf-sich-vor-Mythos-Preview-Rollout-mit-KI-Herstellern-11253281.html" target="_blank" rel="noopener">US-Regierung traf sich vor Mythos-Preview-Rollout mit KI-Herstellern</a></div><span class="article-meta">HEISE.DE &mdash; 2026-04-11</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">18</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="jeff williams cto cofounder of contrast security and owasp co-founder on mythos and ai security" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/jeff-williams-cto-cofounder-of-contrast-security-and-owasp-co-founder-on-mythos-and-ai-security" target="_blank" rel="noopener">Jeff Williams CTO Cofounder of Contrast Security and OWASP co-founder on Mythos and AI Security</a><span class="article-summary">AI-Powered AppSec, OWASP Origins, and Anthropic's "Mythos" Model: Jeff Williams on What Changes Next Cybersecurity Today would like to thank Meter for their support in bringing you this podcast. Meter delivers a complete networking stack, wired, wireless and cellular in one integ…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="cve-2026-28810 predictable dns transaction ids enable cache poisoning in built-in resolver" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-28810" target="_blank" rel="noopener">CVE-2026-28810 Predictable DNS Transaction IDs Enable Cache Poisoning in Built-in Resolver</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-29181 opentelemetry-go multi-value `baggage` header extraction causes excessive allocations (remote dos amplification)" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-29181" target="_blank" rel="noopener">CVE-2026-29181 OpenTelemetry-Go multi-value `baggage` header extraction causes excessive allocations (remote dos amplification)</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-27144 miscompilation allows memory corruption via convnop-wrapped array copy in cmd/compile" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-27144" target="_blank" rel="noopener">CVE-2026-27144 Miscompilation allows memory corruption via CONVNOP-wrapped array copy in cmd/compile</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-32282 toctou permits root escape on linux via root.chmod in os in internal/syscall/unix" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-32282" target="_blank" rel="noopener">CVE-2026-32282 TOCTOU permits root escape on Linux via Root.Chmod in os in internal/syscall/unix</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-33810 case-sensitive excludedsubtrees name constraints cause auth bypass in crypto/x509" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-33810" target="_blank" rel="noopener">CVE-2026-33810 Case-sensitive excludedSubtrees name constraints cause Auth Bypass in crypto/x509</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-4878 libcap: libcap: privilege escalation via toctou race condition in cap_set_file()" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-4878" target="_blank" rel="noopener">CVE-2026-4878 Libcap: libcap: privilege escalation via toctou race condition in cap_set_file()</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-35611 addressable has a regular expression denial of service in addressable templates" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-35611" target="_blank" rel="noopener">CVE-2026-35611 Addressable has a Regular Expression Denial of Service in Addressable templates</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-28389 possible null dereference when processing cms keyagreerecipientinfo" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-28389" target="_blank" rel="noopener">CVE-2026-28389 Possible NULL Dereference When Processing CMS KeyAgreeRecipientInfo</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-28390 possible null dereference when processing cms keytransportrecipientinfo" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-28390" target="_blank" rel="noopener">CVE-2026-28390 Possible NULL Dereference When Processing CMS KeyTransportRecipientInfo</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-39882 opentelemetry-go otlp http exporters read unbounded http response bodies" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-39882" target="_blank" rel="noopener">CVE-2026-39882 OpenTelemetry-Go OTLP HTTP exporters read unbounded HTTP response bodies</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-32288 unbounded allocation for old gnu sparse in archive/tar" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-32288" target="_blank" rel="noopener">CVE-2026-32288 Unbounded allocation for old GNU sparse in archive/tar</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-32281 inefficient policy validation in crypto/x509" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-32281" target="_blank" rel="noopener">CVE-2026-32281 Inefficient policy validation in crypto/x509</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-32289 jsbracedepth context tracking bugs (xss) in html/template" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-32289" target="_blank" rel="noopener">CVE-2026-32289 JsBraceDepth Context Tracking Bugs (XSS) in html/template</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-32283 unauthenticated tls 1.3 keyupdate record can cause persistent connection retention and dos in crypto/tls" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-32283" target="_blank" rel="noopener">CVE-2026-32283 Unauthenticated TLS 1.3 KeyUpdate record can cause persistent connection retention and DoS in crypto/tls</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-32280 unexpected work during chain building in crypto/x509" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-32280" target="_blank" rel="noopener">CVE-2026-32280 Unexpected work during chain building in crypto/x509</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-27143 missing bound checks can lead to memory corruption in safe go in cmd/compile" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-27143" target="_blank" rel="noopener">CVE-2026-27143 Missing bound checks can lead to memory corruption in safe Go in cmd/compile</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-27140 code execution vulnerability in swig code generation in cmd/go" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-27140" target="_blank" rel="noopener">CVE-2026-27140 Code execution vulnerability in SWIG code generation in cmd/go</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="claude and chatgpt exploited in sweeping cyber campaign against government agencies" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/claude-and-chatgpt-exploited/" target="_blank" rel="noopener">Claude and ChatGPT Exploited in Sweeping Cyber Campaign Against Government Agencies</a><span class="article-summary">In a groundbreaking technical report released by Gambit Security researcher Eyal Sela, new details have emerged about a massive cyberattack targeting government infrastructure. A single threat actor successfully leveraged artificial intelligence platforms to breach nine Mexican g…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="citizen lab: law enforcement used webloc to track 500 million devices via ad data" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/04/citizen-lab-law-enforcement-used-webloc.html" target="_blank" rel="noopener">Citizen Lab: Law Enforcement Used Webloc to Track 500 Million Devices via Ad Data</a><span class="article-summary">Hungarian domestic intelligence, the national police in El Salvador, and several U.S. law&nbsp;enforcement and police departments have been attributed to the use of an advertising-based global geolocation surveillance system called&nbsp;Webloc. The tool was developed by Israeli c…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="over 20,000 crypto fraud victims identified in international crackdown" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/police-identifies-20-000-victims-in-international-crypto-fraud-crackdown/" target="_blank" rel="noopener">Over 20,000 crypto fraud victims identified in international crackdown</a><span class="article-summary">An international law enforcement action led by the U.K.'s National Crime Agency (NCA) has identified over 20,000 victims of cryptocurrency fraud across Canada, the United Kingdom, and the United States. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="two different attackers poisoned popular open source tools - and showed us the future of supply chain compromise" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/44819210" target="_blank" rel="noopener">Two different attackers poisoned popular open source tools - and showed us the future of supply chain compromise</a><span class="article-summary">submitted by cm0002 to cybersecurity 3 points | 0 comments https://www.theregister.com/2026/04/11/trivy_axios_supply_chain_attacks/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="hwmonitor &amp; cpu-z users were exposed to malware through fake downloads after cpuid breach" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/44807533" target="_blank" rel="noopener">HWMonitor &amp; CPU-Z users were exposed to malware through fake downloads after CPUID breach</a><span class="article-summary">submitted by cm0002 to cybersecurity 1 points | 0 comments https://alternativeto.net/news/2026/4/hwmonitor-and-cpu-z-users-were-exposed-to-malware-through-fake-downloads-after-cpuid-breach/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="security psa: popular tools cpu-z and hwmonitor were briefly compromised" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/58369609" target="_blank" rel="noopener">Security PSA: Popular Tools CPU-Z and HWMonitor Were Briefly Compromised</a><span class="article-summary">submitted by nemeski to cybersecurity 1 points | 0 comments https://www.techpowerup.com/348138/security-psa-popular-tools-cpu-z-and-hwmonitor-were-briefly-compromised</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">8</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cpuid site hijacked to serve malware instead of hwmonitor downloads" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/44785544" target="_blank" rel="noopener">CPUID site hijacked to serve malware instead of HWMonitor downloads</a><span class="article-summary">submitted by cm0002 to cybersecurity 5 points | 0 comments https://www.theregister.com/2026/04/10/cpuid_site_hijacked/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="google rolls out end-to-end encryption for gmail on android and ios devices for enterprise users, letting them read and compose emails without additional tools" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/44785138" target="_blank" rel="noopener">Google rolls out end-to-end encryption for Gmail on Android and iOS devices for enterprise users, letting them read and compose emails without additional tools</a><span class="article-summary">submitted by Innerworld to cybersecurity 3 points | 0 comments https://www.bleepingcomputer.com/news/google/google-rolls-out-gmail-end-to-end-encryption-on-mobile-devices/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="google rolls out end-to-end encryption for gmail on android and ios devices for enterprise users, letting them read and compose emails without additional tools" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://programming.dev/post/48627736" target="_blank" rel="noopener">Google rolls out end-to-end encryption for Gmail on Android and iOS devices for enterprise users, letting them read and compose emails without additional tools</a><span class="article-summary">submitted by Innerworld to security 1 points | 0 comments https://www.bleepingcomputer.com/news/google/google-rolls-out-gmail-end-to-end-encryption-on-mobile-devices/</span></span><span class="headline-source">PROGRAMMING.DEV</span></div>
+<div class="headline" data-title="google rolls out end-to-end encryption for gmail on android and ios devices for enterprise users, letting them read and compose emails without additional tools" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/58321525" target="_blank" rel="noopener">Google rolls out end-to-end encryption for Gmail on Android and iOS devices for enterprise users, letting them read and compose emails without additional tools</a><span class="article-summary">submitted by Innerworld to cybersecurity 2 points | 0 comments https://www.bleepingcomputer.com/news/google/google-rolls-out-gmail-end-to-end-encryption-on-mobile-devices/</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="google rolls out end-to-end encryption for gmail on android and ios devices for enterprise users, letting them read and compose emails without additional tools" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/44787689" target="_blank" rel="noopener">Google rolls out end-to-end encryption for Gmail on Android and iOS devices for enterprise users, letting them read and compose emails without additional tools</a><span class="article-summary">submitted by cm0002 to cybersecurity 2 points | 0 comments https://www.bleepingcomputer.com/news/google/google-rolls-out-gmail-end-to-end-encryption-on-mobile-devices/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="google locks chrome sessions to devices to stop cookie theft" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/chrome-sessions-to-devices-to-stop-cookie-theft/" target="_blank" rel="noopener">Google Locks Chrome Sessions to Devices to Stop Cookie Theft</a><span class="article-summary">Google has officially launched a major security upgrade to protect users from session hijacking. Starting with Chrome version 146 for Windows users, Device Bound Session Credentials (DBSC) is now publicly available. This new feature aims to stop malware from stealing web cookies …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="supply chain nightmare: how rust will be attacked and what we can do to mitigate the inevitable" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/44807123" target="_blank" rel="noopener">Supply chain nightmare: How Rust will be attacked and what we can do to mitigate the inevitable</a><span class="article-summary">submitted by cm0002 to cybersecurity 1 points | 0 comments https://kerkour.com/rust-supply-chain-nightmare</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="ai cybersecurity after mythos: the jagged frontier" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/44819420" target="_blank" rel="noopener">AI Cybersecurity After Mythos: The Jagged Frontier</a><span class="article-summary">submitted by cm0002 to cybersecurity 2 points | 0 comments https://aisle.com/blog/ai-cybersecurity-after-mythos-the-jagged-frontier</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="jetzt patchen! adobe veröffentlicht notfall-sicherheitsupdate für acrobat reader" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.heise.de/news/Jetzt-patchen-Adobe-veroeffentlicht-Notfall-Sicherheitsupdate-fuer-Acrobat-Reader-11253367.html" target="_blank" rel="noopener">Jetzt patchen! Adobe veröffentlicht Notfall-Sicherheitsupdate für Acrobat Reader</a><span class="article-summary">Angreifer nutzen eine kritische Schwachstelle in Adobe Acrobat Reader aus. Nun ist ein Sicherheitspatch für macOS und Windows erschienen.</span></span><span class="headline-source">HEISE.DE</span></div>
+<div class="headline" data-title="einzelhändler frustriert über strenge regeln bei ki-kameras" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.heise.de/news/Ueberwachung-gegen-Ladendiebstahl-Einzelhandel-fordert-digitale-Aufruestung-11253325.html" target="_blank" rel="noopener">Einzelhändler frustriert über strenge Regeln bei KI-Kameras</a><span class="article-summary">Eine Studie von Ibi Research und der DIHK zeigt: Händler setzen auf KI-Kameras, fühlen sich aber durch die DSGVO und mangelnde Strafverfolgung ausgebremst.</span></span><span class="headline-source">HEISE.DE</span></div>
+<div class="headline" data-title="us-regierung traf sich vor mythos-preview-rollout mit ki-herstellern" data-date="2026-04-11"><span class="headline-date">11 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.heise.de/news/US-Regierung-traf-sich-vor-Mythos-Preview-Rollout-mit-KI-Herstellern-11253281.html" target="_blank" rel="noopener">US-Regierung traf sich vor Mythos-Preview-Rollout mit KI-Herstellern</a><span class="article-summary">Vor dem Mythos-Preview-Rollout diese Woche sprachen Regierungsvertreter mit den großen KI-Herstellern. Derweil testen US-Banken die neue KI.</span></span><span class="headline-source">HEISE.DE</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

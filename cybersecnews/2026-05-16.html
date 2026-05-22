@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2026-05-16</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -23,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
-<a href="2026-05-21.html">2026-05-21</a>
-<a href="2026-05-18.html">2026-05-18</a>
-<a href="2026-05-17.html">2026-05-17</a>
-<a href="index.html" class="active">Today</a>
-<a href="2026-05-15.html">2026-05-15</a>
-<a href="2026-05-14.html">2026-05-14</a>
-<a href="2026-05-13.html">2026-05-13</a>
+<a href="2026-05-23.html">23 May</a>
+<a href="index.html">Today</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -39,90 +109,73 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2026-05-16</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">31</span></button>
-<button class="filter-btn" data-cat="CISA KEV" onclick="filterCat('CISA KEV', this)">CISA KEV <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">20</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="CISA KEV" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://securityaffairs.com/192240/hacking/u-s-cisa-adds-a-flaw-in-microsoft-exchange-server-to-its-known-exploited-vulnerabilities-catalog.html" target="_blank" rel="noopener">U.S. CISA adds a flaw in Microsoft Exchange Server to its Known Exploited Vulnerabilities catalog</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) adds a flaw in Microsoft Exchange Server to its Known Exploited Vulnerabilities catalog. The U.S. Cybersecurity and Infrastructure Security Agency (CISA) added a flaw in Microsoft Exchange Server, tracked as CVE-202…</span></div><span class="kev-badge">KEV</span><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-44673" target="_blank" rel="noopener">CVE-2026-44673 libyang: lyb_read_string() integer overflow → heap buffer overflow</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6478" target="_blank" rel="noopener">CVE-2026-6478 PostgreSQL discloses MD5-hashed passwords via covert timing channel</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6473" target="_blank" rel="noopener">CVE-2026-6473 PostgreSQL server undersizes allocations, via integer wraparound</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6638" target="_blank" rel="noopener">CVE-2026-6638 PostgreSQL REFRESH PUBLICATION allows SQL injection via table name</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6637" target="_blank" rel="noopener">CVE-2026-6637 PostgreSQL refint allows stack buffer overflow and SQL injection</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6477" target="_blank" rel="noopener">CVE-2026-6477 PostgreSQL libpq lo_* functions let server superuser overwrite client stack memory</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-40460" target="_blank" rel="noopener">CVE-2026-40460 NGINX ngx_quic_module vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-42934" target="_blank" rel="noopener">CVE-2026-42934 NGINX ngx_http_charset_module vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-42946" target="_blank" rel="noopener">CVE-2026-42946 NGINX ngx_http_scgi_module and ngx_http_uwsgi_module vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-44662" target="_blank" rel="noopener">CVE-2026-44662 rust-openssl: Heap buffer overflow when encrypting with AES key-wrap-with-padding</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-44431" target="_blank" rel="noopener">CVE-2026-44431 urllib3: Sensitive headers forwarded across origins in proxied low-level redirects</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-43490" target="_blank" rel="noopener">CVE-2026-43490 ksmbd: validate inherited ACE SID length</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6475" target="_blank" rel="noopener">CVE-2026-6475 PostgreSQL pg_basebackup and pg_rewind can overwrite unrelated files of origin superuser choice</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6474" target="_blank" rel="noopener">CVE-2026-6474 PostgreSQL timeofday() can disclose portions of server memory</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6472" target="_blank" rel="noopener">CVE-2026-6472 PostgreSQL CREATE TYPE does not check multirange schema CREATE privilege</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6479" target="_blank" rel="noopener">CVE-2026-6479 PostgreSQL SSL/GSS init causes denial of service, via uncontrolled recursion</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-40701" target="_blank" rel="noopener">CVE-2026-40701 NGINX ngx_http_ssl_module vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-42945" target="_blank" rel="noopener">CVE-2026-42945 NGINX ngx_http_rewrite_module vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46333" target="_blank" rel="noopener">CVE-2026-46333 ptrace: slightly saner 'get_dumpable()' logic</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://gbhackers.com/linux-ssh-keysign-pwn-flaw/" target="_blank" rel="noopener">Linux “ssh-keysign-pwn” Flaw Exposing Critical Authentication Files</a></div><span class="article-meta">GBHACKERS.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/inside-cira-how-canadas-ca-registry-became-a-global-dns-cybersecurity-force" target="_blank" rel="noopener">Inside CIRA: How Canada's .ca Registry Became a Global DNS &amp; Cybersecurity Force</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/jdownloader-website-hack-exposes-windows-and-linux-users/" target="_blank" rel="noopener">JDownloader Website Hack Exposes Windows and Linux Users to Malicious Installers</a></div><span class="article-meta">GBHACKERS.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thecyberwire.com/newsletters/week-that-was/10/19" target="_blank" rel="noopener">OpenAI and others deal with fallout from TanStack supply-chain attack.</a></div><span class="article-meta">THECYBERWIRE.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://securityaffairs.com/192222/hacking/openai-hit-by-supply-chain-attack-linked-to-malicious-tanstack-packages.html" target="_blank" rel="noopener">OpenAI hit by supply chain attack linked to malicious TanStack packages</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/6JElX8d9Ucw" target="_blank" rel="noopener">AI Broke Patch Management</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2026-05-16</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2026/05/funnel-builder-flaw-under-active.html" target="_blank" rel="noopener">Funnel Builder Flaw Under Active Exploitation Enables WooCommerce Checkout Skimming</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.wired.com/story/security-news-this-week-cybercriminal-twins-caught-after-they-forgot-to-turn-off-microsoft-teams-recording/" target="_blank" rel="noopener">Cybercriminal Twins Caught After They Forgot to Turn Off Microsoft Teams Recording</a></div><span class="article-meta">WIRED.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://securityaffairs.com/192231/apt/russian-apt-turla-builds-long-term-access-tool-with-kazuar-botnet-evolution.html" target="_blank" rel="noopener">Russian APT Turla builds long-term access tool with Kazuar Botnet evolution</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 16 May 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2026/05/friday-squid-blogging-bigfin-squid.html" target="_blank" rel="noopener">Friday Squid Blogging: Bigfin Squid</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2026-05-16</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-05-16"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thecyberwire.com/podcasts/research-saturday/425/notes" target="_blank" rel="noopener">Scam papers served.</a></div><span class="article-meta">THECYBERWIRE.COM &mdash; 16 May 2026</span></div>
-    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="u.s. cisa adds a flaw in microsoft exchange server to its known exploited vulnerabilities catalog" data-date="2026-05-16"><span class="headline-date">16 May <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/192240/hacking/u-s-cisa-adds-a-flaw-in-microsoft-exchange-server-to-its-known-exploited-vulnerabilities-catalog.html" target="_blank" rel="noopener">U.S. CISA adds a flaw in Microsoft Exchange Server to its Known Exploited Vulnerabilities catalog</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) adds a flaw in Microsoft Exchange Server to its Known Exploited Vulnerabilities catalog. The U.S. Cybersecurity and Infrastructure Security Agency (CISA) added a flaw in Microsoft Exchange Server, tracked as CVE-202…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">20</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cve-2026-44673 libyang: lyb_read_string() integer overflow → heap buffer overflow" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-44673" target="_blank" rel="noopener">CVE-2026-44673 libyang: lyb_read_string() integer overflow → heap buffer overflow</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-6478 postgresql discloses md5-hashed passwords via covert timing channel" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6478" target="_blank" rel="noopener">CVE-2026-6478 PostgreSQL discloses MD5-hashed passwords via covert timing channel</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-6473 postgresql server undersizes allocations, via integer wraparound" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6473" target="_blank" rel="noopener">CVE-2026-6473 PostgreSQL server undersizes allocations, via integer wraparound</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-6638 postgresql refresh publication allows sql injection via table name" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6638" target="_blank" rel="noopener">CVE-2026-6638 PostgreSQL REFRESH PUBLICATION allows SQL injection via table name</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-6637 postgresql refint allows stack buffer overflow and sql injection" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6637" target="_blank" rel="noopener">CVE-2026-6637 PostgreSQL refint allows stack buffer overflow and SQL injection</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-6477 postgresql libpq lo_* functions let server superuser overwrite client stack memory" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6477" target="_blank" rel="noopener">CVE-2026-6477 PostgreSQL libpq lo_* functions let server superuser overwrite client stack memory</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-40460 nginx ngx_quic_module vulnerability" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-40460" target="_blank" rel="noopener">CVE-2026-40460 NGINX ngx_quic_module vulnerability</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-42934 nginx ngx_http_charset_module vulnerability" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-42934" target="_blank" rel="noopener">CVE-2026-42934 NGINX ngx_http_charset_module vulnerability</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-42946 nginx ngx_http_scgi_module and ngx_http_uwsgi_module vulnerability" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-42946" target="_blank" rel="noopener">CVE-2026-42946 NGINX ngx_http_scgi_module and ngx_http_uwsgi_module vulnerability</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-44662 rust-openssl: heap buffer overflow when encrypting with aes key-wrap-with-padding" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-44662" target="_blank" rel="noopener">CVE-2026-44662 rust-openssl: Heap buffer overflow when encrypting with AES key-wrap-with-padding</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-44431 urllib3: sensitive headers forwarded across origins in proxied low-level redirects" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-44431" target="_blank" rel="noopener">CVE-2026-44431 urllib3: Sensitive headers forwarded across origins in proxied low-level redirects</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-43490 ksmbd: validate inherited ace sid length" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-43490" target="_blank" rel="noopener">CVE-2026-43490 ksmbd: validate inherited ACE SID length</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-6475 postgresql pg_basebackup and pg_rewind can overwrite unrelated files of origin superuser choice" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6475" target="_blank" rel="noopener">CVE-2026-6475 PostgreSQL pg_basebackup and pg_rewind can overwrite unrelated files of origin superuser choice</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-6474 postgresql timeofday() can disclose portions of server memory" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6474" target="_blank" rel="noopener">CVE-2026-6474 PostgreSQL timeofday() can disclose portions of server memory</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-6472 postgresql create type does not check multirange schema create privilege" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6472" target="_blank" rel="noopener">CVE-2026-6472 PostgreSQL CREATE TYPE does not check multirange schema CREATE privilege</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-6479 postgresql ssl/gss init causes denial of service, via uncontrolled recursion" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6479" target="_blank" rel="noopener">CVE-2026-6479 PostgreSQL SSL/GSS init causes denial of service, via uncontrolled recursion</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-40701 nginx ngx_http_ssl_module vulnerability" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-40701" target="_blank" rel="noopener">CVE-2026-40701 NGINX ngx_http_ssl_module vulnerability</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-42945 nginx ngx_http_rewrite_module vulnerability" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-42945" target="_blank" rel="noopener">CVE-2026-42945 NGINX ngx_http_rewrite_module vulnerability</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-46333 ptrace: slightly saner 'get_dumpable()' logic" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46333" target="_blank" rel="noopener">CVE-2026-46333 ptrace: slightly saner 'get_dumpable()' logic</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="linux “ssh-keysign-pwn” flaw exposing critical authentication files" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/linux-ssh-keysign-pwn-flaw/" target="_blank" rel="noopener">Linux “ssh-keysign-pwn” Flaw Exposing Critical Authentication Files</a><span class="article-summary">A newly disclosed Linux kernel vulnerability, dubbed&#160;&#8220;ssh-keysign-pwn&#8221;&#160;by Qualys researchers, exposes millions of Linux systems to unauthorized access to sensitive SSH private keys and hashed passwords stored in&#160;/etc/shadow. Tracked as&#160;CVE-2026-463…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="inside cira: how canada's .ca registry became a global dns &amp; cybersecurity force" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/inside-cira-how-canadas-ca-registry-became-a-global-dns-cybersecurity-force" target="_blank" rel="noopener">Inside CIRA: How Canada's .ca Registry Became a Global DNS &amp; Cybersecurity Force</a><span class="article-summary">David Shipley interviews Jon Ferguson, VP at CIRA, about how the Canadian Internet Registration Authority evolved from early paper-based .ca registrations at UBC into a 142-person, member-based not-for-profit running .ca and authoritative Anycast DNS infrastructure now supporting…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="jdownloader website hack exposes windows and linux users to malicious installers" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/jdownloader-website-hack-exposes-windows-and-linux-users/" target="_blank" rel="noopener">JDownloader Website Hack Exposes Windows and Linux Users to Malicious Installers</a><span class="article-summary">A popular open-source download manager trusted by millions suddenly became a malware delivery platform after attackers compromised its official website, replacing legitimate installers with trojanized versions targeting both Windows and Linux users. The incident, confirmed by JDo…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="openai and others deal with fallout from tanstack supply-chain attack." data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://thecyberwire.com/newsletters/week-that-was/10/19" target="_blank" rel="noopener">OpenAI and others deal with fallout from TanStack supply-chain attack.</a><span class="article-summary">Disgruntled researcher discloses two Windows zero-days. Microsoft warns of critical zero-day in on-prem Exchange Servers.</span></span><span class="headline-source">THECYBERWIRE.COM</span></div>
+<div class="headline" data-title="openai hit by supply chain attack linked to malicious tanstack packages" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/192222/hacking/openai-hit-by-supply-chain-attack-linked-to-malicious-tanstack-packages.html" target="_blank" rel="noopener">OpenAI hit by supply chain attack linked to malicious TanStack packages</a><span class="article-summary">OpenAI said the TanStack supply chain attack compromised two employee devices and exposed credentials from code repositories. OpenAI confirmed that the recent TanStack supply chain attack compromised two employee devices and exposed credential material stored in internal source c…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+<div class="headline" data-title="ai broke patch management" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/6JElX8d9Ucw" target="_blank" rel="noopener">AI Broke Patch Management</a><span class="article-summary">AI systems are now discovering software vulnerabilities at a pace that is forcing major vendors to rethink how they ship security updates. The speaker points to Mozilla fixes tied to Glasswing discoveries and Oracle shifting from quarterly to monthly patching cycles. That change …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="funnel builder flaw under active exploitation enables woocommerce checkout skimming" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/05/funnel-builder-flaw-under-active.html" target="_blank" rel="noopener">Funnel Builder Flaw Under Active Exploitation Enables WooCommerce Checkout Skimming</a><span class="article-summary">A critical security vulnerability impacting the Funnel Builder plugin for WordPress has come under active exploitation in the wild to inject malicious JavaScript code into WooCommerce checkout pages with the goal of stealing payment data. Details of the activity were published by…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cybercriminal twins caught after they forgot to turn off microsoft teams recording" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://www.wired.com/story/security-news-this-week-cybercriminal-twins-caught-after-they-forgot-to-turn-off-microsoft-teams-recording/" target="_blank" rel="noopener">Cybercriminal Twins Caught After They Forgot to Turn Off Microsoft Teams Recording</a><span class="article-summary">Plus: Instructure’s Canvas ransomware debacle comes to a close, an alleged dark net market kingpin gets arrested, OpenAI workers fall victim to a supply chain attack, and more.</span></span><span class="headline-source">WIRED.COM</span></div>
+<div class="headline" data-title="russian apt turla builds long-term access tool with kazuar botnet evolution" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/192231/apt/russian-apt-turla-builds-long-term-access-tool-with-kazuar-botnet-evolution.html" target="_blank" rel="noopener">Russian APT Turla builds long-term access tool with Kazuar Botnet evolution</a><span class="article-summary">Russia-linked APT group Turla turned its Kazuar malware into a stealthy P2P botnet for long-term access to compromised systems. Russia-linked APT group Turla upgraded its Kazuar backdoor into a modular peer-to-peer botnet designed for stealth and persistent access to infected sys…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="friday squid blogging: bigfin squid" data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2026/05/friday-squid-blogging-bigfin-squid.html" target="_blank" rel="noopener">Friday Squid Blogging: Bigfin Squid</a><span class="article-summary">Article about the bigfin squid. As usual, you can also use this squid post to talk about the security stories in the news that I haven&#8217;t covered. Blog moderation policy.</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="scam papers served." data-date="2026-05-16"><span class="headline-date">16 May</span><span class="headline-body"><a class="headline-title" href="https://thecyberwire.com/podcasts/research-saturday/425/notes" target="_blank" rel="noopener">Scam papers served.</a><span class="article-summary">⁠⁠Thomas Elkins⁠⁠, SOC L3 Analyst from ⁠⁠BlueVoyant⁠⁠, is discussing "Unpacking Augmented Marauder’s Multi-Pronged Casbaneiro Campaigns." BlueVoyant researchers uncovered a large-scale phishing campaign by the Brazil-linked threat group targeting Spanish-speaking users across Lat…</span></span><span class="headline-source">THECYBERWIRE.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-05-16 23:01<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

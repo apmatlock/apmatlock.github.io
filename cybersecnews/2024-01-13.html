@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-01-13</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,78 +109,65 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-01-13</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">18</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-01-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2024/01/critical-rce-vulnerability-uncovered-in.html" target="_blank" rel="noopener">Critical RCE Vulnerability Uncovered in Juniper SRX Firewalls and EX Switches</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 13 Jan 2024</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-01-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://labs.watchtowr.com/welcome-to-2024-the-sslvpn-chaos-continues-ivanti-cve-2023-46805-cve-2024-21887/" target="_blank" rel="noopener">Welcome To 2024, The SSLVPN Chaos Continues - Ivanti CVE-2023-46805 &amp;amp; CVE-2024-21887 (watchTowr Labs)</a></div><span class="article-meta">LABS.WATCHTOWR.COM &mdash; 13 Jan 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-01-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/01/nation-state-actors-weaponize-ivanti.html?&web_view=true" target="_blank" rel="noopener">Update: Nation-State Actors Weaponize Ivanti VPN Zero-Days, Deploying Five Malware Families</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 13 Jan 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-01-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://unit42.paloaltonetworks.com/malicious-apks-steal-pii-from-chinese-users/?&web_view=true" target="_blank" rel="noopener">New Financial Fraud APK Campaign Discovered</a></div><span class="article-meta">UNIT42.PALOALTONETWORKS.COM &mdash; 13 Jan 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-01-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://therecord.media/vulnerability-smart-thermostats-bosch-patch?&web_view=true" target="_blank" rel="noopener">Vulnerability Affecting Smart Thermostats Patched by Bosch</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 13 Jan 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-01-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.helpnetsecurity.com/2024/01/11/apis-attack-volume-rise/?&web_view=true" target="_blank" rel="noopener">APIs are Increasingly Becoming Attractive Targets</a></div><span class="article-meta">HELPNETSECURITY.COM &mdash; 13 Jan 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-01-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://therecord.media/water-for-people-medusa-ransomware?&web_view=true" target="_blank" rel="noopener">Medusa Ransomware Gang Targets Nonprofit Providing Clean Water to World’s Poorest</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 13 Jan 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-01-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bankinfosecurity.com/fertility-test-lab-will-pay-125m-to-settle-breach-lawsuit-a-24092?&web_view=true" target="_blank" rel="noopener">Fertility Test Lab Will Pay $1.25M to Settle Breach Lawsuit</a></div><span class="article-meta">BANKINFOSECURITY.COM &mdash; 13 Jan 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-01-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/01/29-year-old-ukrainian-cryptojacking.html" target="_blank" rel="noopener">29-Year-Old Ukrainian Cryptojacking Kingpin Arrested for Exploiting Cloud Services</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 13 Jan 2024</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-01-13"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://thecyberexpress.com/saudi-foreign-affairs-data-breach/?&web_view=true" target="_blank" rel="noopener">Saudi Foreign Affairs Ministry Allegedly Hit by Major Data Breach, Impacting Over 1.4 Million Employees</a></div><span class="article-meta">THECYBEREXPRESS.COM &mdash; 13 Jan 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-01-13"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://therecord.media/fincantieri-shipbuilder-us-navy-wisconsin-ransomware?&web_view=true" target="_blank" rel="noopener">Update: Ransomware Attack on US Navy Shipbuilder Leaked Information of Nearly 17,000 People</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 13 Jan 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-01-13"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.darkreading.com/cyber-risk/volt-typhoon-ramps-up-malicious-activity-critical-infrastructure?&web_view=true" target="_blank" rel="noopener">Volt Typhoon Ramps Up Malicious Activity Against Critical Infrastructure</a></div><span class="article-meta">DARKREADING.COM &mdash; 13 Jan 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-01-13"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.cybersecuritydive.com/news/elevated-ransomware-activity-2023-rapid7/704476/?&web_view=true" target="_blank" rel="noopener">Report: Elevated Ransomware Activity Hit Nearly 5,200 Organizations in 2023</a></div><span class="article-meta">CYBERSECURITYDIVE.COM &mdash; 13 Jan 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-01-13"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://therecord.media/british-cosmetics-lush-cyberattack?&web_view=true" target="_blank" rel="noopener">British Cosmetics Firm Lush Confirms Cyberattack</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 13 Jan 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-01-13"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/hacker-spins-up-1-million-virtual-servers-to-illegally-mine-crypto/" target="_blank" rel="noopener">Hacker spins up 1 million virtual servers to illegally mine crypto</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 13 Jan 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-01-13"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://blog.cryptographyengineering.com/2024/01/11/attack-of-the-week-airdrop-tracing/" target="_blank" rel="noopener">Attack of the week: Airdrop tracing – A Few Thoughts on Cryptographic Engineering</a></div><span class="article-meta">CRYPTOGRAPHYENGINEERING.COM &mdash; 13 Jan 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-01-13"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/web-server-penetration-testing-checklist/" target="_blank" rel="noopener">Most Important Web Server Penetration Testing Checklist</a></div><span class="article-meta">GBHACKERS.COM &mdash; 13 Jan 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-01-13"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.helpnetsecurity.com/2024/01/11/attack-technique-variants/?&web_view=true" target="_blank" rel="noopener">Purple Teaming and the Role of Threat Categorization</a></div><span class="article-meta">HELPNETSECURITY.COM &mdash; 13 Jan 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="critical rce vulnerability uncovered in juniper srx firewalls and ex switches" data-date="2024-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/01/critical-rce-vulnerability-uncovered-in.html" target="_blank" rel="noopener">Critical RCE Vulnerability Uncovered in Juniper SRX Firewalls and EX Switches</a><span class="article-summary">Juniper Networks has released updates to fix a critical remote code execution (RCE) vulnerability in its SRX Series firewalls and EX Series switches. The issue, tracked as&nbsp;CVE-2024-21591, is rated 9.8 on the CVSS scoring system. “An out-of-bounds write vulnerability in J-Web…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="welcome to 2024, the sslvpn chaos continues - ivanti cve-2023-46805 &amp;amp; cve-2024-21887 (watchtowr labs)" data-date="2024-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://labs.watchtowr.com/welcome-to-2024-the-sslvpn-chaos-continues-ivanti-cve-2023-46805-cve-2024-21887/" target="_blank" rel="noopener">Welcome To 2024, The SSLVPN Chaos Continues - Ivanti CVE-2023-46805 &amp;amp; CVE-2024-21887 (watchTowr Labs)</a><span class="article-summary">submitted by L4s to secops 1 points | 0 comments https://labs.watchtowr.com/welcome-to-2024-the-sslvpn-chaos-continues-ivanti-cve-2023-46805-cve-2024-21887/ Welcome To 2024, The SSLVPN Chaos Continues - Ivanti CVE-2023-46805 &amp; CVE-2024-21887 (watchTowr Labs)::Did you have a g…</span></span><span class="headline-source">LABS.WATCHTOWR.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="update: nation-state actors weaponize ivanti vpn zero-days, deploying five malware families" data-date="2024-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/01/nation-state-actors-weaponize-ivanti.html?&web_view=true" target="_blank" rel="noopener">Update: Nation-State Actors Weaponize Ivanti VPN Zero-Days, Deploying Five Malware Families</a><span class="article-summary">Suspected nation-state threat actors have been exploiting two zero-day vulnerabilities in Ivanti Connect Secure VPN appliances to gain backdoor access to targeted devices.</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="new financial fraud apk campaign discovered" data-date="2024-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://unit42.paloaltonetworks.com/malicious-apks-steal-pii-from-chinese-users/?&web_view=true" target="_blank" rel="noopener">New Financial Fraud APK Campaign Discovered</a><span class="article-summary">A new family of malicious Android Package Kit (APK) files has been discovered targeting Chinese users. The attackers pose as law enforcement officials and claim the victim's phone number or bank account is involved in financial fraud.</span></span><span class="headline-source">UNIT42.PALOALTONETWORKS.COM</span></div>
+<div class="headline" data-title="vulnerability affecting smart thermostats patched by bosch" data-date="2024-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/vulnerability-smart-thermostats-bosch-patch?&web_view=true" target="_blank" rel="noopener">Vulnerability Affecting Smart Thermostats Patched by Bosch</a><span class="article-summary">German technology manufacturer Bosch has fixed a vulnerability in its popular line of smart thermostats that allowed attackers to replace the device firmware with a rogue version.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="apis are increasingly becoming attractive targets" data-date="2024-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2024/01/11/apis-attack-volume-rise/?&web_view=true" target="_blank" rel="noopener">APIs are Increasingly Becoming Attractive Targets</a><span class="article-summary">APIs are being used more than ever by businesses to build and provide better sites, apps, and services to consumers. However, if APIs are not managed or secured properly, they can be exploited by hackers to steal sensitive information.</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="medusa ransomware gang targets nonprofit providing clean water to world’s poorest" data-date="2024-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/water-for-people-medusa-ransomware?&web_view=true" target="_blank" rel="noopener">Medusa Ransomware Gang Targets Nonprofit Providing Clean Water to World’s Poorest</a><span class="article-summary">Water for People, a nonprofit focused on improving access to clean water, has been targeted by the Medusa ransomware group, highlighting the vulnerability of even non-profit organizations to cyberattacks.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="fertility test lab will pay $1.25m to settle breach lawsuit" data-date="2024-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bankinfosecurity.com/fertility-test-lab-will-pay-125m-to-settle-breach-lawsuit-a-24092?&web_view=true" target="_blank" rel="noopener">Fertility Test Lab Will Pay $1.25M to Settle Breach Lawsuit</a><span class="article-summary">The settlement includes reimbursement for out-of-pocket losses, credit monitoring, identity theft insurance, and a cash settlement payment for affected individuals, with an additional payment for California residents.</span></span><span class="headline-source">BANKINFOSECURITY.COM</span></div>
+<div class="headline" data-title="29-year-old ukrainian cryptojacking kingpin arrested for exploiting cloud services" data-date="2024-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/01/29-year-old-ukrainian-cryptojacking.html" target="_blank" rel="noopener">29-Year-Old Ukrainian Cryptojacking Kingpin Arrested for Exploiting Cloud Services</a><span class="article-summary">A 29-year-old Ukrainian national has been arrested in connection with running a “sophisticated cryptojacking scheme,” netting them over $2 million (€1.8 million) in illicit profits. The person was apprehended in Mykolaiv, Ukraine, on January 9 by the National Police of Ukraine wi…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="saudi foreign affairs ministry allegedly hit by major data breach, impacting over 1.4 million employees" data-date="2024-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://thecyberexpress.com/saudi-foreign-affairs-data-breach/?&web_view=true" target="_blank" rel="noopener">Saudi Foreign Affairs Ministry Allegedly Hit by Major Data Breach, Impacting Over 1.4 Million Employees</a><span class="article-summary">The Ministry of Foreign Affairs for Saudi Arabia reportedly experienced a major data breach, exposing the personal information of over 1.4 million employees, including names, contact details, and job titles.</span></span><span class="headline-source">THECYBEREXPRESS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="update: ransomware attack on us navy shipbuilder leaked information of nearly 17,000 people" data-date="2024-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/fincantieri-shipbuilder-us-navy-wisconsin-ransomware?&web_view=true" target="_blank" rel="noopener">Update: Ransomware Attack on US Navy Shipbuilder Leaked Information of Nearly 17,000 People</a><span class="article-summary">Nearly 17,000 people had their personal information exposed in a ransomware attack on Fincantieri Marine Group. The attack, which occurred in April 2023, caused production issues and disrupted the company's computer systems.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="volt typhoon ramps up malicious activity against critical infrastructure" data-date="2024-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.darkreading.com/cyber-risk/volt-typhoon-ramps-up-malicious-activity-critical-infrastructure?&web_view=true" target="_blank" rel="noopener">Volt Typhoon Ramps Up Malicious Activity Against Critical Infrastructure</a><span class="article-summary">Volt Typhoon is using compromised routers as a command-and-control network and deploying a new web shell called "fy.sh" on targeted Cisco routers, indicating a highly active and sophisticated operation.</span></span><span class="headline-source">DARKREADING.COM</span></div>
+<div class="headline" data-title="report: elevated ransomware activity hit nearly 5,200 organizations in 2023" data-date="2024-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.cybersecuritydive.com/news/elevated-ransomware-activity-2023-rapid7/704476/?&web_view=true" target="_blank" rel="noopener">Report: Elevated Ransomware Activity Hit Nearly 5,200 Organizations in 2023</a><span class="article-summary">The most active ransomware groups in 2023 included AlphV, BianLian, Clop, LockBit 3.0, and Play, with AlphV being the most prolific and receiving substantial ransom payments.</span></span><span class="headline-source">CYBERSECURITYDIVE.COM</span></div>
+<div class="headline" data-title="british cosmetics firm lush confirms cyberattack" data-date="2024-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/british-cosmetics-lush-cyberattack?&web_view=true" target="_blank" rel="noopener">British Cosmetics Firm Lush Confirms Cyberattack</a><span class="article-summary">Lush has taken immediate steps to secure and screen all systems in order to contain the incident and limit its impact on their operations, while also informing relevant authorities about the incident.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="hacker spins up 1 million virtual servers to illegally mine crypto" data-date="2024-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/hacker-spins-up-1-million-virtual-servers-to-illegally-mine-crypto/" target="_blank" rel="noopener">Hacker spins up 1 million virtual servers to illegally mine crypto</a><span class="article-summary">A 29-year-old man in Ukraine was arrested this week for using hacked accounts to create 1 million virtual servers used to mine $2 million in cryptocurrency. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="attack of the week: airdrop tracing – a few thoughts on cryptographic engineering" data-date="2024-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://blog.cryptographyengineering.com/2024/01/11/attack-of-the-week-airdrop-tracing/" target="_blank" rel="noopener">Attack of the week: Airdrop tracing – A Few Thoughts on Cryptographic Engineering</a><span class="article-summary">submitted by Blaze to securitynews 1 points | 0 comments https://blog.cryptographyengineering.com/2024/01/11/attack-of-the-week-airdrop-tracing/</span></span><span class="headline-source">CRYPTOGRAPHYENGINEERING.COM</span></div>
+<div class="headline" data-title="most important web server penetration testing checklist" data-date="2024-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/web-server-penetration-testing-checklist/" target="_blank" rel="noopener">Most Important Web Server Penetration Testing Checklist</a><span class="article-summary">Web server pentesting is performed under 3 significant categories: Identity, Analyse, and Report Vulnerabilities such as authentication weakness, configuration errors, and protocol Relation vulnerabilities. 1. &#8220;Conduct a series of methodical and Repeatable tests &#8221; is …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="purple teaming and the role of threat categorization" data-date="2024-01-13"><span class="headline-date">13 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2024/01/11/attack-technique-variants/?&web_view=true" target="_blank" rel="noopener">Purple Teaming and the Role of Threat Categorization</a><span class="article-summary">Purple team assessments, where red and blue teams collaborate, can provide a more comprehensive approach to security assessments, but they need to evolve to account for the multitude of attack technique variants.</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

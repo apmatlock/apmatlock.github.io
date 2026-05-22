@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-03-09</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,76 +109,71 @@
       <div class="stat"><span class="stat-value">8</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-03-09</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">14</span></button>
-<button class="filter-btn" data-cat="CISA KEV" onclick="filterCat('CISA KEV', this)">CISA KEV <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Podcasts" onclick="filterCat('Podcasts', this)">PODCASTS <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="CISA KEV" data-date="2024-03-09"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://securityaffairs.com/160124/security/cisa-apple-ios-and-ipados-bugs-to-its-known-exploited-vulnerabilities-catalog.html?&web_view=true" target="_blank" rel="noopener">CISA Adds Apple iOS and iPadOS Memory Corruption Bugs to its Known Exploited Vulnerabilities Catalog</a><span class="article-summary">These memory corruption vulnerabilities, tracked as CVE-2024-23225 and CVE-2024-23296, were exploited in attacks against iPhone devices. Apple released emergency security updates to address these zero-day vulnerabilities.</span></div><span class="kev-badge">KEV</span><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 09 Mar 2024</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-03-09"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.theregister.com/2024/03/08/canva_font_security/?&web_view=true" target="_blank" rel="noopener">Canva Warns of Three Security Vulnerabilities in Fonts</a></div><span class="article-meta">THEREGISTER.COM &mdash; 09 Mar 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-03-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/03/microsoft-confirms-russian-hackers.html" target="_blank" rel="noopener">Microsoft Confirms Russian Hackers Stole Source Code, Some Customer Secrets</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 09 Mar 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-03-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://blog.sucuri.net/2024/03/new-malware-campaign-found-exploiting-stored-xss-in-popup-builder-4-2-3.html?&web_view=true" target="_blank" rel="noopener">New Malware Campaign Found Exploiting Stored XSS in Popup Builder</a></div><span class="article-meta">SUCURI.NET &mdash; 09 Mar 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-03-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/pictrs/image/865751b1-859f-46c2-914c-2a5a6502dd78.png" target="_blank" rel="noopener">Getting Started with Industrial (ICS/OT) Cyber Security - 20+ Hours - Full Course by Mike Holcomb</a></div><span class="article-meta">INFOSEC.PUB &mdash; 9 Mar 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-03-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/nsp-top-ten-cloud-security-practices/" target="_blank" rel="noopener">NSA Releases Top Ten Best Practices For Cloud Environments</a></div><span class="article-meta">GBHACKERS.COM &mdash; 09 Mar 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-03-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.techspot.com/news/102193-midnight-blizzard-russian-hackers-compromised-microsoft-source-code.html" target="_blank" rel="noopener">Russian state-sponsored hackers compromised Microsoft source code repositories</a></div><span class="article-meta">TECHSPOT.COM &mdash; 9 Mar 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-03-09"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://haveibeenpwned.com/PwnedWebsites#APKTW" target="_blank" rel="noopener">APK.TW - 2,451,197 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 09 Mar 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-03-09"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2024/03/09/change-healthcare-fears-data-breach-ransomware/" target="_blank" rel="noopener">As the Change Healthcare outage drags on, fears grow that patient data could spill online</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 09 Mar 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-03-09"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/magnet-goblin-hackers-use-1-day-flaws-to-drop-custom-linux-malware/" target="_blank" rel="noopener">Magnet Goblin hackers use 1-day flaws to drop custom Linux malware</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 09 Mar 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-03-09"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://securityscorecard.com/wp-content/uploads/2024/03/Whitepaper-A-technical-analysis-of-the-APT28s-backdoor-called-OCEANMAP.pdf" target="_blank" rel="noopener">A technical analysis of the APT28&amp;#x27;s backdoor called OCEANMAP</a></div><span class="article-meta">SECURITYSCORECARD.COM &mdash; 9 Mar 2024</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2024-03-09"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.hackread.com/tycoon-storm-1575-phishing-attacks-us-schools/?&web_view=true" target="_blank" rel="noopener">Tycoon and Storm-1575 Linked to Phishing Attacks on US Schools</a></div><span class="article-meta">HACKREAD.COM &mdash; 09 Mar 2024</span></div>
-<div class="article-row" data-cat="Podcasts" data-date="2024-03-09"><span class="cat-badge" style="border:1px solid rgba(85,170,204,0.5);background:rgba(85,170,204,0.10);" title="Podcasts">🎙️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/adam-evans-ciso-at-rbc-cybersecurity-today-weekend-show" target="_blank" rel="noopener">Adam Evans, CISO at RBC: Cybersecurity Today Weekend Show</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 09 Mar 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-03-09"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.nextgov.com/cybersecurity/2024/03/flaws-public-records-management-tool-could-let-hackers-nab-sensitive-data-linked-requests/394755/?&web_view=true" target="_blank" rel="noopener">Flaws in Public Records Management Tool Could Let Hackers Nab Sensitive Data Linked to Requests</a></div><span class="article-meta">NEXTGOV.COM &mdash; 09 Mar 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa adds apple ios and ipados memory corruption bugs to its known exploited vulnerabilities catalog" data-date="2024-03-09"><span class="headline-date">9 Mar <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/160124/security/cisa-apple-ios-and-ipados-bugs-to-its-known-exploited-vulnerabilities-catalog.html?&web_view=true" target="_blank" rel="noopener">CISA Adds Apple iOS and iPadOS Memory Corruption Bugs to its Known Exploited Vulnerabilities Catalog</a><span class="article-summary">These memory corruption vulnerabilities, tracked as CVE-2024-23225 and CVE-2024-23296, were exploited in attacks against iPhone devices. Apple released emergency security updates to address these zero-day vulnerabilities.</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="canva warns of three security vulnerabilities in fonts" data-date="2024-03-09"><span class="headline-date">9 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.theregister.com/2024/03/08/canva_font_security/?&web_view=true" target="_blank" rel="noopener">Canva Warns of Three Security Vulnerabilities in Fonts</a><span class="article-summary">The first, CVE-2023-45139, involved a high-severity bug in the FontTools library. The second and third vulnerabilities, CVE-2024-25081 and CVE-2024-25082, were related to naming conventions and compression.</span></span><span class="headline-source">THEREGISTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="microsoft confirms russian hackers stole source code, some customer secrets" data-date="2024-03-09"><span class="headline-date">9 Mar</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/03/microsoft-confirms-russian-hackers.html" target="_blank" rel="noopener">Microsoft Confirms Russian Hackers Stole Source Code, Some Customer Secrets</a><span class="article-summary">Microsoft on Friday revealed that the Kremlin-backed threat actor known as&nbsp;Midnight Blizzard&nbsp;(aka APT29 or Cozy Bear) managed to gain access to some of its source code repositories and internal systems following a&nbsp;hack that came to light&nbsp;in January 2024. "In r…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="new malware campaign found exploiting stored xss in popup builder" data-date="2024-03-09"><span class="headline-date">9 Mar</span><span class="headline-body"><a class="headline-title" href="https://blog.sucuri.net/2024/03/new-malware-campaign-found-exploiting-stored-xss-in-popup-builder-4-2-3.html?&web_view=true" target="_blank" rel="noopener">New Malware Campaign Found Exploiting Stored XSS in Popup Builder</a><span class="article-summary">A new malware campaign was found targeting the Popup Builder WordPress plugin, exploiting a vulnerability disclosed in November 2023. The campaign injects malicious code into websites, leading to over 3,300 infections.</span></span><span class="headline-source">SUCURI.NET</span></div>
+<div class="headline" data-title="getting started with industrial (ics/ot) cyber security - 20+ hours - full course by mike holcomb" data-date="2024-03-09"><span class="headline-date">9 Mar</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/pictrs/image/865751b1-859f-46c2-914c-2a5a6502dd78.png" target="_blank" rel="noopener">Getting Started with Industrial (ICS/OT) Cyber Security - 20+ Hours - Full Course by Mike Holcomb</a><span class="article-summary">submitted by ashar to security_cpe 1 points | 0 comments https://infosec.pub/pictrs/image/865751b1-859f-46c2-914c-2a5a6502dd78.png Getting Started with Industrial (ICS/OT) Cyber Security Playlist Industrial Control Systems (ICS) and Operational Technology (OT) run the world aroun…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="nsa releases top ten best practices for cloud environments" data-date="2024-03-09"><span class="headline-date">9 Mar</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/nsp-top-ten-cloud-security-practices/" target="_blank" rel="noopener">NSA Releases Top Ten Best Practices For Cloud Environments</a><span class="article-summary">Threat actors aim at Cloud environments because of their wide acceptance and one-stop storage of important information. Exploiting shortcomings in cloud security may enable unauthorized access to sensitive data, interruptions in infrastructure, or earning money. The fact that the…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="russian state-sponsored hackers compromised microsoft source code repositories" data-date="2024-03-09"><span class="headline-date">9 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.techspot.com/news/102193-midnight-blizzard-russian-hackers-compromised-microsoft-source-code.html" target="_blank" rel="noopener">Russian state-sponsored hackers compromised Microsoft source code repositories</a><span class="article-summary">submitted by Lanky_Pomegranate530 to cybersecurity 2 points | 0 comments https://www.techspot.com/news/102193-midnight-blizzard-russian-hackers-compromised-microsoft-source-code.html</span></span><span class="headline-source">TECHSPOT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="apk.tw - 2,451,197 breached accounts" data-date="2024-03-09"><span class="headline-date">9 Mar</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/PwnedWebsites#APKTW" target="_blank" rel="noopener">APK.TW - 2,451,197 breached accounts</a><span class="article-summary">In September 2022, the Taiwanese Android forum APK.TW suffered a data breach that was later redistributed as part of a larger corpus of data . The breach exposed 2.5M unique email addresses along with IP addresses, usernames and salted MD5 password hashes.</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+<div class="headline" data-title="as the change healthcare outage drags on, fears grow that patient data could spill online" data-date="2024-03-09"><span class="headline-date">9 Mar</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/03/09/change-healthcare-fears-data-breach-ransomware/" target="_blank" rel="noopener">As the Change Healthcare outage drags on, fears grow that patient data could spill online</a><span class="article-summary">A cyberattack at U.S. health tech giant Change Healthcare has ground much of the U.S. healthcare system to a halt for the second week in a row. Hospitals have been unable to check insurance benefits of in-patient stays, handle the prior authorizations needed for patient procedure…</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="magnet goblin hackers use 1-day flaws to drop custom linux malware" data-date="2024-03-09"><span class="headline-date">9 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/magnet-goblin-hackers-use-1-day-flaws-to-drop-custom-linux-malware/" target="_blank" rel="noopener">Magnet Goblin hackers use 1-day flaws to drop custom Linux malware</a><span class="article-summary">A financially motivated hacking group named Magnet Goblin uses various 1-day vulnerabilities to breach public-facing servers and deploy custom malware on Windows and Linux systems. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="a technical analysis of the apt28&amp;#x27;s backdoor called oceanmap" data-date="2024-03-09"><span class="headline-date">9 Mar</span><span class="headline-body"><a class="headline-title" href="https://securityscorecard.com/wp-content/uploads/2024/03/Whitepaper-A-technical-analysis-of-the-APT28s-backdoor-called-OCEANMAP.pdf" target="_blank" rel="noopener">A technical analysis of the APT28&amp;#x27;s backdoor called OCEANMAP</a><span class="article-summary">submitted by Lanky_Pomegranate530 to cybersecurity 1 points | 0 comments https://securityscorecard.com/wp-content/uploads/2024/03/Whitepaper-A-technical-analysis-of-the-APT28s-backdoor-called-OCEANMAP.pdf</span></span><span class="headline-source">SECURITYSCORECARD.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="tycoon and storm-1575 linked to phishing attacks on us schools" data-date="2024-03-09"><span class="headline-date">9 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.hackread.com/tycoon-storm-1575-phishing-attacks-us-schools/?&web_view=true" target="_blank" rel="noopener">Tycoon and Storm-1575 Linked to Phishing Attacks on US Schools</a><span class="article-summary">The Tycoon and Storm-1575 threat groups use stealthy tactics, social engineering, and phishing techniques to bypass MFA protections and target Microsoft 365 credentials at large US school districts.</span></span><span class="headline-source">HACKREAD.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-podcasts">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(85,170,204,0.5);" onclick="toggleSection(this)">🎙️ PODCASTS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="adam evans, ciso at rbc: cybersecurity today weekend show" data-date="2024-03-09"><span class="headline-date">9 Mar</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/adam-evans-ciso-at-rbc-cybersecurity-today-weekend-show" target="_blank" rel="noopener">Adam Evans, CISO at RBC: Cybersecurity Today Weekend Show</a><span class="article-summary">JIm Love, host of the daily news podcast Hashtag Trending fills in for Howard this Saturday with a replay of a show that Jim did which featured Adam Evans, CISO at RBC. It's a little different but we hope you enjoy it.</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="flaws in public records management tool could let hackers nab sensitive data linked to requests" data-date="2024-03-09"><span class="headline-date">9 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.nextgov.com/cybersecurity/2024/03/flaws-public-records-management-tool-could-let-hackers-nab-sensitive-data-linked-requests/394755/?&web_view=true" target="_blank" rel="noopener">Flaws in Public Records Management Tool Could Let Hackers Nab Sensitive Data Linked to Requests</a><span class="article-summary">The GovQA platform, used by state and local governments for public records requests, had vulnerabilities that could have allowed hackers to access sensitive personal information, edit requests, and download unsecured files.</span></span><span class="headline-source">NEXTGOV.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

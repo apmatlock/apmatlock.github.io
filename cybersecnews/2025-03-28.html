@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-03-28</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,75 +109,62 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-03-28</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">15</span></button>
-<button class="filter-btn" data-cat="CISA KEV" onclick="filterCat('CISA KEV', this)">CISA KEV <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">9</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="CISA KEV" data-date="2025-03-28"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2025/03/28/cisa-releases-malware-analysis-report-resurge-malware-associated-ivanti-connect-secure" target="_blank" rel="noopener">CISA Releases Malware Analysis Report on RESURGE Malware Associated with Ivanti Connect Secure</a><span class="article-summary">CISA has published a Malware Analysis Report (MAR) with analysis and associated detection signatures on a new malware variant CISA has identified as RESURGE. RESURGE contains capabilities of the SPAWNCHIMERA[ 1 ] malware variant, including surviving reboots; however, RESURGE cont…</span></div><span class="kev-badge">KEV</span><span class="article-meta">CISA.GOV &mdash; Fri, 28 Mar 25 1</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-03-28"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.cisa.gov/news-events/analysis-reports/ar25-087a" target="_blank" rel="noopener">MAR-25993211-r1.v1 Ivanti Connect Secure (RESURGE)</a></div><span class="article-meta">CISA.GOV &mdash; 28 Mar 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-03-28"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/25/c/deep-dive-into-water-gamayun.html" target="_blank" rel="noopener">A Deep Dive into Water Gamayun’s Arsenal and Infrastructure</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 28 Mar 2025</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-03-28"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/government-officials-data-leaks-cyber-security-today-for-friday-march-18-2025" target="_blank" rel="noopener">Government Officials' Data Leaks: Cyber Security Today for Friday, March 18, 2025</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 28 Mar 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-03-28"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.tripwire.com/state-of-security/vanhelsing-ransomware-what-you-need-know" target="_blank" rel="noopener">VanHelsing ransomware: what you need to know</a></div><span class="article-meta">TRIPWIRE.COM &mdash; 28 Mar 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-03-28"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.paloaltonetworks.com/blog/2025/03/federal-cybersecurity-challenges-in-cloud/" target="_blank" rel="noopener">Addressing Federal Cybersecurity Challenges in the Cloud Era</a></div><span class="article-meta">PALOALTONETWORKS.COM &mdash; 28 Mar 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-03-28"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.f5.com/labs/articles/threat-intelligence/2025-advanced-persistent-bot-report-scraper-bots-deep-dive" target="_blank" rel="noopener">2025 Advanced Persistent Bot Report: Scraper Bots Deep-Dive</a></div><span class="article-meta">F5.COM &mdash; 28 Mar 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-03-28"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.f5.com/labs/articles/threat-intelligence/prevent-web-scraping-by-applying-the-pyramid-of-pain" target="_blank" rel="noopener">Prevent Web Scraping by Applying the Pyramid of Pain</a></div><span class="article-meta">F5.COM &mdash; 28 Mar 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-03-28"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://news.sophos.com/en-us/2025/03/28/stealing-user-credentials-with-evilginx/" target="_blank" rel="noopener">Stealing user credentials with evilginx</a></div><span class="article-meta">SOPHOS.COM &mdash; 28 Mar 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-03-28"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.kaspersky.com/blog/protecting-from-tracking-via-findmy-airtag/53245/" target="_blank" rel="noopener">Protecting Android, Windows, and Linux devices against being tracked via the Find My network | Kaspersky official blog</a></div><span class="article-meta">KASPERSKY.COM &mdash; 28 Mar 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-03-28"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.welivesecurity.com/en/business-security/making-it-stick-get-most-cybersecurity-training/" target="_blank" rel="noopener">Making it stick: How to get the most out of cybersecurity training</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 28 Mar 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-03-28"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.f5.com/labs/labs/articles/2025-advanced-persistent-bots-report" target="_blank" rel="noopener">2025 Advanced Persistent Bots Report</a></div><span class="article-meta">F5.COM &mdash; 28 Mar 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-03-28"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.f5.com/labs/labs/articles/prevent-web-scraping-by-applying-the-pyramid-of-pain" target="_blank" rel="noopener">Prevent Web Scraping by Applying the Pyramid of Pain</a></div><span class="article-meta">F5.COM &mdash; 28 Mar 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-03-28"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.f5.com/labs/articles/2025-advanced-persistent-bots-report" target="_blank" rel="noopener">2025 Advanced Persistent Bots Report</a></div><span class="article-meta">F5.COM &mdash; 28 Mar 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-03-28"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.f5.com/labs/articles/prevent-web-scraping-by-applying-the-pyramid-of-pain" target="_blank" rel="noopener">Prevent Web Scraping by Applying the Pyramid of Pain</a></div><span class="article-meta">F5.COM &mdash; 28 Mar 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa releases malware analysis report on resurge malware associated with ivanti connect secure" data-date="2025-03-28"><span class="headline-date">28 Mar <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2025/03/28/cisa-releases-malware-analysis-report-resurge-malware-associated-ivanti-connect-secure" target="_blank" rel="noopener">CISA Releases Malware Analysis Report on RESURGE Malware Associated with Ivanti Connect Secure</a><span class="article-summary">CISA has published a Malware Analysis Report (MAR) with analysis and associated detection signatures on a new malware variant CISA has identified as RESURGE. RESURGE contains capabilities of the SPAWNCHIMERA[ 1 ] malware variant, including surviving reboots; however, RESURGE cont…</span></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="mar-25993211-r1.v1 ivanti connect secure (resurge)" data-date="2025-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/analysis-reports/ar25-087a" target="_blank" rel="noopener">MAR-25993211-r1.v1 Ivanti Connect Secure (RESURGE)</a><span class="article-summary">Notification This report is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained herein. The DHS does not endorse any commercial product or service referenced in…</span></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="a deep dive into water gamayun’s arsenal and infrastructure" data-date="2025-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/25/c/deep-dive-into-water-gamayun.html" target="_blank" rel="noopener">A Deep Dive into Water Gamayun’s Arsenal and Infrastructure</a><span class="article-summary">Trend Research discusses the delivery methods, custom payloads, and techniques used by Water Gamayun, the suspected Russian threat actor abusing a zero-day vulnerability in the Microsoft Management Console framework (CVE-2025-26633) to execute malicious code on infected machines.</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="government officials' data leaks: cyber security today for friday, march 18, 2025" data-date="2025-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/government-officials-data-leaks-cyber-security-today-for-friday-march-18-2025" target="_blank" rel="noopener">Government Officials' Data Leaks: Cyber Security Today for Friday, March 18, 2025</a><span class="article-summary">Exposing Security Flaws: Government Officials' Data Leaks, Defense Contractor Fines, and Cyber Crime Involvement In this episode of Cybersecurity Today, host Jim Love highlights significant cybersecurity breaches affecting US security officials, a government defense contractor, a…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="vanhelsing ransomware: what you need to know" data-date="2025-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.tripwire.com/state-of-security/vanhelsing-ransomware-what-you-need-know" target="_blank" rel="noopener">VanHelsing ransomware: what you need to know</a><span class="article-summary">First reported earlier in March 2025, VanHelsing is a new ransomware-as-a-service operation. Read more in my article on the Tripwire State of Security blog.</span></span><span class="headline-source">TRIPWIRE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="addressing federal cybersecurity challenges in the cloud era" data-date="2025-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.paloaltonetworks.com/blog/2025/03/federal-cybersecurity-challenges-in-cloud/" target="_blank" rel="noopener">Addressing Federal Cybersecurity Challenges in the Cloud Era</a><span class="article-summary">Palo Alto Networks helps U.S. Federal agencies and vendors protect against cyberthreats with FedRAMP High Authorization for network, cloud, and SecOps. The post Addressing Federal Cybersecurity Challenges in the Cloud Era appeared first on Palo Alto Networks Blog .</span></span><span class="headline-source">PALOALTONETWORKS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">9</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="2025 advanced persistent bot report: scraper bots deep-dive" data-date="2025-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.f5.com/labs/articles/threat-intelligence/2025-advanced-persistent-bot-report-scraper-bots-deep-dive" target="_blank" rel="noopener">2025 Advanced Persistent Bot Report: Scraper Bots Deep-Dive</a><span class="article-summary">How much do scraper bots affect your industry?</span></span><span class="headline-source">F5.COM</span></div>
+<div class="headline" data-title="prevent web scraping by applying the pyramid of pain" data-date="2025-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.f5.com/labs/articles/threat-intelligence/prevent-web-scraping-by-applying-the-pyramid-of-pain" target="_blank" rel="noopener">Prevent Web Scraping by Applying the Pyramid of Pain</a><span class="article-summary">The Bots Pyramid of Pain: a framework for effective bot defense.</span></span><span class="headline-source">F5.COM</span></div>
+<div class="headline" data-title="stealing user credentials with evilginx" data-date="2025-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://news.sophos.com/en-us/2025/03/28/stealing-user-credentials-with-evilginx/" target="_blank" rel="noopener">Stealing user credentials with evilginx</a><span class="article-summary">A malevolent mutation of the widely used nginx web server facilitates Adversary-in-the-Middle action, but there’s hope</span></span><span class="headline-source">SOPHOS.COM</span></div>
+<div class="headline" data-title="protecting android, windows, and linux devices against being tracked via the find my network | kaspersky official blog" data-date="2025-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.kaspersky.com/blog/protecting-from-tracking-via-findmy-airtag/53245/" target="_blank" rel="noopener">Protecting Android, Windows, and Linux devices against being tracked via the Find My network | Kaspersky official blog</a><span class="article-summary">The nRootTag attack leverages the Apple network to track other vendors&#039; Android, Windows and Linux devices. Learn how this is possible and how to protect yourself from the attack.</span></span><span class="headline-source">KASPERSKY.COM</span></div>
+<div class="headline" data-title="making it stick: how to get the most out of cybersecurity training" data-date="2025-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/en/business-security/making-it-stick-get-most-cybersecurity-training/" target="_blank" rel="noopener">Making it stick: How to get the most out of cybersecurity training</a><span class="article-summary">Security awareness training doesn’t have to be a snoozefest – games and stories can help instill ‘sticky’ habits that will kick in when a danger is near</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+<div class="headline" data-title="2025 advanced persistent bots report" data-date="2025-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.f5.com/labs/labs/articles/2025-advanced-persistent-bots-report" target="_blank" rel="noopener">2025 Advanced Persistent Bots Report</a><span class="article-summary">Uncovering the true scale of persistent bot activity, and the advanced techniques that bot operators use in order to remain hidden from bot defenses.</span></span><span class="headline-source">F5.COM</span></div>
+<div class="headline" data-title="prevent web scraping by applying the pyramid of pain" data-date="2025-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.f5.com/labs/labs/articles/prevent-web-scraping-by-applying-the-pyramid-of-pain" target="_blank" rel="noopener">Prevent Web Scraping by Applying the Pyramid of Pain</a><span class="article-summary">The Bots Pyramid of Pain: a framework for effective bot defense.</span></span><span class="headline-source">F5.COM</span></div>
+<div class="headline" data-title="2025 advanced persistent bots report" data-date="2025-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.f5.com/labs/articles/2025-advanced-persistent-bots-report" target="_blank" rel="noopener">2025 Advanced Persistent Bots Report</a><span class="article-summary">Uncovering the true scale of persistent bot activity, and the advanced techniques that bot operators use in order to remain hidden from bot defenses.</span></span><span class="headline-source">F5.COM</span></div>
+<div class="headline" data-title="prevent web scraping by applying the pyramid of pain" data-date="2025-03-28"><span class="headline-date">28 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.f5.com/labs/articles/prevent-web-scraping-by-applying-the-pyramid-of-pain" target="_blank" rel="noopener">Prevent Web Scraping by Applying the Pyramid of Pain</a><span class="article-summary">The Bots Pyramid of Pain: a framework for effective bot defense.</span></span><span class="headline-source">F5.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

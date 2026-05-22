@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-10-11</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,66 +109,45 @@
       <div class="stat"><span class="stat-value">4</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-10-11</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">8</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-10-11"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/35991065" target="_blank" rel="noopener">RondoDox botnet fires 'exploit shotgun' at nearly every router and internet-connected home device</a></div><span class="article-meta">INFOSEC.PUB &mdash; 11 Oct 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-10-11"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://sh.itjust.works/post/47717542" target="_blank" rel="noopener">FBI takes down BreachForums portal used for Salesforce extortion</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 11 Oct 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-10-11"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://haveibeenpwned.com/Breach/VietnamAirlines" target="_blank" rel="noopener">Vietnam Airlines - 7,316,915 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 11 Oct 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-10-11"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/new-stealit-malware-exploits-node-js-extensions/" target="_blank" rel="noopener">New Stealit Malware Exploits Node.js Extensions to Target Windows Systems</a></div><span class="article-meta">GBHACKERS.COM &mdash; 11 Oct 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-10-11"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/10/hackers-turn-velociraptor-dfir-tool.html" target="_blank" rel="noopener">Hackers Turn Velociraptor DFIR Tool Into Weapon in LockBit Ransomware Attacks</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 11 Oct 2025</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-10-11"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/the-role-and-evolution-of-virtual-cisos-with-craig-taylor" target="_blank" rel="noopener">The Role and Evolution of Virtual CISOs with Craig Taylor</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 11 Oct 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-10-11"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2025/10/experts-warn-of-widespread-sonicwall.html" target="_blank" rel="noopener">Experts Warn of Widespread SonicWall VPN Compromise Impacting Over 100 Accounts</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 11 Oct 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-10-11"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/spain-dismantles-gxc-team-cybercrime-syndicate-arrests-leader/" target="_blank" rel="noopener">Spain dismantles “GXC Team” cybercrime syndicate, arrests leader</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 11 Oct 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="rondodox botnet fires 'exploit shotgun' at nearly every router and internet-connected home device" data-date="2025-10-11"><span class="headline-date">11 Oct</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/35991065" target="_blank" rel="noopener">RondoDox botnet fires 'exploit shotgun' at nearly every router and internet-connected home device</a><span class="article-summary">submitted by cm0002 to cybersecurity 2 points | 0 comments https://www.theregister.com/2025/10/09/rondodox_botnet_fires_exploit_shotgun/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="fbi takes down breachforums portal used for salesforce extortion" data-date="2025-10-11"><span class="headline-date">11 Oct</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/47717542" target="_blank" rel="noopener">FBI takes down BreachForums portal used for Salesforce extortion</a><span class="article-summary">submitted by KarnaSubarna to cybersecurity 1 points | 0 comments https://www.bleepingcomputer.com/news/security/fbi-takes-down-breachforums-portal-used-for-salesforce-extortion/</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="vietnam airlines - 7,316,915 breached accounts" data-date="2025-10-11"><span class="headline-date">11 Oct</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/Breach/VietnamAirlines" target="_blank" rel="noopener">Vietnam Airlines - 7,316,915 breached accounts</a><span class="article-summary">In October 2025, data stolen from the Salesforce instances of multiple companies by a hacking group calling itself "Scattered LAPSUS$ Hunters" was publicly released . Among the affected organisations was Vietnam Airlines, which had 7.5M unique customer email addresses exposed fol…</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+<div class="headline" data-title="new stealit malware exploits node.js extensions to target windows systems" data-date="2025-10-11"><span class="headline-date">11 Oct</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/new-stealit-malware-exploits-node-js-extensions/" target="_blank" rel="noopener">New Stealit Malware Exploits Node.js Extensions to Target Windows Systems</a><span class="article-summary">Security researchers have identified a new, active campaign of the Stealit malware that uses an experimental Node.js feature to infect Windows systems. According to a report from FortiGuard Labs, threat actors are leveraging Node.js&#8217;s Single Executable Application (SEA) fun…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="hackers turn velociraptor dfir tool into weapon in lockbit ransomware attacks" data-date="2025-10-11"><span class="headline-date">11 Oct</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/10/hackers-turn-velociraptor-dfir-tool.html" target="_blank" rel="noopener">Hackers Turn Velociraptor DFIR Tool Into Weapon in LockBit Ransomware Attacks</a><span class="article-summary">Threat actors are abusing Velociraptor, an open-source digital forensics and incident response (DFIR) tool, in connection with ransomware attacks likely orchestrated by Storm-2603 (aka CL-CRI-1040 or Gold Salem), which is known for deploying the Warlock and LockBit ransomware. Th…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the role and evolution of virtual cisos with craig taylor" data-date="2025-10-11"><span class="headline-date">11 Oct</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/the-role-and-evolution-of-virtual-cisos-with-craig-taylor" target="_blank" rel="noopener">The Role and Evolution of Virtual CISOs with Craig Taylor</a><span class="article-summary">In this episode of Cybersecurity Today, Jim hosts Craig Taylor, a seasoned virtual Chief Information Security Officer (vCISO) with over 25 years of experience. They discuss the evolution and significance of the vCISO role, Taylor's career path, and the founding of his company, Cy…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="experts warn of widespread sonicwall vpn compromise impacting over 100 accounts" data-date="2025-10-11"><span class="headline-date">11 Oct</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/10/experts-warn-of-widespread-sonicwall.html" target="_blank" rel="noopener">Experts Warn of Widespread SonicWall VPN Compromise Impacting Over 100 Accounts</a><span class="article-summary">Cybersecurity company Huntress on Friday warned of "widespread compromise" of SonicWall SSL VPN devices to access multiple customer environments. "Threat actors are authenticating into multiple accounts rapidly across compromised devices," it said. "The speed and scale of these a…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="spain dismantles “gxc team” cybercrime syndicate, arrests leader" data-date="2025-10-11"><span class="headline-date">11 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/spain-dismantles-gxc-team-cybercrime-syndicate-arrests-leader/" target="_blank" rel="noopener">Spain dismantles “GXC Team” cybercrime syndicate, arrests leader</a><span class="article-summary">Spanish Guardia Civil have dismantled the "GXC Team" cybercrime syndicate and arrested its alleged leader, a 25-year-old Brazilian known as "GoogleXcoder." [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

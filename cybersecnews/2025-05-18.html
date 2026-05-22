@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-05-18</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,72 +109,59 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-05-18</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">12</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-05-18"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=8OJ2nmXWheU" target="_blank" rel="noopener">Why Multitasking in Cyber Startups Always Backfires 💣</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-05-18</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-05-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.youtube.com/watch?v=zk03Na2_VCk" target="_blank" rel="noopener">Compliance Isn’t Once-a-Year Anymore. Wake Up.</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-05-18</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-05-18"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/watch?v=B_uLSOJFQ74" target="_blank" rel="noopener">Why Companies Are Getting Fined MILLIONS for Data Hoarding!</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-05-18</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-05-18"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=u91GcF7Husk" target="_blank" rel="noopener">They Don’t Ask IF You Use AI—They Ask WHICH ONE 😳</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-05-18</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-05-18"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=hG8cP7cTYeg" target="_blank" rel="noopener">Humans Are Dumb… But AI Might Be Dumber</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-05-18</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-05-18"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=Tc4lxbPVUSQ" target="_blank" rel="noopener">What Founding a Security Team Really Looks Like 👀</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-05-18</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-05-18"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=ghhHJCA2XR4" target="_blank" rel="noopener">The Dark Side of Chasing CISO Titles 😵‍💫</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-05-18</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-05-18"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=GTk9fT7_3pA" target="_blank" rel="noopener">Over 7 Million Files… 80% Incorrectly Tagged 😬</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-05-18</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-05-18"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.youtube.com/watch?v=Bn14dZX1HP8" target="_blank" rel="noopener">CISO’s Biggest Nightmare: The 3 Things They Must Control!</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-05-18</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-05-18"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/25/e/ai-digital-twin-cyber-resilience.html" target="_blank" rel="noopener">Using Agentic AI &amp; Digital Twin for Cyber Resilience</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 18 May 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-05-18"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2025/05/18/crypto-elite-increasingly-worried-about-their-personal-safety/" target="_blank" rel="noopener">Crypto elite increasingly worried about their personal safety</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 18 May 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-05-18"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/25/e/trend-secures-ai-infrastructure-with-nvidia.html" target="_blank" rel="noopener">Trend Joins NVIDIA to Secure AI Infrastructure with NVIDIA</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 18 May 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="why multitasking in cyber startups always backfires 💣" data-date="2025-05-18"><span class="headline-date">18 May</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=8OJ2nmXWheU" target="_blank" rel="noopener">Why Multitasking in Cyber Startups Always Backfires 💣</a><span class="article-summary">At first, it sounds like a dream: build multiple cybersecurity products at once, ship fast, and conquer the market. But in this short, Matthew Alderman breaks down the harsh reality every startup engineer knows too well — when everything is a top priority, nothing gets done. With…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="compliance isn’t once-a-year anymore. wake up." data-date="2025-05-18"><span class="headline-date">18 May</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=zk03Na2_VCk" target="_blank" rel="noopener">Compliance Isn’t Once-a-Year Anymore. Wake Up.</a><span class="article-summary">Security expert Joshua Marpet drops a reality check on the outdated mindset of once-a-year compliance. In a world where 55% of companies say risks have never been higher, he argues that cybersecurity can’t be treated like a quarterly checkbox. It’s a daily habit — a cultural mind…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="why companies are getting fined millions for data hoarding!" data-date="2025-05-18"><span class="headline-date">18 May</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=B_uLSOJFQ74" target="_blank" rel="noopener">Why Companies Are Getting Fined MILLIONS for Data Hoarding!</a><span class="article-summary">Companies are hoarding massive amounts of customer data—WAY more than they actually need. But here’s the problem: that extra data isn’t just useless… it’s a ticking time bomb! 💣 With regulators cracking down, businesses are now facing MILLIONS in fines for keeping unnecessary inf…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="they don’t ask if you use ai—they ask which one 😳" data-date="2025-05-18"><span class="headline-date">18 May</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=u91GcF7Husk" target="_blank" rel="noopener">They Don’t Ask IF You Use AI—They Ask WHICH ONE 😳</a><span class="article-summary">In today’s cybersecurity job market, GenAI isn’t optional—it’s expected. In this short clip, Katie shares a striking moment from a recent conversation: interviewers no longer ask if you use GenAI tools—they ask which ones. From content generation to market research, the shift is …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="humans are dumb… but ai might be dumber" data-date="2025-05-18"><span class="headline-date">18 May</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=hG8cP7cTYeg" target="_blank" rel="noopener">Humans Are Dumb… But AI Might Be Dumber</a><span class="article-summary">AI was supposed to be smarter than humans. But what happens when artificial intelligence starts copying our worst mistakes… and then invents new ones? In this short, cybersecurity expert Doug White exposes the shocking truth behind AI misinformation loops, garbage data, and how o…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="what founding a security team really looks like 👀" data-date="2025-05-18"><span class="headline-date">18 May</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=Tc4lxbPVUSQ" target="_blank" rel="noopener">What Founding a Security Team Really Looks Like 👀</a><span class="article-summary">Ever wondered what it really takes to build an AppSec team from scratch? In this short, Kalyani Pawar shares raw insights from her RSAC talk on leading security from zero to scale. From building trust with devs to realizing PII is basically radioactive ☢️ — this is the side of cy…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="the dark side of chasing ciso titles 😵‍💫" data-date="2025-05-18"><span class="headline-date">18 May</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=ghhHJCA2XR4" target="_blank" rel="noopener">The Dark Side of Chasing CISO Titles 😵‍💫</a><span class="article-summary">Many cybersecurity pros dream of becoming a CISO, but few talk about the ugly truth behind the title. In this short, Jason and Ben unpack the obsession with pay, the problem with pointless certifications, and why purpose matters more than prestige. It's a wake-up call for anyone …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="over 7 million files… 80% incorrectly tagged 😬" data-date="2025-05-18"><span class="headline-date">18 May</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=GTk9fT7_3pA" target="_blank" rel="noopener">Over 7 Million Files… 80% Incorrectly Tagged 😬</a><span class="article-summary">Over 7 million files… and 80% were mislabeled by AI?! In this jaw-dropping moment from a cybersecurity podcast, industry experts break down how modern DLP (Data Loss Prevention) systems are still producing over 100,000 false positives every single day. Even static data like Socia…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ciso’s biggest nightmare: the 3 things they must control!" data-date="2025-05-18"><span class="headline-date">18 May</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=Bn14dZX1HP8" target="_blank" rel="noopener">CISO’s Biggest Nightmare: The 3 Things They Must Control!</a><span class="article-summary">Most companies think cybersecurity is all about firewalls and network protection, but they’re missing the bigger picture. According to cybersecurity expert Matthew Alderman, attackers don’t care about infrastructure—they want the data. Yet, organizations still struggle to invento…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="using agentic ai &amp; digital twin for cyber resilience" data-date="2025-05-18"><span class="headline-date">18 May</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/25/e/ai-digital-twin-cyber-resilience.html" target="_blank" rel="noopener">Using Agentic AI &amp; Digital Twin for Cyber Resilience</a><span class="article-summary">Learn how Trend is combining agentic AI and digital twin to transform the way organizations protect themselves from cyber threats.</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="crypto elite increasingly worried about their personal safety" data-date="2025-05-18"><span class="headline-date">18 May</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/05/18/crypto-elite-increasingly-worried-about-their-personal-safety/" target="_blank" rel="noopener">Crypto elite increasingly worried about their personal safety</a><span class="article-summary">Cryptocurrency executives and other investors with significant wealth from crypto holdings are getting more serious about personal security, according to stories this weekend in both the Wall Street Journal and Bloomberg. While cryptocurrencies have always created unique security…</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="trend joins nvidia to secure ai infrastructure with nvidia" data-date="2025-05-18"><span class="headline-date">18 May</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/25/e/trend-secures-ai-infrastructure-with-nvidia.html" target="_blank" rel="noopener">Trend Joins NVIDIA to Secure AI Infrastructure with NVIDIA</a><span class="article-summary">Together, we are focused on securing the full AI lifecycle—from development and training to deployment and inference—across cloud, data center, and AI factories.</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-09-13</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,71 +109,54 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-09-13</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">12</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-09-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://sh.itjust.works/post/45953039" target="_blank" rel="noopener">Cybersecurity and Infrastructure Security Agency (CISA) wants to maintain control of CVE program</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 13 Sep 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-09-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.troyhunt.com/weekly-update-469/" target="_blank" rel="noopener">Weekly Update 469</a></div><span class="article-meta">TROYHUNT.COM &mdash; 13 Sep 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-09-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/09/fbi-warns-of-unc6040-and-unc6395.html" target="_blank" rel="noopener">FBI Warns of UNC6040 and UNC6395 Targeting Salesforce Platforms in Data Theft Attacks</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 13 Sep 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-09-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/6nN1KuqbRE4" target="_blank" rel="noopener">The 32-Bit Apocalypse Is Coming… Are You Ready? ⚠️</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-09-13</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-09-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/mustang-panda-uses-snakedisk-usb-worm-and-toneshell-backdoor/" target="_blank" rel="noopener">Mustang Panda Uses SnakeDisk USB Worm and Toneshell Backdoor to Target Air-Gap Systems</a></div><span class="article-meta">GBHACKERS.COM &mdash; 13 Sep 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-13"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/the-godfather-of-zero-trust-a-discussion-with-john-kindervag" target="_blank" rel="noopener">The Godfather of Zero Trust - A Discussion with John Kindervag</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 13 Sep 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-13"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/34614993" target="_blank" rel="noopener">Never steal a hacker’s girlfriend’s phone: How an expert exposed a global network of thieves</a></div><span class="article-meta">INFOSEC.PUB &mdash; 13 Sep 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-13"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://sh.itjust.works/post/45957171" target="_blank" rel="noopener">Never steal a hacker’s girlfriend’s phone: How an expert exposed a global network of thieves</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 13 Sep 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-13"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/ai-pentesting-tool-villager-merges-kali-linux-with-deepseek-ai/" target="_blank" rel="noopener">AI Pentesting Tool ‘Villager’ Merges Kali Linux with DeepSeek AI for Automated Security Attacks</a></div><span class="article-meta">GBHACKERS.COM &mdash; 13 Sep 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-13"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/whitecobra-floods-vscode-market-with-crypto-stealing-extensions/" target="_blank" rel="noopener">'WhiteCobra' floods VSCode market with crypto-stealing extensions</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 13 Sep 2025</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-09-13"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://techcrunch.com/2025/09/13/heres-the-tech-powering-ices-deportation-crackdown/" target="_blank" rel="noopener">Here’s the tech powering ICE’s deportation crackdown</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 13 Sep 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-09-13"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/microsoft/microsoft-reminds-of-windows-10-support-ending-in-30-days/" target="_blank" rel="noopener">Microsoft reminds of Windows 10 support ending in 30 days</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 13 Sep 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cybersecurity and infrastructure security agency (cisa) wants to maintain control of cve program" data-date="2025-09-13"><span class="headline-date">13 Sep</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/45953039" target="_blank" rel="noopener">Cybersecurity and Infrastructure Security Agency (CISA) wants to maintain control of CVE program</a><span class="article-summary">submitted by Pro to cybersecurity 1 points | 0 comments https://www.cisa.gov/news-events/news/mandate-mission-and-momentum-lead-cve-program-future-belongs-cisa cross-posted from: programming.dev/post/37353211</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="weekly update 469" data-date="2025-09-13"><span class="headline-date">13 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.troyhunt.com/weekly-update-469/" target="_blank" rel="noopener">Weekly Update 469</a><span class="article-summary">Presently sponsored by: Malwarebytes Browser Guard blocks phishing, ads, scams, and trackers for safer, faster browsing So I had this idea around training a text-to-speech engine with my voice, then using that to speak over the Sonos at home to announce AI-driven events, such as …</span></span><span class="headline-source">TROYHUNT.COM</span></div>
+<div class="headline" data-title="fbi warns of unc6040 and unc6395 targeting salesforce platforms in data theft attacks" data-date="2025-09-13"><span class="headline-date">13 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/09/fbi-warns-of-unc6040-and-unc6395.html" target="_blank" rel="noopener">FBI Warns of UNC6040 and UNC6395 Targeting Salesforce Platforms in Data Theft Attacks</a><span class="article-summary">The U.S. Federal Bureau of Investigation (FBI) has issued a flash alert to release indicators of compromise (IoCs) associated with two cybercriminal groups tracked as UNC6040 and UNC6395 for a string of data theft and extortion attacks. "Both groups have recently been observed ta…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="the 32-bit apocalypse is coming… are you ready? ⚠️" data-date="2025-09-13"><span class="headline-date">13 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/6nN1KuqbRE4" target="_blank" rel="noopener">The 32-Bit Apocalypse Is Coming… Are You Ready? ⚠️</a><span class="article-summary">In this short, Mike reveals a shocking truth for cybersecurity pros: the code written today could carry vulnerabilities that won’t be discovered until 2030 or even the infamous 32-bit apocalypse in 2037. With vulnerabilities aging 6–8 years before detection, this clip dives into …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="mustang panda uses snakedisk usb worm and toneshell backdoor to target air-gap systems" data-date="2025-09-13"><span class="headline-date">13 Sep</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/mustang-panda-uses-snakedisk-usb-worm-and-toneshell-backdoor/" target="_blank" rel="noopener">Mustang Panda Uses SnakeDisk USB Worm and Toneshell Backdoor to Target Air-Gap Systems</a><span class="article-summary">IBM X-Force researchers have uncovered sophisticated new malware campaigns orchestrated by the China-aligned threat actor Hive0154, also known as Mustang Panda. The discovery includes an advanced Toneshell backdoor variant that evades detection systems and a novel USB worm called…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the godfather of zero trust - a discussion with john kindervag" data-date="2025-09-13"><span class="headline-date">13 Sep</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/the-godfather-of-zero-trust-a-discussion-with-john-kindervag" target="_blank" rel="noopener">The Godfather of Zero Trust - A Discussion with John Kindervag</a><span class="article-summary">Inside Zero Trust: John Kindervag and the Evolution of Cybersecurity In this episode of Cybersecurity Today: Weekend Edition, host Jim Love speaks with John Kindervag, the pioneer behind the Zero Trust model of cybersecurity. With over 25 years of industry experience, John delves…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="never steal a hacker’s girlfriend’s phone: how an expert exposed a global network of thieves" data-date="2025-09-13"><span class="headline-date">13 Sep</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/34614993" target="_blank" rel="noopener">Never steal a hacker’s girlfriend’s phone: How an expert exposed a global network of thieves</a><span class="article-summary">submitted by TheDwZ to cybersecurity 2 points | 0 comments https://english.elpais.com/technology/2025-09-13/never-steal-a-hackers-girlfriends-phone-how-an-expert-exposed-a-global-network-of-thieves.html</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="never steal a hacker’s girlfriend’s phone: how an expert exposed a global network of thieves" data-date="2025-09-13"><span class="headline-date">13 Sep</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/45957171" target="_blank" rel="noopener">Never steal a hacker’s girlfriend’s phone: How an expert exposed a global network of thieves</a><span class="article-summary">submitted by TheDwZ to cybersecurity 3 points | 0 comments https://english.elpais.com/technology/2025-09-13/never-steal-a-hackers-girlfriends-phone-how-an-expert-exposed-a-global-network-of-thieves.html</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="ai pentesting tool ‘villager’ merges kali linux with deepseek ai for automated security attacks" data-date="2025-09-13"><span class="headline-date">13 Sep</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/ai-pentesting-tool-villager-merges-kali-linux-with-deepseek-ai/" target="_blank" rel="noopener">AI Pentesting Tool ‘Villager’ Merges Kali Linux with DeepSeek AI for Automated Security Attacks</a><span class="article-summary">Security researchers at Straiker&#8217;s AI Research (STAR) team have uncovered Villager, an AI-native penetration testing framework developed by Chinese-based group Cyberspike that has already accumulated over 10,000 downloads within two months of its release on the official Pyt…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="'whitecobra' floods vscode market with crypto-stealing extensions" data-date="2025-09-13"><span class="headline-date">13 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/whitecobra-floods-vscode-market-with-crypto-stealing-extensions/" target="_blank" rel="noopener">'WhiteCobra' floods VSCode market with crypto-stealing extensions</a><span class="article-summary">A threat actor named WhiteCobra has targeting VSCode, Cursor, and Windsurf users by planting 24 malicious extensions in the Visual Studio marketplace and the Open VSX registry. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="here’s the tech powering ice’s deportation crackdown" data-date="2025-09-13"><span class="headline-date">13 Sep</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/09/13/heres-the-tech-powering-ices-deportation-crackdown/" target="_blank" rel="noopener">Here’s the tech powering ICE’s deportation crackdown</a><span class="article-summary">From phone spyware and facial recognition to forensic phone hacking technology to databases and more, this tech powers Trump's deportation machine.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="microsoft reminds of windows 10 support ending in 30 days" data-date="2025-09-13"><span class="headline-date">13 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/microsoft/microsoft-reminds-of-windows-10-support-ending-in-30-days/" target="_blank" rel="noopener">Microsoft reminds of Windows 10 support ending in 30 days</a><span class="article-summary">On Friday, Microsoft reminded customers once again that Windows 10 will reach its end of support in 30 days, on October 14. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2023-06-21</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,65 +109,44 @@
       <div class="stat"><span class="stat-value">4</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2023-06-21</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-06-21"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisecurity.org/advisory/multiple-vulnerabilities-in-apple-products-could-allow-for-arbitrary-code-execution_2023-066" target="_blank" rel="noopener">Multiple Vulnerabilities in Apple Products Could Allow for Arbitrary Code Execution</a></div><span class="article-meta">CISECURITY.ORG &mdash; 21 Jun 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-06-21"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://krebsonsecurity.com/2023/06/why-malware-crypting-services-deserve-more-scrutiny/" target="_blank" rel="noopener">Why Malware Crypting Services Deserve More Scrutiny</a></div><span class="article-meta">KREBSONSECURITY.COM &mdash; 21 Jun 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-06-21"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.paloaltonetworks.com/blog/2023/06/zero-trust-the-key-to-a-hybrid-workforce/" target="_blank" rel="noopener">Zero Trust: The Key to a Hybrid Workforce</a></div><span class="article-meta">PALOALTONETWORKS.COM &mdash; 21 Jun 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-06-21"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/cyber-security-today-june-21-2023" target="_blank" rel="noopener">Cyber Security Today, June 21, 2023 - More MOVEit victims, more ransomware news and 100,000 stolen ChatGPT credentials are up for sale</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 21 Jun 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-06-21"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.cshub.com/attacks/news/pwc-and-ey-impacted-by-moveit-cyber-attack?utm_medium=RSS" target="_blank" rel="noopener">PwC and EY impacted by MOVEit cyber attack</a></div><span class="article-meta">CSHUB.COM &mdash; 21 Jun 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-06-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://medium.com/@MorattiSec/my-aws-pentest-methodology-14c333b7fb58" target="_blank" rel="noopener">My AWS Pentest Methodology</a></div><span class="article-meta">MEDIUM.COM &mdash; 21 Jun 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-06-21"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.welivesecurity.com/2023/06/21/vacation-stay-step-ahead-travel-scammers/" target="_blank" rel="noopener">Going on vacation soon? Stay one step ahead of travel scams</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 21 Jun 2023</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="multiple vulnerabilities in apple products could allow for arbitrary code execution" data-date="2023-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.cisecurity.org/advisory/multiple-vulnerabilities-in-apple-products-could-allow-for-arbitrary-code-execution_2023-066" target="_blank" rel="noopener">Multiple Vulnerabilities in Apple Products Could Allow for Arbitrary Code Execution</a><span class="article-summary">Multiple vulnerabilities have been discovered in Apple Products, the most severe of which could allow for arbitrary code execution. iOS is a mobile operating system for mobile devices, including the iPhone, iPad, and iPod touch. iPadOS is the successor to iOS 12 and is a mobile o…</span></span><span class="headline-source">CISECURITY.ORG</span></div>
+<div class="headline" data-title="why malware crypting services deserve more scrutiny" data-date="2023-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://krebsonsecurity.com/2023/06/why-malware-crypting-services-deserve-more-scrutiny/" target="_blank" rel="noopener">Why Malware Crypting Services Deserve More Scrutiny</a><span class="article-summary">If you operate a cybercrime business that relies on disseminating malicious software, you probably also spend a good deal of time trying to disguise or "crypt" your malware so that it appears benign to antivirus and security products. In fact, the process of "crypting" malware is…</span></span><span class="headline-source">KREBSONSECURITY.COM</span></div>
+<div class="headline" data-title="zero trust: the key to a hybrid workforce" data-date="2023-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.paloaltonetworks.com/blog/2023/06/zero-trust-the-key-to-a-hybrid-workforce/" target="_blank" rel="noopener">Zero Trust: The Key to a Hybrid Workforce</a><span class="article-summary">To most people, cybersecurity breaches seem like a distant threat. But cybercrime presents real and present danger to individuals and businesses alike. In fact, total losses resulting from internet cybercrime grew approximately &#8230; The post Zero Trust: The Key to a Hybrid Wor…</span></span><span class="headline-source">PALOALTONETWORKS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cyber security today, june 21, 2023 - more moveit victims, more ransomware news and 100,000 stolen chatgpt credentials are up for sale" data-date="2023-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/cyber-security-today-june-21-2023" target="_blank" rel="noopener">Cyber Security Today, June 21, 2023 - More MOVEit victims, more ransomware news and 100,000 stolen ChatGPT credentials are up for sale</a><span class="article-summary">This episode reports on patches for Asus routers, a new Russian email server attack on Ukraine, a ransomware gang takes credit for an attack on Reddit and more</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="pwc and ey impacted by moveit cyber attack" data-date="2023-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.cshub.com/attacks/news/pwc-and-ey-impacted-by-moveit-cyber-attack?utm_medium=RSS" target="_blank" rel="noopener">PwC and EY impacted by MOVEit cyber attack</a><span class="article-summary">The list of victims related to a cyber attack by ransomware gang Clop against document transfer service MOVEit continues to grow</span></span><span class="headline-source">CSHUB.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="my aws pentest methodology" data-date="2023-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://medium.com/@MorattiSec/my-aws-pentest-methodology-14c333b7fb58" target="_blank" rel="noopener">My AWS Pentest Methodology</a><span class="article-summary">submitted by 0xCBE to cloudsecurity 6 points | 0 comments https://medium.com/@MorattiSec/my-aws-pentest-methodology-14c333b7fb58</span></span><span class="headline-source">MEDIUM.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="going on vacation soon? stay one step ahead of travel scams" data-date="2023-06-21"><span class="headline-date">21 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/2023/06/21/vacation-stay-step-ahead-travel-scammers/" target="_blank" rel="noopener">Going on vacation soon? Stay one step ahead of travel scams</a><span class="article-summary">From bogus free trips to fake rental homes, here are some of the most common online threats you should look out for both before and during your travels</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

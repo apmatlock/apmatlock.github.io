@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-12-26</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,78 +109,61 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-12-26</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">19</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-26"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://gbhackers.com/critical-langchain-vulnerability/" target="_blank" rel="noopener">Critical LangChain Vulnerability Allows Attackers to Steal Sensitive Secrets</a></div><span class="article-meta">GBHACKERS.COM &mdash; 26 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-26"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.csoonline.com/article/4111711/high-severity-flaw-in-mongodb-could-allow-memory-leakage-2.html" target="_blank" rel="noopener">High severity flaw in MongoDB could allow memory leakage</a></div><span class="article-meta">CSOONLINE.COM &mdash; 26 Dec 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-12-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/the-ransomware-ecosystem-an-encore-holiday-episode" target="_blank" rel="noopener">The Ransomware Ecosystem: An Encore Holiday Episode</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 26 Dec 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-12-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/4108280/7-sase-certifications-to-validate-converged-network-and-security-skills-2.html" target="_blank" rel="noopener">7 SASE certifications to validate converged network and security skills</a></div><span class="article-meta">CSOONLINE.COM &mdash; 26 Dec 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-12-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/12/critical-langchain-core-vulnerability.html" target="_blank" rel="noopener">Critical LangChain Core Vulnerability Exposes Secrets via Serialization Injection</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 26 Dec 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-12-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://haveibeenpwned.com/Breach/Utair" target="_blank" rel="noopener">Utair - 401,400 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 26 Dec 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-12-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/trust-wallet-chrome-extension-hack-tied-to-millions-in-losses/" target="_blank" rel="noopener">Trust Wallet Chrome extension hack tied to millions in losses</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 26 Dec 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-12-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2025/12/iot-hack.html" target="_blank" rel="noopener">IoT Hack</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2025-12-26</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-12-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2025/12/trust-wallet-chrome-extension-bug.html" target="_blank" rel="noopener">Trust Wallet Chrome Extension Breach Caused $7 Million Crypto Loss via Malicious Code</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 26 Dec 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-12-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/trust-wallet-confirms-extension-hack-led-to-7-million-crypto-theft/" target="_blank" rel="noopener">Trust Wallet confirms extension hack led to $7 million crypto theft</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 26 Dec 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-12-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/watch?v=aarBIv89dc8" target="_blank" rel="noopener">Holiday Special Part 2: You’re Gonna Click the Link - Rob Allen - SWN #541</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-12-26</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-12-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/shorts/P4Tnzqv7Mng" target="_blank" rel="noopener">Layered Defense: Combining Detection &amp; Controls</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-12-26</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-12-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2025/12/china-linked-evasive-panda-ran-dns.html" target="_blank" rel="noopener">China-Linked Evasive Panda Ran DNS Poisoning Campaign to Deliver MgBot Malware</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 26 Dec 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-12-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/O0M7k6yFKXw" target="_blank" rel="noopener">Understanding Systems to Master the Art of Breaking</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-12-26</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-12-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/google-introduces-option-to-change-gmail-com-email-addresses/" target="_blank" rel="noopener">Google Introduces Option to Change @gmail.com Email Addresses</a></div><span class="article-meta">GBHACKERS.COM &mdash; 26 Dec 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-12-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2025/12/friday-squid-blogging-squid-camouflage.html" target="_blank" rel="noopener">Friday Squid Blogging: Squid Camouflage</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2025-12-26</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-12-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/zerothreat-review-the-next-gen-automated-pentesting-s-dast-platform/" target="_blank" rel="noopener">ZeroThreat Review: The Next-Gen Automated Pentesting s DAST Platform</a></div><span class="article-meta">GBHACKERS.COM &mdash; 26 Dec 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-12-26"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2025/12/26/these-are-the-cybersecurity-stories-we-were-jealous-of-in-2025/" target="_blank" rel="noopener">These are the cybersecurity stories we were jealous of in 2025</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 26 Dec 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-12-26"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/fake-grubhub-emails-promise-tenfold-return-on-sent-cryptocurrency/" target="_blank" rel="noopener">Fake GrubHub emails promise tenfold return on sent cryptocurrency</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 26 Dec 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="critical langchain vulnerability allows attackers to steal sensitive secrets" data-date="2025-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/critical-langchain-vulnerability/" target="_blank" rel="noopener">Critical LangChain Vulnerability Allows Attackers to Steal Sensitive Secrets</a><span class="article-summary">A critical security vulnerability in LangChain, one of the world&#8217;s most widely deployed AI frameworks, enables attackers to extract environment variable secrets and, through a serialization injection flaw, potentially achieve code execution. The vulnerability, identified as…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="high severity flaw in mongodb could allow memory leakage" data-date="2025-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4111711/high-severity-flaw-in-mongodb-could-allow-memory-leakage-2.html" target="_blank" rel="noopener">High severity flaw in MongoDB could allow memory leakage</a><span class="article-summary">Document database vendor MongoDB has advised customers to update immediately following the discovery of a flaw that could allow unauthenticated users to read uninitialized heap memory. Designated CVE-2025-14847 , the bug, mismatched length fields in zlib compressed protocol heade…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the ransomware ecosystem: an encore holiday episode" data-date="2025-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/the-ransomware-ecosystem-an-encore-holiday-episode" target="_blank" rel="noopener">The Ransomware Ecosystem: An Encore Holiday Episode</a><span class="article-summary">Jim takes a break for some R&amp;R during the holidays and shares his favorite podcast episodes from the year. He acknowledges that some listeners might have heard these episodes already, while others may find them new. The podcast's production is supported by Meter, a company pr…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="7 sase certifications to validate converged network and security skills" data-date="2025-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4108280/7-sase-certifications-to-validate-converged-network-and-security-skills-2.html" target="_blank" rel="noopener">7 SASE certifications to validate converged network and security skills</a><span class="article-summary">As cyberattacks grow more sophisticated and AI-powered threats escalate, enterprises are under pressure to evolve beyond traditional perimeter-based network security. Many are turning to Secure Access Service Edge (SASE), a cloud-native framework that converges network and securi…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="critical langchain core vulnerability exposes secrets via serialization injection" data-date="2025-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/12/critical-langchain-core-vulnerability.html" target="_blank" rel="noopener">Critical LangChain Core Vulnerability Exposes Secrets via Serialization Injection</a><span class="article-summary">A critical security flaw has been disclosed in LangChain Core that could be exploited by an attacker to steal sensitive secrets and even influence large language model (LLM) responses through prompt injection. LangChain Core (i.e., langchain-core) is a core Python package that's …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="utair - 401,400 breached accounts" data-date="2025-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/Breach/Utair" target="_blank" rel="noopener">Utair - 401,400 breached accounts</a><span class="article-summary">In August 2020, news broke of a data breach of Russian airline Utair that dated back to the previous year . The breach contained over 400k unique email addresses along with extensive personal information including names, physical addresses, dates of birth, passport numbers and lo…</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+<div class="headline" data-title="trust wallet chrome extension hack tied to millions in losses" data-date="2025-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/trust-wallet-chrome-extension-hack-tied-to-millions-in-losses/" target="_blank" rel="noopener">Trust Wallet Chrome extension hack tied to millions in losses</a><span class="article-summary">Several users of the Trust Wallet Chrome extension report having their cryptocurrency wallets drained after installing a compromised extension update released on December 24, prompting an urgent response from the company and warnings to affected users. Simultaneously, BleepingCom…</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="iot hack" data-date="2025-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2025/12/iot-hack.html" target="_blank" rel="noopener">IoT Hack</a><span class="article-summary">Someone hacked an Italian ferry . It looks like the malware was installed by someone on the ferry, and not remotely.</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="trust wallet chrome extension breach caused $7 million crypto loss via malicious code" data-date="2025-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/12/trust-wallet-chrome-extension-bug.html" target="_blank" rel="noopener">Trust Wallet Chrome Extension Breach Caused $7 Million Crypto Loss via Malicious Code</a><span class="article-summary">Trust Wallet is urging users to update its Google Chrome extension to the latest version following what it described as a "security incident" that led to the loss of approximately $7 million. The issue, the multi‑chain, non‑custodial cryptocurrency wallet service said, impacts ve…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="trust wallet confirms extension hack led to $7 million crypto theft" data-date="2025-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/trust-wallet-confirms-extension-hack-led-to-7-million-crypto-theft/" target="_blank" rel="noopener">Trust Wallet confirms extension hack led to $7 million crypto theft</a><span class="article-summary">Several users of the Trust Wallet Chrome extension report having their cryptocurrency wallets drained after installing a compromised extension update released on December 24, prompting an urgent response from the company and warnings to affected users. Simultaneously, BleepingCom…</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="holiday special part 2: you’re gonna click the link - rob allen - swn #541" data-date="2025-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=aarBIv89dc8" target="_blank" rel="noopener">Holiday Special Part 2: You’re Gonna Click the Link - Rob Allen - SWN #541</a><span class="article-summary">You survived the click—but now the click has evolved. In Part 2, the crew follows phishing and ransomware down the rabbit hole into double extortion, initial access brokers, cyber insurance drama, and the unsettling rise of agentic AI that can click, run scripts, and make bad dec…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="layered defense: combining detection &amp; controls" data-date="2025-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/P4Tnzqv7Mng" target="_blank" rel="noopener">Layered Defense: Combining Detection &amp; Controls</a><span class="article-summary">Learn why a multi-layered defense strategy is crucial for protecting your data. From access control lists to program-based ACLs, find out how to fortify your systems against unauthorized access. Subscribe to our podcasts: https://securityweekly.com/subscribe #DataProtection #Laye…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="china-linked evasive panda ran dns poisoning campaign to deliver mgbot malware" data-date="2025-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/12/china-linked-evasive-panda-ran-dns.html" target="_blank" rel="noopener">China-Linked Evasive Panda Ran DNS Poisoning Campaign to Deliver MgBot Malware</a><span class="article-summary">A China-linked advanced persistent threat (APT) group has been attributed to a highly-targeted cyber espionage campaign in which the adversary poisoned Domain Name System (DNS) requests to deliver its signature MgBot backdoor in attacks targeting victims in Türkiye, China, and In…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="understanding systems to master the art of breaking" data-date="2025-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/O0M7k6yFKXw" target="_blank" rel="noopener">Understanding Systems to Master the Art of Breaking</a><span class="article-summary">Master the art of cybersecurity by diving into the fundamentals! Learn how understanding systems like Linux equips you to handle the latest threats and vulnerabilities. Subscribe to our podcasts: https://securityweekly.com/subscribe #Linux #TechSkills #Innovation #SecurityWeekly …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="google introduces option to change @gmail.com email addresses" data-date="2025-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/google-introduces-option-to-change-gmail-com-email-addresses/" target="_blank" rel="noopener">Google Introduces Option to Change @gmail.com Email Addresses</a><span class="article-summary">For years, Google users have been stuck with the email addresses they created when they first signed up. If you picked an embarrassing username years ago or simply want a more professional handle, the only previous solution was to create a brand-new account and migrate your data …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="friday squid blogging: squid camouflage" data-date="2025-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2025/12/friday-squid-blogging-squid-camouflage.html" target="_blank" rel="noopener">Friday Squid Blogging: Squid Camouflage</a><span class="article-summary">New research : Abstract: Coleoid cephalopods have the most elaborate camouflage system in the animal kingdom. This enables them to hide from or deceive both predators and prey. Most studies have focused on benthic species of octopus and cuttlefish, while studies on squid focused …</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="zerothreat review: the next-gen automated pentesting s dast platform" data-date="2025-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/zerothreat-review-the-next-gen-automated-pentesting-s-dast-platform/" target="_blank" rel="noopener">ZeroThreat Review: The Next-Gen Automated Pentesting s DAST Platform</a><span class="article-summary">After spending the past few weeks hands-on with ZeroThreat, it’s clear this platform represents a significant step forward in automated security testing. In an era where web applications, APIs, and microservices ship faster than ever, automated pentesting and DAST have become ess…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="these are the cybersecurity stories we were jealous of in 2025" data-date="2025-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/12/26/these-are-the-cybersecurity-stories-we-were-jealous-of-in-2025/" target="_blank" rel="noopener">These are the cybersecurity stories we were jealous of in 2025</a><span class="article-summary">The very best reporting and investigative journalism from our friends at other publications.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="fake grubhub emails promise tenfold return on sent cryptocurrency" data-date="2025-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/fake-grubhub-emails-promise-tenfold-return-on-sent-cryptocurrency/" target="_blank" rel="noopener">Fake GrubHub emails promise tenfold return on sent cryptocurrency</a><span class="article-summary">Grubhub users received fraudulent messages, apparently from a company email address, promising a tenfold bitcoin payout in return for a transfer to a specified wallet. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

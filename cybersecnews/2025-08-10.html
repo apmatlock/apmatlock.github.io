@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-08-10</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,78 +109,61 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-08-10</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">19</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">9</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-08-10"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2025/08/researchers-detail-windows-epm.html" target="_blank" rel="noopener">Researchers Detail Windows EPM Poisoning Exploit Chain Leading to Domain Privilege Escalation</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 10 Aug 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/08/linux-based-lenovo-webcams-flaw-can-be.html" target="_blank" rel="noopener">Linux-Based Lenovo Webcams’ Flaw Can Be Remotely Exploited for BadUSB Attacks</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 10 Aug 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/apt-sidewinder-impersonates-government-and-military-agencies/" target="_blank" rel="noopener">APT Sidewinder Mimics Government and Military Agencies to Steal Login Credentials</a></div><span class="article-meta">GBHACKERS.COM &mdash; 10 Aug 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/j-Gw0pSx2h4" target="_blank" rel="noopener">Disney’s Copyright Police Don’t Mess Around 🐭💼</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-10</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/oOVZNNkXlr8" target="_blank" rel="noopener">North Korea’s Cyber Army Is Attacking Web3</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-10</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/google-hacked/" target="_blank" rel="noopener">Google Hacked – Approx 2.5 Million Records of Google Ads Customer Data Leaked</a></div><span class="article-meta">GBHACKERS.COM &mdash; 10 Aug 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/8vwFu9PYqGA" target="_blank" rel="noopener">AI Was Supposed to Help… But It Backfired! 🤖💥</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-10</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-08-10"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://sh.itjust.works/post/43833994" target="_blank" rel="noopener">The inside story of the Telemessage saga, and how you can view the data</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 10 Aug 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-10"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2025/08/researchers-reveal-revault-attack.html" target="_blank" rel="noopener">Researchers Reveal ReVault Attack Targeting Dell ControlVault3 Firmware in 100+ Laptop Models</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 10 Aug 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-10"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/clickfix-macos-malware/" target="_blank" rel="noopener">ClickFix macOS Malware Targets User Login Credentials</a></div><span class="article-meta">GBHACKERS.COM &mdash; 10 Aug 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-10"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/42d5T2hFr8I" target="_blank" rel="noopener">CISO Survival Guide: Control What You Can</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-10</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-10"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/32186" target="_blank" rel="noopener">Google Paid Ads for Fake Tesla Websites, (Sun, Aug 10th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 10 Aug 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-10"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/b5V4h4dLBL8" target="_blank" rel="noopener">“CEO Got Robbed by a Hooker in Vegas” – Don’t Fall for It!</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-10</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-10"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/WvQamu2VDio" target="_blank" rel="noopener">Your Bank's Bot Just Screwed You… Legally!</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-10</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-10"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/JpTFEQLVDss" target="_blank" rel="noopener">Existential Dread But Make It AI 💀</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-10</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-10"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/EnINFBirxiQ" target="_blank" rel="noopener">From Freud to Mecha-Hitler: AI’s Identity Crisis Explained</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-10</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-10"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/T37rPIAw-Ec" target="_blank" rel="noopener">Imagine AI Watching Your Screen 24/7. Now Stop Imagining.</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-10</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-08-10"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2025/08/10/after-researchers-unmasked-a-prolific-sms-scammer-a-new-operation-has-emerged-in-its-wake/" target="_blank" rel="noopener">After researchers unmasked a prolific SMS scammer, a new operation has emerged in its wake</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 10 Aug 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-08-10"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/google-calendar-invites-let-researchers-hijack-gemini-to-leak-user-data/" target="_blank" rel="noopener">Google Calendar invites let researchers hijack Gemini to leak user data</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 10 Aug 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="researchers detail windows epm poisoning exploit chain leading to domain privilege escalation" data-date="2025-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/08/researchers-detail-windows-epm.html" target="_blank" rel="noopener">Researchers Detail Windows EPM Poisoning Exploit Chain Leading to Domain Privilege Escalation</a><span class="article-summary">Cybersecurity researchers have presented new findings related to a now-patched security issue in Microsoft's Windows Remote Procedure Call (RPC) communication protocol that could be abused by an attacker to conduct spoofing attacks and impersonate a known server. The vulnerabilit…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="linux-based lenovo webcams’ flaw can be remotely exploited for badusb attacks" data-date="2025-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/08/linux-based-lenovo-webcams-flaw-can-be.html" target="_blank" rel="noopener">Linux-Based Lenovo Webcams’ Flaw Can Be Remotely Exploited for BadUSB Attacks</a><span class="article-summary">Cybersecurity researchers have disclosed vulnerabilities in select model webcams from Lenovo that could turn them into BadUSB attack devices. "This allows remote attackers to inject keystrokes covertly and launch attacks independent of the host operating system," Eclypsium resear…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="apt sidewinder mimics government and military agencies to steal login credentials" data-date="2025-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/apt-sidewinder-impersonates-government-and-military-agencies/" target="_blank" rel="noopener">APT Sidewinder Mimics Government and Military Agencies to Steal Login Credentials</a><span class="article-summary">Cybersecurity researchers have uncovered an extensive phishing campaign orchestrated by APT Sidewinder, a persistent threat actor believed to originate from South Asia, targeting government and military institutions across Bangladesh, Nepal, and Turkey through sophisticated crede…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="disney’s copyright police don’t mess around 🐭💼" data-date="2025-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/j-Gw0pSx2h4" target="_blank" rel="noopener">Disney’s Copyright Police Don’t Mess Around 🐭💼</a><span class="article-summary">In this shocking short story, Doug White recounts a true incident where a Japanese student received a terrifying legal threat from Disney—for using a simple Minnie Mouse image on her website in 1998. Only four people saw it, but that didn’t stop Disney from sending one of the har…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="north korea’s cyber army is attacking web3" data-date="2025-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/oOVZNNkXlr8" target="_blank" rel="noopener">North Korea’s Cyber Army Is Attacking Web3</a><span class="article-summary">North Korea’s Lazarus Group is no ordinary hacking crew—they’re a state-sponsored cyber army. In this explosive short, Aaran breaks down how they’re targeting Web3, exploiting DeFi vulnerabilities, and hijacking DAOs to siphon millions. With their relentless adaptability and adva…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="google hacked – approx 2.5 million records of google ads customer data leaked" data-date="2025-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/google-hacked/" target="_blank" rel="noopener">Google Hacked – Approx 2.5 Million Records of Google Ads Customer Data Leaked</a><span class="article-summary">Google has disclosed a significant data breach involving one of its corporate Salesforce instances, compromising customer data tied to its Google Ads platform. Google has not revealed the exact number of people impacted, but according to ShinyHunters, who spoke with Cyber Securit…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="ai was supposed to help… but it backfired! 🤖💥" data-date="2025-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/8vwFu9PYqGA" target="_blank" rel="noopener">AI Was Supposed to Help… But It Backfired! 🤖💥</a><span class="article-summary">In this surprising twist, cybersecurity expert Doug White breaks down a recent academic study revealing that AI tools actually made experienced open source developers 19% slower. With over 246 tasks analyzed, the devs using AI fell behind their non-AI counterparts in performance—…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the inside story of the telemessage saga, and how you can view the data" data-date="2025-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/43833994" target="_blank" rel="noopener">The inside story of the Telemessage saga, and how you can view the data</a><span class="article-summary">submitted by PhilipTheBucket to cybersecurity 1 points | 0 comments https://www.theregister.com/2025/08/10/telemessage_archive_online/ It turns out no one was clean on OPSEC DEF CON On Saturday at DEF CON, security boffin Micah Lee explained just how he hacked into TeleMessage, t…</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">9</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="researchers reveal revault attack targeting dell controlvault3 firmware in 100+ laptop models" data-date="2025-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/08/researchers-reveal-revault-attack.html" target="_blank" rel="noopener">Researchers Reveal ReVault Attack Targeting Dell ControlVault3 Firmware in 100+ Laptop Models</a><span class="article-summary">Cybersecurity researchers have uncovered multiple security flaws in Dell's ControlVault3 firmware and its associated Windows APIs that could have been abused by attackers to bypass Windows login, extract cryptographic keys, as well as maintain access even after a fresh operating …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="clickfix macos malware targets user login credentials" data-date="2025-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/clickfix-macos-malware/" target="_blank" rel="noopener">ClickFix macOS Malware Targets User Login Credentials</a><span class="article-summary">Security researchers have identified a new malware campaign targeting macOS users through a sophisticated ClickFix technique that combines phishing and social engineering to steal cryptocurrency wallet details, browser credentials, and sensitive personal data. The Odyssey Stealer…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="ciso survival guide: control what you can" data-date="2025-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/42d5T2hFr8I" target="_blank" rel="noopener">CISO Survival Guide: Control What You Can</a><span class="article-summary">In a world of nonstop cybersecurity threats and volatility, Alla Valente breaks down the 3 critical zones of risk every CISO must navigate: the enterprise, the ecosystem, and the externalities. When everything feels like it’s falling apart at once, this survival guide reminds lea…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="google paid ads for fake tesla websites, (sun, aug 10th)" data-date="2025-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/32186" target="_blank" rel="noopener">Google Paid Ads for Fake Tesla Websites, (Sun, Aug 10th)</a><span class="article-summary">In recent media events, Tesla has demoed progressively more sophisticated versions of its Optimus robots. The sales pitch is pretty simple: "Current AI" is fun, but what we really need is not something to create more funny kitten pictures. We need AI to load and empty dishwashers…</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="“ceo got robbed by a hooker in vegas” – don’t fall for it!" data-date="2025-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/b5V4h4dLBL8" target="_blank" rel="noopener">“CEO Got Robbed by a Hooker in Vegas” – Don’t Fall for It!</a><span class="article-summary">When a fake emergency email claimed the CEO was stranded in Vegas after being robbed by a hooker, one cybersecurity expert had a clear message: “Just say no.” This short reveals how modern hackers don’t need malware – they just need your trust. Aaran breaks down a real-world soci…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="your bank's bot just screwed you… legally!" data-date="2025-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/WvQamu2VDio" target="_blank" rel="noopener">Your Bank's Bot Just Screwed You… Legally!</a><span class="article-summary">When Joshua Marpet breaks down how liability shifts in AI-powered financial advice, cybersecurity professionals better take notes. In this short, he explains how robo-advisors operate without licenses—meaning if they mess up, you pay the price, not the bank. A sharp warning about…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="existential dread but make it ai 💀" data-date="2025-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/JpTFEQLVDss" target="_blank" rel="noopener">Existential Dread But Make It AI 💀</a><span class="article-summary">When Doug White breaks down the latest AI safety scores, things get chilling fast. According to the Future of Life Institute, no major AI firm scored higher than a D in existential safety planning. That’s right — a D. As Doug dives into the scary world of AGI, self-replicating AI…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="from freud to mecha-hitler: ai’s identity crisis explained" data-date="2025-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/EnINFBirxiQ" target="_blank" rel="noopener">From Freud to Mecha-Hitler: AI’s Identity Crisis Explained</a><span class="article-summary">When cybersecurity expert Doug White warns that LLMs are “sociopaths pretending to care,” it’s not just a hot take—it’s a reality check. This short dives into the dark side of AI personas, from virtual therapists like “Dr. Penguin” to twisted roleplay as “Mecha-Hitler.” These mod…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="imagine ai watching your screen 24/7. now stop imagining." data-date="2025-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/T37rPIAw-Ec" target="_blank" rel="noopener">Imagine AI Watching Your Screen 24/7. Now Stop Imagining.</a><span class="article-summary">An app that takes constant screenshots of your screen, analyzes them with AI, and lets you search your digital life like a surveillance reel? Doug White breaks down this eerie new tech that might already be running on your device—without you even realizing it. Cybersecurity pros,…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="after researchers unmasked a prolific sms scammer, a new operation has emerged in its wake" data-date="2025-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/08/10/after-researchers-unmasked-a-prolific-sms-scammer-a-new-operation-has-emerged-in-its-wake/" target="_blank" rel="noopener">After researchers unmasked a prolific SMS scammer, a new operation has emerged in its wake</a><span class="article-summary">Security researchers are now sounding the alarm on a new SMS text message fraud operation, which is surging in popularity — and its ability to steal people's credit cards — since the demise of its predecessor.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="google calendar invites let researchers hijack gemini to leak user data" data-date="2025-08-10"><span class="headline-date">10 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/google-calendar-invites-let-researchers-hijack-gemini-to-leak-user-data/" target="_blank" rel="noopener">Google Calendar invites let researchers hijack Gemini to leak user data</a><span class="article-summary">Google fixed a bug that allowed maliciously crafted Google Calendar invites to remotely take over Gemini agents running on the target's device and leak sensitive user data. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

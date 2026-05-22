@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-04-13</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,82 +109,73 @@
       <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-04-13</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">21</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">4</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-04-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/palo-alto-networks-zero-day-exploited-since-march-to-backdoor-firewalls/" target="_blank" rel="noopener">Palo Alto Networks zero-day exploited since March to backdoor firewalls</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 13 Apr 2024</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-04-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/30834" target="_blank" rel="noopener">Critical Palo Alto GlobalProtect Vulnerability Exploited (CVE-2024-3400), (Sat, Apr 13th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 13 Apr 2024</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-04-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://labs.watchtowr.com/ibm-qradar-when-the-attacker-controls-your-security-stack/" target="_blank" rel="noopener">IBM QRadar - When The Attacker Controls Your Security Stack (CVE-2022-26377) - watchTowr Labs</a></div><span class="article-meta">LABS.WATCHTOWR.COM &mdash; 13 Apr 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-04-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.darkreading.com/vulnerabilities-threats/dprk-exploits-mitre-sub-techniques-phantom-dll-hijacking-tcc-abuse?&web_view=true" target="_blank" rel="noopener">North Korean Hackers Exploit Two MITRE Sub-Techniques: Phantom DLL Hijacking, TCC Abuse</a></div><span class="article-meta">DARKREADING.COM &mdash; 13 Apr 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-04-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/telegram-fixes-windows-app-zero-day-used-to-launch-python-scripts/?&web_view=true" target="_blank" rel="noopener">Telegram Fixes Windows App Zero-Day Used to Launch Python Scripts</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 13 Apr 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-04-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/04/hackers-deploy-python-backdoor-in-palo.html" target="_blank" rel="noopener">Hackers Deploy Python Backdoor in Palo Alto Zero-Day Attack</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 13 Apr 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-04-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/hacker-claims-giant-tiger-data-breach-leaks-28m-records-online/" target="_blank" rel="noopener">Hacker claims Giant Tiger data breach, leaks 2.8M records online</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 13 Apr 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-04-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/11021006" target="_blank" rel="noopener">Bypassing problematic captive portals. Cafe gives a red padlock; transit svc has broken TLS captive portal, etc…</a></div><span class="article-meta">INFOSEC.PUB &mdash; 13 Apr 2024</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-04-13"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/cisa-orders-agencies-impacted-by-microsoft-hack-to-mitigate-risks/?&web_view=true" target="_blank" rel="noopener">CISA Orders Agencies Impacted by Microsoft Hack to Mitigate Risks</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 13 Apr 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-04-13"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2024/04/popular-rust-crate-liblzma-sys.html?m=1" target="_blank" rel="noopener">Popular Rust Crate liblzma-sys Compromised with XZ Utils Backdoor Files</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 13 Apr 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-04-13"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.securityweek.com/house-passes-reauthorization-of-key-us-surveillance-program-after-days-of-upheaval-over-changes/" target="_blank" rel="noopener">House Passes Reauthorization of Key US Surveillance Program After Days of Upheaval Over Changes</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 13 Apr 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-04-13"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://blog.knowbe4.com/heads-up-global-cybercrime-hotspot-countries-revealed-secure-your-defenses" target="_blank" rel="noopener">[Heads Up] Global Cybercrime Hotspot Countries Revealed: Secure Your Defenses</a></div><span class="article-meta">KNOWBE4.COM &mdash; 13 Apr 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-04-13"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2024/04/ex-security-engineer-jailed-3-years-for.html?m=1" target="_blank" rel="noopener">Ex-Security Engineer Jailed 3 Years for $12.3 Million Crypto Exchange Thefts</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 13 Apr 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-04-13"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/30836" target="_blank" rel="noopener">ISC Stormcast For Sunday, April 14th, 2024 https://isc.sans.edu/podcastdetail/8938, (Sat, Apr 13th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 13 Apr 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-04-13"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://blog.knowbe4.com/i-dont-have-to-say-it-do-i" target="_blank" rel="noopener">I don't have to say it, do I?</a></div><span class="article-meta">KNOWBE4.COM &mdash; 13 Apr 2024</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2024-04-13"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://techcrunch.com/2024/04/13/government-spyware-use-ad-blocker/" target="_blank" rel="noopener">Government spyware is another reason to use an ad blocker</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 13 Apr 2024</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2024-04-13"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/firebird-rat-creator-and-seller-arrested-in-the-us-and-australia/" target="_blank" rel="noopener">Firebird RAT creator and seller arrested in the U.S. and Australia</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 13 Apr 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-04-13"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/fbi-warns-of-massive-wave-of-road-toll-sms-phishing-attacks/?&web_view=true" target="_blank" rel="noopener">FBI Warns of Massive Wave of Road Toll SMS Phishing Attacks</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 13 Apr 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-04-13"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/uk-flooded-with-forged-stamps-despite-using-barcodes-to-prevent-just-that/" target="_blank" rel="noopener">UK flooded with forged stamps despite using barcodes — to prevent just that</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 13 Apr 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-04-13"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2024/04/ex-security-engineer-jailed-3-years-for.html" target="_blank" rel="noopener">Ex-Security Engineer Jailed 3 Years for $12.3 Million Crypto Exchange Thefts</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 13 Apr 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-04-13"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2024/04/us-treasury-hamas-spokesperson-for.html" target="_blank" rel="noopener">U.S. Treasury Hamas Spokesperson for Cyber Influence Operations</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 13 Apr 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="palo alto networks zero-day exploited since march to backdoor firewalls" data-date="2024-04-13"><span class="headline-date">13 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/palo-alto-networks-zero-day-exploited-since-march-to-backdoor-firewalls/" target="_blank" rel="noopener">Palo Alto Networks zero-day exploited since March to backdoor firewalls</a><span class="article-summary">Suspected state-sponsored hackers have been exploiting a zero-day vulnerability in Palo Alto Networks firewalls tracked as CVE-2024-3400 since March 26, using the compromised devices to breach internal networks, steal data and credentials. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="critical palo alto globalprotect vulnerability exploited (cve-2024-3400), (sat, apr 13th)" data-date="2024-04-13"><span class="headline-date">13 Apr</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/30834" target="_blank" rel="noopener">Critical Palo Alto GlobalProtect Vulnerability Exploited (CVE-2024-3400), (Sat, Apr 13th)</a><span class="article-summary">On Friday, Palo Alto Networks released an advisory warning users of Palo Alto&&#x23&#x3b;x26&#x3b;&#x23&#x3b;39&#x3b;s Global Protect product of a vulnerability that has been exploited since March &#x5b;1&#x5d;. &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="ibm qradar - when the attacker controls your security stack (cve-2022-26377) - watchtowr labs" data-date="2024-04-13"><span class="headline-date">13 Apr</span><span class="headline-body"><a class="headline-title" href="https://labs.watchtowr.com/ibm-qradar-when-the-attacker-controls-your-security-stack/" target="_blank" rel="noopener">IBM QRadar - When The Attacker Controls Your Security Stack (CVE-2022-26377) - watchTowr Labs</a><span class="article-summary">submitted by testeronious to security 1 points | 0 comments https://labs.watchtowr.com/ibm-qradar-when-the-attacker-controls-your-security-stack/</span></span><span class="headline-source">LABS.WATCHTOWR.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="north korean hackers exploit two mitre sub-techniques: phantom dll hijacking, tcc abuse" data-date="2024-04-13"><span class="headline-date">13 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.darkreading.com/vulnerabilities-threats/dprk-exploits-mitre-sub-techniques-phantom-dll-hijacking-tcc-abuse?&web_view=true" target="_blank" rel="noopener">North Korean Hackers Exploit Two MITRE Sub-Techniques: Phantom DLL Hijacking, TCC Abuse</a><span class="article-summary">The first, not entirely new, sub-technique involves manipulation of Transparency, Consent, and Control (TCC), a security protocol that regulates application permissions on Apple's macOS.</span></span><span class="headline-source">DARKREADING.COM</span></div>
+<div class="headline" data-title="telegram fixes windows app zero-day used to launch python scripts" data-date="2024-04-13"><span class="headline-date">13 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/telegram-fixes-windows-app-zero-day-used-to-launch-python-scripts/?&web_view=true" target="_blank" rel="noopener">Telegram Fixes Windows App Zero-Day Used to Launch Python Scripts</a><span class="article-summary">A proof of concept exploit was shared on the XSS hacking forum explaining that a typo in the source code for Telegram for Windows could be exploited to send Python .pyzw files that bypass security warnings when clicked.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="hackers deploy python backdoor in palo alto zero-day attack" data-date="2024-04-13"><span class="headline-date">13 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/04/hackers-deploy-python-backdoor-in-palo.html" target="_blank" rel="noopener">Hackers Deploy Python Backdoor in Palo Alto Zero-Day Attack</a><span class="article-summary">Threat actors have been exploiting the newly disclosed zero-day flaw in Palo Alto Networks PAN-OS software dating back to March 26, 2024, nearly three weeks before it came to light yesterday. The network security company's Unit 42 division is&nbsp;tracking&nbsp;the activity under…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="hacker claims giant tiger data breach, leaks 2.8m records online" data-date="2024-04-13"><span class="headline-date">13 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/hacker-claims-giant-tiger-data-breach-leaks-28m-records-online/" target="_blank" rel="noopener">Hacker claims Giant Tiger data breach, leaks 2.8M records online</a><span class="article-summary">Canadian retail chain Giant Tiger disclosed a data breach in March 2024. A threat actor has now publicly claimed responsibility for the data breach and leaked 2.8 million records on a hacker forum that they claim are of Giant Tiger customers. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="bypassing problematic captive portals. cafe gives a red padlock; transit svc has broken tls captive portal, etc…" data-date="2024-04-13"><span class="headline-date">13 Apr</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/11021006" target="_blank" rel="noopener">Bypassing problematic captive portals. Cafe gives a red padlock; transit svc has broken TLS captive portal, etc…</a><span class="article-summary">submitted by coffeeClean to cybersecurity 1 points | 0 comments The red padlock The captive portal of a cafe simply rendered a red padlock on with a line through it. Essentially, it was apparently telling me I am being denied access without using any words. There was no other scr…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa orders agencies impacted by microsoft hack to mitigate risks" data-date="2024-04-13"><span class="headline-date">13 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/cisa-orders-agencies-impacted-by-microsoft-hack-to-mitigate-risks/?&web_view=true" target="_blank" rel="noopener">CISA Orders Agencies Impacted by Microsoft Hack to Mitigate Risks</a><span class="article-summary">CISA has issued a new emergency directive ordering U.S. federal agencies to address risks resulting from the breach of multiple Microsoft corporate email accounts by the Russian APT29 hacking group.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="popular rust crate liblzma-sys compromised with xz utils backdoor files" data-date="2024-04-13"><span class="headline-date">13 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/04/popular-rust-crate-liblzma-sys.html?m=1" target="_blank" rel="noopener">Popular Rust Crate liblzma-sys Compromised with XZ Utils Backdoor Files</a><span class="article-summary">submitted by Lanky_Pomegranate530 to cybersecurity 1 points | 0 comments https://thehackernews.com/2024/04/popular-rust-crate-liblzma-sys.html?m=1</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="house passes reauthorization of key us surveillance program after days of upheaval over changes" data-date="2024-04-13"><span class="headline-date">13 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/house-passes-reauthorization-of-key-us-surveillance-program-after-days-of-upheaval-over-changes/" target="_blank" rel="noopener">House Passes Reauthorization of Key US Surveillance Program After Days of Upheaval Over Changes</a><span class="article-summary">The bill was approved on a bipartisan basis, 273-147, though it will still have to clear the Senate to become law. The post House Passes Reauthorization of Key US Surveillance Program After Days of Upheaval Over Changes appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="[heads up] global cybercrime hotspot countries revealed: secure your defenses" data-date="2024-04-13"><span class="headline-date">13 Apr</span><span class="headline-body"><a class="headline-title" href="https://blog.knowbe4.com/heads-up-global-cybercrime-hotspot-countries-revealed-secure-your-defenses" target="_blank" rel="noopener">[Heads Up] Global Cybercrime Hotspot Countries Revealed: Secure Your Defenses</a><span class="article-summary">In a groundbreaking study that spanned three years, an international research team, including experts from the University of Oxford and UNSW Canberra, has developed the first-ever World Cybercrime Index.</span></span><span class="headline-source">KNOWBE4.COM</span></div>
+<div class="headline" data-title="ex-security engineer jailed 3 years for $12.3 million crypto exchange thefts" data-date="2024-04-13"><span class="headline-date">13 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/04/ex-security-engineer-jailed-3-years-for.html?m=1" target="_blank" rel="noopener">Ex-Security Engineer Jailed 3 Years for $12.3 Million Crypto Exchange Thefts</a><span class="article-summary">submitted by Lanky_Pomegranate530 to cybersecurity 1 points | 0 comments https://thehackernews.com/2024/04/ex-security-engineer-jailed-3-years-for.html?m=1</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="isc stormcast for sunday, april 14th, 2024 https://isc.sans.edu/podcastdetail/8938, (sat, apr 13th)" data-date="2024-04-13"><span class="headline-date">13 Apr</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/30836" target="_blank" rel="noopener">ISC Stormcast For Sunday, April 14th, 2024 https://isc.sans.edu/podcastdetail/8938, (Sat, Apr 13th)</a><span class="article-summary">(c) SANS Internet Storm Center. https://isc.sans.edu Creative Commons Attribution-Noncommercial 3.0 United States License.</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="i don't have to say it, do i?" data-date="2024-04-13"><span class="headline-date">13 Apr</span><span class="headline-body"><a class="headline-title" href="https://blog.knowbe4.com/i-dont-have-to-say-it-do-i" target="_blank" rel="noopener">I don't have to say it, do I?</a><span class="article-summary">So today, news broke that Iran has sent dozens, if not more than 100 drones to Israel in a direct attack. Discussion on Twitter also claim that ballistic missiles will be sent.</span></span><span class="headline-source">KNOWBE4.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="government spyware is another reason to use an ad blocker" data-date="2024-04-13"><span class="headline-date">13 Apr</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/04/13/government-spyware-use-ad-blocker/" target="_blank" rel="noopener">Government spyware is another reason to use an ad blocker</a><span class="article-summary">Spyware makers are reportedly working on targeting individuals with stealthy data-stealing malware using online banner ads. © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="firebird rat creator and seller arrested in the u.s. and australia" data-date="2024-04-13"><span class="headline-date">13 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/firebird-rat-creator-and-seller-arrested-in-the-us-and-australia/" target="_blank" rel="noopener">Firebird RAT creator and seller arrested in the U.S. and Australia</a><span class="article-summary">A joint police operation between the Australian Federal Police (AFP) and the FBI has led to the arrest and charging of two individuals who are believed to be behind the development and distribution of the "Firebird" remote access trojan (RAT), later rebranded as "Hive." [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="fbi warns of massive wave of road toll sms phishing attacks" data-date="2024-04-13"><span class="headline-date">13 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/fbi-warns-of-massive-wave-of-road-toll-sms-phishing-attacks/?&web_view=true" target="_blank" rel="noopener">FBI Warns of Massive Wave of Road Toll SMS Phishing Attacks</a><span class="article-summary">While the mobile phishing campaign has yet to reach some U.S. regions, this can be explained by the fact that complaint information collected so far by IC3 indicates the scam may be moving from state to state.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="uk flooded with forged stamps despite using barcodes — to prevent just that" data-date="2024-04-13"><span class="headline-date">13 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/uk-flooded-with-forged-stamps-despite-using-barcodes-to-prevent-just-that/" target="_blank" rel="noopener">UK flooded with forged stamps despite using barcodes — to prevent just that</a><span class="article-summary">Royal Mail, the British postal and courier service began switching all snail mail stamps to barcoded stamps last year. The purpose of the barcode was to enhance security, deter stamp reuse, and possibly prevent forgeries—which it has failed to do. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="ex-security engineer jailed 3 years for $12.3 million crypto exchange thefts" data-date="2024-04-13"><span class="headline-date">13 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/04/ex-security-engineer-jailed-3-years-for.html" target="_blank" rel="noopener">Ex-Security Engineer Jailed 3 Years for $12.3 Million Crypto Exchange Thefts</a><span class="article-summary">A former security engineer has been&nbsp;sentenced&nbsp;to three years in prison in the U.S. for charges relating to hacking two decentralized cryptocurrency exchanges in July 2022 and stealing over $12.3 million. Shakeeb Ahmed, the defendant in question,&nbsp;pled guilty&nbsp;to…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="u.s. treasury hamas spokesperson for cyber influence operations" data-date="2024-04-13"><span class="headline-date">13 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/04/us-treasury-hamas-spokesperson-for.html" target="_blank" rel="noopener">U.S. Treasury Hamas Spokesperson for Cyber Influence Operations</a><span class="article-summary">The U.S. Treasury Department's Office of Foreign Assets Control (OFAC) on Friday announced sanctions against an official associated with Hamas for his involvement in cyber influence operations. Hudhayfa Samir ‘Abdallah al-Kahlut, 39, also known as Abu Ubaida, has served as the pu…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

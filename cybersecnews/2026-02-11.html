@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2026-02-11</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,77 +109,64 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2026-02-11</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">17</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-11"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-21511" target="_blank" rel="noopener">CVE-2026-21511 Microsoft Outlook Spoofing Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 11 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-11"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-21256" target="_blank" rel="noopener">CVE-2026-21256 GitHub Copilot and Visual Studio Remote Code Execution Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 11 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-11"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://programming.dev/post/45587023" target="_blank" rel="noopener">Breaking Down CVE-2026-25049: How TypeScript Types Failed n8n's Security</a></div><span class="article-meta">PROGRAMMING.DEV &mdash; 11 Feb 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-02-11"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.exploit-db.com/exploits/52481" target="_blank" rel="noopener">[webapps] motionEye 0.43.1b4 - RCE</a></div><span class="article-meta">EXPLOIT-DB.COM &mdash; 11 Feb 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-02-11"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.exploit-db.com/exploits/52480" target="_blank" rel="noopener">[remote] Windows 10.0.17763.7009 - spoofing vulnerability</a></div><span class="article-meta">EXPLOIT-DB.COM &mdash; 11 Feb 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-02-11"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.exploit-db.com/exploits/52479" target="_blank" rel="noopener">[local] glibc 2.38 - Buffer Overflow</a></div><span class="article-meta">EXPLOIT-DB.COM &mdash; 11 Feb 2026</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2026-02-11"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/unsupported-edge-devices-present-global-threat-openclaw-threats-continue-cybersecurity-today" target="_blank" rel="noopener">Unsupported Edge Devices Present Global Threat, OpenClaw Threats Continue - Cybersecurity Today</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 11 Feb 2026</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2026-02-11"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.cisa.gov/news-events/news/cisas-2025-year-review-driving-security-and-resilience-across-critical-infrastructure" target="_blank" rel="noopener">CISA’s 2025 Year in Review: Driving Security and Resilience Across Critical Infrastructure</a></div><span class="article-meta">CISA.GOV &mdash; Wed, 11 Feb 26 1</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-02-11"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.microsoft.com/en-us/security/blog/2026/02/11/the-strategic-siem-buyers-guide-choosing-an-ai-ready-platform-for-the-agentic-era/" target="_blank" rel="noopener">The strategic SIEM buyer’s guide: Choosing an AI-ready platform for the agentic era</a></div><span class="article-meta">MICROSOFT.COM &mdash; 11 Feb 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-02-11"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.lastwatchdog.com/news-alert-gitguardian-raises-50m-to-tackle-non-human-identities-crisis-ai-agent-security-gap/" target="_blank" rel="noopener">News alert: GitGuardian raises $50M to tackle non-human identities crisis, AI agent security gap</a></div><span class="article-meta">LASTWATCHDOG.COM &mdash; 11 Feb 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-02-11"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.paloaltonetworks.com/blog/2026/02/securing-every-identity-in-the-age-of-ai/" target="_blank" rel="noopener">Securing Every Identity in the Age of AI</a></div><span class="article-meta">PALOALTONETWORKS.COM &mdash; 11 Feb 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-02-11"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://programming.dev/post/45581697" target="_blank" rel="noopener">Hope Is Not a Security Strategy: Why Secure-by-Default Beats Hardening</a></div><span class="article-meta">PROGRAMMING.DEV &mdash; 11 Feb 2026</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2026-02-11"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://krebsonsecurity.com/2026/02/kimwolf-botnet-swamps-anonymity-network-i2p/" target="_blank" rel="noopener">Kimwolf Botnet Swamps Anonymity Network I2P</a></div><span class="article-meta">KREBSONSECURITY.COM &mdash; 11 Feb 2026</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2026-02-11"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.kaspersky.com/blog/spam-and-phishing-2025/55295/" target="_blank" rel="noopener">Quick digest of Kaspersky’s report “Spam and Phishing in 2025” | Kaspersky official blog</a></div><span class="article-meta">KASPERSKY.COM &mdash; 11 Feb 2026</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2026-02-11"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.recordedfuture.com/blog/threat-hunting-27-steps-to-5" target="_blank" rel="noopener">From 27 Steps to 5: How Recorded Future Reimagined Threat Hunting with Autonomous Threat Operations</a></div><span class="article-meta">RECORDEDFUTURE.COM &mdash; 11 Feb 2026</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2026-02-11"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://risky.biz/RB824/" target="_blank" rel="noopener">Risky Business #824 -- Microsoft's Secure Future is looking a bit wobbly</a></div><span class="article-meta">RISKY.BIZ &mdash; 11 Feb 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-02-11"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.f5.com/labs/articles/geoserver-targeting-on-the-rise" target="_blank" rel="noopener">GeoServer Targeting on the Rise</a></div><span class="article-meta">F5.COM &mdash; 11 Feb 2026</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cve-2026-21511 microsoft outlook spoofing vulnerability" data-date="2026-02-11"><span class="headline-date">11 Feb</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-21511" target="_blank" rel="noopener">CVE-2026-21511 Microsoft Outlook Spoofing Vulnerability</a><span class="article-summary">Acknowledgement added. This is an informational change only.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-21256 github copilot and visual studio remote code execution vulnerability" data-date="2026-02-11"><span class="headline-date">11 Feb</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-21256" target="_blank" rel="noopener">CVE-2026-21256 GitHub Copilot and Visual Studio Remote Code Execution Vulnerability</a><span class="article-summary">Changes made to the security updates links and information. This is an informational change only.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="breaking down cve-2026-25049: how typescript types failed n8n's security" data-date="2026-02-11"><span class="headline-date">11 Feb</span><span class="headline-body"><a class="headline-title" href="https://programming.dev/post/45587023" target="_blank" rel="noopener">Breaking Down CVE-2026-25049: How TypeScript Types Failed n8n's Security</a><span class="article-summary">submitted by codeinabox to security 8 points | 2 comments https://hetmehta.com/posts/n8n-type-confusion-rce/ cross-posted from: lemmy.bestiver.se/post/919467 Comments</span></span><span class="headline-source">PROGRAMMING.DEV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="[webapps] motioneye 0.43.1b4 - rce" data-date="2026-02-11"><span class="headline-date">11 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.exploit-db.com/exploits/52481" target="_blank" rel="noopener">[webapps] motionEye 0.43.1b4 - RCE</a><span class="article-summary">motionEye 0.43.1b4 - RCE</span></span><span class="headline-source">EXPLOIT-DB.COM</span></div>
+<div class="headline" data-title="[remote] windows 10.0.17763.7009 - spoofing vulnerability" data-date="2026-02-11"><span class="headline-date">11 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.exploit-db.com/exploits/52480" target="_blank" rel="noopener">[remote] Windows 10.0.17763.7009 - spoofing vulnerability</a><span class="article-summary">Windows 10.0.17763.7009 - spoofing vulnerability</span></span><span class="headline-source">EXPLOIT-DB.COM</span></div>
+<div class="headline" data-title="[local] glibc 2.38 - buffer overflow" data-date="2026-02-11"><span class="headline-date">11 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.exploit-db.com/exploits/52479" target="_blank" rel="noopener">[local] glibc 2.38 - Buffer Overflow</a><span class="article-summary">glibc 2.38 - Buffer Overflow</span></span><span class="headline-source">EXPLOIT-DB.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="unsupported edge devices present global threat, openclaw threats continue - cybersecurity today" data-date="2026-02-11"><span class="headline-date">11 Feb</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/unsupported-edge-devices-present-global-threat-openclaw-threats-continue-cybersecurity-today" target="_blank" rel="noopener">Unsupported Edge Devices Present Global Threat, OpenClaw Threats Continue - Cybersecurity Today</a><span class="article-summary">In this episode of Cybersecurity Today, host Jim Love discusses the increasing risks posed by unsupported edge devices in global infrastructure. Highlighted by a recent cyber incident in Poland's energy sector, edge devices are becoming critical vulnerabilities due to their role …</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="cisa’s 2025 year in review: driving security and resilience across critical infrastructure" data-date="2026-02-11"><span class="headline-date">11 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/news/cisas-2025-year-review-driving-security-and-resilience-across-critical-infrastructure" target="_blank" rel="noopener">CISA’s 2025 Year in Review: Driving Security and Resilience Across Critical Infrastructure</a></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the strategic siem buyer’s guide: choosing an ai-ready platform for the agentic era" data-date="2026-02-11"><span class="headline-date">11 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.microsoft.com/en-us/security/blog/2026/02/11/the-strategic-siem-buyers-guide-choosing-an-ai-ready-platform-for-the-agentic-era/" target="_blank" rel="noopener">The strategic SIEM buyer’s guide: Choosing an AI-ready platform for the agentic era</a><span class="article-summary">New guide details how a unified, AI ready SIEM platform empowers security leaders to operate at the speed of AI, strengthen resilience, accelerate detection and response, and more. The post The strategic SIEM buyer’s guide: Choosing an AI-ready platform for the agentic era appear…</span></span><span class="headline-source">MICROSOFT.COM</span></div>
+<div class="headline" data-title="news alert: gitguardian raises $50m to tackle non-human identities crisis, ai agent security gap" data-date="2026-02-11"><span class="headline-date">11 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.lastwatchdog.com/news-alert-gitguardian-raises-50m-to-tackle-non-human-identities-crisis-ai-agent-security-gap/" target="_blank" rel="noopener">News alert: GitGuardian raises $50M to tackle non-human identities crisis, AI agent security gap</a><span class="article-summary">NEW YORK, Feb. 11, 2026, CyberNewswire — GitGuardian , a leading secrets and Non-Human Identity (NHI) security platform and #1 app on GitHub Marketplace, today announced a $50 million Series C funding round led by global software investor Insight Partners &#8230; (more…) The post…</span></span><span class="headline-source">LASTWATCHDOG.COM</span></div>
+<div class="headline" data-title="securing every identity in the age of ai" data-date="2026-02-11"><span class="headline-date">11 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.paloaltonetworks.com/blog/2026/02/securing-every-identity-in-the-age-of-ai/" target="_blank" rel="noopener">Securing Every Identity in the Age of AI</a><span class="article-summary">Securing every identity in the age of AI is foundational. Discover how Palo Alto Networks and CyberArk redefine identity security for the modern enterprise. The post Securing Every Identity in the Age of AI appeared first on Palo Alto Networks Blog .</span></span><span class="headline-source">PALOALTONETWORKS.COM</span></div>
+<div class="headline" data-title="hope is not a security strategy: why secure-by-default beats hardening" data-date="2026-02-11"><span class="headline-date">11 Feb</span><span class="headline-body"><a class="headline-title" href="https://programming.dev/post/45581697" target="_blank" rel="noopener">Hope Is Not a Security Strategy: Why Secure-by-Default Beats Hardening</a><span class="article-summary">submitted by codeinabox to security 5 points | 0 comments https://tuananh.net/2026/02/09/hope-is-not-a-security-strategy/ cross-posted from: lemmy.bestiver.se/post/919244 Comments</span></span><span class="headline-source">PROGRAMMING.DEV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="kimwolf botnet swamps anonymity network i2p" data-date="2026-02-11"><span class="headline-date">11 Feb</span><span class="headline-body"><a class="headline-title" href="https://krebsonsecurity.com/2026/02/kimwolf-botnet-swamps-anonymity-network-i2p/" target="_blank" rel="noopener">Kimwolf Botnet Swamps Anonymity Network I2P</a><span class="article-summary">For the past week, the massive "Internet of Things" (IoT) botnet known as Kimwolf has been disrupting the The Invisible Internet Project (I2P), a decentralized, encrypted communications network designed to anonymize and secure online communications. I2P users started reporting di…</span></span><span class="headline-source">KREBSONSECURITY.COM</span></div>
+<div class="headline" data-title="quick digest of kaspersky’s report “spam and phishing in 2025” | kaspersky official blog" data-date="2026-02-11"><span class="headline-date">11 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.kaspersky.com/blog/spam-and-phishing-2025/55295/" target="_blank" rel="noopener">Quick digest of Kaspersky’s report “Spam and Phishing in 2025” | Kaspersky official blog</a><span class="article-summary">Breaking down the major trends in phishing and scams, featuring the most creative schemes discovered by Kaspersky experts in 2025.</span></span><span class="headline-source">KASPERSKY.COM</span></div>
+<div class="headline" data-title="from 27 steps to 5: how recorded future reimagined threat hunting with autonomous threat operations" data-date="2026-02-11"><span class="headline-date">11 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.recordedfuture.com/blog/threat-hunting-27-steps-to-5" target="_blank" rel="noopener">From 27 Steps to 5: How Recorded Future Reimagined Threat Hunting with Autonomous Threat Operations</a><span class="article-summary">Discover how Autonomous Threat Operations reduces 27 manual steps to as few as 5 largely automated ones, delivering the speed, scale, and effectiveness that the modern threat landscape demands.</span></span><span class="headline-source">RECORDEDFUTURE.COM</span></div>
+<div class="headline" data-title="risky business #824 -- microsoft's secure future is looking a bit wobbly" data-date="2026-02-11"><span class="headline-date">11 Feb</span><span class="headline-body"><a class="headline-title" href="https://risky.biz/RB824/" target="_blank" rel="noopener">Risky Business #824 -- Microsoft's Secure Future is looking a bit wobbly</a><span class="article-summary">On this week’s show Patrick Gray and Adam Boileau discuss the week’s cybersecurity news, including: Microsoft reshuffles security leadership. It doesn’t spark joy. Russia is hacking the Winter Olympics. Again. But y tho? China-linked groups are keeping busy, hacking telcos in Nor…</span></span><span class="headline-source">RISKY.BIZ</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="geoserver targeting on the rise" data-date="2026-02-11"><span class="headline-date">11 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.f5.com/labs/articles/geoserver-targeting-on-the-rise" target="_blank" rel="noopener">GeoServer Targeting on the Rise</a><span class="article-summary">Sensor Intel Series: January 2026 CVE Trends</span></span><span class="headline-source">F5.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2023-08-05</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,80 +109,67 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2023-08-05</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">20</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">5</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-08-05"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2023/08/researchers-uncover-new-high-severity.html" target="_blank" rel="noopener">Researchers Uncover New High-Severity Vulnerability in PaperCut Software</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 05 Aug 2023</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-08-05"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.nextgov.com/cybersecurity/2023/08/cisa-five-eyes-cyber-advisory-lists-common-vulnerabilities-among-2022s-top-exploits/389113/?&web_view=true" target="_blank" rel="noopener">CISA, Five Eyes cyber advisory lists common vulnerabilities among 2022’s top exploits</a></div><span class="article-meta">NEXTGOV.COM &mdash; 05 Aug 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-08-05"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2023/08/mdr-empowering-organizations-with.html" target="_blank" rel="noopener">MDR: Empowering Organizations with Enhanced Security</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 05 Aug 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-08-05"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2023/08/reptile-rootkit-advanced-linux-malware.html" target="_blank" rel="noopener">Reptile Rootkit: Advanced Linux Malware Targeting South Korean Systems</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 05 Aug 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-08-05"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2023/08/microsoft-addresses-critical-power.html" target="_blank" rel="noopener">Microsoft Addresses Critical Power Platform Flaw After Delays and Criticism</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 05 Aug 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-08-05"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-flaw-after-being-called-irresponsible-by-tenable-ceo/?&web_view=true" target="_blank" rel="noopener">Microsoft fixes flaw after being called irresponsible by Tenable CEO</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 05 Aug 2023</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-08-05"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://blogs.cisco.com/gov/cisa-cybersecurity-strategy?&web_view=true" target="_blank" rel="noopener">CISA Cybersecurity Strategic Plan: An Important Step To Secure Critical Infrastructure</a></div><span class="article-meta">BLOGS.CISCO.COM &mdash; 05 Aug 2023</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-08-05"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/us-government-lagging-on-border-gateway-protocol-security-a-22744" target="_blank" rel="noopener">US Government Lagging on Border Gateway Protocol Security</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-08-05</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-08-05"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.theguardian.com/us-news/2023/aug/04/cyberattack-us-hospitals-california?&web_view=true" target="_blank" rel="noopener">Cyberattack disrupts hospital computer systems across US, hindering services</a></div><span class="article-meta">THEGUARDIAN.COM &mdash; 05 Aug 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-08-05"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/colorado-department-of-higher-education-warns-of-massive-data-breach/" target="_blank" rel="noopener">Colorado Department of Higher Education warns of massive data breach</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 05 Aug 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-08-05"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/clop-ransomware-now-uses-torrents-to-leak-data-and-evade-takedowns/" target="_blank" rel="noopener">Clop ransomware now uses torrents to leak data and evade takedowns</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 05 Aug 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-08-05"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2023/08/05/letmespy-spyware-shuts-down-wiped-server/" target="_blank" rel="noopener">Spyware maker LetMeSpy shuts down after hacker deletes server data</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 05 Aug 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-08-05"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/google-explains-how-android-malware-slips-onto-google-play-store/?&web_view=true" target="_blank" rel="noopener">Google explains how Android malware slips onto Google Play Store</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 05 Aug 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-08-05"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/hackers-strrat-malware-pdf-files/" target="_blank" rel="noopener">Hackers Deliver Updated STRRAT Malware Using Weaponized PDF Files</a></div><span class="article-meta">GBHACKERS.COM &mdash; 05 Aug 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-08-05"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.troyhunt.com/weekly-update-359/" target="_blank" rel="noopener">Weekly Update 359</a></div><span class="article-meta">TROYHUNT.COM &mdash; 05 Aug 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-08-05"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://securityaffairs.com/149165/hacking/npm-highly-targeted-attacks.html?&web_view=true" target="_blank" rel="noopener">Malicious packages in the NPM designed for highly-targeted attacks</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 05 Aug 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-08-05"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/fbi-warns-of-scammers-posing-as-nft-devs-to-steal-your-crypto/?&web_view=true" target="_blank" rel="noopener">FBI warns of scammers posing as NFT devs to steal your crypto</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 05 Aug 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-08-05"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.politico.com/news/2023/08/04/watchdog-us-embassies-software-vulnerable-00109895?&web_view=true" target="_blank" rel="noopener">Government watchdog finds U.S. embassies running software vulnerable to attacks</a></div><span class="article-meta">POLITICO.COM &mdash; 05 Aug 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-08-05"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.theregister.co.uk/2023/07/27/deloitte_moveit_hack/?&web_view=true" target="_blank" rel="noopener">Millions of people's healthcare files accessed by Clop gang</a></div><span class="article-meta">THEREGISTER.CO.UK &mdash; 05 Aug 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-08-05"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/new-acoustic-attack-steals-data-from-keystrokes-with-95-percent-accuracy/" target="_blank" rel="noopener">New acoustic attack steals data from keystrokes with 95% accuracy</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 05 Aug 2023</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="researchers uncover new high-severity vulnerability in papercut software" data-date="2023-08-05"><span class="headline-date">5 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/08/researchers-uncover-new-high-severity.html" target="_blank" rel="noopener">Researchers Uncover New High-Severity Vulnerability in PaperCut Software</a><span class="article-summary">Cybersecurity researchers have discovered a new high-severity security flaw in PaperCut print management software for Windows that could result in remote code execution under specific circumstances. Tracked as CVE-2023-39143 (CVSS score: 8.4), the flaw impacts PaperCut NG/MF prio…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="cisa, five eyes cyber advisory lists common vulnerabilities among 2022’s top exploits" data-date="2023-08-05"><span class="headline-date">5 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.nextgov.com/cybersecurity/2023/08/cisa-five-eyes-cyber-advisory-lists-common-vulnerabilities-among-2022s-top-exploits/389113/?&web_view=true" target="_blank" rel="noopener">CISA, Five Eyes cyber advisory lists common vulnerabilities among 2022’s top exploits</a><span class="article-summary">This guidance is the latest released by the Five Eyes organization, which consists of government cybersecurity organizations from the U.S., New Zealand, the U.K., Australia and Canada.</span></span><span class="headline-source">NEXTGOV.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="mdr: empowering organizations with enhanced security" data-date="2023-08-05"><span class="headline-date">5 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/08/mdr-empowering-organizations-with.html" target="_blank" rel="noopener">MDR: Empowering Organizations with Enhanced Security</a><span class="article-summary">Managed Detection and Response (MDR) has emerged as a crucial solution for organizations looking to bolster their security measures. MDR allows businesses to outsource the management of Endpoint Detection and Response (EDR) products deployed across their network domain. With real…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="reptile rootkit: advanced linux malware targeting south korean systems" data-date="2023-08-05"><span class="headline-date">5 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/08/reptile-rootkit-advanced-linux-malware.html" target="_blank" rel="noopener">Reptile Rootkit: Advanced Linux Malware Targeting South Korean Systems</a><span class="article-summary">Threat actors are using an open-source rootkit called Reptile to target Linux systems in South Korea. "Unlike other rootkit malware that typically only provide concealment capabilities, Reptile goes a step further by offering a reverse shell, allowing threat actors to easily take…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="microsoft addresses critical power platform flaw after delays and criticism" data-date="2023-08-05"><span class="headline-date">5 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/08/microsoft-addresses-critical-power.html" target="_blank" rel="noopener">Microsoft Addresses Critical Power Platform Flaw After Delays and Criticism</a><span class="article-summary">Microsoft on Friday disclosed that it has addressed a critical security flaw impacting Power Platform, but not before it came under criticism for its failure to swiftly act on it. "The vulnerability could lead to unauthorized access to Custom Code functions used for Power Platfor…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="microsoft fixes flaw after being called irresponsible by tenable ceo" data-date="2023-08-05"><span class="headline-date">5 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-flaw-after-being-called-irresponsible-by-tenable-ceo/?&web_view=true" target="_blank" rel="noopener">Microsoft fixes flaw after being called irresponsible by Tenable CEO</a><span class="article-summary">Tenable also shared proof of concept exploit code and information on the steps required to find vulnerable connector hostnames and how to craft the POST requests to interact with the unsecured API endpoints.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa cybersecurity strategic plan: an important step to secure critical infrastructure" data-date="2023-08-05"><span class="headline-date">5 Aug</span><span class="headline-body"><a class="headline-title" href="https://blogs.cisco.com/gov/cisa-cybersecurity-strategy?&web_view=true" target="_blank" rel="noopener">CISA Cybersecurity Strategic Plan: An Important Step To Secure Critical Infrastructure</a><span class="article-summary">As a founding member of the Network Resilience Coalition, Cisco appreciates CISA’s shared commitment to driving focused attention and investment in efforts to secure and maintain existing critical networked technologies.</span></span><span class="headline-source">BLOGS.CISCO.COM</span></div>
+<div class="headline" data-title="us government lagging on border gateway protocol security" data-date="2023-08-05"><span class="headline-date">5 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/us-government-lagging-on-border-gateway-protocol-security-a-22744" target="_blank" rel="noopener">US Government Lagging on Border Gateway Protocol Security</a><span class="article-summary">Heads of FCC, CISA Call for BGP Overhaul, Industry Collaboration The U.S. federal government acknowledged that it is lagging behind on border gateway protocol security practices. Officials from several government agencies, ISPs and cloud content providers organized a workshop to …</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cyberattack disrupts hospital computer systems across us, hindering services" data-date="2023-08-05"><span class="headline-date">5 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.theguardian.com/us-news/2023/aug/04/cyberattack-us-hospitals-california?&web_view=true" target="_blank" rel="noopener">Cyberattack disrupts hospital computer systems across US, hindering services</a><span class="article-summary">The hack caused chaos in medical facilities in several states. In Connecticut, the emergency departments at Manchester Memorial and Rockville General hospital were closed for much of the day and patients were diverted to other nearby medical centers.</span></span><span class="headline-source">THEGUARDIAN.COM</span></div>
+<div class="headline" data-title="colorado department of higher education warns of massive data breach" data-date="2023-08-05"><span class="headline-date">5 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/colorado-department-of-higher-education-warns-of-massive-data-breach/" target="_blank" rel="noopener">Colorado Department of Higher Education warns of massive data breach</a><span class="article-summary">The Colorado Department of Higher Education (CDHE) discloses a massive data breach impacting students, past students, and teachers after suffering a ransomware attack in June. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="clop ransomware now uses torrents to leak data and evade takedowns" data-date="2023-08-05"><span class="headline-date">5 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/clop-ransomware-now-uses-torrents-to-leak-data-and-evade-takedowns/" target="_blank" rel="noopener">Clop ransomware now uses torrents to leak data and evade takedowns</a><span class="article-summary">The Clop ransomware gang has once again altered extortion tactics and is now using torrents to leak data stolen in MOVEit attacks. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="spyware maker letmespy shuts down after hacker deletes server data" data-date="2023-08-05"><span class="headline-date">5 Aug</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2023/08/05/letmespy-spyware-shuts-down-wiped-server/" target="_blank" rel="noopener">Spyware maker LetMeSpy shuts down after hacker deletes server data</a><span class="article-summary">Poland-based spyware LetMeSpy is no longer operational and said it will shut down after a June data breach wiped out its servers, including its huge trove of data stolen from thousands of victims&#8217; phones. In a notice on its website in both English and Polish, LetMeSpy confi…</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="google explains how android malware slips onto google play store" data-date="2023-08-05"><span class="headline-date">5 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/google-explains-how-android-malware-slips-onto-google-play-store/?&web_view=true" target="_blank" rel="noopener">Google explains how Android malware slips onto Google Play Store</a><span class="article-summary">To evade detection by Play Store systems, the threat actors responsible for SharkBot have adopted the now common strategy of releasing versions with limited functionality on Google Play, concealing their apps' suspicious nature.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="hackers deliver updated strrat malware using weaponized pdf files" data-date="2023-08-05"><span class="headline-date">5 Aug</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/hackers-strrat-malware-pdf-files/" target="_blank" rel="noopener">Hackers Deliver Updated STRRAT Malware Using Weaponized PDF Files</a><span class="article-summary">A versatile Java-based RAT that is capable of keylogging and credential theft from browsers and email clients emerged in 2020 that is dubbed &#8220;STRRAT.&#8221; The most recent updated version of STRRAT evolved dramatically, and since its discovery, it has been observed that it…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="weekly update 359" data-date="2023-08-05"><span class="headline-date">5 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.troyhunt.com/weekly-update-359/" target="_blank" rel="noopener">Weekly Update 359</a><span class="article-summary">Presently sponsored by: EPAS by Detack. No EPAS protected password has ever been cracked and won't be found in any leaks. Give it a try, millions of users use it. Somewhere in the next few hours from publishing this post, I&apos;ll finally push the HIBP domain search changes live…</span></span><span class="headline-source">TROYHUNT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="malicious packages in the npm designed for highly-targeted attacks" data-date="2023-08-05"><span class="headline-date">5 Aug</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/149165/hacking/npm-highly-targeted-attacks.html?&web_view=true" target="_blank" rel="noopener">Malicious packages in the NPM designed for highly-targeted attacks</a><span class="article-summary">The files and directories targeted by the malicious code could potentially contain developers' sensitive data. Researchers speculate the packages are part of a highly-targeted attack on developers working in the cryptocurrency sector.</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+<div class="headline" data-title="fbi warns of scammers posing as nft devs to steal your crypto" data-date="2023-08-05"><span class="headline-date">5 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/fbi-warns-of-scammers-posing-as-nft-devs-to-steal-your-crypto/?&web_view=true" target="_blank" rel="noopener">FBI warns of scammers posing as NFT devs to steal your crypto</a><span class="article-summary">Potential victims who click on the provided links are redirected to phishing websites masquerading as legitimate extensions of specific NFT projects. Scammers go to great lengths to replicate the appearance and user experience of real NFT platforms.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="government watchdog finds u.s. embassies running software vulnerable to attacks" data-date="2023-08-05"><span class="headline-date">5 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.politico.com/news/2023/08/04/watchdog-us-embassies-software-vulnerable-00109895?&web_view=true" target="_blank" rel="noopener">Government watchdog finds U.S. embassies running software vulnerable to attacks</a><span class="article-summary">The assessment, which GAO began at the end of last year, also found that many State Department posts lack not only a chief information security officer, but any cybersecurity personnel whatsoever.</span></span><span class="headline-source">POLITICO.COM</span></div>
+<div class="headline" data-title="millions of people's healthcare files accessed by clop gang" data-date="2023-08-05"><span class="headline-date">5 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.theregister.co.uk/2023/07/27/deloitte_moveit_hack/?&web_view=true" target="_blank" rel="noopener">Millions of people's healthcare files accessed by Clop gang</a><span class="article-summary">The new additions to the victims' list bring the headcount to 514 organizations and more than 36 million individuals, according to Emsisoft threat researchers. It may take months if not years for the full impact and costs to become clear.</span></span><span class="headline-source">THEREGISTER.CO.UK</span></div>
+<div class="headline" data-title="new acoustic attack steals data from keystrokes with 95% accuracy" data-date="2023-08-05"><span class="headline-date">5 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/new-acoustic-attack-steals-data-from-keystrokes-with-95-percent-accuracy/" target="_blank" rel="noopener">New acoustic attack steals data from keystrokes with 95% accuracy</a><span class="article-summary">A team of researchers from British universities has trained a deep learning model that can steal data from keyboard keystrokes recorded using a microphone with an accuracy of 95%. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-10-25</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,80 +109,71 @@
       <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-10-25</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">19</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Security Bulletins" onclick="filterCat('Security Bulletins', this)">SECURITY BULLETINS <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">3</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-10-25"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://gbhackers.com/hackers-are-actively-exploiting-windows-server-update-services-rce-flaw/" target="_blank" rel="noopener">CISA Beware! Hackers Are Actively Exploiting Windows Server Update Services RCE Flaw in the Wild</a></div><span class="article-meta">GBHACKERS.COM &mdash; 25 Oct 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-10-25"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/best-bug-bounty-platforms/" target="_blank" rel="noopener">Top 10 Best Bug Bounty Platforms in 2025</a></div><span class="article-meta">GBHACKERS.COM &mdash; 25 Oct 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-10-25"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.securityweek.com/1m-whatsapp-hack-flops-only-low-risk-bugs-disclosed-to-meta-after-pwn2own-withdrawal/" target="_blank" rel="noopener">$1M WhatsApp Hack Flops: Only Low-Risk Bugs Disclosed to Meta After Pwn2Own Withdrawal</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 25 Oct 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-10-25"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/hackers-exploit-wordpress-arbitrary-installation-vulnerabilities/" target="_blank" rel="noopener">Hackers Exploit WordPress Arbitrary Installation Vulnerabilities in the Wild</a></div><span class="article-meta">GBHACKERS.COM &mdash; 25 Oct 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-10-25"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/36703842" target="_blank" rel="noopener">One wrong letter: UN moves to curb cybercrime with new convention | UN News</a></div><span class="article-meta">INFOSEC.PUB &mdash; 25 Oct 2025</span></div>
-<div class="article-row" data-cat="Security Bulletins" data-date="2025-10-25"><span class="cat-badge" style="border:1px solid rgba(255,170,0,0.5);background:rgba(255,170,0,0.10);" title="Security Bulletins">📋</span><div class="article-body"><a href="https://gbhackers.com/hackers-use-clickfix-technique/" target="_blank" rel="noopener">Hackers Use ClickFix Technique to Deploy NetSupport RAT Loaders</a></div><span class="article-meta">GBHACKERS.COM &mdash; 25 Oct 2025</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-10-25"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://gbhackers.com/best-cloud-access-security-brokers-casb/" target="_blank" rel="noopener">Top 10 Best Cloud Access Security Brokers (CASB) in 2025</a></div><span class="article-meta">GBHACKERS.COM &mdash; 25 Oct 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-10-25"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/navigating-cybersecurity-in-small-and-medium-businesses-with-white-hat-hacker-graham-berry" target="_blank" rel="noopener">Navigating Cybersecurity in Small and Medium Businesses with White Hat Hacker Graham Berry</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 25 Oct 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-10-25"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.troyhunt.com/weekly-update-475/" target="_blank" rel="noopener">Weekly Update 475</a></div><span class="article-meta">TROYHUNT.COM &mdash; 25 Oct 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-10-25"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2025/10/smishing-triad-linked-to-194000.html" target="_blank" rel="noopener">Smishing Triad Linked to 194,000 Malicious Domains in Global Phishing Operation</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 25 Oct 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-10-25"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/best-cloud-security-companies/" target="_blank" rel="noopener">Top 10 Best Cloud Security Companies For AWS, Azure And GCP in 2025</a></div><span class="article-meta">GBHACKERS.COM &mdash; 25 Oct 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-10-25"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=o91aO-oT-eM" target="_blank" rel="noopener">Robo Bees, side, AI Risk, Red Tiger, SessionReaper, Bad Bots, Willow, Josh Marpet - SWN #523</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-10-25</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-10-25"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/best-cloud-penetration-testing-providers/" target="_blank" rel="noopener">Top 10 Best Cloud Penetration Testing Providers in 2025</a></div><span class="article-meta">GBHACKERS.COM &mdash; 25 Oct 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-10-25"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.securityweek.com/chatgpt-atlas-omnibox-is-vulnerable-to-jailbreaks/" target="_blank" rel="noopener">OpenAI Atlas Omnibox Is Vulnerable to Jailbreaks</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 25 Oct 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-10-25"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/best-cloud-workload-protection-platforms/" target="_blank" rel="noopener">Top 10 Best Cloud Workload Protection Platforms (CWPP) in 2025</a></div><span class="article-meta">GBHACKERS.COM &mdash; 25 Oct 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-10-25"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/top-5-network-detection-and-response-ndr-tools-to-watch-in-2026/" target="_blank" rel="noopener">Top 5 Network Detection and Response (NDR) Tools to Watch in 2026</a></div><span class="article-meta">GBHACKERS.COM &mdash; 25 Oct 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-10-25"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2025/10/25/the-glaring-security-risks-with-ai-browser-agents/" target="_blank" rel="noopener">The glaring security risks with AI browser agents</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 25 Oct 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-10-25"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/new-cophish-technique-wraps-oauth-phishing-in-microsoft-copilot/" target="_blank" rel="noopener">New 'CoPhish' technique wraps OAuth phishing in Microsoft Copilot</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 25 Oct 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-10-25"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/new-cophish-attack-steals-oauth-tokens-via-copilot-studio-agents/" target="_blank" rel="noopener">New CoPhish attack steals OAuth tokens via Copilot Studio agents</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 25 Oct 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa beware! hackers are actively exploiting windows server update services rce flaw in the wild" data-date="2025-10-25"><span class="headline-date">25 Oct</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/hackers-are-actively-exploiting-windows-server-update-services-rce-flaw/" target="_blank" rel="noopener">CISA Beware! Hackers Are Actively Exploiting Windows Server Update Services RCE Flaw in the Wild</a><span class="article-summary">Cybersecurity researchers are sounding the alarm after discovering that hackers are actively exploiting a critical remote code execution (RCE) vulnerability in Microsoft&#8217;s Windows Server Update Services (WSUS). The flaw, tracked as CVE-2025-59287, allows unauthenticated att…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="top 10 best bug bounty platforms in 2025" data-date="2025-10-25"><span class="headline-date">25 Oct</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/best-bug-bounty-platforms/" target="_blank" rel="noopener">Top 10 Best Bug Bounty Platforms in 2025</a><span class="article-summary">As digital attack surfaces expand with rapid innovation in cloud, AI, and Web3 technologies, organizations increasingly rely on the collective intelligence of ethical hackers to identify vulnerabilities before malicious actors can exploit them. These platforms facilitate a struct…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="$1m whatsapp hack flops: only low-risk bugs disclosed to meta after pwn2own withdrawal" data-date="2025-10-25"><span class="headline-date">25 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/1m-whatsapp-hack-flops-only-low-risk-bugs-disclosed-to-meta-after-pwn2own-withdrawal/" target="_blank" rel="noopener">$1M WhatsApp Hack Flops: Only Low-Risk Bugs Disclosed to Meta After Pwn2Own Withdrawal</a><span class="article-summary">WhatsApp told SecurityWeek that the two low-impact vulnerabilities cannot be used for arbitrary code execution. The post $1M WhatsApp Hack Flops: Only Low-Risk Bugs Disclosed to Meta After Pwn2Own Withdrawal appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="hackers exploit wordpress arbitrary installation vulnerabilities in the wild" data-date="2025-10-25"><span class="headline-date">25 Oct</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/hackers-exploit-wordpress-arbitrary-installation-vulnerabilities/" target="_blank" rel="noopener">Hackers Exploit WordPress Arbitrary Installation Vulnerabilities in the Wild</a><span class="article-summary">Cybersecurity firm Wordfence has uncovered a renewed wave of mass exploitation targeting critical vulnerabilities in two popular WordPress plugins, allowing unauthenticated attackers to install malicious software and potentially seize control of websites. The flaws, first disclos…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="one wrong letter: un moves to curb cybercrime with new convention | un news" data-date="2025-10-25"><span class="headline-date">25 Oct</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/36703842" target="_blank" rel="noopener">One wrong letter: UN moves to curb cybercrime with new convention | UN News</a><span class="article-summary">submitted by cm0002 to cybersecurity 1 points | 0 comments https://news.un.org/en/story/2025/10/1166175 In December 2024, the UN General Assembly adopted the United Nations Convention against Cybercrime — the first international treaty on criminal justice in more than two decades…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-bulletins">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,170,0,0.5);" onclick="toggleSection(this)">📋 SECURITY BULLETINS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="hackers use clickfix technique to deploy netsupport rat loaders" data-date="2025-10-25"><span class="headline-date">25 Oct</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/hackers-use-clickfix-technique/" target="_blank" rel="noopener">Hackers Use ClickFix Technique to Deploy NetSupport RAT Loaders</a><span class="article-summary">Cybercriminals are increasingly using a technique known as &#8220;ClickFix&#8221; to deploy the NetSupport remote administration tool (RAT) for malicious purposes. According to a new report from eSentire’s Threat Response Unit (TRU), threat actors have shifted their primary deliv…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="top 10 best cloud access security brokers (casb) in 2025" data-date="2025-10-25"><span class="headline-date">25 Oct</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/best-cloud-access-security-brokers-casb/" target="_blank" rel="noopener">Top 10 Best Cloud Access Security Brokers (CASB) in 2025</a><span class="article-summary">The year 2025 marks a new era in enterprise cloud adoption, characterized by a complex tapestry of Software-as-a-Service (SaaS) applications, Infrastructure-as-a-Service (IaaS) platforms, and Platform-as-a-Service (PaaS) offerings. While cloud services deliver unparalleled agilit…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="navigating cybersecurity in small and medium businesses with white hat hacker graham berry" data-date="2025-10-25"><span class="headline-date">25 Oct</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/navigating-cybersecurity-in-small-and-medium-businesses-with-white-hat-hacker-graham-berry" target="_blank" rel="noopener">Navigating Cybersecurity in Small and Medium Businesses with White Hat Hacker Graham Berry</a><span class="article-summary">In this episode of Cybersecurity Today, host Jim Love sits down with Graham Barrie a CISO and white hat hacker, to discuss the critical importance of cybersecurity for small and medium-sized businesses. From the moment Berry fell in love with technology through a Tandy TRS 80 to …</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="weekly update 475" data-date="2025-10-25"><span class="headline-date">25 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.troyhunt.com/weekly-update-475/" target="_blank" rel="noopener">Weekly Update 475</a><span class="article-summary">Presently sponsored by: Report URI: Guarding you from rogue JavaScript! Don’t get pwned; get real-time alerts & prevent breaches #SecureYourSite It was the Synthient threat data that ate most of my time this week, and it continues to do so now, the weekend after recording this vi…</span></span><span class="headline-source">TROYHUNT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="smishing triad linked to 194,000 malicious domains in global phishing operation" data-date="2025-10-25"><span class="headline-date">25 Oct</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/10/smishing-triad-linked-to-194000.html" target="_blank" rel="noopener">Smishing Triad Linked to 194,000 Malicious Domains in Global Phishing Operation</a><span class="article-summary">The threat actors behind a large-scale, ongoing smishing campaign have been attributed to more than 194,000 malicious domains since January 1, 2024, targeting a broad range of services across the world, according to new findings from Palo Alto Networks Unit 42. "Although these do…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="top 10 best cloud security companies for aws, azure and gcp in 2025" data-date="2025-10-25"><span class="headline-date">25 Oct</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/best-cloud-security-companies/" target="_blank" rel="noopener">Top 10 Best Cloud Security Companies For AWS, Azure And GCP in 2025</a><span class="article-summary">Organizations are not just adopting cloud; they are embracing multi-cloud and hybrid strategies as the new norm, distributing workloads across Amazon Web Services (AWS), Microsoft Azure, and Google Cloud Platform (GCP) to optimize for cost, performance, and resilience. While the …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="robo bees, side, ai risk, red tiger, sessionreaper, bad bots, willow, josh marpet - swn #523" data-date="2025-10-25"><span class="headline-date">25 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=o91aO-oT-eM" target="_blank" rel="noopener">Robo Bees, side, AI Risk, Red Tiger, SessionReaper, Bad Bots, Willow, Josh Marpet - SWN #523</a><span class="article-summary">Venomous Robo Bees and Rabid Cocaine Weasels, sidebar spoofing, AI Risk, Red Tiger, SessionReaper, Bad Bots, Willow, Josh Marpet, and More on this edition of the Security Weekly News. Visit https://www.securityweekly.com/swn for all the latest episodes! Show Notes: https://securi…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="top 10 best cloud penetration testing providers in 2025" data-date="2025-10-25"><span class="headline-date">25 Oct</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/best-cloud-penetration-testing-providers/" target="_blank" rel="noopener">Top 10 Best Cloud Penetration Testing Providers in 2025</a><span class="article-summary">The rapid migration to cloud environments – AWS, Azure, and GCP being the dominant players continues unabated in 2025. While cloud providers offer robust underlying infrastructure security, the shared responsibility model dictates that securing everything in the cloud, from confi…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="openai atlas omnibox is vulnerable to jailbreaks" data-date="2025-10-25"><span class="headline-date">25 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/chatgpt-atlas-omnibox-is-vulnerable-to-jailbreaks/" target="_blank" rel="noopener">OpenAI Atlas Omnibox Is Vulnerable to Jailbreaks</a><span class="article-summary">Researchers have discovered that a prompt can be disguised as an url, and accepted by Atlas as an url in the omnibox. The post OpenAI Atlas Omnibox Is Vulnerable to Jailbreaks appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="top 10 best cloud workload protection platforms (cwpp) in 2025" data-date="2025-10-25"><span class="headline-date">25 Oct</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/best-cloud-workload-protection-platforms/" target="_blank" rel="noopener">Top 10 Best Cloud Workload Protection Platforms (CWPP) in 2025</a><span class="article-summary">The cloud landscape in 2025 continues its unprecedented growth, with organizations of all sizes rapidly migrating critical workloads to public, private, and hybrid cloud environments. While cloud providers meticulously secure their underlying infrastructure, the onus of protectin…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="top 5 network detection and response (ndr) tools to watch in 2026" data-date="2025-10-25"><span class="headline-date">25 Oct</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/top-5-network-detection-and-response-ndr-tools-to-watch-in-2026/" target="_blank" rel="noopener">Top 5 Network Detection and Response (NDR) Tools to Watch in 2026</a><span class="article-summary">Cybersecurity professionals are facing a nightmare scenario. Attackers&#160;aren&#8217;t&#160;using basic methods anymore –&#160;they&#8217;re&#160;deploying AI-powered threats that evolve faster than most security teams can respond.&#160; Here&#8217;s&#160;the reality check: The…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the glaring security risks with ai browser agents" data-date="2025-10-25"><span class="headline-date">25 Oct</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/10/25/the-glaring-security-risks-with-ai-browser-agents/" target="_blank" rel="noopener">The glaring security risks with AI browser agents</a><span class="article-summary">New AI browsers from OpenAI and Perplexity promise to increase user productivity, but they also come with increased security risks.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="new 'cophish' technique wraps oauth phishing in microsoft copilot" data-date="2025-10-25"><span class="headline-date">25 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/new-cophish-technique-wraps-oauth-phishing-in-microsoft-copilot/" target="_blank" rel="noopener">New 'CoPhish' technique wraps OAuth phishing in Microsoft Copilot</a><span class="article-summary">A new phishing technique dubbed 'CoPhish' weaponizes Microsoft Copilot Studio agents to deliver fraudulent OAuth consent requests via legitimate and trusted Microsoft domains. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="new cophish attack steals oauth tokens via copilot studio agents" data-date="2025-10-25"><span class="headline-date">25 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/new-cophish-attack-steals-oauth-tokens-via-copilot-studio-agents/" target="_blank" rel="noopener">New CoPhish attack steals OAuth tokens via Copilot Studio agents</a><span class="article-summary">A new phishing technique dubbed 'CoPhish' weaponizes Microsoft Copilot Studio agents to deliver fraudulent OAuth consent requests via legitimate and trusted Microsoft domains. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-12-26</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,80 +109,63 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-12-26</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">21</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Security Bulletins" onclick="filterCat('Security Bulletins', this)">SECURITY BULLETINS <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">9</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-12-26"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://gbhackers.com/adobe-warns-of-coldfusion-vulnerability/" target="_blank" rel="noopener">Adobe Warns of ColdFusion Vulnerability Allows Attackers Read arbitrary files</a></div><span class="article-meta">GBHACKERS.COM &mdash; 26 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/araneida-scanner/" target="_blank" rel="noopener">Araneida Scanner – Hackers Using Cracked Version Of Acunetix Vulnerability Scanner</a></div><span class="article-meta">GBHACKERS.COM &mdash; 26 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/dark-web-kyc-fraud/" target="_blank" rel="noopener">A Dark Web Operation Acquiring KYC Details TO Bypass Identity Verification Systems</a></div><span class="article-meta">GBHACKERS.COM &mdash; 26 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.networkworld.com/article/3630168/network-problems-delay-flights-at-two-oneworld-alliance-airlines.html" target="_blank" rel="noopener">Network problems delay flights at two oneworld Alliance airlines</a></div><span class="article-meta">NETWORKWORLD.COM &mdash; 26 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/3627461/how-are-you-securing-your-communications-in-the-wake-of-the-volt-typhoon-revelations.html" target="_blank" rel="noopener">How are you securing your communications in the wake of the Volt Typhoon revelations?</a></div><span class="article-meta">CSOONLINE.COM &mdash; 26 Dec 2024</span></div>
-<div class="article-row" data-cat="Security Bulletins" data-date="2024-12-26"><span class="cat-badge" style="border:1px solid rgba(255,170,0,0.5);background:rgba(255,170,0,0.10);" title="Security Bulletins">📋</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/windows-11-installation-media-bug-causes-security-update-failures/" target="_blank" rel="noopener">Windows 11 installation media bug causes security update failures</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 26 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.securityweek.com/defense-giant-general-dynamics-says-employees-targeted-in-phishing-attack/" target="_blank" rel="noopener">Defense Giant General Dynamics Says Employees Targeted in Phishing Attack</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 26 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.securityweek.com/cl0p-ransomware-group-to-name-over-60-victims-of-cleo-attack/" target="_blank" rel="noopener">Cl0p Ransomware Group to Name Over 60 Victims of Cleo Attack</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 26 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.securityweek.com/japan-airlines-was-hit-by-a-cyberattack-delaying-flights-during-the-year-end-holiday-season/" target="_blank" rel="noopener">Japan Airlines Was Hit by a Cyberattack, Delaying Flights During the Year-End Holiday Season</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 26 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2024/12/brazilian-hacker-charged-for-extorting.html" target="_blank" rel="noopener">Brazilian Hacker Charged for Extorting $3.2M in Bitcoin After Breaching 300,000 Accounts</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 26 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://gbhackers.com/north-korean-hackers-crypto-theft-2024/" target="_blank" rel="noopener">North Korean Hackers Stolen $2.2 Billion From Crypto Platforms In 2024</a></div><span class="article-meta">GBHACKERS.COM &mdash; 26 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2024/12/26/badly-handled-data-breaches-2024/" target="_blank" rel="noopener">These were the badly handled data breaches of 2024</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 26 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2024/12/scams-based-on-fake-google-emails.html" target="_blank" rel="noopener">Scams Based on Fake Google Emails</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2024-12-26</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/new-ottercookie-malware-used-to-backdoor-devs-in-fake-job-offers/" target="_blank" rel="noopener">New 'OtterCookie' malware used to backdoor devs in fake job offers</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 26 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.securityweek.com/the-intersection-of-ai-and-osint-advanced-threats-on-the-horizon/" target="_blank" rel="noopener">The Intersection of AI and OSINT: Advanced Threats On The Horizon</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 26 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31546" target="_blank" rel="noopener">Capturing Honeypot Data Beyond the Logs, (Thu, Dec 26th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 26 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/new-malicious-pypi-packages/" target="_blank" rel="noopener">Beware of New Malicious PyPI packages That Steals Login Details</a></div><span class="article-meta">GBHACKERS.COM &mdash; 26 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/brazilian-hacker-arrested/" target="_blank" rel="noopener">Brazilian Hacker Arrested Hacking Computers &amp; Selling Data</a></div><span class="article-meta">GBHACKERS.COM &mdash; 26 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/mcdonalds-1-cent-bug/" target="_blank" rel="noopener">McDonald’s Delivery App Bug Let Customers Orders For Just $0.01</a></div><span class="article-meta">GBHACKERS.COM &mdash; 26 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.paloaltonetworks.com/blog/2024/12/securing-remote-ot-operations/" target="_blank" rel="noopener">Securing Remote OT Operations:</a></div><span class="article-meta">PALOALTONETWORKS.COM &mdash; 26 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=COhrUFP47M4" target="_blank" rel="noopener">Is This The End of Screen Privacy? 🛑</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-26</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="adobe warns of coldfusion vulnerability allows attackers read arbitrary files" data-date="2024-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/adobe-warns-of-coldfusion-vulnerability/" target="_blank" rel="noopener">Adobe Warns of ColdFusion Vulnerability Allows Attackers Read arbitrary files</a><span class="article-summary">Adobe has issued a critical security update for ColdFusion versions 2023 and 2021 to address a major vulnerability that could lead to an arbitrary file system read. The identified vulnerability, CVE-2024-53961, has a known proof-of-concept exploit, making the updates crucial for …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="araneida scanner – hackers using cracked version of acunetix vulnerability scanner" data-date="2024-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/araneida-scanner/" target="_blank" rel="noopener">Araneida Scanner – Hackers Using Cracked Version Of Acunetix Vulnerability Scanner</a><span class="article-summary">Threat Analysts have reported alarming findings about the &#8220;Araneida Scanner,&#8221; a malicious tool allegedly based on a cracked version of Acunetix, a renowned web application vulnerability scanner. The tool has been linked to illegal activities, including offensive recon…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="a dark web operation acquiring kyc details to bypass identity verification systems" data-date="2024-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/dark-web-kyc-fraud/" target="_blank" rel="noopener">A Dark Web Operation Acquiring KYC Details TO Bypass Identity Verification Systems</a><span class="article-summary">A major dark web operation dedicated to circumventing KYC (Know Your Customer) procedures, which involves the systematic collection and exploitation of genuine identity documents and images.&#160; Attackers utilize these resources to develop and sell techniques for bypassing iden…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="network problems delay flights at two oneworld alliance airlines" data-date="2024-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.networkworld.com/article/3630168/network-problems-delay-flights-at-two-oneworld-alliance-airlines.html" target="_blank" rel="noopener">Network problems delay flights at two oneworld Alliance airlines</a><span class="article-summary">IT problems struck flights at two oneworld Alliance member airlines this week, leading to delays and flight cancellations. Network equipment connecting internal and external systems at Japan Airlines (JAL) malfunctioned early on Dec. 26 after “receiving a large amount of data fro…</span></span><span class="headline-source">NETWORKWORLD.COM</span></div>
+<div class="headline" data-title="how are you securing your communications in the wake of the volt typhoon revelations?" data-date="2024-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/3627461/how-are-you-securing-your-communications-in-the-wake-of-the-volt-typhoon-revelations.html" target="_blank" rel="noopener">How are you securing your communications in the wake of the Volt Typhoon revelations?</a><span class="article-summary">The FBI recently released information that text messages between Apple and Android texting systems were insecure and that attackers could listen in and access those communications, more fallout from the revelation that a Chinese-affiliated threat actor had breached telecommunicat…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-bulletins">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,170,0,0.5);" onclick="toggleSection(this)">📋 SECURITY BULLETINS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="windows 11 installation media bug causes security update failures" data-date="2024-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/windows-11-installation-media-bug-causes-security-update-failures/" target="_blank" rel="noopener">Windows 11 installation media bug causes security update failures</a><span class="article-summary">Microsoft is warning of an issue when using a media support to install Windows 11, version 24H2, that causes the operating system to not accept further security updates. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="defense giant general dynamics says employees targeted in phishing attack" data-date="2024-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/defense-giant-general-dynamics-says-employees-targeted-in-phishing-attack/" target="_blank" rel="noopener">Defense Giant General Dynamics Says Employees Targeted in Phishing Attack</a><span class="article-summary">General Dynamics says several benefits accounts were hacked after threat actors targeted employees in a phishing campaign. The post Defense Giant General Dynamics Says Employees Targeted in Phishing Attack appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="cl0p ransomware group to name over 60 victims of cleo attack" data-date="2024-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/cl0p-ransomware-group-to-name-over-60-victims-of-cleo-attack/" target="_blank" rel="noopener">Cl0p Ransomware Group to Name Over 60 Victims of Cleo Attack</a><span class="article-summary">The Cl0p ransomware group has confirmed that Blue Yonder was hit in the Cleo attack and the hackers are preparing to name over 60 others. The post Cl0p Ransomware Group to Name Over 60 Victims of Cleo Attack appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="japan airlines was hit by a cyberattack, delaying flights during the year-end holiday season" data-date="2024-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/japan-airlines-was-hit-by-a-cyberattack-delaying-flights-during-the-year-end-holiday-season/" target="_blank" rel="noopener">Japan Airlines Was Hit by a Cyberattack, Delaying Flights During the Year-End Holiday Season</a><span class="article-summary">Japan Airlines was hit by a cyberattack, causing delays to more than 20 domestic flights, but there was no threat to flight safety. The post Japan Airlines Was Hit by a Cyberattack, Delaying Flights During the Year-End Holiday Season appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="brazilian hacker charged for extorting $3.2m in bitcoin after breaching 300,000 accounts" data-date="2024-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/brazilian-hacker-charged-for-extorting.html" target="_blank" rel="noopener">Brazilian Hacker Charged for Extorting $3.2M in Bitcoin After Breaching 300,000 Accounts</a><span class="article-summary">A Brazilian citizen has been charged in the United States for allegedly threatening to release data stolen by hacking into a company's network in March 2020. Junior Barros De Oliveira, 29, of Curitiba, Brazil has been charged with four counts of extortionate threats involving inf…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="north korean hackers stolen $2.2 billion from crypto platforms in 2024" data-date="2024-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/north-korean-hackers-crypto-theft-2024/" target="_blank" rel="noopener">North Korean Hackers Stolen $2.2 Billion From Crypto Platforms In 2024</a><span class="article-summary">Cryptocurrency hacking incidents in 2024 surged 21.07% YoY to $2.2 billion, with 303 breaches reported, which marks the fifth year exceeding $1 billion in stolen funds, demonstrating a concerning correlation between crypto market growth and the scale of cyberattacks.&#160; Crypto…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="these were the badly handled data breaches of 2024" data-date="2024-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/12/26/badly-handled-data-breaches-2024/" target="_blank" rel="noopener">These were the badly handled data breaches of 2024</a><span class="article-summary">Blaming victims, months of silence, and suing security researchers all featured in cybersecurity in 2024. © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">9</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="scams based on fake google emails" data-date="2024-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2024/12/scams-based-on-fake-google-emails.html" target="_blank" rel="noopener">Scams Based on Fake Google Emails</a><span class="article-summary">Scammers are hacking Google Forms to send email to victims that come from google.com. Brian Krebs reports on the effects. Boing Boing post .</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="new 'ottercookie' malware used to backdoor devs in fake job offers" data-date="2024-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/new-ottercookie-malware-used-to-backdoor-devs-in-fake-job-offers/" target="_blank" rel="noopener">New 'OtterCookie' malware used to backdoor devs in fake job offers</a><span class="article-summary">North Korean threat actors are using new malware called OtterCookie in the Contagious Interview campaign that is targeting software developers. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="the intersection of ai and osint: advanced threats on the horizon" data-date="2024-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/the-intersection-of-ai-and-osint-advanced-threats-on-the-horizon/" target="_blank" rel="noopener">The Intersection of AI and OSINT: Advanced Threats On The Horizon</a><span class="article-summary">Artificial Intelligence (A) is revolutionizing intelligence gathering, empowering cybersecurity defenders, and amplifying threat actor capabilities. The post The Intersection of AI and OSINT: Advanced Threats On The Horizon appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="capturing honeypot data beyond the logs, (thu, dec 26th)" data-date="2024-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31546" target="_blank" rel="noopener">Capturing Honeypot Data Beyond the Logs, (Thu, Dec 26th)</a><span class="article-summary">By default, DShield Honeypots &#x5b;1&#x5d; collect firewall, web and cowrie (telnet/ssh) &#x5b;2&#x5d; data and log them on the local filesystem. A subset of this data is reported to the SANS Internet Storm Center (ISC) where it can be used by anyone &#x5b;3&#x5d;. A common ques…</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="beware of new malicious pypi packages that steals login details" data-date="2024-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/new-malicious-pypi-packages/" target="_blank" rel="noopener">Beware of New Malicious PyPI packages That Steals Login Details</a><span class="article-summary">Two malicious Python packages, Zebo-0.1.0 and Cometlogger-0.1, were recently detected by Fortinet&#8217;s AI-driven OSS malware detection system. These packages, spotted on November 16 and November 24, 2024, respectively, represent significant threats to users by leveraging advan…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="brazilian hacker arrested hacking computers &amp; selling data" data-date="2024-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/brazilian-hacker-arrested/" target="_blank" rel="noopener">Brazilian Hacker Arrested Hacking Computers &amp; Selling Data</a><span class="article-summary">A Brazilian man, Junior Barros De Oliveira, has been charged with multiple counts of cybercrime and extortion for hacking into the computer systems of a Brazilian subsidiary of a New Jersey-based company and attempting to extort millions in Bitcoin. The indictment, unsealed in Ne…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="mcdonald’s delivery app bug let customers orders for just $0.01" data-date="2024-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/mcdonalds-1-cent-bug/" target="_blank" rel="noopener">McDonald’s Delivery App Bug Let Customers Orders For Just $0.01</a><span class="article-summary">McDonald&#8217;s India (West &#38; South) / Hardcastle Restaurants Pvt. Ltd. operates a custom McDelivery web app for ordering McDonald&#8217;s food for delivery, dine-in, and takeout.&#160; The app is popular, with over 10 million downloads on Google Play and #16 in Food &#38; D…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="securing remote ot operations:" data-date="2024-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.paloaltonetworks.com/blog/2024/12/securing-remote-ot-operations/" target="_blank" rel="noopener">Securing Remote OT Operations:</a><span class="article-summary">Expanded attack surfaces have made OT systems a target for cyber threats, underscoring the need for a security framework tailored to remote OT environments. The post Securing Remote OT Operations: appeared first on Palo Alto Networks Blog .</span></span><span class="headline-source">PALOALTONETWORKS.COM</span></div>
+<div class="headline" data-title="is this the end of screen privacy? 🛑" data-date="2024-12-26"><span class="headline-date">26 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=COhrUFP47M4" target="_blank" rel="noopener">Is This The End of Screen Privacy? 🛑</a><span class="article-summary">Microsoft’s latest feature has everyone questioning their screen privacy! Imagine everything you do being captured in real-time. While the idea has its benefits, the public reaction shows just how much trust is at stake. Can tech innovation balance security and privacy? Let us kn…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

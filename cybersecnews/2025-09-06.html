@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-09-06</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,101 +109,92 @@
       <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-09-06</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">40</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">18</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">6</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/from-cve-to-cyber-attack-in-minutes-with-ai-cybersecurity-today-0" target="_blank" rel="noopener">From CVE To Cyber Attack In Minutes With AI: Cybersecurity Today</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 06 Sep 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://programming.dev/post/36983916" target="_blank" rel="noopener">The Hidden Vulnerabilities of Open Source - Revisiting and Contextualizing the designed xz backdoor, multi-year-long effort</a></div><span class="article-meta">PROGRAMMING.DEV &mdash; 6 Sep 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/W-b_YhCJ5uQ" target="_blank" rel="noopener">Experience vs. Textbooks: The Cybersecurity Dilemma</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/hA6hw0y36x0" target="_blank" rel="noopener">Can You Hack an AI Just by Reading Its Weights? 🤔</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/web-application-penetration-testing-companies/" target="_blank" rel="noopener">10 Best Web Application Penetration Testing Companies in 2025</a></div><span class="article-meta">GBHACKERS.COM &mdash; 06 Sep 2025</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/sitecore-security-advisory-av25-568" target="_blank" rel="noopener">Sitecore security advisory (AV25-568)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/hpe-security-advisory-av25-567" target="_blank" rel="noopener">HPE security advisory (AV25-567)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/atlassian-security-advisory-av25-566" target="_blank" rel="noopener">Atlassian security advisory (AV25-566)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/vmware-security-advisory-av25-565" target="_blank" rel="noopener">VMware security advisory (AV25-565)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/jenkins-security-advisory-av25-564" target="_blank" rel="noopener">Jenkins security advisory (AV25-564)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/drupal-security-advisory-av25-563" target="_blank" rel="noopener">Drupal security advisory (AV25-563)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/cisco-security-advisory-av25-562" target="_blank" rel="noopener">Cisco security advisory (AV25-562)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/google-chrome-security-advisory-av25-561" target="_blank" rel="noopener">Google Chrome security advisory (AV25-561)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/android-security-advisory-september-2025-monthly-rollup-av25-560" target="_blank" rel="noopener">Android security advisory – September 2025 monthly rollup (AV25-560)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/whatsapp-security-advisory-av25-559" target="_blank" rel="noopener">WhatsApp security advisory (AV25-559)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/dell-security-advisory-av25-558" target="_blank" rel="noopener">Dell security advisory (AV25-558)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/ibm-security-advisory-av25-557" target="_blank" rel="noopener">IBM security advisory (AV25-557)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/qualcomm-security-advisory-september-2025-monthly-rollup-av25-556" target="_blank" rel="noopener">Qualcomm security advisory – September 2025 monthly rollup (AV25-556)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/hashicorp-security-advisory-av25-555" target="_blank" rel="noopener">HashiCorp security advisory (AV25-555)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/control-systems-cisa-ics-security-advisories-av25-554" target="_blank" rel="noopener">[Control systems] CISA ICS security advisories (AV25-554)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/red-hat-security-advisory-av25-553" target="_blank" rel="noopener">Red Hat security advisory (AV25-553)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/ubuntu-security-advisory-av25-552" target="_blank" rel="noopener">Ubuntu security advisory (AV25-552)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://techcrunch.com/2025/09/06/wtf-is-going-on-with-age-verification-laws/" target="_blank" rel="noopener">The growing debate over age verification laws</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 06 Sep 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2025/09/malicious-npm-packages-impersonate.html" target="_blank" rel="noopener">Malicious npm Packages Impersonate Flashbots, Steal Ethereum Wallet Keys</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 06 Sep 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://sh.itjust.works/post/45519318" target="_blank" rel="noopener">We Hacked Burger King: How Authentication Bypass Led to Drive-Thru Audio Surveillance</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 6 Sep 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2025/09/friday-squid-blogging-the-origin-and-propagation-of-squid.html" target="_blank" rel="noopener">Friday Squid Blogging: The Origin and Propagation of Squid</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2025/09/noisy-bear-targets-kazakhstan-energy.html" target="_blank" rel="noopener">Noisy Bear Targets Kazakhstan Energy Sector With BarrelFire Phishing Campaign</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 06 Sep 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/ZyUbCiiqXU8" target="_blank" rel="noopener">Engineering First Security at Netflix 🔐</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/JND3nxYxJeM" target="_blank" rel="noopener">Jason Chan’s Secret to Building Security at Netflix 🔐 #cybersecurity</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/SPyfjliZUE4" target="_blank" rel="noopener">🚨 Can Automation Save the Supply Chain?</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/UvPbxAoZrng" target="_blank" rel="noopener">The Scammer Thought He Got Me… Until I Dropped This Twist</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/DWbCBAwVHQ8" target="_blank" rel="noopener">Fewer JIRA Tickets? The Cybersecurity Shortcut 😱</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/virustotal-finds-hidden-malware-phishing-campaign-in-svg-files/" target="_blank" rel="noopener">VirusTotal finds hidden malware phishing campaign in SVG files</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 06 Sep 2025</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/ai-powered-malware-hit-2-180-github-accounts-in-s1ngularity-attack/" target="_blank" rel="noopener">AI-powered malware hit 2,180 GitHub accounts in “s1ngularity” attack</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 06 Sep 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://cyber.gc.ca/en/news-events/threat-detection-sharepoint-vulnerabilities" target="_blank" rel="noopener">Threat detection for SharePoint vulnerabilities</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://cyber.gc.ca/en/guidance/cyber-security-hygiene-best-practices-your-organization-itsap10102" target="_blank" rel="noopener">Cyber security hygiene best practices for your organization - ITSAP.10.102</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://cyber.gc.ca/en/guidance/virtualizing-your-infrastructure-itsap70011" target="_blank" rel="noopener">Virtualizing your infrastructure (ITSAP.70.011)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://cyber.gc.ca/en/guidance/universal-plug-play-itsap00008" target="_blank" rel="noopener">Universal plug and play (ITSAP.00.008)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://cyber.gc.ca/en/news-events/joint-guidance-shared-vision-software-bill-materials-cyber-security" target="_blank" rel="noopener">Joint guidance on a shared vision of software bill of materials for cyber security</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2025-09-06</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-09-06"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://krebsonsecurity.com/2025/09/gop-cries-censorship-over-spam-filters-that-work/" target="_blank" rel="noopener">GOP Cries Censorship Over Spam Filters That Work</a></div><span class="article-meta">KREBSONSECURITY.COM &mdash; 06 Sep 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="from cve to cyber attack in minutes with ai: cybersecurity today" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/from-cve-to-cyber-attack-in-minutes-with-ai-cybersecurity-today-0" target="_blank" rel="noopener">From CVE To Cyber Attack In Minutes With AI: Cybersecurity Today</a><span class="article-summary">The Future of Cybersecurity: AI, Exploits, and the CVE Database In this special crossover episode of Cybersecurity Today and Hashtag Trending, the hosts explore the use of artificial intelligence (AI) in cybersecurity. The conversation begins with an overview of the ongoing 'arms…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the hidden vulnerabilities of open source - revisiting and contextualizing the designed xz backdoor, multi-year-long effort" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://programming.dev/post/36983916" target="_blank" rel="noopener">The Hidden Vulnerabilities of Open Source - Revisiting and Contextualizing the designed xz backdoor, multi-year-long effort</a><span class="article-summary">submitted by Kissaki to security 1 points | 0 comments https://fastcode.io/2025/09/02/the-hidden-vulnerabilities-of-open-source/ Freund wasn’t looking for a backdoor when he noticed SSH connections to his Debian testing system taking 500 milliseconds longer than usual. As a datab…</span></span><span class="headline-source">PROGRAMMING.DEV</span></div>
+<div class="headline" data-title="experience vs. textbooks: the cybersecurity dilemma" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/W-b_YhCJ5uQ" target="_blank" rel="noopener">Experience vs. Textbooks: The Cybersecurity Dilemma</a><span class="article-summary">In this short, John Kinsella highlights a dilemma every cybersecurity professional faces: what matters more in hiring—hands-on experience or textbook knowledge? He explains why classroom labs don’t carry the same weight as securing real open-source projects, and how outdated “air…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="can you hack an ai just by reading its weights? 🤔" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/hA6hw0y36x0" target="_blank" rel="noopener">Can You Hack an AI Just by Reading Its Weights? 🤔</a><span class="article-summary">Sohrob Kazerounian breaks down a common myth in AI security: the idea that model weights can be directly hacked. With billions of parameters connecting artificial neurons, he explains why simply having access to the weights doesn’t automatically make AI systems vulnerable. Instea…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="10 best web application penetration testing companies in 2025" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/web-application-penetration-testing-companies/" target="_blank" rel="noopener">10 Best Web Application Penetration Testing Companies in 2025</a><span class="article-summary">Securing web applications is a top priority for businesses in 2025 as they&#8217;re a primary attack vector for cybercriminals. Web application penetration testing goes beyond automated scanning to use human expertise and a hacker&#8217;s mindset to find complex vulnerabilities t…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">18</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="sitecore security advisory (av25-568)" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/sitecore-security-advisory-av25-568" target="_blank" rel="noopener">Sitecore security advisory (AV25-568)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="hpe security advisory (av25-567)" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/hpe-security-advisory-av25-567" target="_blank" rel="noopener">HPE security advisory (AV25-567)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="atlassian security advisory (av25-566)" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/atlassian-security-advisory-av25-566" target="_blank" rel="noopener">Atlassian security advisory (AV25-566)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="vmware security advisory (av25-565)" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/vmware-security-advisory-av25-565" target="_blank" rel="noopener">VMware security advisory (AV25-565)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="jenkins security advisory (av25-564)" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/jenkins-security-advisory-av25-564" target="_blank" rel="noopener">Jenkins security advisory (AV25-564)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="drupal security advisory (av25-563)" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/drupal-security-advisory-av25-563" target="_blank" rel="noopener">Drupal security advisory (AV25-563)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="cisco security advisory (av25-562)" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/cisco-security-advisory-av25-562" target="_blank" rel="noopener">Cisco security advisory (AV25-562)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="google chrome security advisory (av25-561)" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/google-chrome-security-advisory-av25-561" target="_blank" rel="noopener">Google Chrome security advisory (AV25-561)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="android security advisory – september 2025 monthly rollup (av25-560)" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/android-security-advisory-september-2025-monthly-rollup-av25-560" target="_blank" rel="noopener">Android security advisory – September 2025 monthly rollup (AV25-560)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="whatsapp security advisory (av25-559)" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/whatsapp-security-advisory-av25-559" target="_blank" rel="noopener">WhatsApp security advisory (AV25-559)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="dell security advisory (av25-558)" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/dell-security-advisory-av25-558" target="_blank" rel="noopener">Dell security advisory (AV25-558)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="ibm security advisory (av25-557)" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/ibm-security-advisory-av25-557" target="_blank" rel="noopener">IBM security advisory (AV25-557)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="qualcomm security advisory – september 2025 monthly rollup (av25-556)" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/qualcomm-security-advisory-september-2025-monthly-rollup-av25-556" target="_blank" rel="noopener">Qualcomm security advisory – September 2025 monthly rollup (AV25-556)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="hashicorp security advisory (av25-555)" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/hashicorp-security-advisory-av25-555" target="_blank" rel="noopener">HashiCorp security advisory (AV25-555)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="[control systems] cisa ics security advisories (av25-554)" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/control-systems-cisa-ics-security-advisories-av25-554" target="_blank" rel="noopener">[Control systems] CISA ICS security advisories (AV25-554)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="red hat security advisory (av25-553)" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/red-hat-security-advisory-av25-553" target="_blank" rel="noopener">Red Hat security advisory (AV25-553)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="ubuntu security advisory (av25-552)" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/ubuntu-security-advisory-av25-552" target="_blank" rel="noopener">Ubuntu security advisory (AV25-552)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="the growing debate over age verification laws" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/09/06/wtf-is-going-on-with-age-verification-laws/" target="_blank" rel="noopener">The growing debate over age verification laws</a><span class="article-summary">As age and identity verification laws become more mainstream, this legislation could have a dire impact on privacy.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="malicious npm packages impersonate flashbots, steal ethereum wallet keys" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/09/malicious-npm-packages-impersonate.html" target="_blank" rel="noopener">Malicious npm Packages Impersonate Flashbots, Steal Ethereum Wallet Keys</a><span class="article-summary">A new set of four malicious packages have been discovered in the npm package registry with capabilities to steal cryptocurrency wallet credentials from Ethereum developers. "The packages masquerade as legitimate cryptographic utilities and Flashbots MEV infrastructure while secre…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="we hacked burger king: how authentication bypass led to drive-thru audio surveillance" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/45519318" target="_blank" rel="noopener">We Hacked Burger King: How Authentication Bypass Led to Drive-Thru Audio Surveillance</a><span class="article-summary">submitted by Pro to cybersecurity 2 points | 0 comments https://bobdahacker.com/blog/rbi-hacked-drive-thrus cross-posted from: programming.dev/post/36975908 Comments - Hacker News .</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="friday squid blogging: the origin and propagation of squid" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2025/09/friday-squid-blogging-the-origin-and-propagation-of-squid.html" target="_blank" rel="noopener">Friday Squid Blogging: The Origin and Propagation of Squid</a><span class="article-summary">New research (paywalled): Editor&#8217;s summary: Cephalopods are one of the most successful marine invertebrates in modern oceans, and they have a 500-million-year-old history. However, we know very little about their evolution because soft-bodied animals rarely fossilize. Ikega…</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="noisy bear targets kazakhstan energy sector with barrelfire phishing campaign" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/09/noisy-bear-targets-kazakhstan-energy.html" target="_blank" rel="noopener">Noisy Bear Targets Kazakhstan Energy Sector With BarrelFire Phishing Campaign</a><span class="article-summary">A threat actor possibly of Russian origin has been attributed to a new set of attacks targeting the energy sector in Kazakhstan. The activity, codenamed Operation BarrelFire, is tied to a new threat group tracked by Seqrite Labs as Noisy Bear. The threat actor has been active sin…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="engineering first security at netflix 🔐" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/ZyUbCiiqXU8" target="_blank" rel="noopener">Engineering First Security at Netflix 🔐</a><span class="article-summary">Netflix’s Head of Security explains why their approach is all about “engineering first.” Instead of relying only on checklists, Julia Knecht shares how the team scales cybersecurity by solving real problems, staying data-driven, and experimenting with product-led strategies. This…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="jason chan’s secret to building security at netflix 🔐 #cybersecurity" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/JND3nxYxJeM" target="_blank" rel="noopener">Jason Chan’s Secret to Building Security at Netflix 🔐 #cybersecurity</a><span class="article-summary">Jason Chan’s leadership style at Netflix changed how AppSec works forever. Instead of throwing checklists at engineers, he built automation and tools that made security seamless. This short reveals how servant leadership in cybersecurity can transform collaboration between AppSec…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="🚨 can automation save the supply chain?" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/SPyfjliZUE4" target="_blank" rel="noopener">🚨 Can Automation Save the Supply Chain?</a><span class="article-summary">In this short, cybersecurity experts discuss how automation and validation pipelines could be the key to securing the future of supply chains. With threats slipping through the cracks, the big question is whether automation can truly protect against cyber risks—or if it’s just an…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="the scammer thought he got me… until i dropped this twist" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/UvPbxAoZrng" target="_blank" rel="noopener">The Scammer Thought He Got Me… Until I Dropped This Twist</a><span class="article-summary">A cybersecurity expert flips the script on a classic Nigerian scam, leading the scammer to believe he struck gold. What starts as a $20 million bait quickly turns into a hilarious twist the scammer never saw coming. This short exposes just how far scammers will go—and how a littl…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="fewer jira tickets? the cybersecurity shortcut 😱" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/DWbCBAwVHQ8" target="_blank" rel="noopener">Fewer JIRA Tickets? The Cybersecurity Shortcut 😱</a><span class="article-summary">Tired of endless JIRA tickets? In this short, Neil Carpenter reveals how security teams can actually reduce developer pain by minimizing noise and focusing on what truly matters. Instead of fixing 10% of everything, the strategy shifts to fixing 100% of the real risks — cutting d…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="virustotal finds hidden malware phishing campaign in svg files" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/virustotal-finds-hidden-malware-phishing-campaign-in-svg-files/" target="_blank" rel="noopener">VirusTotal finds hidden malware phishing campaign in SVG files</a><span class="article-summary">VirusTotal has discovered a phishing campaign hidden in SVG files that create convincing portals impersonating Colombia's judicial system that deliver malware. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="ai-powered malware hit 2,180 github accounts in “s1ngularity” attack" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/ai-powered-malware-hit-2-180-github-accounts-in-s1ngularity-attack/" target="_blank" rel="noopener">AI-powered malware hit 2,180 GitHub accounts in “s1ngularity” attack</a><span class="article-summary">Investigations into the Nx "s1ngularity" NPM supply chain attack have unveiled a massive fallout, with thousands of account tokens and repository secrets leaked. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="threat detection for sharepoint vulnerabilities" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/news-events/threat-detection-sharepoint-vulnerabilities" target="_blank" rel="noopener">Threat detection for SharePoint vulnerabilities</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="cyber security hygiene best practices for your organization - itsap.10.102" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/guidance/cyber-security-hygiene-best-practices-your-organization-itsap10102" target="_blank" rel="noopener">Cyber security hygiene best practices for your organization - ITSAP.10.102</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="virtualizing your infrastructure (itsap.70.011)" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/guidance/virtualizing-your-infrastructure-itsap70011" target="_blank" rel="noopener">Virtualizing your infrastructure (ITSAP.70.011)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="universal plug and play (itsap.00.008)" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/guidance/universal-plug-play-itsap00008" target="_blank" rel="noopener">Universal plug and play (ITSAP.00.008)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="joint guidance on a shared vision of software bill of materials for cyber security" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/news-events/joint-guidance-shared-vision-software-bill-materials-cyber-security" target="_blank" rel="noopener">Joint guidance on a shared vision of software bill of materials for cyber security</a><span class="article-summary">The joint guidance aims to inform software producers, purchasers and operators of the benefits of integrating SBOM generation, analysis, and sharing into security processes and practices.</span></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="gop cries censorship over spam filters that work" data-date="2025-09-06"><span class="headline-date">6 Sep</span><span class="headline-body"><a class="headline-title" href="https://krebsonsecurity.com/2025/09/gop-cries-censorship-over-spam-filters-that-work/" target="_blank" rel="noopener">GOP Cries Censorship Over Spam Filters That Work</a><span class="article-summary">The chairman of the Federal Trade Commission (FTC) last week sent a letter to Google's CEO demanding to know why Gmail was blocking messages from Republican senders while allegedly failing to block similar missives supporting Democrats. The letter followed media reports accusing …</span></span><span class="headline-source">KREBSONSECURITY.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

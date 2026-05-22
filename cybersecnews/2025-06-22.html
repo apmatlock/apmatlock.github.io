@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-06-22</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,80 +109,63 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-06-22</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">21</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">10</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-22"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/mattermost-vulnerabilities-let-attackers-execute-remote-code/" target="_blank" rel="noopener">Mattermost Vulnerabilities Let Attackers Execute Remote Code Via Path Traversal</a></div><span class="article-meta">GBHACKERS.COM &mdash; 22 Jun 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-22"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/openvpn-driver-vulnerability/" target="_blank" rel="noopener">OpenVPN Driver Vulnerability Let Attackers Crash Windows Systems</a></div><span class="article-meta">GBHACKERS.COM &mdash; 22 Jun 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-22"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/UWzlVoCoBdE" target="_blank" rel="noopener">This Tiny Coding Mistake Lost MILLIONS in Crypto 💰</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-22</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-22"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/30339959" target="_blank" rel="noopener">Stegano 2.0.0 released with functions to hide and reveal messages in PCM encoded .wav files</a></div><span class="article-meta">INFOSEC.PUB &mdash; 22 Jun 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-22"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/fYgbsTbCAng" target="_blank" rel="noopener">When “Culture” Got Me Ignored by CISOs 😬</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-22</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-22"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/rdV8TNubdvg" target="_blank" rel="noopener">This Cyber Vet Started With SATAN… Literally.</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-22</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-22"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/30346155" target="_blank" rel="noopener">Disinformation for beginners: How access to TikTok is threatening European security</a></div><span class="article-meta">INFOSEC.PUB &mdash; 22 Jun 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-22"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://sh.itjust.works/post/40733756" target="_blank" rel="noopener">Disinformation for beginners: How access to TikTok is threatening European security</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 22 Jun 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-22"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/QtS6w6uwbRA" target="_blank" rel="noopener">Adversary Emulation Isn’t a Pentest – Here’s Why!</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-22</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-22"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/S247Kh7cMEU" target="_blank" rel="noopener">Your Security Team is DROWNING… Here’s Why! 🌊</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-22</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-06-22"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.youtube.com/shorts/lof80z2pq7E" target="_blank" rel="noopener">Open vs Closed Questions in Cyber Audits 🤯</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-22</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-06-22"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://gbhackers.com/hackers-may-have-stolen-personal-and-health-information/" target="_blank" rel="noopener">Aflac Cyber Attack – Hackers May Have Stolen Personal And Health Information</a></div><span class="article-meta">GBHACKERS.COM &mdash; 22 Jun 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-06-22"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/coinmarketcap-briefly-hacked-to-drain-crypto-wallets-via-fake-web3-popup/" target="_blank" rel="noopener">CoinMarketCap briefly hacked to drain crypto wallets via fake Web3 popup</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 22 Jun 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-06-22"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/oxford-city-council-suffers-breach-exposing-two-decades-of-data/" target="_blank" rel="noopener">Oxford City Council suffers breach exposing two decades of data</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 22 Jun 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-22"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/israeli-social-media-users-targeted-in-covert/" target="_blank" rel="noopener">Israeli Social Media Users Targeted in Covert Iranian Influence Campaign</a></div><span class="article-meta">GBHACKERS.COM &mdash; 22 Jun 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-22"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/OlfDkjcoDdE" target="_blank" rel="noopener">MFA: Annoying or Absolutely Necessary? Here’s the Truth! 🔑</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-22</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-22"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/NGZgkIPpE38" target="_blank" rel="noopener">Germany Took 20 Years. China Did It in 3. Here’s How… 😳</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-22</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-22"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/dWuz7p87fMY" target="_blank" rel="noopener">Why AI Needs a "Zero Trust" Model! 🔐</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-22</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-22"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/VuKh8t8GLLI" target="_blank" rel="noopener">The Observability of Observability… Mind Blown 🤯</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-22</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-22"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/stellar-repair-for-outlook/" target="_blank" rel="noopener">Stellar Repair For Outlook: A Comprehensive Review Of The Ultimate PST Repair Tool</a></div><span class="article-meta">GBHACKERS.COM &mdash; 22 Jun 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-06-22"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/microsoft/windows-snipping-tool-now-lets-you-create-animated-gif-recordings/" target="_blank" rel="noopener">Windows Snipping Tool now lets you create animated GIF recordings</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 22 Jun 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">10</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="mattermost vulnerabilities let attackers execute remote code via path traversal" data-date="2025-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/mattermost-vulnerabilities-let-attackers-execute-remote-code/" target="_blank" rel="noopener">Mattermost Vulnerabilities Let Attackers Execute Remote Code Via Path Traversal</a><span class="article-summary">Mattermost, a widely-used open-source collaboration platform, has recently disclosed critical vulnerabilities in its software that could allow attackers to execute remote code through path traversal exploits. As detailed on the official Mattermost Security Updates page, these fla…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="openvpn driver vulnerability let attackers crash windows systems" data-date="2025-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/openvpn-driver-vulnerability/" target="_blank" rel="noopener">OpenVPN Driver Vulnerability Let Attackers Crash Windows Systems</a><span class="article-summary">Network administrators and cybersecurity experts will be pleased to learn that OpenVPN 2.7_alpha2 will be released on June 19, 2025, according to the OpenVPN community project team. While this early alpha build for the upcoming 2.7.0 feature release introduces several innovative …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="this tiny coding mistake lost millions in crypto 💰" data-date="2025-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/UWzlVoCoBdE" target="_blank" rel="noopener">This Tiny Coding Mistake Lost MILLIONS in Crypto 💰</a><span class="article-summary">A tiny coding mistake in Solidity once led to massive crypto losses! 💸 Before version 0.8.0, integer overflows and underflows created serious security vulnerabilities in smart contracts. Hackers took advantage of this flaw to drain funds, exploit protocols, and wreak havoc in the…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="stegano 2.0.0 released with functions to hide and reveal messages in pcm encoded .wav files" data-date="2025-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/30339959" target="_blank" rel="noopener">Stegano 2.0.0 released with functions to hide and reveal messages in PCM encoded .wav files</a><span class="article-summary">submitted by cm0002 to cybersecurity 1 points | 0 comments After a series of minor releases, the Stegano project reaches a new milestone with a great new feature. Notable changes Hide and reveal messages in PCM encoded .wav files. Your secrets now have a soundtrack! The command l…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="when “culture” got me ignored by cisos 😬" data-date="2025-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/fYgbsTbCAng" target="_blank" rel="noopener">When “Culture” Got Me Ignored by CISOs 😬</a><span class="article-summary">When Jinan Budge joined Forrester, her first big research report was packed with passion—focused entirely on cybersecurity culture. But the response? Crickets. The reason? One word in the title: culture. Back then, it was almost taboo in the cybersecurity world. So, she pivoted. …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="this cyber vet started with satan… literally." data-date="2025-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/rdV8TNubdvg" target="_blank" rel="noopener">This Cyber Vet Started With SATAN… Literally.</a><span class="article-summary">In this jaw-dropping short, cybersecurity expert Steve Lodin shares how he got his start in vulnerability scanning way back in 1995—with a tool named SATAN (yes, that was the real name 😳). From the earliest days of network analysis to today's complex cyber threats, this moment hi…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="disinformation for beginners: how access to tiktok is threatening european security" data-date="2025-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/30346155" target="_blank" rel="noopener">Disinformation for beginners: How access to TikTok is threatening European security</a><span class="article-summary">submitted by Hotznplotzn to cybersecurity 1 points | 0 comments https://ecfr.eu/article/disinformation-for-beginners-how-access-to-tiktok-is-threatening-european-security cross-posted from: lemmy.sdf.org/post/37220836 Archvied In December 2024, evidence came to light that “foreig…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="disinformation for beginners: how access to tiktok is threatening european security" data-date="2025-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/40733756" target="_blank" rel="noopener">Disinformation for beginners: How access to TikTok is threatening European security</a><span class="article-summary">submitted by Hotznplotzn to cybersecurity 1 points | 0 comments https://ecfr.eu/article/disinformation-for-beginners-how-access-to-tiktok-is-threatening-european-security cross-posted from: lemmy.sdf.org/post/37220836 Archvied In December 2024, evidence came to light that “foreig…</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="adversary emulation isn’t a pentest – here’s why!" data-date="2025-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/QtS6w6uwbRA" target="_blank" rel="noopener">Adversary Emulation Isn’t a Pentest – Here’s Why!</a><span class="article-summary">Most people think red teaming is just another form of penetration testing—but they couldn’t be more wrong! 🤯 In this short, cybersecurity expert Phillip Wylie breaks down the REAL difference between adversary emulation and pentesting, and why so many professionals (even CISOs!) s…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="your security team is drowning… here’s why! 🌊" data-date="2025-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/S247Kh7cMEU" target="_blank" rel="noopener">Your Security Team is DROWNING… Here’s Why! 🌊</a><span class="article-summary">Security teams are drowning in work, and most companies don’t even realize it! 😵‍💫 While products scale up easily, cybersecurity teams don’t—and that’s a massive problem. Without the right people and resources, vulnerabilities pile up, pen test results sit untouched, and burnout …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="open vs closed questions in cyber audits 🤯" data-date="2025-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/lof80z2pq7E" target="_blank" rel="noopener">Open vs Closed Questions in Cyber Audits 🤯</a><span class="article-summary">During high-stakes cybersecurity audits, time is everything. In this short, Evgeniy Kharam and Adrian Sanabria break down how knowing when to use open vs. closed questions can make or break the outcome. Whether you're gathering info or racing the clock during a compliance review,…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="aflac cyber attack – hackers may have stolen personal and health information" data-date="2025-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/hackers-may-have-stolen-personal-and-health-information/" target="_blank" rel="noopener">Aflac Cyber Attack – Hackers May Have Stolen Personal And Health Information</a><span class="article-summary">Aflac Incorporated, a Georgia-based insurance giant, identified unauthorized access to its network infrastructure, raising alarms over a potential data breach. The company swiftly activated its cybersecurity incident response protocols and claims to have contained the intrusion w…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="coinmarketcap briefly hacked to drain crypto wallets via fake web3 popup" data-date="2025-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/coinmarketcap-briefly-hacked-to-drain-crypto-wallets-via-fake-web3-popup/" target="_blank" rel="noopener">CoinMarketCap briefly hacked to drain crypto wallets via fake Web3 popup</a><span class="article-summary">CoinMarketCap, the popular cryptocurrency price tracking site, suffered a website supply chain attack that exposed site visitors to a wallet drainer campaign to steal visitors' crypto. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="oxford city council suffers breach exposing two decades of data" data-date="2025-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/oxford-city-council-suffers-breach-exposing-two-decades-of-data/" target="_blank" rel="noopener">Oxford City Council suffers breach exposing two decades of data</a><span class="article-summary">Oxford City Council warns it suffered a data breach where attackers accessed personally identifiable information from legacy systems. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="israeli social media users targeted in covert iranian influence campaign" data-date="2025-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/israeli-social-media-users-targeted-in-covert/" target="_blank" rel="noopener">Israeli Social Media Users Targeted in Covert Iranian Influence Campaign</a><span class="article-summary">A covert Iranian social media operation has been uncovered, targeting Israeli users on platform X with a psychological campaign designed to sow discord and despair. Researchers at the Foundation for Defense of Democracies (FDD) have exposed a Persian-language Telegram channel, CA…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="mfa: annoying or absolutely necessary? here’s the truth! 🔑" data-date="2025-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/OlfDkjcoDdE" target="_blank" rel="noopener">MFA: Annoying or Absolutely Necessary? Here’s the Truth! 🔑</a><span class="article-summary">Multi-factor authentication (MFA) is often seen as an annoying extra step, but is it really necessary? 🚀 In this short, cybersecurity experts break down why MFA is one of the most effective ways to stop hackers in their tracks. With cyber threats evolving daily, businesses that f…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="germany took 20 years. china did it in 3. here’s how… 😳" data-date="2025-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/NGZgkIPpE38" target="_blank" rel="noopener">Germany Took 20 Years. China Did It in 3. Here’s How… 😳</a><span class="article-summary">When Germany spent 20 years developing a high-tech sponge, no one expected China to create a perfect replica in just 3. But what really happened behind the scenes? In this short, Noam Krasniansky breaks down a real-world case of industrial espionage and how student internships ca…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="why ai needs a &quot;zero trust&quot; model! 🔐" data-date="2025-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/dWuz7p87fMY" target="_blank" rel="noopener">Why AI Needs a "Zero Trust" Model! 🔐</a><span class="article-summary">AI is revolutionizing productivity, but what if it’s also a massive security risk? 🔐 Cybersecurity expert Sounil Yu explains how Large Language Models (LLMs) flatten knowledge, making information more accessible—but also dangerously unprotected. Just like a segmented network, AI …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="the observability of observability… mind blown 🤯" data-date="2025-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/VuKh8t8GLLI" target="_blank" rel="noopener">The Observability of Observability… Mind Blown 🤯</a><span class="article-summary">When cybersecurity pros talk about “observability,” most people nod without fully getting it. But JP Bourget just dropped a concept that flips the whole idea: “the observability of observability.” 🤯 In this short, he explains why losing syslog data is irreversible, how buffering …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="stellar repair for outlook: a comprehensive review of the ultimate pst repair tool" data-date="2025-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/stellar-repair-for-outlook/" target="_blank" rel="noopener">Stellar Repair For Outlook: A Comprehensive Review Of The Ultimate PST Repair Tool</a><span class="article-summary">Microsoft Outlook is a cornerstone of professional and personal communication, relied upon by millions for email management, calendaring, and task organization. However, Outlook’s Personal Storage Table (PST) files, which store emails, contacts, calendars, and other data, are pro…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="windows snipping tool now lets you create animated gif recordings" data-date="2025-06-22"><span class="headline-date">22 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/microsoft/windows-snipping-tool-now-lets-you-create-animated-gif-recordings/" target="_blank" rel="noopener">Windows Snipping Tool now lets you create animated GIF recordings</a><span class="article-summary">​Microsoft announced that the Windows screenshot and screencast Snipping Tool utility is getting support for exporting animated GIF recordings. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

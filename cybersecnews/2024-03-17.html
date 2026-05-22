@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-03-17</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,67 +109,46 @@
       <div class="stat"><span class="stat-value">4</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-03-17</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">9</span></button>
-<button class="filter-btn" data-cat="CISA KEV" onclick="filterCat('CISA KEV', this)">CISA KEV <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="CISA KEV" data-date="2024-03-17"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://www.redpacketsecurity.com/cisa-cisa-adds-one-known-exploited-jetbrains-vulnerability-cve-to-catalog-17-03-2024/" target="_blank" rel="noopener">CISA: CISA Adds One Known Exploited JetBrains Vulnerability, CVE-2024-27198, to Catalog - RedPacket Security</a><span class="article-summary">submitted by Lanky_Pomegranate530 to cybersecurity 1 points | 0 comments https://www.redpacketsecurity.com/cisa-cisa-adds-one-known-exploited-jetbrains-vulnerability-cve-to-catalog-17-03-2024/ CISA Adds One Known Exploited JetBrains Vulnerability, CVE-2024-27198, to Catalog</span></div><span class="kev-badge">KEV</span><span class="article-meta">REDPACKETSECURITY.COM &mdash; 17 Mar 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-03-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://gbhackers.com/stopcrypt-ransomware/" target="_blank" rel="noopener">StopCrypt Ransomware Utilizing Multi-Stage Shellcodes To Attack Windows</a></div><span class="article-meta">GBHACKERS.COM &mdash; 17 Mar 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-03-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.standard.co.uk/news/world/russia-election-vote-cyber-attack-vladimir-putin-presidential-b1145729.html" target="_blank" rel="noopener">Russia&amp;#x27;s ruling party &amp;#x27;hit by cyberattack&amp;#x27; during presidential election</a></div><span class="article-meta">STANDARD.CO.UK &mdash; 17 Mar 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-03-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/att-says-leaked-data-of-70-million-people-is-not-from-its-systems/" target="_blank" rel="noopener">AT&amp;T says leaked data of 70 million people is not from its systems</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 17 Mar 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-03-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/30750" target="_blank" rel="noopener">Obfuscated Hexadecimal Payload, (Sat, Mar 16th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 17 Mar 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-03-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/dark-web-market-admin-arrested/" target="_blank" rel="noopener">Dark Web Market Admin Gets 42 Months Prison for Selling Login Passwords</a></div><span class="article-meta">GBHACKERS.COM &mdash; 17 Mar 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-03-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/pictrs/image/dba1055c-454a-487e-bc73-20730b5c06d6.png" target="_blank" rel="noopener">ZScaler Zenith 2023 - 45 talks</a></div><span class="article-meta">INFOSEC.PUB &mdash; 17 Mar 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-03-17"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/new-acoustic-attack-determines-keystrokes-from-typing-patterns/" target="_blank" rel="noopener">New acoustic attack determines keystrokes from typing patterns</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 17 Mar 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-03-17"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/microsoft/microsoft-again-bothers-chrome-users-with-bing-popup-ads-in-windows/" target="_blank" rel="noopener">Microsoft again bothers Chrome users with Bing popup ads in Windows</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 17 Mar 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa: cisa adds one known exploited jetbrains vulnerability, cve-2024-27198, to catalog - redpacket security" data-date="2024-03-17"><span class="headline-date">17 Mar <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://www.redpacketsecurity.com/cisa-cisa-adds-one-known-exploited-jetbrains-vulnerability-cve-to-catalog-17-03-2024/" target="_blank" rel="noopener">CISA: CISA Adds One Known Exploited JetBrains Vulnerability, CVE-2024-27198, to Catalog - RedPacket Security</a><span class="article-summary">submitted by Lanky_Pomegranate530 to cybersecurity 1 points | 0 comments https://www.redpacketsecurity.com/cisa-cisa-adds-one-known-exploited-jetbrains-vulnerability-cve-to-catalog-17-03-2024/ CISA Adds One Known Exploited JetBrains Vulnerability, CVE-2024-27198, to Catalog</span></span><span class="headline-source">REDPACKETSECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="stopcrypt ransomware utilizing multi-stage shellcodes to attack windows" data-date="2024-03-17"><span class="headline-date">17 Mar</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/stopcrypt-ransomware/" target="_blank" rel="noopener">StopCrypt Ransomware Utilizing Multi-Stage Shellcodes To Attack Windows</a><span class="article-summary">A new variant of StopCrypt ransomware has been discovered. It executes multi-stage shellcodes before launching a final payload containing the file encryption code. This malware uses several techniques, such as detection evasion, a time-delaying loop of 600 million iterations, and…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="russia&amp;#x27;s ruling party &amp;#x27;hit by cyberattack&amp;#x27; during presidential election" data-date="2024-03-17"><span class="headline-date">17 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.standard.co.uk/news/world/russia-election-vote-cyber-attack-vladimir-putin-presidential-b1145729.html" target="_blank" rel="noopener">Russia&amp;#x27;s ruling party &amp;#x27;hit by cyberattack&amp;#x27; during presidential election</a><span class="article-summary">submitted by Lanky_Pomegranate530 to cybersecurity 1 points | 0 comments https://www.standard.co.uk/news/world/russia-election-vote-cyber-attack-vladimir-putin-presidential-b1145729.html</span></span><span class="headline-source">STANDARD.CO.UK</span></div>
+<div class="headline" data-title="at&amp;t says leaked data of 70 million people is not from its systems" data-date="2024-03-17"><span class="headline-date">17 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/att-says-leaked-data-of-70-million-people-is-not-from-its-systems/" target="_blank" rel="noopener">AT&amp;T says leaked data of 70 million people is not from its systems</a><span class="article-summary">AT&amp;T says a massive trove of data impacting 71 million people did not originate from its systems after a hacker leaked it on a cybercrime forum and claimed it was stolen in a 2021 breach of the company. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="obfuscated hexadecimal payload, (sat, mar 16th)" data-date="2024-03-17"><span class="headline-date">17 Mar</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/30750" target="_blank" rel="noopener">Obfuscated Hexadecimal Payload, (Sat, Mar 16th)</a><span class="article-summary">This PE file contains an obfuscated hexadecimal-encoded payload. When I analyze it with base64dump.py searching for all supported encodings, a very long payload is detected: &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="dark web market admin gets 42 months prison for selling login passwords" data-date="2024-03-17"><span class="headline-date">17 Mar</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/dark-web-market-admin-arrested/" target="_blank" rel="noopener">Dark Web Market Admin Gets 42 Months Prison for Selling Login Passwords</a><span class="article-summary">Sandu Boris Diaconu, a 31-year-old Moldovan national, has been sentenced to 42 months in federal prison for his role in operating a notorious dark web marketplace known as E-Root. The sentencing was carried out by U.S. Senior District Judge James Moody, Jr. in Tampa, Florida, mar…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="zscaler zenith 2023 - 45 talks" data-date="2024-03-17"><span class="headline-date">17 Mar</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/pictrs/image/dba1055c-454a-487e-bc73-20730b5c06d6.png" target="_blank" rel="noopener">ZScaler Zenith 2023 - 45 talks</a><span class="article-summary">submitted by ashar to security_cpe 1 points | 0 comments https://infosec.pub/pictrs/image/dba1055c-454a-487e-bc73-20730b5c06d6.png ZScaler Zenith 2023 Playlist ZScaler Zenith 2023 Schedule Learn valuable insights from industry leader keynotes and go even deeper on implementing ze…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new acoustic attack determines keystrokes from typing patterns" data-date="2024-03-17"><span class="headline-date">17 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/new-acoustic-attack-determines-keystrokes-from-typing-patterns/" target="_blank" rel="noopener">New acoustic attack determines keystrokes from typing patterns</a><span class="article-summary">Researchers have demonstrated a new acoustic side-channel attack on keyboards that can deduce user input based on their typing patterns, even in poor conditions, such as environments with noise. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="microsoft again bothers chrome users with bing popup ads in windows" data-date="2024-03-17"><span class="headline-date">17 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/microsoft/microsoft-again-bothers-chrome-users-with-bing-popup-ads-in-windows/" target="_blank" rel="noopener">Microsoft again bothers Chrome users with Bing popup ads in Windows</a><span class="article-summary">Microsoft is once again harassing Google Chrome users on Windows 10 and Windows 11 with popup desktop advertisements promoting Bing and its GPT-4 Bing Chat platform. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

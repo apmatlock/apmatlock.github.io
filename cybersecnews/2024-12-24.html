@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-12-24</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,90 +109,81 @@
       <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-12-24</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">29</span></button>
-<button class="filter-btn" data-cat="CISA KEV" onclick="filterCat('CISA KEV', this)">CISA KEV <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">10</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="CISA KEV" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://thehackernews.com/2024/12/cisa-adds-acclaim-usaherds.html" target="_blank" rel="noopener">CISA Adds Acclaim USAHERDS Vulnerability to KEV Catalog Amid Active Exploitation</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) on Monday added a now-patched high-severity security flaw impacting Acclaim Systems USAHERDS to the Known Exploited Vulnerabilities (KEV) catalog, based on evidence of active exploitation in the wild. The vulnerabil…</span></div><span class="kev-badge">KEV</span><span class="article-meta">THEHACKERNEWS.COM &mdash; 24 Dec 2024</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2024/12/apache-tomcat-vulnerability-cve-2024.html" target="_blank" rel="noopener">Apache Tomcat Vulnerability CVE-2024-56337 Exposes Servers to RCE Attacks</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 24 Dec 2024</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://gbhackers.com/node-js-systeminformation-package-vulnerability/" target="_blank" rel="noopener">Node.js systeminformation Package Vulnerability Exposes Millions of Systems to RCE Attacks</a></div><span class="article-meta">GBHACKERS.COM &mdash; 24 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/new-botnet-exploits-vulnerabilities-in-nvrs-tp-link-routers/" target="_blank" rel="noopener">New botnet exploits vulnerabilities in NVRs, TP-Link routers</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 24 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.securityweek.com/adobe-patches-coldfusion-flaw-at-high-risk-of-exploitation/" target="_blank" rel="noopener">Adobe Patches ColdFusion Flaw at High Risk of Exploitation</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 24 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://techcrunch.com/2024/12/24/clop-ransomware-gang-takes-credit-for-latest-mass-hack-that-breached-dozens-of-companies/" target="_blank" rel="noopener">Clop ransomware gang takes credit for latest mass hack that breached dozens of companies</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 24 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://grahamcluley.com/the-ai-fix-30/" target="_blank" rel="noopener">The AI Fix #30: ChatGPT reveals the devastating truth about Santa (Merry Christmas!)</a></div><span class="article-meta">GRAHAMCLULEY.COM &mdash; 24 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/3629818/7-biggest-cybersecurity-stories-of-2024.html" target="_blank" rel="noopener">7 biggest cybersecurity stories of 2024</a></div><span class="article-meta">CSOONLINE.COM &mdash; 24 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=xidy1fzCBl8" target="_blank" rel="noopener">Unbelievable Java Exploit Exposed! 🚨</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-24</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=-Wst12ELG64" target="_blank" rel="noopener">Herding Dev Cats: Can You Really Control Source Code Chaos?</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-24</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.youtube.com/watch?v=1EdbNgFA_a0" target="_blank" rel="noopener">Compliance &amp; Privacy - SWN Vault</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-24</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/european-space-agencys-official-store-hacked-to-steal-payment-cards/" target="_blank" rel="noopener">European Space Agency's official store hacked to steal payment cards</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 24 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/clop-ransomware-is-now-extorting-66-cleo-data-theft-victims/" target="_blank" rel="noopener">Clop ransomware is now extorting 66 Cleo data-theft victims</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 24 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.securityweek.com/american-addiction-centers-data-breach-impacts-422000-people/" target="_blank" rel="noopener">American Addiction Centers Data Breach Impacts 422,000 People</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 24 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2024/12/researchers-uncover-pypi-packages.html" target="_blank" rel="noopener">Researchers Uncover PyPI Packages Stealing Keystrokes and Hijacking Social Accounts</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 24 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.csoonline.com/article/3625293/hacker-knacken-das-smart-home.html" target="_blank" rel="noopener">Hacker knacken das Smart Home</a></div><span class="article-meta">CSOONLINE.COM &mdash; 24 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://sh.itjust.works/post/29962801" target="_blank" rel="noopener">Conversation with a “Nam3L3ss” Watchdog: Preface</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 24 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2024/12/spyware-maker-nso-group-found-liable-for-hacking-whatsapp.html" target="_blank" rel="noopener">Spyware Maker NSO Group Found Liable for Hacking WhatsApp</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2024-12-24</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/fbi-links-north-korean-hackers-to-308-million-crypto-heist/" target="_blank" rel="noopener">FBI links North Korean hackers to $308 million crypto heist</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 24 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.securityweek.com/fbi-blames-north-korea-for-308m-cryptocurrency-hack-as-losses-surge-in-2024/" target="_blank" rel="noopener">FBI Blames North Korea for $308M Cryptocurrency Hack as Losses Surge in 2024</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 24 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.securityweek.com/2025-ndaa-provides-3-billion-funding-for-fccs-rip-and-replace-program/" target="_blank" rel="noopener">2025 NDAA Provides $3 Billion Funding for FCC’s Rip-and-Replace Program</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 24 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2024/12/north-korean-hackers-pull-off-308m.html" target="_blank" rel="noopener">North Korean Hackers Pull Off $308M Bitcoin Heist from Crypto Firm DMM Bitcoin</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 24 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31542" target="_blank" rel="noopener">More SSH Fun&amp;#x21;, (Tue, Dec 24th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 24 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://blog.knowbe4.com/cyberheistnews-vol-14-52-heads-up-bad-actors-use-voice-phishing-in-microsoft-teams-to-spread-malware" target="_blank" rel="noopener">CyberheistNews Vol 14 #52 [Heads Up] Bad Actors Use Voice Phishing in Microsoft Teams To Spread Malware</a></div><span class="article-meta">KNOWBE4.COM &mdash; 24 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://securityintelligence.com/articles/government-cybersecurity-2025-former-principal-deputy-national-cyber-director-weighs-in/" target="_blank" rel="noopener">Government cybersecurity in 2025: Former Principal Deputy National Cyber Director weighs in</a></div><span class="article-meta">SECURITYINTELLIGENCE.COM &mdash; 24 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.paloaltonetworks.com/blog/2024/12/harnessing-ai-strengthen-ot-security-against-modern-cyber-threats/" target="_blank" rel="noopener">Harnessing AI to Strengthen OT Security Against Modern Cyber Threats</a></div><span class="article-meta">PALOALTONETWORKS.COM &mdash; 24 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=hyZLthM63wc" target="_blank" rel="noopener">Cybersecurity in the Cloud: Lessons for Businesses and Beyond - Melina Scotto - CSP #206</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-24</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2024/12/24/techcrunch-security-desk-cybersecurity-reporting-jealousy-list-of-2024/" target="_blank" rel="noopener">These are the cybersecurity stories we were jealous of in 2024</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 24 Dec 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-24"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=Nn_-mJwoIQQ" target="_blank" rel="noopener">The Secret to Making Your Tech Stack Work Smarter 🧠</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-24</span></div>
-    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa adds acclaim usaherds vulnerability to kev catalog amid active exploitation" data-date="2024-12-24"><span class="headline-date">24 Dec <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/cisa-adds-acclaim-usaherds.html" target="_blank" rel="noopener">CISA Adds Acclaim USAHERDS Vulnerability to KEV Catalog Amid Active Exploitation</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) on Monday added a now-patched high-severity security flaw impacting Acclaim Systems USAHERDS to the Known Exploited Vulnerabilities (KEV) catalog, based on evidence of active exploitation in the wild. The vulnerabil…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="apache tomcat vulnerability cve-2024-56337 exposes servers to rce attacks" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/apache-tomcat-vulnerability-cve-2024.html" target="_blank" rel="noopener">Apache Tomcat Vulnerability CVE-2024-56337 Exposes Servers to RCE Attacks</a><span class="article-summary">The Apache Software Foundation (ASF) has released a security update to address an important vulnerability in its Tomcat server software that could result in remote code execution (RCE) under certain conditions. The vulnerability, tracked as CVE-2024-56337, has been described as a…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="node.js systeminformation package vulnerability exposes millions of systems to rce attacks" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/node-js-systeminformation-package-vulnerability/" target="_blank" rel="noopener">Node.js systeminformation Package Vulnerability Exposes Millions of Systems to RCE Attacks</a><span class="article-summary">A critical command injection vulnerability in the popular systeminformation npm package has recently been disclosed, exposing millions of systems to potential remote code execution (RCE) and privilege escalation attacks. The vulnerability, assigned CVE-2024-56334, highlights the …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new botnet exploits vulnerabilities in nvrs, tp-link routers" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/new-botnet-exploits-vulnerabilities-in-nvrs-tp-link-routers/" target="_blank" rel="noopener">New botnet exploits vulnerabilities in NVRs, TP-Link routers</a><span class="article-summary">A new Mirai-based malware campaign is actively exploiting unpatched vulnerabilities in Internet of Things (IoT) devices, including DigiEver DS-2105 Pro DVRs. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="adobe patches coldfusion flaw at high risk of exploitation" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/adobe-patches-coldfusion-flaw-at-high-risk-of-exploitation/" target="_blank" rel="noopener">Adobe Patches ColdFusion Flaw at High Risk of Exploitation</a><span class="article-summary">Adobe has released patches for a high-severity ColdFusion vulnerability for which proof-of-concept (PoC) code exists. The post Adobe Patches ColdFusion Flaw at High Risk of Exploitation appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="clop ransomware gang takes credit for latest mass hack that breached dozens of companies" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/12/24/clop-ransomware-gang-takes-credit-for-latest-mass-hack-that-breached-dozens-of-companies/" target="_blank" rel="noopener">Clop ransomware gang takes credit for latest mass hack that breached dozens of companies</a><span class="article-summary">The prolific ransomware gang says it hacked at least 66 companies by exploiting a bug in tools made by Cleo Software. © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="the ai fix #30: chatgpt reveals the devastating truth about santa (merry christmas!)" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://grahamcluley.com/the-ai-fix-30/" target="_blank" rel="noopener">The AI Fix #30: ChatGPT reveals the devastating truth about Santa (Merry Christmas!)</a><span class="article-summary">In episode 30 of The AI Fix, AIs are caught lying to avoid being turned off, Apple’s AI flubs a headline, ChatGPT is available to people who haven't left the 1970s, our hosts regret to inform you that an AI artist now has a personality, and ant-like robots join forces to lob each…</span></span><span class="headline-source">GRAHAMCLULEY.COM</span></div>
+<div class="headline" data-title="7 biggest cybersecurity stories of 2024" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/3629818/7-biggest-cybersecurity-stories-of-2024.html" target="_blank" rel="noopener">7 biggest cybersecurity stories of 2024</a><span class="article-summary">Cybersecurity headlines were plenty this year, with several breaches, attacks, and mishaps drawing worldwide attention. But a few incidents in particular had far-reaching consequences, with the potential to reshape industry protections, shake up how vendors secure customers’ syst…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="unbelievable java exploit exposed! 🚨" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=xidy1fzCBl8" target="_blank" rel="noopener">Unbelievable Java Exploit Exposed! 🚨</a><span class="article-summary">Hackers just uncovered a mind-blowing exploit in the Java Spring Framework that’s causing a stir! 🚨 Dive into the creativity and patience it takes to find vulnerabilities like this and learn how "dot dot semi-colon" became the ultimate hacker move. Shoutout to Watch Tower Labs fo…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="herding dev cats: can you really control source code chaos?" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=-Wst12ELG64" target="_blank" rel="noopener">Herding Dev Cats: Can You Really Control Source Code Chaos?</a><span class="article-summary">Dealing with messy source code management? Let’s talk about how to “herd the dev cats” 🐱 and streamline your workflows for better security and efficiency. From random OneDrive folders to rogue server setups, managing developer habits can feel impossible—but it doesn’t have to be.…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="compliance &amp; privacy - swn vault" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=1EdbNgFA_a0" target="_blank" rel="noopener">Compliance &amp; Privacy - SWN Vault</a><span class="article-summary">Josh Marpet and Doug talk about Compliance and Privacy for about 30 minutes but it could have been a lot more. Visit https://www.securityweekly.com/swn for all the latest episodes! Show Notes: https://securityweekly.com/vault-swn-23</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="european space agency's official store hacked to steal payment cards" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/european-space-agencys-official-store-hacked-to-steal-payment-cards/" target="_blank" rel="noopener">European Space Agency's official store hacked to steal payment cards</a><span class="article-summary">European Space Agency's official web shop was hacked as it started to load a piece of JavaScript code that generates a fake Stripe payment page at checkout. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="clop ransomware is now extorting 66 cleo data-theft victims" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/clop-ransomware-is-now-extorting-66-cleo-data-theft-victims/" target="_blank" rel="noopener">Clop ransomware is now extorting 66 Cleo data-theft victims</a><span class="article-summary">The Clop ransomware gang started to extort victims of its Cleo data theft attacks and announced on its dark web portal that 66 companies have 48 hours to respond to the demands. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="american addiction centers data breach impacts 422,000 people" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/american-addiction-centers-data-breach-impacts-422000-people/" target="_blank" rel="noopener">American Addiction Centers Data Breach Impacts 422,000 People</a><span class="article-summary">American Addiction Centers says the personal information of more than 422,000 people was stolen in a data breach. The post American Addiction Centers Data Breach Impacts 422,000 People appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="researchers uncover pypi packages stealing keystrokes and hijacking social accounts" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/researchers-uncover-pypi-packages.html" target="_blank" rel="noopener">Researchers Uncover PyPI Packages Stealing Keystrokes and Hijacking Social Accounts</a><span class="article-summary">Cybersecurity researchers have flagged two malicious packages that were uploaded to the Python Package Index (PyPI) repository and came fitted with capabilities to exfiltrate sensitive information from compromised hosts, according to new findings from Fortinet FortiGuard Labs. Th…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="hacker knacken das smart home" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/3625293/hacker-knacken-das-smart-home.html" target="_blank" rel="noopener">Hacker knacken das Smart Home</a><span class="article-summary">loading="lazy" width="400px"> Im Smart Home werkeln immer mehr Devices mit Internet-Anschluss – für Hacker ein lohnendes Ziel. Andrey Suslov – shutterstock.com IoT-Geräte wie digitale Bilderrahmen oder Mediaplayer sind immer häufiger das Ziel von Cyberkriminellen. Viele dieser mi…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="conversation with a “nam3l3ss” watchdog: preface" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/29962801" target="_blank" rel="noopener">Conversation with a “Nam3L3ss” Watchdog: Preface</a><span class="article-summary">submitted by BrikoX to cybersecurity 6 points | 0 comments https://databreaches.net/2024/12/23/conversation-with-a-nam3l3ss-watchdog-preface/ This is a multi-part interview with the individual known as “Nam3L3ss,” who leaked more than 100 databases on a popular hacking forum and …</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">10</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="spyware maker nso group found liable for hacking whatsapp" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2024/12/spyware-maker-nso-group-found-liable-for-hacking-whatsapp.html" target="_blank" rel="noopener">Spyware Maker NSO Group Found Liable for Hacking WhatsApp</a><span class="article-summary">A judge has found that NSO Group, maker of the Pegasus spyware, has violated the US Computer Fraud and Abuse Act by hacking WhatsApp in order to spy on people using it. Jon Penney and I wrote a legal paper on the case.</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="fbi links north korean hackers to $308 million crypto heist" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/fbi-links-north-korean-hackers-to-308-million-crypto-heist/" target="_blank" rel="noopener">FBI links North Korean hackers to $308 million crypto heist</a><span class="article-summary">The North Korean hacker group 'TraderTraitor' stole $308 million worth of cryptocurrency in the attack on the Japanese exchange DMM Bitcoin in May. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="fbi blames north korea for $308m cryptocurrency hack as losses surge in 2024" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/fbi-blames-north-korea-for-308m-cryptocurrency-hack-as-losses-surge-in-2024/" target="_blank" rel="noopener">FBI Blames North Korea for $308M Cryptocurrency Hack as Losses Surge in 2024</a><span class="article-summary">The FBI said the target was tricked into downloading a malicious Python script under the guise of a pre-employment test hosted on GitHub. The post FBI Blames North Korea for $308M Cryptocurrency Hack as Losses Surge in 2024 appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="2025 ndaa provides $3 billion funding for fcc’s rip-and-replace program" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/2025-ndaa-provides-3-billion-funding-for-fccs-rip-and-replace-program/" target="_blank" rel="noopener">2025 NDAA Provides $3 Billion Funding for FCC’s Rip-and-Replace Program</a><span class="article-summary">The 2025 National Defense Authorization Act (NDAA) has been signed into law and it authorizes several cyber-related initiatives. The post 2025 NDAA Provides $3 Billion Funding for FCC&#8217;s Rip-and-Replace Program appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="north korean hackers pull off $308m bitcoin heist from crypto firm dmm bitcoin" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/north-korean-hackers-pull-off-308m.html" target="_blank" rel="noopener">North Korean Hackers Pull Off $308M Bitcoin Heist from Crypto Firm DMM Bitcoin</a><span class="article-summary">Japanese and U.S. authorities have formerly attributed the theft of cryptocurrency worth $308 million from cryptocurrency company DMM Bitcoin in May 2024 to North Korean cyber actors. "The theft is affiliated with TraderTraitor threat activity, which is also tracked as Jade Sleet…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="more ssh fun&amp;#x21;, (tue, dec 24th)" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31542" target="_blank" rel="noopener">More SSH Fun&amp;#x21;, (Tue, Dec 24th)</a><span class="article-summary">A few days ago, I wrote a diary&#x5b; 1 &#x5d; about a link file that abused the ssh.exe tool present in modern versions of Microsoft Windows. At the end, I mentioned that I will hunt for more SSH-related files/scripts. Guess what&#x3f; I already found another one. &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="cyberheistnews vol 14 #52 [heads up] bad actors use voice phishing in microsoft teams to spread malware" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://blog.knowbe4.com/cyberheistnews-vol-14-52-heads-up-bad-actors-use-voice-phishing-in-microsoft-teams-to-spread-malware" target="_blank" rel="noopener">CyberheistNews Vol 14 #52 [Heads Up] Bad Actors Use Voice Phishing in Microsoft Teams To Spread Malware</a></span><span class="headline-source">KNOWBE4.COM</span></div>
+<div class="headline" data-title="government cybersecurity in 2025: former principal deputy national cyber director weighs in" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://securityintelligence.com/articles/government-cybersecurity-2025-former-principal-deputy-national-cyber-director-weighs-in/" target="_blank" rel="noopener">Government cybersecurity in 2025: Former Principal Deputy National Cyber Director weighs in</a><span class="article-summary">As 2024 comes to an end, it&#8217;s time to look ahead to the state of public cybersecurity in 2025. The good news is this: Cybersecurity will be an ongoing concern for the government regardless of the party in power, as many current cybersecurity initiatives are bipartisan. But …</span></span><span class="headline-source">SECURITYINTELLIGENCE.COM</span></div>
+<div class="headline" data-title="harnessing ai to strengthen ot security against modern cyber threats" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.paloaltonetworks.com/blog/2024/12/harnessing-ai-strengthen-ot-security-against-modern-cyber-threats/" target="_blank" rel="noopener">Harnessing AI to Strengthen OT Security Against Modern Cyber Threats</a><span class="article-summary">To manage AI's dual role in OT environments, organizations need rigorous risk assessment and clear governance protocols for deploying AI. The post Harnessing AI to Strengthen OT Security Against Modern Cyber Threats appeared first on Palo Alto Networks Blog .</span></span><span class="headline-source">PALOALTONETWORKS.COM</span></div>
+<div class="headline" data-title="cybersecurity in the cloud: lessons for businesses and beyond - melina scotto - csp #206" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=hyZLthM63wc" target="_blank" rel="noopener">Cybersecurity in the Cloud: Lessons for Businesses and Beyond - Melina Scotto - CSP #206</a><span class="article-summary">Jessica Hoffman and Melina Scotto discuss the evolution of cybersecurity, focusing on cloud security, business responsibilities, and the importance of basic cyber hygiene. They highlight the role of communication, consulting, and integrating security into business operations, con…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="these are the cybersecurity stories we were jealous of in 2024" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/12/24/techcrunch-security-desk-cybersecurity-reporting-jealousy-list-of-2024/" target="_blank" rel="noopener">These are the cybersecurity stories we were jealous of in 2024</a><span class="article-summary">The very best work from our friends at competing publications. © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="the secret to making your tech stack work smarter 🧠" data-date="2024-12-24"><span class="headline-date">24 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=Nn_-mJwoIQQ" target="_blank" rel="noopener">The Secret to Making Your Tech Stack Work Smarter 🧠</a><span class="article-summary">Is your tech stack overflowing with tools you don’t need? 🤔 By consolidating your tools, you can cut unnecessary costs, improve efficiency, and even enhance your data insights. 🚀 Discover how smart organizations are reducing silos, streamlining workflows, and preparing for the fu…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

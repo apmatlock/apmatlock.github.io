@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-04-28</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,90 +109,93 @@
       <div class="stat"><span class="stat-value">10</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-04-28</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">26</span></button>
-<button class="filter-btn" data-cat="CISA KEV" onclick="filterCat('CISA KEV', this)">CISA KEV <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Security Bulletins" onclick="filterCat('Security Bulletins', this)">SECURITY BULLETINS <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">8</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Podcasts" onclick="filterCat('Podcasts', this)">PODCASTS <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">3</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="CISA KEV" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2025/04/28/cisa-adds-three-known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA Adds Three Known Exploited Vulnerabilities to Catalog</a><span class="article-summary">CISA has added three new vulnerabilities to its&nbsp; Known Exploited Vulnerabilities Catalog , based on evidence of active exploitation. CVE-2025-1976 &nbsp;Broadcom Brocade Fabric OS Code Injection Vulnerability CVE-2025-42599 &nbsp;Qualitia Active! Mail Stack-Based Buffer Over…</span></div><span class="kev-badge">KEV</span><span class="article-meta">CISA.GOV &mdash; Mon, 28 Apr 25 1</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2025/04/hackers-exploit-critical-craft-cms.html" target="_blank" rel="noopener">Hackers Exploit Critical Craft CMS Flaws; Hundreds of Servers Likely Compromised</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 28 Apr 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/25/d/nvidia-riva-vulnerabilities.html" target="_blank" rel="noopener">NVIDIA Riva Vulnerabilities Leave AI-Powered Speech and Translation Services at Risk</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 28 Apr 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://infosec.pub/post/27378866" target="_blank" rel="noopener">A Python client for the Global CVE Allocation System.</a></div><span class="article-meta">INFOSEC.PUB &mdash; 28 Apr 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://sh.itjust.works/post/36890692" target="_blank" rel="noopener">A Python client for the Global CVE Allocation System.</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 28 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/04/weekly-recap-critical-sap-exploit-ai.html" target="_blank" rel="noopener">⚡ Weekly Recap: Critical SAP Exploit, AI-Powered Phishing, Major Breaches, New CVEs &amp; More</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 28 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/04/how-breaches-start-breaking-down-5-real.html" target="_blank" rel="noopener">How Breaches Start: Breaking Down 5 Real Vulns</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 28 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/04/woocommerce-users-targeted-by-fake.html" target="_blank" rel="noopener">WooCommerce Users Targeted by Fake Patch Phishing Campaign Deploying Site Backdoors</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 28 Apr 2025</span></div>
-<div class="article-row" data-cat="Security Bulletins" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(255,170,0,0.5);background:rgba(255,170,0,0.10);" title="Security Bulletins">📋</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/cybersecurity-updates-ceo-legal-troubles-global-cyber-rules-microsoft-fix-issues-and-ai-at-b-side-sf" target="_blank" rel="noopener">Cybersecurity Updates: CEO Legal Troubles, Global Cyber Rules, Microsoft Fix Issues, and AI at B-Side SF</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 28 Apr 2025</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://sh.itjust.works/post/36931279" target="_blank" rel="noopener">NSA, CISA top brass absent from RSA Conference</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 28 Apr 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2025/04/windscribe-acquitted-on-charges-of-not-collecting-users-data.html" target="_blank" rel="noopener">Windscribe Acquitted on Charges of Not Collecting Users’ Data</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2025-04-28</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2025/04/earth-kurma-targets-southeast-asia-with.html" target="_blank" rel="noopener">Earth Kurma Targets Southeast Asia With Rootkits and Cloud-Based Data Theft Tools</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 28 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31898" target="_blank" rel="noopener">ISC Stormcast For Monday, April 28th, 2025 https://isc.sans.edu/podcastdetail/9426, (Mon, Apr 28th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 28 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.microsoft.com/en-us/security/blog/2025/04/28/faster-more-personalized-service-begins-at-the-frontline-with-microsoft-intune/" target="_blank" rel="noopener">Faster, more personalized service begins at the frontline with Microsoft Intune</a></div><span class="article-meta">MICROSOFT.COM &mdash; 28 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.lastwatchdog.com/news-alert-case-dismissed-against-vpn-executive-affirms-no-logs-policy-as-a-valid-legal-defense/" target="_blank" rel="noopener">News alert: Case dismissed against VPN executive, affirms no-logs policy as a valid legal defense</a></div><span class="article-meta">LASTWATCHDOG.COM &mdash; 28 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.lastwatchdog.com/my-take-as-rsac-2025-opens-amazon-microsoft-make-genai-grab-will-control-tighten/" target="_blank" rel="noopener">MY TAKE: As RSAC 2025 opens, Microsoft, Amazon make GenAI grab —  will control tighten?</a></div><span class="article-meta">LASTWATCHDOG.COM &mdash; 28 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.paloaltonetworks.com/blog/2025/04/deploy-with-prisma-airs/" target="_blank" rel="noopener">Deploy Bravely with Prisma AIRS</a></div><span class="article-meta">PALOALTONETWORKS.COM &mdash; 28 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.paloaltonetworks.com/blog/2025/04/introducing-cortex-xsiam-3-dot-0/" target="_blank" rel="noopener">Introducing XSIAM 3.0</a></div><span class="article-meta">PALOALTONETWORKS.COM &mdash; 28 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.paloaltonetworks.com/blog/2025/04/embracing-future-work-innovations-prisma-sase/" target="_blank" rel="noopener">Embracing the Future of Work with Innovations in Prisma SASE</a></div><span class="article-meta">PALOALTONETWORKS.COM &mdash; 28 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/27390687" target="_blank" rel="noopener">Mentorship Monday - Discussions for career and learning!</a></div><span class="article-meta">INFOSEC.PUB &mdash; 28 Apr 2025</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31896" target="_blank" rel="noopener">SRUM-DUMP Version 3: Uncovering Malware Activity in Forensics, (Sun, Apr 27th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 28 Apr 2025</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://techcrunch.com/2025/04/28/citizen-lab-says-exiled-uyghur-leaders-targeted-with-windows-spyware/" target="_blank" rel="noopener">Citizen Lab says exiled Uyghur leaders targeted with Windows spyware</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 28 Apr 2025</span></div>
-<div class="article-row" data-cat="Podcasts" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(85,170,204,0.5);background:rgba(85,170,204,0.10);" title="Podcasts">🎙️</span><div class="article-body"><a href="https://risky.biz/snakeoilers21pt2/" target="_blank" rel="noopener">Snake Oilers: LimaCharlie, Honeywell Cyber Insights, CobaltStrike and Outflank</a></div><span class="article-meta">RISKY.BIZ &mdash; 28 Apr 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://arstechnica.com/security/2025/04/ios-and-android-juice-jacking-defenses-have-been-trivial-to-bypass-for-years/" target="_blank" rel="noopener">iOS and Android juice jacking defenses have been trivial to bypass for years</a></div><span class="article-meta">ARSTECHNICA.COM &mdash; 28 Apr 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.kaspersky.com/blog/how-to-protect-your-account-from-sim-swapping/53337/" target="_blank" rel="noopener">How to protect your social media accounts from SIM swap attacks | Kaspersky official blog</a></div><span class="article-meta">KASPERSKY.COM &mdash; 28 Apr 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-04-28"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.welivesecurity.com/en/mobile-security/how-safe-secure-iphone/" target="_blank" rel="noopener">How safe and secure is your iPhone really?</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 28 Apr 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa adds three known exploited vulnerabilities to catalog" data-date="2025-04-28"><span class="headline-date">28 Apr <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2025/04/28/cisa-adds-three-known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA Adds Three Known Exploited Vulnerabilities to Catalog</a><span class="article-summary">CISA has added three new vulnerabilities to its&nbsp; Known Exploited Vulnerabilities Catalog , based on evidence of active exploitation. CVE-2025-1976 &nbsp;Broadcom Brocade Fabric OS Code Injection Vulnerability CVE-2025-42599 &nbsp;Qualitia Active! Mail Stack-Based Buffer Over…</span></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="hackers exploit critical craft cms flaws; hundreds of servers likely compromised" data-date="2025-04-28"><span class="headline-date">28 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/hackers-exploit-critical-craft-cms.html" target="_blank" rel="noopener">Hackers Exploit Critical Craft CMS Flaws; Hundreds of Servers Likely Compromised</a><span class="article-summary">Threat actors have been observed exploiting two newly disclosed critical security flaws in Craft CMS in zero-day attacks to breach servers and gain unauthorized access. The attacks, first observed by Orange Cyberdefense SensePost on February 14, 2025, involve chaining the below v…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="nvidia riva vulnerabilities leave ai-powered speech and translation services at risk" data-date="2025-04-28"><span class="headline-date">28 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/25/d/nvidia-riva-vulnerabilities.html" target="_blank" rel="noopener">NVIDIA Riva Vulnerabilities Leave AI-Powered Speech and Translation Services at Risk</a><span class="article-summary">Trend Research uncovered misconfigurations in NVIDIA Riva deployments, with two vulnerabilities, CVE-2025-23242 and CVE-2025-23243, contributing to their exposure. These security flaws could lead to unauthorized access, resource abuse, and potential misuse or theft of AI-powered …</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+<div class="headline" data-title="a python client for the global cve allocation system." data-date="2025-04-28"><span class="headline-date">28 Apr</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/27378866" target="_blank" rel="noopener">A Python client for the Global CVE Allocation System.</a><span class="article-summary">submitted by cm0002 to cybersecurity 7 points | 0 comments https://github.com/gcve-eu/gcve The Global CVE (GCVE) allocation system is a new, decentralized approach to vulnerability identification and numbering, designed to improve flexibility, scalability, and autonomy for partic…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="a python client for the global cve allocation system." data-date="2025-04-28"><span class="headline-date">28 Apr</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/36890692" target="_blank" rel="noopener">A Python client for the Global CVE Allocation System.</a><span class="article-summary">submitted by cm0002 to cybersecurity 7 points | 0 comments https://github.com/gcve-eu/gcve The Global CVE (GCVE) allocation system is a new, decentralized approach to vulnerability identification and numbering, designed to improve flexibility, scalability, and autonomy for partic…</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="⚡ weekly recap: critical sap exploit, ai-powered phishing, major breaches, new cves &amp; more" data-date="2025-04-28"><span class="headline-date">28 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/weekly-recap-critical-sap-exploit-ai.html" target="_blank" rel="noopener">⚡ Weekly Recap: Critical SAP Exploit, AI-Powered Phishing, Major Breaches, New CVEs &amp; More</a><span class="article-summary">What happens when cybercriminals no longer need deep skills to breach your defenses? Today’s attackers are armed with powerful tools that do the heavy lifting — from AI-powered phishing kits to large botnets ready to strike. And they’re not just after big corporations. Anyone can…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="how breaches start: breaking down 5 real vulns" data-date="2025-04-28"><span class="headline-date">28 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/how-breaches-start-breaking-down-5-real.html" target="_blank" rel="noopener">How Breaches Start: Breaking Down 5 Real Vulns</a><span class="article-summary">Not every security vulnerability is high risk on its own - but in the hands of an advanced attacker, even small weaknesses can escalate into major breaches. These five real vulnerabilities, uncovered by Intruder’s bug-hunting team, reveal how attackers turn overlooked flaws into …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="woocommerce users targeted by fake patch phishing campaign deploying site backdoors" data-date="2025-04-28"><span class="headline-date">28 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/woocommerce-users-targeted-by-fake.html" target="_blank" rel="noopener">WooCommerce Users Targeted by Fake Patch Phishing Campaign Deploying Site Backdoors</a><span class="article-summary">Cybersecurity researchers are warning about a large-scale phishing campaign targeting WooCommerce users with a fake security alert urging them to download a "critical patch" but deploy a backdoor instead. WordPress security company Patchstack described the activity as sophisticat…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-bulletins">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,170,0,0.5);" onclick="toggleSection(this)">📋 SECURITY BULLETINS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cybersecurity updates: ceo legal troubles, global cyber rules, microsoft fix issues, and ai at b-side sf" data-date="2025-04-28"><span class="headline-date">28 Apr</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/cybersecurity-updates-ceo-legal-troubles-global-cyber-rules-microsoft-fix-issues-and-ai-at-b-side-sf" target="_blank" rel="noopener">Cybersecurity Updates: CEO Legal Troubles, Global Cyber Rules, Microsoft Fix Issues, and AI at B-Side SF</a><span class="article-summary">In this episode of 'Cybersecurity Today', host David Shipley covers multiple key stories: Veritaco CEO Jeffrey Bowie is charged with attempting to infect a hospital with malware. Global Chief Information Security Officers (CISOs) call on world governments to harmonize cybersecuri…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="nsa, cisa top brass absent from rsa conference" data-date="2025-04-28"><span class="headline-date">28 Apr</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/36931279" target="_blank" rel="noopener">NSA, CISA top brass absent from RSA Conference</a><span class="article-summary">submitted by PhilipTheBucket to cybersecurity 36 points | 5 comments https://go.theregister.com/feed/www.theregister.com/2025/04/28/nsa_cisa_bosses_notably_absent/</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="windscribe acquitted on charges of not collecting users’ data" data-date="2025-04-28"><span class="headline-date">28 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2025/04/windscribe-acquitted-on-charges-of-not-collecting-users-data.html" target="_blank" rel="noopener">Windscribe Acquitted on Charges of Not Collecting Users’ Data</a><span class="article-summary">The company doesn&#8217;t keep logs, so couldn&#8217;t turn over data : Windscribe, a globally used privacy-first VPN service, announced today that its founder, Yegor Sak, has been fully acquitted by a court in Athens, Greece, following a two-year legal battle in which Sak was pe…</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="earth kurma targets southeast asia with rootkits and cloud-based data theft tools" data-date="2025-04-28"><span class="headline-date">28 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/earth-kurma-targets-southeast-asia-with.html" target="_blank" rel="noopener">Earth Kurma Targets Southeast Asia With Rootkits and Cloud-Based Data Theft Tools</a><span class="article-summary">Government and telecommunications sectors in Southeast Asia have become the target of a "sophisticated" campaign undertaken by a new advanced persistent threat (APT) group called Earth Kurma since June 2024. The attacks, per Trend Micro, have leveraged custom malware, rootkits, a…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">8</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="isc stormcast for monday, april 28th, 2025 https://isc.sans.edu/podcastdetail/9426, (mon, apr 28th)" data-date="2025-04-28"><span class="headline-date">28 Apr</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31898" target="_blank" rel="noopener">ISC Stormcast For Monday, April 28th, 2025 https://isc.sans.edu/podcastdetail/9426, (Mon, Apr 28th)</a><span class="article-summary">(c) SANS Internet Storm Center. https://isc.sans.edu Creative Commons Attribution-Noncommercial 3.0 United States License.</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="faster, more personalized service begins at the frontline with microsoft intune" data-date="2025-04-28"><span class="headline-date">28 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.microsoft.com/en-us/security/blog/2025/04/28/faster-more-personalized-service-begins-at-the-frontline-with-microsoft-intune/" target="_blank" rel="noopener">Faster, more personalized service begins at the frontline with Microsoft Intune</a><span class="article-summary">Secure, cloud-based endpoint management helps healthcare providers empower frontline staff and improve patient care. The post Faster, more personalized service begins at the frontline with Microsoft Intune appeared first on Microsoft Security Blog .</span></span><span class="headline-source">MICROSOFT.COM</span></div>
+<div class="headline" data-title="news alert: case dismissed against vpn executive, affirms no-logs policy as a valid legal defense" data-date="2025-04-28"><span class="headline-date">28 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.lastwatchdog.com/news-alert-case-dismissed-against-vpn-executive-affirms-no-logs-policy-as-a-valid-legal-defense/" target="_blank" rel="noopener">News alert: Case dismissed against VPN executive, affirms no-logs policy as a valid legal defense</a><span class="article-summary">Toronto, Canada, Apr. 28, 2025, CyberNewswire &#8212; Windscribe , a globally used privacy-first VPN service, announced today that its founder, Yegor Sak, has been fully acquitted by a court in Athens, Greece, following a two-year legal battle in which Sak &#8230; (more…) The pos…</span></span><span class="headline-source">LASTWATCHDOG.COM</span></div>
+<div class="headline" data-title="my take: as rsac 2025 opens, microsoft, amazon make genai grab —  will control tighten?" data-date="2025-04-28"><span class="headline-date">28 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.lastwatchdog.com/my-take-as-rsac-2025-opens-amazon-microsoft-make-genai-grab-will-control-tighten/" target="_blank" rel="noopener">MY TAKE: As RSAC 2025 opens, Microsoft, Amazon make GenAI grab —  will control tighten?</a><span class="article-summary">SAN FRANCISCO — RSAC 2025 kicks off today at Moscone Center, with more than 40,000 cybersecurity pros, tech executives, and policy leaders gathering to chart the future of digital risk management. Related: RSAC 2025&#8217;s full agenda One dominant undercurrent is &#8230; (more…)…</span></span><span class="headline-source">LASTWATCHDOG.COM</span></div>
+<div class="headline" data-title="deploy bravely with prisma airs" data-date="2025-04-28"><span class="headline-date">28 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.paloaltonetworks.com/blog/2025/04/deploy-with-prisma-airs/" target="_blank" rel="noopener">Deploy Bravely with Prisma AIRS</a><span class="article-summary">Introducing "Secure AI by Design" portfolio for enterprises to build and adopt AI securely, enhancing customer interactions and employee productivity. The post Deploy Bravely with Prisma AIRS appeared first on Palo Alto Networks Blog .</span></span><span class="headline-source">PALOALTONETWORKS.COM</span></div>
+<div class="headline" data-title="introducing xsiam 3.0" data-date="2025-04-28"><span class="headline-date">28 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.paloaltonetworks.com/blog/2025/04/introducing-cortex-xsiam-3-dot-0/" target="_blank" rel="noopener">Introducing XSIAM 3.0</a><span class="article-summary">XSIAM is expanding from reactive response to proactive defense, transforming exposure management and email security with unified data, AI and automation. The post Introducing XSIAM 3.0 appeared first on Palo Alto Networks Blog .</span></span><span class="headline-source">PALOALTONETWORKS.COM</span></div>
+<div class="headline" data-title="embracing the future of work with innovations in prisma sase" data-date="2025-04-28"><span class="headline-date">28 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.paloaltonetworks.com/blog/2025/04/embracing-future-work-innovations-prisma-sase/" target="_blank" rel="noopener">Embracing the Future of Work with Innovations in Prisma SASE</a><span class="article-summary">Empower users with Prisma Access Browser 2.0: enhanced data security, AI-powered protection and Precision AI to stop advanced threats. The post Embracing the Future of Work with Innovations in Prisma SASE appeared first on Palo Alto Networks Blog .</span></span><span class="headline-source">PALOALTONETWORKS.COM</span></div>
+<div class="headline" data-title="mentorship monday - discussions for career and learning!" data-date="2025-04-28"><span class="headline-date">28 Apr</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/27390687" target="_blank" rel="noopener">Mentorship Monday - Discussions for career and learning!</a><span class="article-summary">submitted by shellsharks to cybersecurity 6 points | 0 comments Weekly thread for any and all career, learning and general guidance questions. Thinking of taking a training or going for a cert? Wondering how to level up your career? Wondering what NOT to do? Got other questions? …</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="srum-dump version 3: uncovering malware activity in forensics, (sun, apr 27th)" data-date="2025-04-28"><span class="headline-date">28 Apr</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31896" target="_blank" rel="noopener">SRUM-DUMP Version 3: Uncovering Malware Activity in Forensics, (Sun, Apr 27th)</a><span class="article-summary">&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x25;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x23;&#x2…</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="citizen lab says exiled uyghur leaders targeted with windows spyware" data-date="2025-04-28"><span class="headline-date">28 Apr</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/04/28/citizen-lab-says-exiled-uyghur-leaders-targeted-with-windows-spyware/" target="_blank" rel="noopener">Citizen Lab says exiled Uyghur leaders targeted with Windows spyware</a><span class="article-summary">The researchers said the attackers behind the campaign had "deep understanding of the target community."</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-podcasts">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(85,170,204,0.5);" onclick="toggleSection(this)">🎙️ PODCASTS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="snake oilers: limacharlie, honeywell cyber insights, cobaltstrike and outflank" data-date="2025-04-28"><span class="headline-date">28 Apr</span><span class="headline-body"><a class="headline-title" href="https://risky.biz/snakeoilers21pt2/" target="_blank" rel="noopener">Snake Oilers: LimaCharlie, Honeywell Cyber Insights, CobaltStrike and Outflank</a><span class="article-summary">In this edition of the Snake Oilers podcast, three sponsors come along to pitch their products: LimaCharlie: A public cloud for SecOps Honeywell Cyber Insights: An OT security/discovery solution Fortra’s CobaltStrike and Outflank: Security tooling for red teamers This episode is …</span></span><span class="headline-source">RISKY.BIZ</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ios and android juice jacking defenses have been trivial to bypass for years" data-date="2025-04-28"><span class="headline-date">28 Apr</span><span class="headline-body"><a class="headline-title" href="https://arstechnica.com/security/2025/04/ios-and-android-juice-jacking-defenses-have-been-trivial-to-bypass-for-years/" target="_blank" rel="noopener">iOS and Android juice jacking defenses have been trivial to bypass for years</a><span class="article-summary">New ChoiceJacking attack allows malicious chargers to steal data from phones.</span></span><span class="headline-source">ARSTECHNICA.COM</span></div>
+<div class="headline" data-title="how to protect your social media accounts from sim swap attacks | kaspersky official blog" data-date="2025-04-28"><span class="headline-date">28 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.kaspersky.com/blog/how-to-protect-your-account-from-sim-swapping/53337/" target="_blank" rel="noopener">How to protect your social media accounts from SIM swap attacks | Kaspersky official blog</a><span class="article-summary">We explain how scammers are hijacking social media accounts, and what you can do about it.</span></span><span class="headline-source">KASPERSKY.COM</span></div>
+<div class="headline" data-title="how safe and secure is your iphone really?" data-date="2025-04-28"><span class="headline-date">28 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/en/mobile-security/how-safe-secure-iphone/" target="_blank" rel="noopener">How safe and secure is your iPhone really?</a><span class="article-summary">Your iPhone isn't necessarily as invulnerable to security threats as you may think. Here are the key dangers to watch out for and how to harden your device against bad actors.</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

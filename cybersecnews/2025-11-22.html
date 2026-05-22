@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-11-22</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,74 +109,57 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-11-22</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">15</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-11-22"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2025/11/cisa-warns-of-actively-exploited.html" target="_blank" rel="noopener">CISA Warns of Actively Exploited Critical Oracle Identity Manager Zero-Day Vulnerability</a></div><span class="kev-badge">KEV</span><span class="article-meta">THEHACKERNEWS.COM &mdash; 22 Nov 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-11-22"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://gbhackers.com/cisa-issues-warning-as-hackers-target-oracle-identity-manager-rce-flaw/" target="_blank" rel="noopener">CISA Issues Warning as Hackers Target Oracle Identity Manager RCE Flaw</a></div><span class="kev-badge">KEV</span><span class="article-meta">GBHACKERS.COM &mdash; 22 Nov 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-11-22"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://gbhackers.com/metasploit-releases-new-exploit-for-fresh-fortiweb-0-day/" target="_blank" rel="noopener">Metasploit Releases New Exploit for Fresh FortiWeb 0-Day Vulnerabilities</a></div><span class="article-meta">GBHACKERS.COM &mdash; 22 Nov 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-11-22"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/4094745/fcc-reversal-removes-federal-cyber-safeguards-targeting-telecom-weaknesses-post-salt-typhoon-attacks.html" target="_blank" rel="noopener">FCC reversal removes federal cyber safeguards targeting telecom weaknesses post-Salt Typhoon attacks</a></div><span class="article-meta">CSOONLINE.COM &mdash; 22 Nov 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-11-22"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/4094780/crowdstrike-fired-insider-for-sharing-internal-info-with-hacking-group.html" target="_blank" rel="noopener">CrowdStrike fired insider for sharing internal info with hacking group</a></div><span class="kev-badge">KEV</span><span class="article-meta">CSOONLINE.COM &mdash; 22 Nov 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-11-22"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/hackers-use-salesforce-gainsight-breach/" target="_blank" rel="noopener">Hackers Use Salesforce Gainsight Breach to Access Data from More Than 200 Companies</a></div><span class="article-meta">GBHACKERS.COM &mdash; 22 Nov 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-11-22"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/cox-enterprises-discloses-oracle-e-business-suite-data-breach/" target="_blank" rel="noopener">Cox Enterprises discloses Oracle E-Business Suite data breach</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 22 Nov 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-11-22"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/piecing-together-the-puzzle-a-qilin-ransomware-investigation/" target="_blank" rel="noopener">Piecing Together the Puzzle: A Qilin Ransomware Investigation</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 22 Nov 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-11-22"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/understanding-cybersecurity-threats-insights-from-intelligence-experts" target="_blank" rel="noopener">Understanding Cybersecurity Threats: Insights from Intelligence Experts</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 22 Nov 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-11-22"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://gbhackers.com/crowdstrike-fires-employee-for-leaking-internal-system-info-to-hackers/" target="_blank" rel="noopener">CrowdStrike Fires Employee for Leaking Internal System Info to Hackers</a></div><span class="article-meta">GBHACKERS.COM &mdash; 22 Nov 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-11-22"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2025/11/china-linked-apt31-launches-stealthy.html" target="_blank" rel="noopener">China-Linked APT31 Launches Stealthy Cyberattacks on Russian IT Using Cloud Services</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 22 Nov 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-11-22"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.lastwatchdog.com/my-take-carol-sturka-declares-i-have-agency-big-techs-ai-models-now-testing-that-claim/" target="_blank" rel="noopener">MY TAKE: Carol Sturka declares ‘I Have Agency’ — Big Tech’s AI models now testing that claim</a></div><span class="article-meta">LASTWATCHDOG.COM &mdash; 22 Nov 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-11-22"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://sh.itjust.works/post/50289397" target="_blank" rel="noopener">CrowdStrike catches insider feeding information to hackers</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 22 Nov 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-11-22"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2025/11/matrix-push-c2-uses-browser.html" target="_blank" rel="noopener">Matrix Push C2 Uses Browser Notifications for Fileless, Cross-Platform Phishing Attacks</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 22 Nov 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-11-22"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/whatsapp-api-flaw-let-researchers-scrape-35-billion-accounts/" target="_blank" rel="noopener">WhatsApp API flaw let researchers scrape 3.5 billion accounts</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 22 Nov 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa warns of actively exploited critical oracle identity manager zero-day vulnerability" data-date="2025-11-22"><span class="headline-date">22 Nov <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/11/cisa-warns-of-actively-exploited.html" target="_blank" rel="noopener">CISA Warns of Actively Exploited Critical Oracle Identity Manager Zero-Day Vulnerability</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) on Friday added a critical security flaw impacting Oracle Identity Manager to its Known Exploited Vulnerabilities (KEV) catalog, citing evidence of active exploitation. The vulnerability in question is CVE-2025-6175…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="cisa issues warning as hackers target oracle identity manager rce flaw" data-date="2025-11-22"><span class="headline-date">22 Nov <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/cisa-issues-warning-as-hackers-target-oracle-identity-manager-rce-flaw/" target="_blank" rel="noopener">CISA Issues Warning as Hackers Target Oracle Identity Manager RCE Flaw</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) has added a new Oracle vulnerability to its Known Exploited Vulnerabilities (KEV) catalog, warning that attackers are already exploiting it in real-world attacks. The bug, tracked as CVE-2025-61757, affects Oracle I…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="metasploit releases new exploit for fresh fortiweb 0-day vulnerabilities" data-date="2025-11-22"><span class="headline-date">22 Nov</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/metasploit-releases-new-exploit-for-fresh-fortiweb-0-day/" target="_blank" rel="noopener">Metasploit Releases New Exploit for Fresh FortiWeb 0-Day Vulnerabilities</a><span class="article-summary">Rapid7&#8217;s Metasploit team has released a new exploit module targeting critical zero-day vulnerabilities in Fortinet&#8217;s FortiWeb web application firewall, chaining two security flaws to achieve unauthenticated remote code execution with root privileges.​ CVE ID Vulnerabi…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="fcc reversal removes federal cyber safeguards targeting telecom weaknesses post-salt typhoon attacks" data-date="2025-11-22"><span class="headline-date">22 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4094745/fcc-reversal-removes-federal-cyber-safeguards-targeting-telecom-weaknesses-post-salt-typhoon-attacks.html" target="_blank" rel="noopener">FCC reversal removes federal cyber safeguards targeting telecom weaknesses post-Salt Typhoon attacks</a><span class="article-summary">The US federal government is rolling back mandates intended to protect critical infrastructure following the widespread Salt Typhoon attacks. The Federal Communication Commission (FCC) has reversed a January 2025 Declaratory Ruling requiring US telecom providers to adopt and cert…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="crowdstrike fired insider for sharing internal info with hacking group" data-date="2025-11-22"><span class="headline-date">22 Nov <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4094780/crowdstrike-fired-insider-for-sharing-internal-info-with-hacking-group.html" target="_blank" rel="noopener">CrowdStrike fired insider for sharing internal info with hacking group</a><span class="article-summary">Cybersecurity company CrowdStrike fired a “suspicious insider” last month, according to a report from TechCrunch . The terminated worker allegedly provided information about the company’s internal systems to a prominent hacking group. The firing came to light after Scattered Laps…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="hackers use salesforce gainsight breach to access data from more than 200 companies" data-date="2025-11-22"><span class="headline-date">22 Nov</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/hackers-use-salesforce-gainsight-breach/" target="_blank" rel="noopener">Hackers Use Salesforce Gainsight Breach to Access Data from More Than 200 Companies</a><span class="article-summary">Salesforce has disclosed a significant security incident involving unauthorized access to customer data through compromised Gainsight-published applications. The breach, detected in mid-November 2025, potentially exposed sensitive information from over 200 organizations that use …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="cox enterprises discloses oracle e-business suite data breach" data-date="2025-11-22"><span class="headline-date">22 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/cox-enterprises-discloses-oracle-e-business-suite-data-breach/" target="_blank" rel="noopener">Cox Enterprises discloses Oracle E-Business Suite data breach</a><span class="article-summary">Cox Enterprises is notifying impacted individuals of a data breach that exposed their personal data to hackers who breached the company network after exploiting a zero-day flaw in Oracle E-Business Suite. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="piecing together the puzzle: a qilin ransomware investigation" data-date="2025-11-22"><span class="headline-date">22 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/piecing-together-the-puzzle-a-qilin-ransomware-investigation/" target="_blank" rel="noopener">Piecing Together the Puzzle: A Qilin Ransomware Investigation</a><span class="article-summary">Huntress analysts reconstructed a Qilin ransomware attack from a single endpoint, using limited logs to reveal rogue ScreenConnect access, failed infostealer attempts, and the ransomware execution path. The investigation shows how validating multiple data sources can uncover acti…</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="understanding cybersecurity threats: insights from intelligence experts" data-date="2025-11-22"><span class="headline-date">22 Nov</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/understanding-cybersecurity-threats-insights-from-intelligence-experts" target="_blank" rel="noopener">Understanding Cybersecurity Threats: Insights from Intelligence Experts</a><span class="article-summary">In this episode of Cybersecurity Today, host Jim Love welcomes retired intelligence officer Neil Bisson and regular guest David Shipley for an in-depth discussion on current cybersecurity threats facing both Canada and the US. They explore the roles of major state actors like Chi…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="crowdstrike fires employee for leaking internal system info to hackers" data-date="2025-11-22"><span class="headline-date">22 Nov</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/crowdstrike-fires-employee-for-leaking-internal-system-info-to-hackers/" target="_blank" rel="noopener">CrowdStrike Fires Employee for Leaking Internal System Info to Hackers</a><span class="article-summary">Cybersecurity giant CrowdStrike has terminated an employee who allegedly shared sensitive internal system information with a notorious hacking collective. The incident involved the leak of internal screenshots posted on a public Telegram channel operated by the threat group known…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="china-linked apt31 launches stealthy cyberattacks on russian it using cloud services" data-date="2025-11-22"><span class="headline-date">22 Nov</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/11/china-linked-apt31-launches-stealthy.html" target="_blank" rel="noopener">China-Linked APT31 Launches Stealthy Cyberattacks on Russian IT Using Cloud Services</a><span class="article-summary">The China-linked advanced persistent threat (APT) group known as APT31 has been attributed to cyber attacks targeting the Russian information technology (IT) sector between 2024 and 2025 while staying undetected for extended periods of time. "In the period from 2024 to 2025, the …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="my take: carol sturka declares ‘i have agency’ — big tech’s ai models now testing that claim" data-date="2025-11-22"><span class="headline-date">22 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.lastwatchdog.com/my-take-carol-sturka-declares-i-have-agency-big-techs-ai-models-now-testing-that-claim/" target="_blank" rel="noopener">MY TAKE: Carol Sturka declares ‘I Have Agency’ — Big Tech’s AI models now testing that claim</a><span class="article-summary">It was a tense moment in Episode 4 of Pluribus , the Apple TV series about a world linked by a single intelligence. Related: Mistaking pattern mastery for wisdom A character named Carol Sturka, surrounded by a seemingly benevolent collective &#8230; (more…) The post MY TAKE: Caro…</span></span><span class="headline-source">LASTWATCHDOG.COM</span></div>
+<div class="headline" data-title="crowdstrike catches insider feeding information to hackers" data-date="2025-11-22"><span class="headline-date">22 Nov</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/50289397" target="_blank" rel="noopener">CrowdStrike catches insider feeding information to hackers</a><span class="article-summary">submitted by kid to cybersecurity 1 points | 0 comments https://www.bleepingcomputer.com/news/security/crowdstrike-catches-insider-feeding-information-to-hackers/</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="matrix push c2 uses browser notifications for fileless, cross-platform phishing attacks" data-date="2025-11-22"><span class="headline-date">22 Nov</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/11/matrix-push-c2-uses-browser.html" target="_blank" rel="noopener">Matrix Push C2 Uses Browser Notifications for Fileless, Cross-Platform Phishing Attacks</a><span class="article-summary">Bad actors are leveraging browser notifications as a vector for phishing attacks to distribute malicious links by means of a new command-and-control (C2) platform called Matrix Push C2. "This browser-native, fileless framework leverages push notifications, fake alerts, and link r…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="whatsapp api flaw let researchers scrape 3.5 billion accounts" data-date="2025-11-22"><span class="headline-date">22 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/whatsapp-api-flaw-let-researchers-scrape-35-billion-accounts/" target="_blank" rel="noopener">WhatsApp API flaw let researchers scrape 3.5 billion accounts</a><span class="article-summary">Researchers compiled a list of 3.5 billion WhatsApp mobile phone numbers and associated personal information by abusing a contact-discovery API that lacked rate limiting. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

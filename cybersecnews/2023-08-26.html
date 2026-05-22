@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2023-08-26</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,82 +109,69 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2023-08-26</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">22</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-08-26"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://labs.watchtowr.com/cve-2023-36844-and-friends-rce-in-juniper-firewalls/" target="_blank" rel="noopener">CVE-2023-36844 And Friends: Unauth RCE In Juniper Devices</a></div><span class="article-meta">LABS.WATCHTOWR.COM &mdash; 26 Aug 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-08-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2023/08/kroll-suffers-data-breach-employee.html" target="_blank" rel="noopener">Kroll Suffers Data Breach: Employee Falls Victim to SIM Swapping Attack</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 26 Aug 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-08-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cybersecuritydive.com/news/prospect-medical-data-stolen/691945/?&web_view=true" target="_blank" rel="noopener">Update: Prospect Medical Stolen Data Listed for Sale by Emerging Ransomware Group</a></div><span class="article-meta">CYBERSECURITYDIVE.COM &mdash; 26 Aug 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-08-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.darkreading.com/endpoint/malwarebytes-announces-acquisition-of-online-privacy-company-cyrus?&web_view=true" target="_blank" rel="noopener">Malwarebytes Announces Acquisition of Online Privacy Company Cyrus</a></div><span class="article-meta">DARKREADING.COM &mdash; 26 Aug 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-08-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/30160" target="_blank" rel="noopener">macOS: Who&amp;#x3f;s Behind This Network Connection&amp;#x3f;, (Sat, Aug 26th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 26 Aug 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-08-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://techcrunch.com/2023/08/26/brazil-webdetetive-spyware-deleted/" target="_blank" rel="noopener">A Brazilian phone spyware was hacked and victims’ stolen device data ‘deleted’</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 26 Aug 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-08-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://blog.phylum.io/npm-emails-validator-package-malware/" target="_blank" rel="noopener">Fake Email Validation NPM Package Contains C2 and Sophisticated Data Exfiltration</a></div><span class="article-meta">PHYLUM.IO &mdash; 26 Aug 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-08-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://ost2.fyi/Exp4011" target="_blank" rel="noopener">New OpenSecurityTraining2 class "Exploitation 4011: Windows Kernel Exploitation: Race Condition + UAF in KTM" by Cedric Halbronn (~33 hours)</a></div><span class="article-meta">OST2.FYI &mdash; 26 Aug 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-08-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.hackread.com/discord-data-breach-notifies-users/?&web_view=true" target="_blank" rel="noopener">Update: Discord Notifies Users of Data Breach Impacting 180 Accounts</a></div><span class="article-meta">HACKREAD.COM &mdash; 26 Aug 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-08-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://therecord.media/ohio-archive-org-data-leak-ransomware?&web_view=true" target="_blank" rel="noopener">Thousands of SSNs Leaked After Ransomware Attack on Ohio State Archive Organization</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 26 Aug 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-08-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.reliaquest.com/blog/the-3-malware-loaders-behind-80-of-incidents/?&web_view=true" target="_blank" rel="noopener">The Three Malware Loaders Behind 80% of Incidents</a></div><span class="article-meta">RELIAQUEST.COM &mdash; 26 Aug 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-08-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.infosecurity-magazine.com/news/teens-responsible-lapsus/?&web_view=true" target="_blank" rel="noopener">UK: Teens Found Responsible for Lapsus$ Cyberattacks</a></div><span class="article-meta">INFOSECURITY-MAGAZINE.COM &mdash; 26 Aug 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-08-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2023/08/lockbit-30-ransomware-builder-leak.html" target="_blank" rel="noopener">LockBit 3.0 Ransomware Builder Leak Gives Rise to Hundreds of New Variants</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 26 Aug 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-08-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://securitycafe.ca/@chetwisniewski/110940233007891201" target="_blank" rel="noopener">DB Podcast Episode 203 - Ransomeware deep dive</a></div><span class="article-meta">SECURITYCAFE.CA &mdash; 26 Aug 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-08-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://securityaffairs.com/149804/cyber-crime/tornado-cash-founders-charges.html?&web_view=true" target="_blank" rel="noopener">DOJ Charged Tornado Cash Founders With Laundering More Than $1 Billion</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 26 Aug 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-08-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://elie.net/publication/hybrid-post-quantum-signatures-in-hardware-security-keys/" target="_blank" rel="noopener">Making security keys post quantum resilient</a></div><span class="article-meta">ELIE.NET &mdash; 26 Aug 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-08-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://mr-medi.github.io/research/2023/07/31/exploring-cross-site-frame-counting-attacks.html" target="_blank" rel="noopener">How Cross-Site Frame Counting Exposes Private Repositories on GitHub</a></div><span class="article-meta">MR-MEDI.GITHUB.IO &mdash; 26 Aug 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-08-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://marcusedmondson.substack.com/p/5-steps-to-create-conditional-formatting" target="_blank" rel="noopener">Threat Hunting Newsletter - Excel for Threat Hunters</a></div><span class="article-meta">MARCUSEDMONDSON.SUBSTACK.COM &mdash; 26 Aug 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-08-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://github.com/milosilo/hack_hard" target="_blank" rel="noopener">Hack Hard: A Retro RPG Educational Hacking Game with A Die Hard Tribute</a></div><span class="article-meta">GITHUB.COM &mdash; 26 Aug 2023</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2023-08-26"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://inquest.net/blog/adversary-on-the-defense-antibot-pw/?&web_view=true" target="_blank" rel="noopener">Adversary On The Defense: ANTIBOT.PW</a></div><span class="article-meta">INQUEST.NET &mdash; 26 Aug 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-08-26"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.securityweek.com/cypago-raises-13-million-for-grc-automation-platform/?&web_view=true" target="_blank" rel="noopener">Cypago Raises $13 Million for GRC Automation Platform</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 26 Aug 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-08-26"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bankinfosecurity.com/unitedhealthcare-fined-80k-for-6-month-records-access-delay-a-22941?&web_view=true" target="_blank" rel="noopener">UnitedHealthcare Fined $80K for Six-Month Records Access Delay</a></div><span class="article-meta">BANKINFOSECURITY.COM &mdash; 26 Aug 2023</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cve-2023-36844 and friends: unauth rce in juniper devices" data-date="2023-08-26"><span class="headline-date">26 Aug</span><span class="headline-body"><a class="headline-title" href="https://labs.watchtowr.com/cve-2023-36844-and-friends-rce-in-juniper-firewalls/" target="_blank" rel="noopener">CVE-2023-36844 And Friends: Unauth RCE In Juniper Devices</a><span class="article-summary">submitted by bOt to netsec 1 points | 0 comments https://labs.watchtowr.com/cve-2023-36844-and-friends-rce-in-juniper-firewalls/ This is an automated archive. The original was posted on /r/netsec by /u/dx7r__ on 2023-08-26 10:37:41+00:00.</span></span><span class="headline-source">LABS.WATCHTOWR.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="kroll suffers data breach: employee falls victim to sim swapping attack" data-date="2023-08-26"><span class="headline-date">26 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/08/kroll-suffers-data-breach-employee.html" target="_blank" rel="noopener">Kroll Suffers Data Breach: Employee Falls Victim to SIM Swapping Attack</a><span class="article-summary">Risk and financial advisory solutions provider Kroll on Friday disclosed that one of its employees fell victim to a "highly sophisticated" SIM swapping attack. The incident, which took place on August 19, 2023, targeted the employee's T-Mobile account, the company said. "Specific…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="update: prospect medical stolen data listed for sale by emerging ransomware group" data-date="2023-08-26"><span class="headline-date">26 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.cybersecuritydive.com/news/prospect-medical-data-stolen/691945/?&web_view=true" target="_blank" rel="noopener">Update: Prospect Medical Stolen Data Listed for Sale by Emerging Ransomware Group</a><span class="article-summary">The Rhysida ransomware group claimed responsibility for a ransomware attack against Prospect Medical Holdings that forced multiple hospital closures earlier this month and continues to impact operations.</span></span><span class="headline-source">CYBERSECURITYDIVE.COM</span></div>
+<div class="headline" data-title="malwarebytes announces acquisition of online privacy company cyrus" data-date="2023-08-26"><span class="headline-date">26 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.darkreading.com/endpoint/malwarebytes-announces-acquisition-of-online-privacy-company-cyrus?&web_view=true" target="_blank" rel="noopener">Malwarebytes Announces Acquisition of Online Privacy Company Cyrus</a><span class="article-summary">This strategic acquisition reinforces Malwarebytes' commitment to privacy by giving users more control over their information, no matter where or how they choose to browse and interact online.</span></span><span class="headline-source">DARKREADING.COM</span></div>
+<div class="headline" data-title="macos: who&amp;#x3f;s behind this network connection&amp;#x3f;, (sat, aug 26th)" data-date="2023-08-26"><span class="headline-date">26 Aug</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/30160" target="_blank" rel="noopener">macOS: Who&amp;#x3f;s Behind This Network Connection&amp;#x3f;, (Sat, Aug 26th)</a><span class="article-summary">When you must investigate suspicious behavior or work on an actual incident, you could be asked to determine who&#x27s behind a network connection. From a pure network point of view, your firewall or any network security control device/app will tell you that the source is the con…</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="a brazilian phone spyware was hacked and victims’ stolen device data ‘deleted’" data-date="2023-08-26"><span class="headline-date">26 Aug</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2023/08/26/brazil-webdetetive-spyware-deleted/" target="_blank" rel="noopener">A Brazilian phone spyware was hacked and victims’ stolen device data ‘deleted’</a><span class="article-summary">A Portuguese-language spyware called WebDetetive has been used to compromise more than 76,000 Android phones in recent years across South America, largely in Brazil. WebDetetive is also the latest phone spyware company in recent months to have been hacked. In an undated note seen…</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="fake email validation npm package contains c2 and sophisticated data exfiltration" data-date="2023-08-26"><span class="headline-date">26 Aug</span><span class="headline-body"><a class="headline-title" href="https://blog.phylum.io/npm-emails-validator-package-malware/" target="_blank" rel="noopener">Fake Email Validation NPM Package Contains C2 and Sophisticated Data Exfiltration</a><span class="article-summary">submitted by L4s to secops 4 points | 0 comments https://blog.phylum.io/npm-emails-validator-package-malware/ Fake Email Validation NPM Package Contains C2 and Sophisticated Data Exfiltration::On the morning of August 24, Phylum’s automated risk detection system identified a susp…</span></span><span class="headline-source">PHYLUM.IO</span></div>
+<div class="headline" data-title="new opensecuritytraining2 class &quot;exploitation 4011: windows kernel exploitation: race condition + uaf in ktm&quot; by cedric halbronn (~33 hours)" data-date="2023-08-26"><span class="headline-date">26 Aug</span><span class="headline-body"><a class="headline-title" href="https://ost2.fyi/Exp4011" target="_blank" rel="noopener">New OpenSecurityTraining2 class "Exploitation 4011: Windows Kernel Exploitation: Race Condition + UAF in KTM" by Cedric Halbronn (~33 hours)</a><span class="article-summary">submitted by L4s to secops 3 points | 0 comments https://ost2.fyi/Exp4011 New OpenSecurityTraining2 class “Exploitation 4011: Windows Kernel Exploitation: Race Condition + UAF in KTM” by Cedric Halbronn (~33 hours)::undefined</span></span><span class="headline-source">OST2.FYI</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="update: discord notifies users of data breach impacting 180 accounts" data-date="2023-08-26"><span class="headline-date">26 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.hackread.com/discord-data-breach-notifies-users/?&web_view=true" target="_blank" rel="noopener">Update: Discord Notifies Users of Data Breach Impacting 180 Accounts</a><span class="article-summary">The breach, which was publicly acknowledged by Discord in May 2023, impacted a total of 180 accounts, according to a data breach notification filed with the Office of the Maine Attorney General.</span></span><span class="headline-source">HACKREAD.COM</span></div>
+<div class="headline" data-title="thousands of ssns leaked after ransomware attack on ohio state archive organization" data-date="2023-08-26"><span class="headline-date">26 Aug</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/ohio-archive-org-data-leak-ransomware?&web_view=true" target="_blank" rel="noopener">Thousands of SSNs Leaked After Ransomware Attack on Ohio State Archive Organization</a><span class="article-summary">One of the oldest historical societies in the state of Ohio was hit with a ransomware attack that leaked the sensitive information of thousands, according to a statement the organization released this week.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="the three malware loaders behind 80% of incidents" data-date="2023-08-26"><span class="headline-date">26 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.reliaquest.com/blog/the-3-malware-loaders-behind-80-of-incidents/?&web_view=true" target="_blank" rel="noopener">The Three Malware Loaders Behind 80% of Incidents</a><span class="article-summary">QakBot, SocGholish, and Raspberry Robin are the most prevalent malware loaders causing havoc for security teams, with QakBot being the most versatile and persistent threat.</span></span><span class="headline-source">RELIAQUEST.COM</span></div>
+<div class="headline" data-title="uk: teens found responsible for lapsus$ cyberattacks" data-date="2023-08-26"><span class="headline-date">26 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.infosecurity-magazine.com/news/teens-responsible-lapsus/?&web_view=true" target="_blank" rel="noopener">UK: Teens Found Responsible for Lapsus$ Cyberattacks</a><span class="article-summary">Arion Kurtaj, 18, was deemed by psychiatrists to be unfit to stand trial. Though he could not be found “guilty” of committing the acts with criminal intent, a jury at Southwark Crown Court determined that he was at least the one who carried them out.</span></span><span class="headline-source">INFOSECURITY-MAGAZINE.COM</span></div>
+<div class="headline" data-title="lockbit 3.0 ransomware builder leak gives rise to hundreds of new variants" data-date="2023-08-26"><span class="headline-date">26 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/08/lockbit-30-ransomware-builder-leak.html" target="_blank" rel="noopener">LockBit 3.0 Ransomware Builder Leak Gives Rise to Hundreds of New Variants</a><span class="article-summary">The leak of the LockBit 3.0 ransomware builder last year has led to threat actors abusing the tool to spawn new variants. Russian cybersecurity company Kaspersky said it detected a ransomware intrusion that deployed a version of LockBit but with a markedly different ransom demand…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="db podcast episode 203 - ransomeware deep dive" data-date="2023-08-26"><span class="headline-date">26 Aug</span><span class="headline-body"><a class="headline-title" href="https://securitycafe.ca/@chetwisniewski/110940233007891201" target="_blank" rel="noopener">DB Podcast Episode 203 - Ransomeware deep dive</a><span class="article-summary">submitted by ashar to security_cpe 1 points | 0 comments https://securitycafe.ca/@chetwisniewski/110940233007891201 Deep Dive: Chester Wisniewski | Understanding the Modern Ransomware Era: The Impact on Organisations and the Urgency for Awareness and Preparation</span></span><span class="headline-source">SECURITYCAFE.CA</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="doj charged tornado cash founders with laundering more than $1 billion" data-date="2023-08-26"><span class="headline-date">26 Aug</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/149804/cyber-crime/tornado-cash-founders-charges.html?&web_view=true" target="_blank" rel="noopener">DOJ Charged Tornado Cash Founders With Laundering More Than $1 Billion</a><span class="article-summary">The duo operated the Tornado Cash cryptocurrency mixer that facilitated more than $1 billion in money laundering transactions and laundered hundreds of millions of dollars for the Lazarus APT group.</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+<div class="headline" data-title="making security keys post quantum resilient" data-date="2023-08-26"><span class="headline-date">26 Aug</span><span class="headline-body"><a class="headline-title" href="https://elie.net/publication/hybrid-post-quantum-signatures-in-hardware-security-keys/" target="_blank" rel="noopener">Making security keys post quantum resilient</a><span class="article-summary">submitted by bOt to netsec 0 points | 0 comments https://elie.net/publication/hybrid-post-quantum-signatures-in-hardware-security-keys/? This is an automated archive. The original was posted on /r/netsec by /u/ebursztein on 2023-08-26 15:55:36+00:00.</span></span><span class="headline-source">ELIE.NET</span></div>
+<div class="headline" data-title="how cross-site frame counting exposes private repositories on github" data-date="2023-08-26"><span class="headline-date">26 Aug</span><span class="headline-body"><a class="headline-title" href="https://mr-medi.github.io/research/2023/07/31/exploring-cross-site-frame-counting-attacks.html" target="_blank" rel="noopener">How Cross-Site Frame Counting Exposes Private Repositories on GitHub</a><span class="article-summary">submitted by bOt to netsec 1 points | 0 comments https://mr-medi.github.io/research/2023/07/31/exploring-cross-site-frame-counting-attacks.html This is an automated archive. The original was posted on /r/netsec by /u/AnonVersal on 2023-08-26 10:55:07+00:00.</span></span><span class="headline-source">MR-MEDI.GITHUB.IO</span></div>
+<div class="headline" data-title="threat hunting newsletter - excel for threat hunters" data-date="2023-08-26"><span class="headline-date">26 Aug</span><span class="headline-body"><a class="headline-title" href="https://marcusedmondson.substack.com/p/5-steps-to-create-conditional-formatting" target="_blank" rel="noopener">Threat Hunting Newsletter - Excel for Threat Hunters</a><span class="article-summary">submitted by bOt to netsec 1 points | 0 comments https://marcusedmondson.substack.com/p/5-steps-to-create-conditional-formatting This is an automated archive. The original was posted on /r/netsec by /u/m_edmondson on 2023-08-26 10:50:04+00:00. I wrote a newsletter on how to use E…</span></span><span class="headline-source">MARCUSEDMONDSON.SUBSTACK.COM</span></div>
+<div class="headline" data-title="hack hard: a retro rpg educational hacking game with a die hard tribute" data-date="2023-08-26"><span class="headline-date">26 Aug</span><span class="headline-body"><a class="headline-title" href="https://github.com/milosilo/hack_hard" target="_blank" rel="noopener">Hack Hard: A Retro RPG Educational Hacking Game with A Die Hard Tribute</a><span class="article-summary">submitted by bOt to netsec 1 points | 0 comments https://github.com/milosilo/hack_hard This is an automated archive. The original was posted on /r/netsec by /u/MyAccessAccount on 2023-08-26 01:44:01+00:00.</span></span><span class="headline-source">GITHUB.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="adversary on the defense: antibot.pw" data-date="2023-08-26"><span class="headline-date">26 Aug</span><span class="headline-body"><a class="headline-title" href="https://inquest.net/blog/adversary-on-the-defense-antibot-pw/?&web_view=true" target="_blank" rel="noopener">Adversary On The Defense: ANTIBOT.PW</a><span class="article-summary">The Antibot web traffic filtering service, originally a GitHub project, has evolved into a commercial platform for malicious actors, offering features like cloaking to evade analysis and prolong phishing and malware campaigns.</span></span><span class="headline-source">INQUEST.NET</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cypago raises $13 million for grc automation platform" data-date="2023-08-26"><span class="headline-date">26 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/cypago-raises-13-million-for-grc-automation-platform/?&web_view=true" target="_blank" rel="noopener">Cypago Raises $13 Million for GRC Automation Platform</a><span class="article-summary">The new investment will allow Cypago to expand its research and development, product, and go-to-market teams, and grow its presence in the North American and European markets.</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="unitedhealthcare fined $80k for six-month records access delay" data-date="2023-08-26"><span class="headline-date">26 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bankinfosecurity.com/unitedhealthcare-fined-80k-for-6-month-records-access-delay-a-22941?&web_view=true" target="_blank" rel="noopener">UnitedHealthcare Fined $80K for Six-Month Records Access Delay</a><span class="article-summary">The HHS' Office for Civil Rights said UnitedHealthcare had agreed to settle a case involving potential HIPAA violations related to allegations that the company took six months to fulfill a health plan member's request to access his PHI.</span></span><span class="headline-source">BANKINFOSECURITY.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

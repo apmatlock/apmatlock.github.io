@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2023-06-29</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,80 +109,63 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2023-06-29</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">21</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">10</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">4</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-06-29"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-24897" target="_blank" rel="noopener">CVE-2023-24897 .NET, .NET Framework, and Visual Studio Remote Code Execution Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 29 Jun 2023</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-06-29"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-24895" target="_blank" rel="noopener">CVE-2023-24895 .NET, .NET Framework, and Visual Studio Remote Code Execution Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 29 Jun 2023</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-06-29"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-29331" target="_blank" rel="noopener">CVE-2023-29331 .NET, .NET Framework, and Visual Studio Denial of Service Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 29 Jun 2023</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-06-29"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-32032" target="_blank" rel="noopener">CVE-2023-32032 .NET and Visual Studio Elevation of Privilege Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 29 Jun 2023</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-06-29"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-33126" target="_blank" rel="noopener">CVE-2023-33126 .NET and Visual Studio Remote Code Execution Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 29 Jun 2023</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-06-29"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-33128" target="_blank" rel="noopener">CVE-2023-33128 .NET and Visual Studio Remote Code Execution Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 29 Jun 2023</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-06-29"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-3420" target="_blank" rel="noopener">Chromium: CVE-2023-3420 Type Confusion in V8</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 29 Jun 2023</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-06-29"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-3421" target="_blank" rel="noopener">Chromium: CVE-2023-3421 Use after free in Media</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 29 Jun 2023</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-06-29"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-3422" target="_blank" rel="noopener">Chromium: CVE-2023-3422 Use after free in Guest View</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 29 Jun 2023</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-06-29"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-23383" target="_blank" rel="noopener">CVE-2023-23383 Service Fabric Explorer Spoofing Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 29 Jun 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-06-29"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://medium.com/anton-on-security/log-centralization-the-end-is-nigh-b28efaa98379?source=rss----8e8c3ed26c4c---4" target="_blank" rel="noopener">Log Centralization: The End Is Nigh?</a></div><span class="article-meta">MEDIUM.COM &mdash; 29 Jun 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-06-29"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://arstechnica.com/security/2023/06/brave-will-soon-control-which-sites-can-access-your-local-network-resources/" target="_blank" rel="noopener">Brave aims to curb practice of websites that port scan visitors</a></div><span class="article-meta">ARSTECHNICA.COM &mdash; 29 Jun 2023</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-06-29"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.microsoft.com/en-us/security/blog/2023/06/29/patch-me-if-you-can-cyberattack-series/" target="_blank" rel="noopener">Patch me if you can: Cyberattack Series</a></div><span class="article-meta">MICROSOFT.COM &mdash; 29 Jun 2023</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-06-29"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/ciso/23/f/nist-compliance-standards.html" target="_blank" rel="noopener">Meet NIST Compliance Standards Using Automation</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 29 Jun 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-06-29"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="http://security.googleblog.com/2023/06/gmail-client-side-encryption-deep-dive.html" target="_blank" rel="noopener">Gmail client-side encryption: A deep dive</a></div><span class="article-meta">SECURITY.GOOGLEBLOG.COM &mdash; 2023-06-29</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-06-29"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.chainguard.dev/unchained/building-chainguards-container-image-registry" target="_blank" rel="noopener">Building Chainguard's container image registry</a></div><span class="article-meta">CHAINGUARD.DEV &mdash; 29 Jun 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-06-29"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://ksoc.com/blog/kubernetes-security-basics-series-part-i-deployment-and-container-orchestration" target="_blank" rel="noopener">Kubernetes Security Basics Series Part I - Deployment and Container Orchestration</a></div><span class="article-meta">KSOC.COM &mdash; 29 Jun 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-06-29"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.cisa.gov/news-events/news/cybersentry-program-launches-webpage" target="_blank" rel="noopener">CyberSentry Program Launches Webpage</a></div><span class="article-meta">CISA.GOV &mdash; Thu, 29 Jun 23 1</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-06-29"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://krebsonsecurity.com/2023/06/russian-cybersecurity-executive-arrested-for-alleged-role-in-2012-megahacks/" target="_blank" rel="noopener">Russian Cybersecurity Executive Arrested for Alleged Role in 2012 Megahacks</a></div><span class="article-meta">KREBSONSECURITY.COM &mdash; 29 Jun 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-06-29"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/23/f/human-vs-machine-identity-management.html" target="_blank" rel="noopener">Human vs Machine Identity Risk Management</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 29 Jun 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-06-29"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.welivesecurity.com/2023/06/29/employee-monitoring-is-bossware-right-company/" target="_blank" rel="noopener">Employee monitoring: Is ‘bossware’ right for your company?</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 29 Jun 2023</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">10</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cve-2023-24897 .net, .net framework, and visual studio remote code execution vulnerability" data-date="2023-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-24897" target="_blank" rel="noopener">CVE-2023-24897 .NET, .NET Framework, and Visual Studio Remote Code Execution Vulnerability</a><span class="article-summary">Revised the Security Updates table to include PowerShell 7.2 because this version of PowerShell 7 is affected by this vulnerability. See [https://github.com/PowerShell/Announcements/issues/40](https://github.com/PowerShell/Announcements/issues/40) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2023-24895 .net, .net framework, and visual studio remote code execution vulnerability" data-date="2023-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-24895" target="_blank" rel="noopener">CVE-2023-24895 .NET, .NET Framework, and Visual Studio Remote Code Execution Vulnerability</a><span class="article-summary">Revised the Security Updates table to include PowerShell 7.2 and PowerShell 7.3 because these versions of PowerShell 7 are affected by this vulnerability. See [https://github.com/PowerShell/Announcements/issues/41](https://github.com/PowerShell/Announcements/issues/41) for more i…</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2023-29331 .net, .net framework, and visual studio denial of service vulnerability" data-date="2023-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-29331" target="_blank" rel="noopener">CVE-2023-29331 .NET, .NET Framework, and Visual Studio Denial of Service Vulnerability</a><span class="article-summary">Revised the Security Updates table to include PowerShell 7.2 and PowerShell 7.3 because these versions of PowerShell 7 are affected by this vulnerability. See [https://github.com/PowerShell/Announcements/issues/44](https://github.com/PowerShell/Announcements/issues/44) for more i…</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2023-32032 .net and visual studio elevation of privilege vulnerability" data-date="2023-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-32032" target="_blank" rel="noopener">CVE-2023-32032 .NET and Visual Studio Elevation of Privilege Vulnerability</a><span class="article-summary">Revised the Security Updates table to include PowerShell 7.3 because this version of PowerShell 7 is affected by this vulnerability. See [https://github.com/PowerShell/Announcements/issues/45](https://github.com/PowerShell/Announcements/issues/45) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2023-33126 .net and visual studio remote code execution vulnerability" data-date="2023-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-33126" target="_blank" rel="noopener">CVE-2023-33126 .NET and Visual Studio Remote Code Execution Vulnerability</a><span class="article-summary">Revised the Security Updates table to include PowerShell 7.2 because this version of PowerShell 7 is affected by this vulnerability. See [https://github.com/PowerShell/Announcements/issues/46](https://github.com/PowerShell/Announcements/issues/46) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2023-33128 .net and visual studio remote code execution vulnerability" data-date="2023-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-33128" target="_blank" rel="noopener">CVE-2023-33128 .NET and Visual Studio Remote Code Execution Vulnerability</a><span class="article-summary">Revised the Security Updates table to include PowerShell 7.3 because this version of PowerShell 7 is affected by this vulnerability. See [https://github.com/PowerShell/Announcements/issues/47](https://github.com/PowerShell/Announcements/issues/47) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2023-3420 type confusion in v8" data-date="2023-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-3420" target="_blank" rel="noopener">Chromium: CVE-2023-3420 Type Confusion in V8</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2023) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2023-3421 use after free in media" data-date="2023-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-3421" target="_blank" rel="noopener">Chromium: CVE-2023-3421 Use after free in Media</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2023) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2023-3422 use after free in guest view" data-date="2023-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-3422" target="_blank" rel="noopener">Chromium: CVE-2023-3422 Use after free in Guest View</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2023) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2023-23383 service fabric explorer spoofing vulnerability" data-date="2023-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-23383" target="_blank" rel="noopener">CVE-2023-23383 Service Fabric Explorer Spoofing Vulnerability</a><span class="article-summary">Corrected Download and Article links in the Security Updates table. This is an informational change only.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="log centralization: the end is nigh?" data-date="2023-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://medium.com/anton-on-security/log-centralization-the-end-is-nigh-b28efaa98379?source=rss----8e8c3ed26c4c---4" target="_blank" rel="noopener">Log Centralization: The End Is Nigh?</a><span class="article-summary">So I woke up the other day [A.C. — well, the other year as this blog has lingered ] with the scary thought: what if we will run out of the opportunities to centralize logs for security (and compliance) purposes at some point in the future . Or, as I pithily put it on Twitter: ( s…</span></span><span class="headline-source">MEDIUM.COM</span></div>
+<div class="headline" data-title="brave aims to curb practice of websites that port scan visitors" data-date="2023-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://arstechnica.com/security/2023/06/brave-will-soon-control-which-sites-can-access-your-local-network-resources/" target="_blank" rel="noopener">Brave aims to curb practice of websites that port scan visitors</a><span class="article-summary">submitted by ndotb to security 8 points | 1 comments https://arstechnica.com/security/2023/06/brave-will-soon-control-which-sites-can-access-your-local-network-resources/ Yeah, uh… at least ublock’s EasyPrivacy list catches most of them</span></span><span class="headline-source">ARSTECHNICA.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="patch me if you can: cyberattack series" data-date="2023-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.microsoft.com/en-us/security/blog/2023/06/29/patch-me-if-you-can-cyberattack-series/" target="_blank" rel="noopener">Patch me if you can: Cyberattack Series</a><span class="article-summary">The Microsoft Incident Response team takes swift action to help contain a ransomware attack and regain positive administrative control of the customer environment. The post Patch me if you can: Cyberattack Series appeared first on Microsoft Security Blog .</span></span><span class="headline-source">MICROSOFT.COM</span></div>
+<div class="headline" data-title="meet nist compliance standards using automation" data-date="2023-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/ciso/23/f/nist-compliance-standards.html" target="_blank" rel="noopener">Meet NIST Compliance Standards Using Automation</a><span class="article-summary">Achieve NIST compliance for your business without slowing down your team.</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="gmail client-side encryption: a deep dive" data-date="2023-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="http://security.googleblog.com/2023/06/gmail-client-side-encryption-deep-dive.html" target="_blank" rel="noopener">Gmail client-side encryption: A deep dive</a><span class="article-summary">Nicolas Lidzborski, Principal Engineer and Jaishankar Sundararaman, Sr. Director of Engineering, Google Workspace In February, we expanded Google Workspace client-side encryption (CSE) capabilities to include Gmail and Calendar in addition to Drive, Docs, Slides, Sheets , and Mee…</span></span><span class="headline-source">SECURITY.GOOGLEBLOG.COM</span></div>
+<div class="headline" data-title="building chainguard's container image registry" data-date="2023-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.chainguard.dev/unchained/building-chainguards-container-image-registry" target="_blank" rel="noopener">Building Chainguard's container image registry</a><span class="article-summary">submitted by 0xCBE to cloudsecurity 5 points | 0 comments https://www.chainguard.dev/unchained/building-chainguards-container-image-registry We’ve made a few changes to the way we host and distribute our Images over the last year to increase security, give ourselves more control …</span></span><span class="headline-source">CHAINGUARD.DEV</span></div>
+<div class="headline" data-title="kubernetes security basics series part i - deployment and container orchestration" data-date="2023-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://ksoc.com/blog/kubernetes-security-basics-series-part-i-deployment-and-container-orchestration" target="_blank" rel="noopener">Kubernetes Security Basics Series Part I - Deployment and Container Orchestration</a><span class="article-summary">submitted by 0xCBE to cloudsecurity 6 points | 0 comments https://ksoc.com/blog/kubernetes-security-basics-series-part-i-deployment-and-container-orchestration This first post in a 9-part series on Kubernetes Security basics focuses on DevOps culture, container-related threats an…</span></span><span class="headline-source">KSOC.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cybersentry program launches webpage" data-date="2023-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/news/cybersentry-program-launches-webpage" target="_blank" rel="noopener">CyberSentry Program Launches Webpage</a></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="russian cybersecurity executive arrested for alleged role in 2012 megahacks" data-date="2023-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://krebsonsecurity.com/2023/06/russian-cybersecurity-executive-arrested-for-alleged-role-in-2012-megahacks/" target="_blank" rel="noopener">Russian Cybersecurity Executive Arrested for Alleged Role in 2012 Megahacks</a><span class="article-summary">Nikita Kislitsin, formerly the head of network security for one of Russia's top cybersecurity firms, was arrested last week in Kazakhstan in response to 10-year-old hacking charges from the U.S. Department of Justice. Experts say Kislitsin's prosecution could soon put the Kazakhs…</span></span><span class="headline-source">KREBSONSECURITY.COM</span></div>
+<div class="headline" data-title="human vs machine identity risk management" data-date="2023-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/23/f/human-vs-machine-identity-management.html" target="_blank" rel="noopener">Human vs Machine Identity Risk Management</a><span class="article-summary">In today's business world's dynamic and ever-changing digital landscape, organizations encounter escalating security challenges that demand a more business-friendly and pertinent approach.</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+<div class="headline" data-title="employee monitoring: is ‘bossware’ right for your company?" data-date="2023-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/2023/06/29/employee-monitoring-is-bossware-right-company/" target="_blank" rel="noopener">Employee monitoring: Is ‘bossware’ right for your company?</a><span class="article-summary">While employee monitoring software may boost productivity, it may also be a potential privacy minefield and it can affect your relationship with your employees</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

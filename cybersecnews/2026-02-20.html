@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2026-02-20</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,88 +109,79 @@
       <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2026-02-20</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">27</span></button>
-<button class="filter-btn" data-cat="CISA KEV" onclick="filterCat('CISA KEV', this)">CISA KEV <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="CISA KEV" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2026/02/20/cisa-adds-two-known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA Adds Two Known Exploited Vulnerabilities to Catalog</a><span class="article-summary">CISA has added two new vulnerabilities to its Known Exploited Vulnerabilities (KEV) Catalog , based on evidence of active exploitation. CVE-2025-49113 RoundCube Webmail Deserialization of Untrusted Data Vulnerability CVE-2025-68461 RoundCube Webmail Cross-site Scripting Vulnerabi…</span></div><span class="kev-badge">KEV</span><span class="article-meta">CISA.GOV &mdash; Fri, 20 Feb 26 1</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/cisa-orders-emergency-patch-for-actively-exploited-dell-flaw" target="_blank" rel="noopener">CISA Orders Emergency Patch for Actively Exploited Dell Flaw;</a></div><span class="kev-badge">KEV</span><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 20 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2026/02/beyondtrust-flaw-used-for-web-shells.html" target="_blank" rel="noopener">BeyondTrust Flaw Used for Web Shells, Backdoors, and Data Exfiltration</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 20 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-20328" target="_blank" rel="noopener">CVE-2024-20328 ClamAV VirusEvent File Processing Command Injection Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-2649" target="_blank" rel="noopener">Chromium: CVE-2026-2649 Integer overflow in V8</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-2648" target="_blank" rel="noopener">Chromium: CVE-2026-2648 Heap buffer overflow in PDFium</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-2650" target="_blank" rel="noopener">Chromium: CVE-2026-2650 Heap buffer overflow in Media</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Feb 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2026/02/cline-cli-230-supply-chain-attack.html" target="_blank" rel="noopener">Cline CLI 2.3.0 Supply Chain Attack Installed OpenClaw on Developer Systems</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 20 Feb 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2026/02/clickfix-campaign-abuses-compromised.html" target="_blank" rel="noopener">ClickFix Campaign Abuses Compromised Sites to Deploy MIMICRAT Malware</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 20 Feb 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://techcrunch.com/2026/02/20/ukrainian-man-jailed-for-identity-theft-that-helped-north-koreans-get-jobs-at-us-companies/" target="_blank" rel="noopener">Ukrainian man jailed for identity theft that helped North Koreans get jobs at US companies</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 20 Feb 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bitdefender.com/en-us/blog/hotforsecurity/spanish-police-say-they-have-arrested-hacker-who-booked-luxury-hotel-rooms-for-just-one-cent" target="_blank" rel="noopener">Spanish police say they have arrested hacker who booked luxury hotel rooms for just one cent</a></div><span class="article-meta">BITDEFENDER.COM &mdash; 20 Feb 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://haveibeenpwned.com/Breach/CarMax" target="_blank" rel="noopener">CarMax - 431,371 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 20 Feb 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=1MayPgL0I6Y" target="_blank" rel="noopener">CyberRiskTV Live Coverage from Zero Trust World 2026 - Day 1</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2026-02-20</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://blog.trailofbits.com/2026/02/20/using-threat-modeling-and-prompt-injection-to-audit-comet/" target="_blank" rel="noopener">Using threat modeling and prompt injection to audit Comet</a></div><span class="article-meta">TRAILOFBITS.COM &mdash; 20 Feb 2026</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://risky.biz/soapbox104/" target="_blank" rel="noopener">Risky Biz Soap Box: The lethal trifecta of AI risks</a></div><span class="article-meta">RISKY.BIZ &mdash; 20 Feb 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2026/02/identity-cyber-scores-new-metric.html" target="_blank" rel="noopener">Identity Cyber Scores: The New Metric Shaping Cyber Insurance in 2026</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 20 Feb 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2026/02/fbi-reports-1900-atm-jackpotting.html" target="_blank" rel="noopener">FBI Reports 1,900 ATM Jackpotting Incidents Since 2020, $20M Lost in 2025</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 20 Feb 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://blog.knowbe4.com/how-to-recall-an-email-in-outlook" target="_blank" rel="noopener">How To Recall An Email In Outlook</a></div><span class="article-meta">KNOWBE4.COM &mdash; 20 Feb 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2026/02/friday-squid-blogging-squid-cartoon-3.html" target="_blank" rel="noopener">Friday Squid Blogging: Squid Cartoon</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2026-02-20</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2026/02/ring-cancels-its-partnership-with-flock.html" target="_blank" rel="noopener">Ring Cancels Its Partnership with Flock</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2026-02-20</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2026/02/ukrainian-national-sentenced-to-5-years.html" target="_blank" rel="noopener">Ukrainian National Sentenced to 5 Years in North Korea IT Worker Fraud Case</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 20 Feb 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://blog.knowbe4.com/humans-will-give-ai-anything-if-you-make-it-sound-cool-enough" target="_blank" rel="noopener">Humans Will Give AI Anything If You Make It Sound Cool Enough</a></div><span class="article-meta">KNOWBE4.COM &mdash; 20 Feb 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/3F_U_pQBCHA" target="_blank" rel="noopener">Google's App Store: Hidden Risks</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2026-02-20</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/42344550" target="_blank" rel="noopener">Off-Topic Friday</a></div><span class="article-meta">INFOSEC.PUB &mdash; 20 Feb 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=N2T8ZD4ReRk" target="_blank" rel="noopener">CyberRiskTV Live Coverage from Zero Trust World 2026 - Day 2</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2026-02-20</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://krebsonsecurity.com/2026/02/starkiller-phishing-service-proxies-real-login-pages-mfa/" target="_blank" rel="noopener">‘Starkiller’ Phishing Service Proxies Real Login Pages, MFA</a></div><span class="article-meta">KREBSONSECURITY.COM &mdash; 20 Feb 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-02-20"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2026/02/three-former-google-engineers-indicted.html" target="_blank" rel="noopener">Former Google Engineers Indicted Over Trade Secret Transfers to Iran</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 20 Feb 2026</span></div>
-    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa adds two known exploited vulnerabilities to catalog" data-date="2026-02-20"><span class="headline-date">20 Feb <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2026/02/20/cisa-adds-two-known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA Adds Two Known Exploited Vulnerabilities to Catalog</a><span class="article-summary">CISA has added two new vulnerabilities to its Known Exploited Vulnerabilities (KEV) Catalog , based on evidence of active exploitation. CVE-2025-49113 RoundCube Webmail Deserialization of Untrusted Data Vulnerability CVE-2025-68461 RoundCube Webmail Cross-site Scripting Vulnerabi…</span></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa orders emergency patch for actively exploited dell flaw;" data-date="2026-02-20"><span class="headline-date">20 Feb <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/cisa-orders-emergency-patch-for-actively-exploited-dell-flaw" target="_blank" rel="noopener">CISA Orders Emergency Patch for Actively Exploited Dell Flaw;</a><span class="article-summary">CISA Orders Emergency Patch for Actively Exploited Dell Flaw; Texas Sues TP-Link; Massive ID Verification Data Leak; SSA Database Leak Allegations Host Jim Love covers four cybersecurity stories: Cybersecurity Today would like to thank Meter for their support in bringing you this…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="beyondtrust flaw used for web shells, backdoors, and data exfiltration" data-date="2026-02-20"><span class="headline-date">20 Feb</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/02/beyondtrust-flaw-used-for-web-shells.html" target="_blank" rel="noopener">BeyondTrust Flaw Used for Web Shells, Backdoors, and Data Exfiltration</a><span class="article-summary">Threat actors have been observed exploiting a recently disclosed critical security flaw impacting BeyondTrust Remote Support (RS) and Privileged Remote Access (PRA) products to conduct a wide range of malicious actions, including deploying VShell and&nbsp; The vulnerability, trac…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="cve-2024-20328 clamav virusevent file processing command injection vulnerability" data-date="2026-02-20"><span class="headline-date">20 Feb</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-20328" target="_blank" rel="noopener">CVE-2024-20328 ClamAV VirusEvent File Processing Command Injection Vulnerability</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2026-2649 integer overflow in v8" data-date="2026-02-20"><span class="headline-date">20 Feb</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-2649" target="_blank" rel="noopener">Chromium: CVE-2026-2649 Integer overflow in V8</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2026-2648 heap buffer overflow in pdfium" data-date="2026-02-20"><span class="headline-date">20 Feb</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-2648" target="_blank" rel="noopener">Chromium: CVE-2026-2648 Heap buffer overflow in PDFium</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="chromium: cve-2026-2650 heap buffer overflow in media" data-date="2026-02-20"><span class="headline-date">20 Feb</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-2650" target="_blank" rel="noopener">Chromium: CVE-2026-2650 Heap buffer overflow in Media</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cline cli 2.3.0 supply chain attack installed openclaw on developer systems" data-date="2026-02-20"><span class="headline-date">20 Feb</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/02/cline-cli-230-supply-chain-attack.html" target="_blank" rel="noopener">Cline CLI 2.3.0 Supply Chain Attack Installed OpenClaw on Developer Systems</a><span class="article-summary">In yet another software supply chain attack, the open-source, artificial intelligence (AI)-powered coding assistant Cline CLI was updated to stealthily install OpenClaw, a self-hosted autonomous AI agent that has become exceedingly popular in the past few months. "On February 17,…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="clickfix campaign abuses compromised sites to deploy mimicrat malware" data-date="2026-02-20"><span class="headline-date">20 Feb</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/02/clickfix-campaign-abuses-compromised.html" target="_blank" rel="noopener">ClickFix Campaign Abuses Compromised Sites to Deploy MIMICRAT Malware</a><span class="article-summary">Cybersecurity researchers have disclosed details of a new ClickFix campaign that abuses compromised legitimate sites to deliver a previously undocumented remote access trojan (RAT) called MIMICRAT (aka AstarionRAT). "The campaign demonstrates a high level of operational sophistic…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="ukrainian man jailed for identity theft that helped north koreans get jobs at us companies" data-date="2026-02-20"><span class="headline-date">20 Feb</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2026/02/20/ukrainian-man-jailed-for-identity-theft-that-helped-north-koreans-get-jobs-at-us-companies/" target="_blank" rel="noopener">Ukrainian man jailed for identity theft that helped North Koreans get jobs at US companies</a><span class="article-summary">A Ukrainian man has been sentenced for helping North Koreans gain fraudulent employment at dozens of U.S. companies and funnel that money back to the regime to fund its nuclear weapons program.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="spanish police say they have arrested hacker who booked luxury hotel rooms for just one cent" data-date="2026-02-20"><span class="headline-date">20 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.bitdefender.com/en-us/blog/hotforsecurity/spanish-police-say-they-have-arrested-hacker-who-booked-luxury-hotel-rooms-for-just-one-cent" target="_blank" rel="noopener">Spanish police say they have arrested hacker who booked luxury hotel rooms for just one cent</a><span class="article-summary">Spain's police force has announced that it has arrested a 20-year-old man who they claim managed to book luxury hotel rooms worth up to €1,000 a night for just one euro cent. Read more in my article on the Hot for Security blog.</span></span><span class="headline-source">BITDEFENDER.COM</span></div>
+<div class="headline" data-title="carmax - 431,371 breached accounts" data-date="2026-02-20"><span class="headline-date">20 Feb</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/Breach/CarMax" target="_blank" rel="noopener">CarMax - 431,371 breached accounts</a><span class="article-summary">In January 2026, data allegedly sourced from US automotive retailer CarMax was published online following a failed extortion attempt . The data included 431k unique email addresses along with names, phone numbers and physical addresses.</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+<div class="headline" data-title="cyberrisktv live coverage from zero trust world 2026 - day 1" data-date="2026-02-20"><span class="headline-date">20 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=1MayPgL0I6Y" target="_blank" rel="noopener">CyberRiskTV Live Coverage from Zero Trust World 2026 - Day 1</a><span class="article-summary">CyberRisk TV is broadcasting live from Zero Trust World 2026 in Orlando, Florida! Join us Wednesday, March 4 for exclusive interviews with cybersecurity leaders, actionable insights, and the latest thinking from practitioners shaping the future of modern cyber defense from one of…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="using threat modeling and prompt injection to audit comet" data-date="2026-02-20"><span class="headline-date">20 Feb</span><span class="headline-body"><a class="headline-title" href="https://blog.trailofbits.com/2026/02/20/using-threat-modeling-and-prompt-injection-to-audit-comet/" target="_blank" rel="noopener">Using threat modeling and prompt injection to audit Comet</a><span class="article-summary">Before launching their Comet browser, Perplexity hired us to test the security of their AI-powered browsing features. Using adversarial testing guided by our TRAIL threat model, we demonstrated how four prompt injection techniques could extract users&rsquo; private information fr…</span></span><span class="headline-source">TRAILOFBITS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="risky biz soap box: the lethal trifecta of ai risks" data-date="2026-02-20"><span class="headline-date">20 Feb</span><span class="headline-body"><a class="headline-title" href="https://risky.biz/soapbox104/" target="_blank" rel="noopener">Risky Biz Soap Box: The lethal trifecta of AI risks</a><span class="article-summary">There’s a lethal trifecta of AI risks: access to private data, exposure to untrusted content, and external communication. In this conversation, Risky Business host Patrick Gray chats with Josh Devon, the co-founder of Sondera, about how to best address these risks. There is no ma…</span></span><span class="headline-source">RISKY.BIZ</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="identity cyber scores: the new metric shaping cyber insurance in 2026" data-date="2026-02-20"><span class="headline-date">20 Feb</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/02/identity-cyber-scores-new-metric.html" target="_blank" rel="noopener">Identity Cyber Scores: The New Metric Shaping Cyber Insurance in 2026</a><span class="article-summary">With one in three cyber-attacks now involving compromised employee accounts, insurers and regulators are placing far greater emphasis on identity posture when assessing cyber risk.&nbsp; For many organizations, however, these assessments remain largely opaque. Elements such as pa…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="fbi reports 1,900 atm jackpotting incidents since 2020, $20m lost in 2025" data-date="2026-02-20"><span class="headline-date">20 Feb</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/02/fbi-reports-1900-atm-jackpotting.html" target="_blank" rel="noopener">FBI Reports 1,900 ATM Jackpotting Incidents Since 2020, $20M Lost in 2025</a><span class="article-summary">The U.S. Federal Bureau of Investigation (FBI) has warned of an increase in ATM jackpotting incidents across the country, leading to losses of more than $20 million in 2025. The agency said 1,900 ATM jackpotting incidents have been reported since 2020, out of which 700 took place…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="how to recall an email in outlook" data-date="2026-02-20"><span class="headline-date">20 Feb</span><span class="headline-body"><a class="headline-title" href="https://blog.knowbe4.com/how-to-recall-an-email-in-outlook" target="_blank" rel="noopener">How To Recall An Email In Outlook</a><span class="article-summary">Independent research shows that 91% of organizations have experienced outbound email security incidents in their Microsoft 365 environments. Human error is the primary cause of these incidents, whether that's adding an incorrect recipient, attaching the wrong file, or forgetting …</span></span><span class="headline-source">KNOWBE4.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="friday squid blogging: squid cartoon" data-date="2026-02-20"><span class="headline-date">20 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2026/02/friday-squid-blogging-squid-cartoon-3.html" target="_blank" rel="noopener">Friday Squid Blogging: Squid Cartoon</a><span class="article-summary">I like this one . As usual, you can also use this squid post to talk about the security stories in the news that I haven&#8217;t covered. Blog moderation policy.</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="ring cancels its partnership with flock" data-date="2026-02-20"><span class="headline-date">20 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2026/02/ring-cancels-its-partnership-with-flock.html" target="_blank" rel="noopener">Ring Cancels Its Partnership with Flock</a><span class="article-summary">It&#8217;s a demonstration of how toxic the surveillance-tech company Flock has become when Amazon&#8217;s Ring cancels the partnership between the two companies. As Hamilton Nolan advises, remove your Ring doorbell.</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="ukrainian national sentenced to 5 years in north korea it worker fraud case" data-date="2026-02-20"><span class="headline-date">20 Feb</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/02/ukrainian-national-sentenced-to-5-years.html" target="_blank" rel="noopener">Ukrainian National Sentenced to 5 Years in North Korea IT Worker Fraud Case</a><span class="article-summary">A 29-year-old Ukrainian national has been sentenced to five years in prison in the U.S. for his role in facilitating North Korea's fraudulent information technology (IT) worker scheme. In November 2025, Oleksandr "Alexander" Didenko pleaded guilty to wire fraud conspiracy and agg…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="humans will give ai anything if you make it sound cool enough" data-date="2026-02-20"><span class="headline-date">20 Feb</span><span class="headline-body"><a class="headline-title" href="https://blog.knowbe4.com/humans-will-give-ai-anything-if-you-make-it-sound-cool-enough" target="_blank" rel="noopener">Humans Will Give AI Anything If You Make It Sound Cool Enough</a><span class="article-summary">There's a beautiful moment happening right now, and by "beautiful" I mean "horrifying in that can't-look-away-from-the-car-crash sense”.</span></span><span class="headline-source">KNOWBE4.COM</span></div>
+<div class="headline" data-title="google's app store: hidden risks" data-date="2026-02-20"><span class="headline-date">20 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/3F_U_pQBCHA" target="_blank" rel="noopener">Google's App Store: Hidden Risks</a><span class="article-summary">Google blocked over 255,000 apps and banned 80,000 developer accounts for policy violations. Despite these efforts, the potential for undetected threats remains a concern. How can app stores ensure comprehensive security against malicious apps? Subscribe to our podcasts: https://…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="off-topic friday" data-date="2026-02-20"><span class="headline-date">20 Feb</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/42344550" target="_blank" rel="noopener">Off-Topic Friday</a><span class="article-summary">submitted by shellsharks to cybersecurity 2 points | 0 comments Wanna chat about something non-infosec amongst those of us who frequent /c/cybersecurity? Here’s your chance! (Keep things civil &amp; respectful please)</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="cyberrisktv live coverage from zero trust world 2026 - day 2" data-date="2026-02-20"><span class="headline-date">20 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=N2T8ZD4ReRk" target="_blank" rel="noopener">CyberRiskTV Live Coverage from Zero Trust World 2026 - Day 2</a><span class="article-summary">CyberRisk TV is broadcasting live from Zero Trust World 2026 in Orlando, Florida! Join us Thursday, March 5 for exclusive interviews with cybersecurity leaders, actionable insights, and the latest thinking from practitioners shaping the future of modern cyber defense from one of …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="‘starkiller’ phishing service proxies real login pages, mfa" data-date="2026-02-20"><span class="headline-date">20 Feb</span><span class="headline-body"><a class="headline-title" href="https://krebsonsecurity.com/2026/02/starkiller-phishing-service-proxies-real-login-pages-mfa/" target="_blank" rel="noopener">‘Starkiller’ Phishing Service Proxies Real Login Pages, MFA</a><span class="article-summary">Most phishing websites are little more than static copies of login pages for popular online destinations, and they are often quickly taken down by anti-abuse activists and security firms. But a stealthy new phishing-as-a-service offering lets customers sidestep both of these pitf…</span></span><span class="headline-source">KREBSONSECURITY.COM</span></div>
+<div class="headline" data-title="former google engineers indicted over trade secret transfers to iran" data-date="2026-02-20"><span class="headline-date">20 Feb</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/02/three-former-google-engineers-indicted.html" target="_blank" rel="noopener">Former Google Engineers Indicted Over Trade Secret Transfers to Iran</a><span class="article-summary">Two former Google engineers and one of their husbands have been indicted in the U.S. for allegedly committing trade secret theft from the search giant and other tech firms and transferring the information to unauthorized locations, including Iran. Samaneh Ghandali, 41, and her hu…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-06-15</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,81 +109,68 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-06-15</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">21</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Security Bulletins" onclick="filterCat('Security Bulletins', this)">SECURITY BULLETINS <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">5</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-15"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/29942348" target="_blank" rel="noopener">Windows SMB Client Zero-Day Vulnerability Exploited Using Reflective Kerberos Relay Attack</a></div><span class="article-meta">INFOSEC.PUB &mdash; 15 Jun 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-15"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://sh.itjust.works/post/40197056" target="_blank" rel="noopener">Anti-forensic and secure messenger for smartphones</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 15 Jun 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-15"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/over-46-000-grafana-instances-exposed-to-account-takeover-bug/" target="_blank" rel="noopener">Over 46,000 Grafana instances exposed to account takeover bug</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 15 Jun 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-15"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/24JdS5AKUec" target="_blank" rel="noopener">Risk Never Sleeps: The Hidden Cyber Threats Lurking in Hospitals</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-15</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-15"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/tABnjdMeDf8" target="_blank" rel="noopener">From TVs to Servers – Curl Runs Everywhere! ⚡</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-15</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-06-15"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://sh.itjust.works/post/40239062" target="_blank" rel="noopener">The Guardian, in collaboration with the University of Cambridge Department of Computer Science, launches open-source Secure Messaging</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 15 Jun 2025</span></div>
-<div class="article-row" data-cat="Security Bulletins" data-date="2025-06-15"><span class="cat-badge" style="border:1px solid rgba(255,170,0,0.5);background:rgba(255,170,0,0.10);" title="Security Bulletins">📋</span><div class="article-body"><a href="https://infosec.pub/post/29952178" target="_blank" rel="noopener">Solar PV vulnerabilities</a></div><span class="article-meta">INFOSEC.PUB &mdash; 15 Jun 2025</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-06-15"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.youtube.com/watch?v=5hfdbsvJUW4" target="_blank" rel="noopener">AI Will Win... But At What Cost? 🤖💥</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-15</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-06-15"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/shorts/Tc6aTKGs0aI" target="_blank" rel="noopener">Hackers Used to Hide for Years… Now They’re Moving in Days!</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-15</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-06-15"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://sh.itjust.works/post/40242383" target="_blank" rel="noopener">Google Cloud incident report</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 15 Jun 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-06-15"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://grahamcluley.com/breaking-news-the-washington-post-has-been-hacked/" target="_blank" rel="noopener">Breaking news – the Washington Post has been hacked</a></div><span class="article-meta">GRAHAMCLULEY.COM &mdash; 15 Jun 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-15"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2025/06/upcoming-speaking-engagements-47.html" target="_blank" rel="noopener">Upcoming Speaking Engagements</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2025-06-15</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-15"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://sh.itjust.works/post/40203102" target="_blank" rel="noopener">Simplest way to back up password vault and 2FA Recovery Codes in android?</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 15 Jun 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-15"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/QTA76LLSJHU" target="_blank" rel="noopener">Are You the Overworked 'Brent' of Your Company?</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-15</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-15"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/Ig4_Ue5ij8o" target="_blank" rel="noopener">That Spotify Link Wasn’t Just Music…</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-15</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-06-15"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/WxMeC1Ylets" target="_blank" rel="noopener">Which Linux Distro Do Sysadmins REALLY Prefer? 🤔</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-15</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-06-15"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=KcWAfp3HccQ" target="_blank" rel="noopener">Forget Shiny New Tech — James Kettle on Why Old Solutions Still Work</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-15</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-06-15"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/artificial-intelligence/chatgpt-search-gets-an-upgrade-as-openai-takes-aim-at-google/" target="_blank" rel="noopener">ChatGPT Search gets an upgrade as OpenAI takes aim at Google</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 15 Jun 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-06-15"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/shorts/Zd_oVemBQE0" target="_blank" rel="noopener">Why Google Drive is a Mess for Security Professionals! 🚨</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-06-15</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-06-15"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/artificial-intelligence/openais-ai-coder-codex-now-lets-you-choose-the-best-solution/" target="_blank" rel="noopener">OpenAI's AI coder Codex now lets you choose the best solution</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 15 Jun 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-06-15"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/artificial-intelligence/chatgpts-ai-coder-codex-now-lets-you-choose-the-best-solution/" target="_blank" rel="noopener">ChatGPT's AI coder Codex now lets you choose the best solution</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 15 Jun 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="windows smb client zero-day vulnerability exploited using reflective kerberos relay attack" data-date="2025-06-15"><span class="headline-date">15 Jun</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/29942348" target="_blank" rel="noopener">Windows SMB Client Zero-Day Vulnerability Exploited Using Reflective Kerberos Relay Attack</a><span class="article-summary">submitted by cm0002 to cybersecurity 2 points | 0 comments https://cybersecuritynews.com/windows-smb-client-zero-day-vulnerability/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="anti-forensic and secure messenger for smartphones" data-date="2025-06-15"><span class="headline-date">15 Jun</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/40197056" target="_blank" rel="noopener">Anti-forensic and secure messenger for smartphones</a><span class="article-summary">submitted by Nemesis53223 to cybersecurity 1 points | 0 comments Source code and details: github.com/Amnezichat/Amnezichat_Mobile</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="over 46,000 grafana instances exposed to account takeover bug" data-date="2025-06-15"><span class="headline-date">15 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/over-46-000-grafana-instances-exposed-to-account-takeover-bug/" target="_blank" rel="noopener">Over 46,000 Grafana instances exposed to account takeover bug</a><span class="article-summary">More than 46,000 internet-facing Grafana instances remain unpatched and exposed to a client-side open redirect vulnerability that allows executing a malicious plugin and account takeover. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="risk never sleeps: the hidden cyber threats lurking in hospitals" data-date="2025-06-15"><span class="headline-date">15 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/24JdS5AKUec" target="_blank" rel="noopener">Risk Never Sleeps: The Hidden Cyber Threats Lurking in Hospitals</a><span class="article-summary">Hospitals never shut down, and neither do cyber threats. Unlike most industries, healthcare runs 24/7, making it a prime target for cyberattacks. Hackers exploit human error, outdated systems, and constant operations to infiltrate sensitive data. The phrase "Risk Never Sleeps" is…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="from tvs to servers – curl runs everywhere! ⚡" data-date="2025-06-15"><span class="headline-date">15 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/tABnjdMeDf8" target="_blank" rel="noopener">From TVs to Servers – Curl Runs Everywhere! ⚡</a><span class="article-summary">Curl isn’t just for developers—it’s everywhere! From smart TVs to servers, even your fridge might be using it. 🌍⚡ In this short, discover why Curl’s universal compatibility makes it a must-have tool for cybersecurity experts, developers, and tech innovators alike. With the abilit…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="the guardian, in collaboration with the university of cambridge department of computer science, launches open-source secure messaging" data-date="2025-06-15"><span class="headline-date">15 Jun</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/40239062" target="_blank" rel="noopener">The Guardian, in collaboration with the University of Cambridge Department of Computer Science, launches open-source Secure Messaging</a><span class="article-summary">submitted by Davriellelouna to cybersecurity 1 points | 0 comments https://www.theguardian.com/membership/2025/jun/09/in-a-dangerous-era-for-journalism-a-powerful-new-tool-to-help-protect-sources</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-bulletins">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,170,0,0.5);" onclick="toggleSection(this)">📋 SECURITY BULLETINS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="solar pv vulnerabilities" data-date="2025-06-15"><span class="headline-date">15 Jun</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/29952178" target="_blank" rel="noopener">Solar PV vulnerabilities</a><span class="article-summary">submitted by Cyber to cybersecurity 1 points | 0 comments https://www.redhotcyber.com/post/34-000-impianti-solari-a-rischio-hacker-la-sostenibilita-ha-un-lato-oscuro/ Interesting article where ~35k devices from 45 manufacturers have vulnerabilities Advice is probably not as easy …</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ai will win... but at what cost? 🤖💥" data-date="2025-06-15"><span class="headline-date">15 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=5hfdbsvJUW4" target="_blank" rel="noopener">AI Will Win... But At What Cost? 🤖💥</a><span class="article-summary">When AI and cybersecurity collide, what happens next? In this short, cybersecurity expert Rock Lambros reveals the growing tension between AI innovation and the urgent need for guardrails. From NIST’s AI RMF to OWASP’s Top 10 for LLMs, he breaks down how the industry is trying to…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="hackers used to hide for years… now they’re moving in days!" data-date="2025-06-15"><span class="headline-date">15 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/Tc6aTKGs0aI" target="_blank" rel="noopener">Hackers Used to Hide for Years… Now They’re Moving in Days!</a><span class="article-summary">Hackers used to stay hidden for months, even years, inside an organization’s network before making their move. But not anymore! 🚨 Cybercriminals are striking faster than ever, encrypting data within days because they know companies will pay up. With cyber insurance covering the c…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="google cloud incident report" data-date="2025-06-15"><span class="headline-date">15 Jun</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/40242383" target="_blank" rel="noopener">Google Cloud incident report</a><span class="article-summary">submitted by kid to cybersecurity 1 points | 0 comments https://status.cloud.google.com/incidents/ow5i3PPK96RduMcb1SsW</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="breaking news – the washington post has been hacked" data-date="2025-06-15"><span class="headline-date">15 Jun</span><span class="headline-body"><a class="headline-title" href="https://grahamcluley.com/breaking-news-the-washington-post-has-been-hacked/" target="_blank" rel="noopener">Breaking news – the Washington Post has been hacked</a><span class="article-summary">The Washington Post says that the email accounts of some of its journalists have been hacked. The likely culprits? A foreign government (take your pick...) Why would they want to do that? Because journalists are often afforded access to valuable and sensitive information, and may…</span></span><span class="headline-source">GRAHAMCLULEY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="upcoming speaking engagements" data-date="2025-06-15"><span class="headline-date">15 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2025/06/upcoming-speaking-engagements-47.html" target="_blank" rel="noopener">Upcoming Speaking Engagements</a><span class="article-summary">This is a current list of where and when I am scheduled to speak: I&#8217;m speaking at the International Conference on Digital Trust, AI and the Future in Edinburgh, Scotland on Tuesday, June 24 at 4:00 PM. The list is maintained on this page .</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="simplest way to back up password vault and 2fa recovery codes in android?" data-date="2025-06-15"><span class="headline-date">15 Jun</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/40203102" target="_blank" rel="noopener">Simplest way to back up password vault and 2FA Recovery Codes in android?</a><span class="article-summary">submitted by darkguyman to cybersecurity 2 points | 1 comments</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="are you the overworked 'brent' of your company?" data-date="2025-06-15"><span class="headline-date">15 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/QTA76LLSJHU" target="_blank" rel="noopener">Are You the Overworked 'Brent' of Your Company?</a><span class="article-summary">Ever met a "Brent" in your cybersecurity team? The person everyone relies on, overloaded with tasks, barely keeping their head above water — but somehow, it’s never their fault. This short dives into the hidden burnout behind being the "go-to" expert and why companies unknowingly…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="that spotify link wasn’t just music…" data-date="2025-06-15"><span class="headline-date">15 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/Ig4_Ue5ij8o" target="_blank" rel="noopener">That Spotify Link Wasn’t Just Music…</a><span class="article-summary">When Doug White mentioned a simple PowerShell script that leads to a remote Spotify URL, most wouldn’t think twice. But behind that link is something far more dangerous than music — it installs Vidar or SteelSea infostealers, hidden with elevated admin privileges. This short reve…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="which linux distro do sysadmins really prefer? 🤔" data-date="2025-06-15"><span class="headline-date">15 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/WxMeC1Ylets" target="_blank" rel="noopener">Which Linux Distro Do Sysadmins REALLY Prefer? 🤔</a><span class="article-summary">Ever wondered how sysadmins decide which Linux distro to use? It’s not random—it's all about making their lives easier! From compatibility with Docker to optimizing workflows, sysadmins carefully research and choose the best fit for their needs. 🖥️💡 Discover the hidden factors be…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="forget shiny new tech — james kettle on why old solutions still work" data-date="2025-06-15"><span class="headline-date">15 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=KcWAfp3HccQ" target="_blank" rel="noopener">Forget Shiny New Tech — James Kettle on Why Old Solutions Still Work</a><span class="article-summary">Cybersecurity expert James Kettle reveals why the latest, shiniest tech isn’t always the answer. In this eye-opening clip, he explains how adopting 10-year-old technologies like HTTP2 and session storage can prevent modern attacks — making request smuggling and cookie tossing alm…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="chatgpt search gets an upgrade as openai takes aim at google" data-date="2025-06-15"><span class="headline-date">15 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/artificial-intelligence/chatgpt-search-gets-an-upgrade-as-openai-takes-aim-at-google/" target="_blank" rel="noopener">ChatGPT Search gets an upgrade as OpenAI takes aim at Google</a><span class="article-summary">On June 13, OpenAI began rolling out a new ChatGPT Search update to improve quality as the AI startup challenges Google's dominance. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="why google drive is a mess for security professionals! 🚨" data-date="2025-06-15"><span class="headline-date">15 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/Zd_oVemBQE0" target="_blank" rel="noopener">Why Google Drive is a Mess for Security Professionals! 🚨</a><span class="article-summary">Google Drive is supposed to make finding files easy, right? Wrong. Cybersecurity professionals know the struggle—no real governance, chaotic file access, and a search function that somehow can’t find what you need. Meanwhile, Microsoft is pushing Copilot, promising a seamless AI-…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="openai's ai coder codex now lets you choose the best solution" data-date="2025-06-15"><span class="headline-date">15 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/artificial-intelligence/openais-ai-coder-codex-now-lets-you-choose-the-best-solution/" target="_blank" rel="noopener">OpenAI's AI coder Codex now lets you choose the best solution</a><span class="article-summary">ChatGPT's Codex, which is an AI agent that lets you code and delegate programming tasks, is now testing a new feature that lets you choose the best solution. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="chatgpt's ai coder codex now lets you choose the best solution" data-date="2025-06-15"><span class="headline-date">15 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/artificial-intelligence/chatgpts-ai-coder-codex-now-lets-you-choose-the-best-solution/" target="_blank" rel="noopener">ChatGPT's AI coder Codex now lets you choose the best solution</a><span class="article-summary">ChatGPT's Codex, which is an AI agent that lets you code and delegate programming tasks, is now testing a new feature that lets you choose the best solution. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

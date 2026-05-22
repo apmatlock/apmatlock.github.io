@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-08-11</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,70 +109,49 @@
       <div class="stat"><span class="stat-value">4</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-08-11</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">12</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">4</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-08-11"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/08/researchers-uncover-10-flaws-in-googles.html" target="_blank" rel="noopener">Researchers Uncover 10 Flaws in Google's File Transfer Tool Quick Share</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 11 Aug 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-08-11"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.securityweek.com/donald-trumps-campaign-says-its-emails-were-hacked/" target="_blank" rel="noopener">Donald Trump’s Campaign Says Its Emails Were Hacked</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 11 Aug 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-08-11"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.troyhunt.com/weekly-update-412/" target="_blank" rel="noopener">Weekly Update 412</a></div><span class="article-meta">TROYHUNT.COM &mdash; 11 Aug 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-08-11"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://techcrunch.com/2024/08/11/a-not-quite-definitive-guide-to-open-source-alternative-software/" target="_blank" rel="noopener">Open source tools to boost your productivity</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 11 Aug 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-08-11"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://haveibeenpwned.com/PwnedWebsites#Shadow" target="_blank" rel="noopener">Shadow - 543,295 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 11 Aug 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-08-11"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/chinese-hacking-groups-target-russian-government-it-firms/" target="_blank" rel="noopener">Chinese hacking groups target Russian government, IT firms</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 11 Aug 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-08-11"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/16070793" target="_blank" rel="noopener">Black Hat USA 2024 | Briefings Schedule</a></div><span class="article-meta">INFOSEC.PUB &mdash; 11 Aug 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-08-11"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/16071058" target="_blank" rel="noopener">Scaling Variant Analysis // Going Beyond Grep</a></div><span class="article-meta">INFOSEC.PUB &mdash; 11 Aug 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-08-11"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2024/08/rogue-pypi-library-solana-users-steals.html" target="_blank" rel="noopener">Rogue PyPI Library Solana Users, Steals Blockchain Wallet Keys</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 11 Aug 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-08-11"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/fake-x-content-warnings-on-ukraine-war-earthquakes-used-as-clickbait/" target="_blank" rel="noopener">Fake X content warnings on Ukraine war, earthquakes used as clickbait</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 11 Aug 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-08-11"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/hackers-leak-27-billion-data-records-with-social-security-numbers/" target="_blank" rel="noopener">Hackers leak 2.7 billion data records with Social Security numbers</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 11 Aug 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-08-11"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2024/08/11/crowdstrike-accepts-award-for-most-epic-fail-after-global-it-outage/" target="_blank" rel="noopener">CrowdStrike accepts award for ‘most epic fail’ after global IT outage</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 11 Aug 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="researchers uncover 10 flaws in google's file transfer tool quick share" data-date="2024-08-11"><span class="headline-date">11 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/08/researchers-uncover-10-flaws-in-googles.html" target="_blank" rel="noopener">Researchers Uncover 10 Flaws in Google's File Transfer Tool Quick Share</a><span class="article-summary">As many as 10 security flaws have been uncovered in Google's Quick Share data transfer utility for Android and Windows that could be assembled to trigger remote code execution (RCE) chain on systems that have the software installed. "The Quick Share application implements its own…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="donald trump’s campaign says its emails were hacked" data-date="2024-08-11"><span class="headline-date">11 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/donald-trumps-campaign-says-its-emails-were-hacked/" target="_blank" rel="noopener">Donald Trump’s Campaign Says Its Emails Were Hacked</a><span class="article-summary">Trump campaign spokesperson Steven Cheung blamed the hack on “foreign sources hostile to the United States.” The post Donald Trump’s Campaign Says Its Emails Were Hacked appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="weekly update 412" data-date="2024-08-11"><span class="headline-date">11 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.troyhunt.com/weekly-update-412/" target="_blank" rel="noopener">Weekly Update 412</a><span class="article-summary">Presently sponsored by: 1Password Extended Access Management: Secure every sign-in for every app on every device. When is a breach a breach? If it&apos;s been breached then re-breached , is the second incident still a breach? Here&apos;s what the masses said when I asked if they&…</span></span><span class="headline-source">TROYHUNT.COM</span></div>
+<div class="headline" data-title="open source tools to boost your productivity" data-date="2024-08-11"><span class="headline-date">11 Aug</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/08/11/a-not-quite-definitive-guide-to-open-source-alternative-software/" target="_blank" rel="noopener">Open source tools to boost your productivity</a><span class="article-summary">TechCrunch has pulled together some open-source alternatives to popular productivity apps that might appeal to prosumers, freelancers, or small businesses looking to escape the clutches of Big Tech. © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="shadow - 543,295 breached accounts" data-date="2024-08-11"><span class="headline-date">11 Aug</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/PwnedWebsites#Shadow" target="_blank" rel="noopener">Shadow - 543,295 breached accounts</a><span class="article-summary">In September 2023, the cloud gaming provider Shadow suffered a data breach that exposed over half a million customer records . The data included email and physical addresses, names and dates of birth.</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+<div class="headline" data-title="chinese hacking groups target russian government, it firms" data-date="2024-08-11"><span class="headline-date">11 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/chinese-hacking-groups-target-russian-government-it-firms/" target="_blank" rel="noopener">Chinese hacking groups target Russian government, IT firms</a><span class="article-summary">A series of targeted cyberattacks that started at the end of July 2024, targeting dozens of systems used in Russian government organizations and IT companies, are linked to Chinese hackers of the APT31 and APT 27 groups. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="black hat usa 2024 | briefings schedule" data-date="2024-08-11"><span class="headline-date">11 Aug</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/16070793" target="_blank" rel="noopener">Black Hat USA 2024 | Briefings Schedule</a><span class="article-summary">submitted by fcano to cybersecurity 2 points | 0 comments https://www.blackhat.com/us-24/briefings/schedule/ Links to Black Hat talks that include the slides.</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="scaling variant analysis // going beyond grep" data-date="2024-08-11"><span class="headline-date">11 Aug</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/16071058" target="_blank" rel="noopener">Scaling Variant Analysis // Going Beyond Grep</a><span class="article-summary">submitted by fcano to cybersecurity 1 points | 0 comments https://goingbeyondgrep.com/posts/scaling-variant-analysis/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="rogue pypi library solana users, steals blockchain wallet keys" data-date="2024-08-11"><span class="headline-date">11 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/08/rogue-pypi-library-solana-users-steals.html" target="_blank" rel="noopener">Rogue PyPI Library Solana Users, Steals Blockchain Wallet Keys</a><span class="article-summary">Cybersecurity researchers have discovered a new malicious package on the Python Package Index (PyPI) repository that masquerades as a library from the Solana blockchain platform but is actually designed to steal victims' secrets. "The legitimate Solana Python API project is known…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="fake x content warnings on ukraine war, earthquakes used as clickbait" data-date="2024-08-11"><span class="headline-date">11 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/fake-x-content-warnings-on-ukraine-war-earthquakes-used-as-clickbait/" target="_blank" rel="noopener">Fake X content warnings on Ukraine war, earthquakes used as clickbait</a><span class="article-summary">X has always had a bot problem, but now scammers are utilizing the Ukraine war and earthquake warnings in Japan to entice users into clicking on fake content warnings and videos that lead to scam adult sites, malicious browser extensions, and shady affiliate sites. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="hackers leak 2.7 billion data records with social security numbers" data-date="2024-08-11"><span class="headline-date">11 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/hackers-leak-27-billion-data-records-with-social-security-numbers/" target="_blank" rel="noopener">Hackers leak 2.7 billion data records with Social Security numbers</a><span class="article-summary">Almost 2.7 billion records of personal information for people in the United States were leaked on a hacking forum, exposing names, social security numbers, all known physical addresses, and possible aliases. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="crowdstrike accepts award for ‘most epic fail’ after global it outage" data-date="2024-08-11"><span class="headline-date">11 Aug</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/08/11/crowdstrike-accepts-award-for-most-epic-fail-after-global-it-outage/" target="_blank" rel="noopener">CrowdStrike accepts award for ‘most epic fail’ after global IT outage</a><span class="article-summary">CrowdStrike's president said he'll take the trophy back to headquarters as a reminder that "our goal is to protect people, and we got this wrong." © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

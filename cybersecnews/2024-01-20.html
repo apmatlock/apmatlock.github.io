@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-01-20</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,80 +109,63 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-01-20</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">21</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">8</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-01-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/01/cisa-issues-emergency-directive-to.html" target="_blank" rel="noopener">CISA Issues Emergency Directive to Federal Agencies on Ivanti Zero-Day Exploits</a></div><span class="kev-badge">KEV</span><span class="article-meta">THEHACKERNEWS.COM &mdash; 20 Jan 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-01-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://securityaffairs.com/157769/apt/unc3886-exploits-vcenter-server-zero-day-cve-2023-34048.html?&web_view=true" target="_blank" rel="noopener">China-linked APT UNC3886 Exploits VMware Zero-Day Since 2021</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 20 Jan 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-01-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/01/cisa-issues-emergency-directive-to.html?&web_view=true" target="_blank" rel="noopener">CISA Issues Emergency Directive to Federal Agencies on Ivanti Zero-Day Exploits</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 20 Jan 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-01-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/01/chinese-hackers-silently-weaponized.html" target="_blank" rel="noopener">Chinese Hackers Silently Weaponized VMware Zero-Day Flaw for 2 Years</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 20 Jan 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-01-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.securityweek.com/in-other-news-whatsapp-privacy-issue-spying-via-ambient-light-sensor-bigpanzi-botnet/" target="_blank" rel="noopener">In Other News: WhatsApp Privacy Issue, Spying via Ambient Light Sensor, Bigpanzi Botnet</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 20 Jan 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-01-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/pixiefail-uefi-flaws/" target="_blank" rel="noopener">PixieFAIL – 9 UEFI Flaws Expose Computers to Remote Attacks</a></div><span class="article-meta">GBHACKERS.COM &mdash; 20 Jan 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-01-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://blog.knowbe4.com/russian-hackers-win-big-microsofts-senior-exec-team-emails-breached" target="_blank" rel="noopener">Russian Hackers Win Big: Microsoft's Senior Exec Team Emails Breached</a></div><span class="article-meta">KNOWBE4.COM &mdash; 20 Jan 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-01-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/microsoft-russian-hackers-had-access-to-executives-emails-a-24152" target="_blank" rel="noopener">Microsoft: Russian Hackers Had Access to Executives' Emails</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2024-01-20</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-01-20"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/breachforums-admin-avoids-prison-term-a-24153" target="_blank" rel="noopener">BreachForums Admin Avoids Prison Term</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2024-01-20</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-01-20"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2024/01/microsofts-top-execs-emails-breached-in.html" target="_blank" rel="noopener">Microsoft's Top Execs' Emails Breached in Sophisticated Russia-Linked APT Attack</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 20 Jan 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-01-20"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/payoneer-accounts-in-argentina-hacked-in-2fa-bypass-attacks/?&web_view=true" target="_blank" rel="noopener">Payoneer Accounts in Argentina Hacked in 2FA Bypass Attacks</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 20 Jan 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-01-20"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/russian-hackers-stole-microsoft-corporate-emails-in-month-long-breach/?&web_view=true" target="_blank" rel="noopener">Russian Hackers Stole Microsoft Corporate Emails in Month-Long Breach</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 20 Jan 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-01-20"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/researchers-link-3am-ransomware-to-conti-royal-cybercrime-gangs/" target="_blank" rel="noopener">Researchers link 3AM ransomware to Conti, Royal cybercrime gangs</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 20 Jan 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-01-20"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.troyhunt.com/weekly-update-383/" target="_blank" rel="noopener">Weekly Update 383</a></div><span class="article-meta">TROYHUNT.COM &mdash; 20 Jan 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-01-20"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.darkreading.com/cyberattacks-data-breaches/massive-data-breach-vf-35m-vans-retail-customers" target="_blank" rel="noopener">Massive Data Breach at VF Hits 35M Vans, Retail Customers</a></div><span class="article-meta">DARKREADING.COM &mdash; 20 Jan 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-01-20"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/court-charges-dev-with-hacking-after-cybersecurity-issue-disclosure/" target="_blank" rel="noopener">Court charges dev with hacking after cybersecurity issue disclosure</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 20 Jan 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-01-20"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2024/01/invoice-phishing-alert-ta866-deploys.html" target="_blank" rel="noopener">Invoice Phishing Alert: TA866 Deploys WasabiSeed &amp; Screenshotter Malware</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 20 Jan 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-01-20"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://github.com/joeavanzato/LogBoost" target="_blank" rel="noopener">LogBoost - A tool for parsing and enriching IP addresses in any type of log/file with GEO, DNS, OSINT IOCs and ASN context</a></div><span class="article-meta">GITHUB.COM &mdash; 20 Jan 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-01-20"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.theregister.com/2024/01/20/chinese_russia_vmware_microsoft/" target="_blank" rel="noopener">Russians invade Microsoft exec mail while China jabs at VMware vCenter Server</a></div><span class="article-meta">THEREGISTER.COM &mdash; 20 Jan 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-01-20"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/meta-wont-remove-fake-instagram-profiles-used-for-obvious-catfishing/" target="_blank" rel="noopener">Meta won't remove fake Instagram profiles used for obvious catfishing</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 20 Jan 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-01-20"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/meta-wont-remove-fake-instagram-profiles-that-are-clearly-catfishing/" target="_blank" rel="noopener">Meta won't remove fake Instagram profiles that are clearly catfishing</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 20 Jan 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">8</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa issues emergency directive to federal agencies on ivanti zero-day exploits" data-date="2024-01-20"><span class="headline-date">20 Jan <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/01/cisa-issues-emergency-directive-to.html" target="_blank" rel="noopener">CISA Issues Emergency Directive to Federal Agencies on Ivanti Zero-Day Exploits</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) on Friday issued an&nbsp;emergency directive&nbsp;urging Federal Civilian Executive Branch (FCEB) agencies to implement mitigations against two actively exploited zero-day flaws in Ivanti Connect Secure (ICS) and Iv…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="china-linked apt unc3886 exploits vmware zero-day since 2021" data-date="2024-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/157769/apt/unc3886-exploits-vcenter-server-zero-day-cve-2023-34048.html?&web_view=true" target="_blank" rel="noopener">China-linked APT UNC3886 Exploits VMware Zero-Day Since 2021</a><span class="article-summary">Mandiant researchers observed UNC3886 exploiting a VMware ESXi zero-day vulnerability in June 2023, using novel malware persistence techniques to achieve administrative access within VMware ESXi Hypervisors.</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+<div class="headline" data-title="cisa issues emergency directive to federal agencies on ivanti zero-day exploits" data-date="2024-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/01/cisa-issues-emergency-directive-to.html?&web_view=true" target="_blank" rel="noopener">CISA Issues Emergency Directive to Federal Agencies on Ivanti Zero-Day Exploits</a><span class="article-summary">The vulnerabilities allow threat actors to execute arbitrary commands, move laterally, perform data exfiltration, and establish persistent system access, potentially compromising target information systems.</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="chinese hackers silently weaponized vmware zero-day flaw for 2 years" data-date="2024-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/01/chinese-hackers-silently-weaponized.html" target="_blank" rel="noopener">Chinese Hackers Silently Weaponized VMware Zero-Day Flaw for 2 Years</a><span class="article-summary">An advanced China-nexus cyber espionage group previously linked to the exploitation of security flaws in VMware and Fortinet appliances has been linked to the abuse of a critical vulnerability in VMware vCenter Server as a zero-day since late 2021. "UNC3886 has a track record of …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="in other news: whatsapp privacy issue, spying via ambient light sensor, bigpanzi botnet" data-date="2024-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/in-other-news-whatsapp-privacy-issue-spying-via-ambient-light-sensor-bigpanzi-botnet/" target="_blank" rel="noopener">In Other News: WhatsApp Privacy Issue, Spying via Ambient Light Sensor, Bigpanzi Botnet</a><span class="article-summary">Noteworthy stories that might have slipped under the radar: WhatsApp privacy issue remains unpatched, spying via tablet ambient light sensors, and the Bigpanzi botnet. The post In Other News: WhatsApp Privacy Issue, Spying via Ambient Light Sensor, Bigpanzi Botnet appeared first …</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="pixiefail – 9 uefi flaws expose computers to remote attacks" data-date="2024-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/pixiefail-uefi-flaws/" target="_blank" rel="noopener">PixieFAIL – 9 UEFI Flaws Expose Computers to Remote Attacks</a><span class="article-summary">Hackers exploit UEFI flaws to gain unauthorized access to a system&#8217;s firmware, enabling them to implant persistent malware or manipulate the boot process. This provides a stealthy entry point that allows attackers to bypass traditional security measures and maintain control…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="russian hackers win big: microsoft's senior exec team emails breached" data-date="2024-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://blog.knowbe4.com/russian-hackers-win-big-microsofts-senior-exec-team-emails-breached" target="_blank" rel="noopener">Russian Hackers Win Big: Microsoft's Senior Exec Team Emails Breached</a><span class="article-summary">In a Friday regulatory filing , Microsoft has reported that its corporate email accounts were compromised by a Russian state-sponsored hacking group known as Midnight Blizzard, also identified as Nobelium or APT29. Microsoft's disclosure aligns with new U.S. requirements for repo…</span></span><span class="headline-source">KNOWBE4.COM</span></div>
+<div class="headline" data-title="microsoft: russian hackers had access to executives' emails" data-date="2024-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/microsoft-russian-hackers-had-access-to-executives-emails-a-24152" target="_blank" rel="noopener">Microsoft: Russian Hackers Had Access to Executives' Emails</a><span class="article-summary">Computing Giant Says Hackers Did Not Access Customer Data or Production Systems Russian state hackers obtained access to the inboxes of senior Microsoft executives for at least six weeks, the computing giant disclosed late Friday afternoon. "There is no evidence that the threat a…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="breachforums admin avoids prison term" data-date="2024-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/breachforums-admin-avoids-prison-term-a-24153" target="_blank" rel="noopener">BreachForums Admin Avoids Prison Term</a><span class="article-summary">'Pompompurin' Sentenced to Supervised Release, Banned From Internet for 1 Year A federal judge sentenced "Pompompurin," the administrator of a now-defunct data breach marketplace, to 20 years of supervised release. The Peekskill, N.Y. man avoided a recommended 15-year prison sent…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="microsoft's top execs' emails breached in sophisticated russia-linked apt attack" data-date="2024-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/01/microsofts-top-execs-emails-breached-in.html" target="_blank" rel="noopener">Microsoft's Top Execs' Emails Breached in Sophisticated Russia-Linked APT Attack</a><span class="article-summary">Microsoft on Friday revealed that it was the target of a nation-state attack on its corporate systems that resulted in the theft of emails and attachments from senior executives and other individuals in the company's cybersecurity and legal departments. The Windows maker attribut…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="payoneer accounts in argentina hacked in 2fa bypass attacks" data-date="2024-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/payoneer-accounts-in-argentina-hacked-in-2fa-bypass-attacks/?&web_view=true" target="_blank" rel="noopener">Payoneer Accounts in Argentina Hacked in 2FA Bypass Attacks</a><span class="article-summary">Suspicions have been raised about a potential data leak from mobile service providers or a breach in the SMS provider used for OTP code delivery as the possible cause of the hacks.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="russian hackers stole microsoft corporate emails in month-long breach" data-date="2024-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/russian-hackers-stole-microsoft-corporate-emails-in-month-long-breach/?&web_view=true" target="_blank" rel="noopener">Russian Hackers Stole Microsoft Corporate Emails in Month-Long Breach</a><span class="article-summary">The breach was facilitated by a password spray attack on a non-production test tenant account lacking two-factor authentication, highlighting the importance of robust account security measures.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="researchers link 3am ransomware to conti, royal cybercrime gangs" data-date="2024-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/researchers-link-3am-ransomware-to-conti-royal-cybercrime-gangs/" target="_blank" rel="noopener">Researchers link 3AM ransomware to Conti, Royal cybercrime gangs</a><span class="article-summary">Security researchers analyzing the activity of the recently emerged 3AM ransomware operation uncovered close connections with infamous groups, such as the Conti syndicate and the Royal ransomware gang. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="weekly update 383" data-date="2024-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.troyhunt.com/weekly-update-383/" target="_blank" rel="noopener">Weekly Update 383</a><span class="article-summary">Presently sponsored by: Report URI: Guarding you from rogue JavaScript! Don’t get pwned; get real-time alerts & prevent breaches #SecureYourSite They&apos;re an odd thing, credential lists. Whether they&apos;re from a stealer as in this week&apos;s Naz.API incident, or just aggre…</span></span><span class="headline-source">TROYHUNT.COM</span></div>
+<div class="headline" data-title="massive data breach at vf hits 35m vans, retail customers" data-date="2024-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.darkreading.com/cyberattacks-data-breaches/massive-data-breach-vf-35m-vans-retail-customers" target="_blank" rel="noopener">Massive Data Breach at VF Hits 35M Vans, Retail Customers</a><span class="article-summary">submitted by IllNess to securitynews 1 points | 1 comments https://www.darkreading.com/cyberattacks-data-breaches/massive-data-breach-vf-35m-vans-retail-customers</span></span><span class="headline-source">DARKREADING.COM</span></div>
+<div class="headline" data-title="court charges dev with hacking after cybersecurity issue disclosure" data-date="2024-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/court-charges-dev-with-hacking-after-cybersecurity-issue-disclosure/" target="_blank" rel="noopener">Court charges dev with hacking after cybersecurity issue disclosure</a><span class="article-summary">A German court has charged a programmer investigating an IT problem with hacking and fined them €3,000 ($3,265) for what it deemed was unauthorized access to external computer systems and spying on data. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="invoice phishing alert: ta866 deploys wasabiseed &amp; screenshotter malware" data-date="2024-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/01/invoice-phishing-alert-ta866-deploys.html" target="_blank" rel="noopener">Invoice Phishing Alert: TA866 Deploys WasabiSeed &amp; Screenshotter Malware</a><span class="article-summary">The threat actor tracked as&nbsp;TA866&nbsp;has resurfaced after a nine-month hiatus with a new large-volume phishing campaign to deliver known malware families such as WasabiSeed and Screenshotter. The campaign, observed earlier this month and blocked by Proofpoint on January 11…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="logboost - a tool for parsing and enriching ip addresses in any type of log/file with geo, dns, osint iocs and asn context" data-date="2024-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://github.com/joeavanzato/LogBoost" target="_blank" rel="noopener">LogBoost - A tool for parsing and enriching IP addresses in any type of log/file with GEO, DNS, OSINT IOCs and ASN context</a><span class="article-summary">submitted by L4s to secops 1 points | 0 comments https://github.com/joeavanzato/LogBoost LogBoost - A tool for parsing and enriching IP addresses in any type of log/file with GEO, DNS, OSINT IOCs and ASN context::Convert a variety of log formats to CSV while enriching detected IP…</span></span><span class="headline-source">GITHUB.COM</span></div>
+<div class="headline" data-title="russians invade microsoft exec mail while china jabs at vmware vcenter server" data-date="2024-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.theregister.com/2024/01/20/chinese_russia_vmware_microsoft/" target="_blank" rel="noopener">Russians invade Microsoft exec mail while China jabs at VMware vCenter Server</a><span class="article-summary">submitted by ylai to cybersecurity 1 points | 0 comments https://www.theregister.com/2024/01/20/chinese_russia_vmware_microsoft/</span></span><span class="headline-source">THEREGISTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="meta won't remove fake instagram profiles used for obvious catfishing" data-date="2024-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/meta-wont-remove-fake-instagram-profiles-used-for-obvious-catfishing/" target="_blank" rel="noopener">Meta won't remove fake Instagram profiles used for obvious catfishing</a><span class="article-summary">Meta seems to be falling short of effectively tackling fake Instagram profiles even when there are sufficient signs to indicate that a profile is misusing someone else's photos and identity. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="meta won't remove fake instagram profiles that are clearly catfishing" data-date="2024-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/meta-wont-remove-fake-instagram-profiles-that-are-clearly-catfishing/" target="_blank" rel="noopener">Meta won't remove fake Instagram profiles that are clearly catfishing</a><span class="article-summary">Meta seems to be falling short of effectively tackling fake Instagram profiles even when there are sufficient signs to indicate that a profile is misusing someone else's photos and identity. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

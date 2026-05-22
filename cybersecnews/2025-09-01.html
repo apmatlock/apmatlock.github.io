@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-09-01</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,70 +109,53 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-09-01</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">11</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-09-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://krebsonsecurity.com/2025/09/the-ongoing-fallout-from-a-breach-at-ai-chatbot-maker-salesloft/" target="_blank" rel="noopener">The Ongoing Fallout from a Breach at AI Chatbot Maker Salesloft</a></div><span class="article-meta">KREBSONSECURITY.COM &mdash; 01 Sep 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-09-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/09/weekly-recap-whatsapp-0-day-docker-bug.html" target="_blank" rel="noopener">⚡ Weekly Recap: WhatsApp 0-Day, Docker Bug, Salesforce Breach, Fake CAPTCHAs, Spyware App &amp; More</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 01 Sep 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-09-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.lastwatchdog.com/black-hat-fireside-chat-api-sprawl-turns-smbs-into-prime-targets-simple-flaws-invite-breaches/" target="_blank" rel="noopener">Black Hat Fireside Chat: API sprawl turns SMBs into prime targets — simple flaws invite breaches</a></div><span class="article-meta">LASTWATCHDOG.COM &mdash; 01 Sep 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-09-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://sh.itjust.works/post/45225152" target="_blank" rel="noopener">[PDF] Over 16,000 compromised servers uncovered using Secure Shell key probing method</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 1 Sep 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-09-01"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2025/09/when-browsers-become-attack-surface.html" target="_blank" rel="noopener">When Browsers Become the Attack Surface: Rethinking Security for Scattered Spider</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 01 Sep 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-09-01"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://haveibeenpwned.com/Breach/Giglio" target="_blank" rel="noopener">Giglio - 1,026,468 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 01 Sep 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-01"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2025/09/scarcruft-uses-rokrat-malware-in.html" target="_blank" rel="noopener">ScarCruft Uses RokRAT Malware in Operation HanKook Phantom Targeting South Korean Academics</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 01 Sep 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-09-01"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://sh.itjust.works/post/45216172" target="_blank" rel="noopener">DDoS Dominate the Digital Battlefield: AI integration, persistent hacktivist campaigns, and nation-state actors weaponize DDoS attacks, creating unprecedented risks for organizations globally</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 1 Sep 2025</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-09-01"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://thehackernews.com/2025/09/android-droppers-now-deliver-sms.html" target="_blank" rel="noopener">Android Droppers Now Deliver SMS Stealers and Spyware, Not Just Banking Trojans</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 01 Sep 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-09-01"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bitdefender.com/en-us/blog/hotforsecurity/hacker-suspected-of-trying-to-cheat-his-way-into-university-is-arrested-in-spain" target="_blank" rel="noopener">Hacker suspected of trying to cheat his way into university is arrested in Spain</a></div><span class="article-meta">BITDEFENDER.COM &mdash; 01 Sep 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-09-01"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.kaspersky.com/blog/how-to-avoid-becoming-dropper/54232/" target="_blank" rel="noopener">What are money mules, and how to avoid accidentally becoming one | Kaspersky official blog</a></div><span class="article-meta">KASPERSKY.COM &mdash; 01 Sep 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the ongoing fallout from a breach at ai chatbot maker salesloft" data-date="2025-09-01"><span class="headline-date">1 Sep</span><span class="headline-body"><a class="headline-title" href="https://krebsonsecurity.com/2025/09/the-ongoing-fallout-from-a-breach-at-ai-chatbot-maker-salesloft/" target="_blank" rel="noopener">The Ongoing Fallout from a Breach at AI Chatbot Maker Salesloft</a><span class="article-summary">The recent mass-theft of authentication tokens from Salesloft, whose AI chatbot is used by a broad swath of corporate America to convert customer interaction into Salesforce leads, has left many companies racing to invalidate the stolen credentials before hackers can exploit them…</span></span><span class="headline-source">KREBSONSECURITY.COM</span></div>
+<div class="headline" data-title="⚡ weekly recap: whatsapp 0-day, docker bug, salesforce breach, fake captchas, spyware app &amp; more" data-date="2025-09-01"><span class="headline-date">1 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/09/weekly-recap-whatsapp-0-day-docker-bug.html" target="_blank" rel="noopener">⚡ Weekly Recap: WhatsApp 0-Day, Docker Bug, Salesforce Breach, Fake CAPTCHAs, Spyware App &amp; More</a><span class="article-summary">Cybersecurity today is less about single attacks and more about chains of small weaknesses that connect into big risks. One overlooked update, one misused account, or one hidden tool in the wrong hands can be enough to open the door. The news this week shows how attackers are mix…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="black hat fireside chat: api sprawl turns smbs into prime targets — simple flaws invite breaches" data-date="2025-09-01"><span class="headline-date">1 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.lastwatchdog.com/black-hat-fireside-chat-api-sprawl-turns-smbs-into-prime-targets-simple-flaws-invite-breaches/" target="_blank" rel="noopener">Black Hat Fireside Chat: API sprawl turns SMBs into prime targets — simple flaws invite breaches</a><span class="article-summary">Cyber attackers don’t always need sophisticated exploits. Too often, they succeed by exploiting the basics. Related: 51 common SMB cyberattacks That’s the warning from Chris Wallis , founder and CEO of London-based Intruder , who sat down with Last Watchdog &#8230; (more…) The po…</span></span><span class="headline-source">LASTWATCHDOG.COM</span></div>
+<div class="headline" data-title="[pdf] over 16,000 compromised servers uncovered using secure shell key probing method" data-date="2025-09-01"><span class="headline-date">1 Sep</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/45225152" target="_blank" rel="noopener">[PDF] Over 16,000 compromised servers uncovered using Secure Shell key probing method</a><span class="article-summary">submitted by Pro to cybersecurity 11 points | 0 comments https://www.usenix.org/system/files/usenixsecurity25-munteanu.pdf cross-posted from: programming.dev/post/36708596 Main . Attackers regularly use SSH (Secure SHell) to compromise systems, e.g., via brute-force attacks, esta…</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="when browsers become the attack surface: rethinking security for scattered spider" data-date="2025-09-01"><span class="headline-date">1 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/09/when-browsers-become-attack-surface.html" target="_blank" rel="noopener">When Browsers Become the Attack Surface: Rethinking Security for Scattered Spider</a><span class="article-summary">As enterprises continue to shift their operations to the browser, security teams face a growing set of cyber challenges. In fact, over 80% of security incidents now originate from web applications accessed via Chrome, Edge, Firefox, and other browsers. One particularly fast-evolv…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="giglio - 1,026,468 breached accounts" data-date="2025-09-01"><span class="headline-date">1 Sep</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/Breach/Giglio" target="_blank" rel="noopener">Giglio - 1,026,468 breached accounts</a><span class="article-summary">In August 2025, over 1M unique email addresses appeared in a breach allegedly obtained from Italian fashion designer Giglio. The data also included names, phone numbers and physical addresses. Giglio did not respond to repeated attempts to disclose the incident.</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="scarcruft uses rokrat malware in operation hankook phantom targeting south korean academics" data-date="2025-09-01"><span class="headline-date">1 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/09/scarcruft-uses-rokrat-malware-in.html" target="_blank" rel="noopener">ScarCruft Uses RokRAT Malware in Operation HanKook Phantom Targeting South Korean Academics</a><span class="article-summary">Cybersecurity researchers have discovered a new phishing campaign undertaken by the North Korea-linked hacking group called ScarCruft (aka APT37) to deliver a malware known as RokRAT. The activity has been codenamed Operation HanKook Phantom by Seqrite Labs, stating the attacks a…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="ddos dominate the digital battlefield: ai integration, persistent hacktivist campaigns, and nation-state actors weaponize ddos attacks, creating unprecedented risks for organizations globally" data-date="2025-09-01"><span class="headline-date">1 Sep</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/45216172" target="_blank" rel="noopener">DDoS Dominate the Digital Battlefield: AI integration, persistent hacktivist campaigns, and nation-state actors weaponize DDoS attacks, creating unprecedented risks for organizations globally</a><span class="article-summary">submitted by Pro to cybersecurity 12 points | 0 comments https://www.netscout.com/threatreport cross-posted from: programming.dev/post/36689630 Key Findings 1. Geopolitical Events Trigger Unprecedented DDoS Campaigns Expand : Major political events drove increased DDoS activity, …</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="android droppers now deliver sms stealers and spyware, not just banking trojans" data-date="2025-09-01"><span class="headline-date">1 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/09/android-droppers-now-deliver-sms.html" target="_blank" rel="noopener">Android Droppers Now Deliver SMS Stealers and Spyware, Not Just Banking Trojans</a><span class="article-summary">Cybersecurity researchers are calling attention to a new shift in the Android malware landscape where dropper apps, which are typically used to deliver banking trojans, to also distribute simpler malware such as SMS stealers and basic spyware. These campaigns are propagated via d…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="hacker suspected of trying to cheat his way into university is arrested in spain" data-date="2025-09-01"><span class="headline-date">1 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bitdefender.com/en-us/blog/hotforsecurity/hacker-suspected-of-trying-to-cheat-his-way-into-university-is-arrested-in-spain" target="_blank" rel="noopener">Hacker suspected of trying to cheat his way into university is arrested in Spain</a><span class="article-summary">Spanish police have arrested a suspected hacker for accessing a government website in order to alter the high school and university entrance exam grades of not only himself, but also some of his closest classmates. Read more in my article on the Hot for Security blog.</span></span><span class="headline-source">BITDEFENDER.COM</span></div>
+<div class="headline" data-title="what are money mules, and how to avoid accidentally becoming one | kaspersky official blog" data-date="2025-09-01"><span class="headline-date">1 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.kaspersky.com/blog/how-to-avoid-becoming-dropper/54232/" target="_blank" rel="noopener">What are money mules, and how to avoid accidentally becoming one | Kaspersky official blog</a><span class="article-summary">We explain in plain language what money mules are, how scammers trick ordinary folks with their schemes, and the consequences.</span></span><span class="headline-source">KASPERSKY.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-11-15</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,71 +109,54 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-11-15</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">12</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Security Bulletins" onclick="filterCat('Security Bulletins', this)">SECURITY BULLETINS <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">3</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-11-15"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/32486" target="_blank" rel="noopener">Honeypot: FortiWeb CVE-2025-64446 Exploits, (Sat, Nov 15th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 15 Nov 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-11-15"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2025/11/rondodox-exploits-unpatched-xwiki.html" target="_blank" rel="noopener">RondoDox Exploits Unpatched XWiki Servers to Pull More Devices Into Its Botnet</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 15 Nov 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-11-15"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://gbhackers.com/fortiweb-waf-flaw-actively-exploited/" target="_blank" rel="noopener">Critical FortiWeb WAF Flaw Actively Exploited to Establish Admin Access and Seize Total Control</a></div><span class="kev-badge">KEV</span><span class="article-meta">GBHACKERS.COM &mdash; 15 Nov 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-11-15"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://sh.itjust.works/post/49821365" target="_blank" rel="noopener">Real Estate Giant Redfin Exposed Users’ Personal Info on Listing Contact Forms</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 15 Nov 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-11-15"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/4090568/worm-flooding-npm-registry-with-token-stealers-still-isnt-under-control-2.html" target="_blank" rel="noopener">Worm flooding npm registry with token stealers still isn’t under control</a></div><span class="article-meta">CSOONLINE.COM &mdash; 15 Nov 2025</span></div>
-<div class="article-row" data-cat="Security Bulletins" data-date="2025-11-15"><span class="cat-badge" style="border:1px solid rgba(255,170,0,0.5);background:rgba(255,170,0,0.10);" title="Security Bulletins">📋</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/microsoft/microsoft-windows-10-kb5068781-esu-update-may-fail-with-0x800f0922-errors/" target="_blank" rel="noopener">Microsoft: Windows 10 KB5068781 ESU update may fail with 0x800f0922 errors</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 15 Nov 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-11-15"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/cybercrime-and-the-future-an-in-depth-discussion-with-tammy-harper-flareio" target="_blank" rel="noopener">Cybercrime and the Future: An In-Depth Discussion with Tammy Harper, Flare.io</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 15 Nov 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-11-15"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/jaguar-land-rover-cyberattack-cost-the-company-over-220-million/" target="_blank" rel="noopener">Jaguar Land Rover cyberattack cost the company over $220 million</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 15 Nov 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-11-15"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://sh.itjust.works/post/49866510" target="_blank" rel="noopener">First Large-scale Cyberattack Using AI With Minimal Human Input</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 15 Nov 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-11-15"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2025/11/five-us-citizens-plead-guilty-to.html" target="_blank" rel="noopener">Five U.S. Citizens Plead Guilty to Helping North Korean IT Workers Infiltrate 136 Companies</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 15 Nov 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-11-15"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/decades-old-finger-protocol-abused-in-clickfix-malware-attacks/" target="_blank" rel="noopener">Decades-old ‘Finger’ protocol abused in ClickFix malware attacks</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 15 Nov 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-11-15"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.lastwatchdog.com/my-take-ais-fortune-teller-effect-why-its-all-too-easy-to-mistake-pattern-mastery-for-wisdom/" target="_blank" rel="noopener">MY TAKE: AI’s fortune-teller effect — why it’s all too easy to mistake pattern mastery for wisdom</a></div><span class="article-meta">LASTWATCHDOG.COM &mdash; 15 Nov 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="honeypot: fortiweb cve-2025-64446 exploits, (sat, nov 15th)" data-date="2025-11-15"><span class="headline-date">15 Nov</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/32486" target="_blank" rel="noopener">Honeypot: FortiWeb CVE-2025-64446 Exploits, (Sat, Nov 15th)</a><span class="article-summary">Like many have reported, we too noticed exploit attempts for CVE-2025-64446 in our honeypots. &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="rondodox exploits unpatched xwiki servers to pull more devices into its botnet" data-date="2025-11-15"><span class="headline-date">15 Nov</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/11/rondodox-exploits-unpatched-xwiki.html" target="_blank" rel="noopener">RondoDox Exploits Unpatched XWiki Servers to Pull More Devices Into Its Botnet</a><span class="article-summary">The botnet malware known as RondoDox has been observed targeting unpatched XWiki instances against a critical security flaw that could allow attackers to achieve arbitrary code execution. The vulnerability in question is CVE-2025-24893 (CVSS score: 9.8), an eval injection bug tha…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="critical fortiweb waf flaw actively exploited to establish admin access and seize total control" data-date="2025-11-15"><span class="headline-date">15 Nov <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/fortiweb-waf-flaw-actively-exploited/" target="_blank" rel="noopener">Critical FortiWeb WAF Flaw Actively Exploited to Establish Admin Access and Seize Total Control</a><span class="article-summary">Fortinet has released urgent security updates to address a critical vulnerability in its FortiWeb Web Application Firewall (WAF) that is being actively exploited in the wild. Tracked as CVE-2025-64446, the flaw allows unauthenticated attackers to execute administrative commands a…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="real estate giant redfin exposed users’ personal info on listing contact forms" data-date="2025-11-15"><span class="headline-date">15 Nov</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/49821365" target="_blank" rel="noopener">Real Estate Giant Redfin Exposed Users’ Personal Info on Listing Contact Forms</a><span class="article-summary">submitted by ie11 to cybersecurity 1 points | 0 comments https://theintercept.com/2025/11/13/redfin-user-information-real-estate-listing/</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="worm flooding npm registry with token stealers still isn’t under control" data-date="2025-11-15"><span class="headline-date">15 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4090568/worm-flooding-npm-registry-with-token-stealers-still-isnt-under-control-2.html" target="_blank" rel="noopener">Worm flooding npm registry with token stealers still isn’t under control</a><span class="article-summary">A coordinated token farming campaign continues to flood the open source npm registry, with tens of thousands of infected packages created almost daily to steal tokens from unsuspecting developers using the Tea Protocol to reward coding work. On Thursday, researchers at Amazon sai…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-bulletins">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,170,0,0.5);" onclick="toggleSection(this)">📋 SECURITY BULLETINS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="microsoft: windows 10 kb5068781 esu update may fail with 0x800f0922 errors" data-date="2025-11-15"><span class="headline-date">15 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/microsoft/microsoft-windows-10-kb5068781-esu-update-may-fail-with-0x800f0922-errors/" target="_blank" rel="noopener">Microsoft: Windows 10 KB5068781 ESU update may fail with 0x800f0922 errors</a><span class="article-summary">Microsoft has confirmed it is investigating a bug causing the Windows 10 KB5068781 extended security update to fail to install with 0x800f0922 errors on devices with corporate licensing. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cybercrime and the future: an in-depth discussion with tammy harper, flare.io" data-date="2025-11-15"><span class="headline-date">15 Nov</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/cybercrime-and-the-future-an-in-depth-discussion-with-tammy-harper-flareio" target="_blank" rel="noopener">Cybercrime and the Future: An In-Depth Discussion with Tammy Harper, Flare.io</a><span class="article-summary">In this episode of Cybersecurity Today, host Jim Love is joined by Tammy Harper, a senior threat intelligence researcher at Flare, to explore the future landscape of cybercrime. The conversation delves into various aspects like the evolution of underground markets, state-backed c…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="jaguar land rover cyberattack cost the company over $220 million" data-date="2025-11-15"><span class="headline-date">15 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/jaguar-land-rover-cyberattack-cost-the-company-over-220-million/" target="_blank" rel="noopener">Jaguar Land Rover cyberattack cost the company over $220 million</a><span class="article-summary">Jaguar Land Rover (JLR) published its financial results for July 1 to September 30, warning that the cost of a recent cyberattack totaled £196 million ($220 million) in the quarter. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="first large-scale cyberattack using ai with minimal human input" data-date="2025-11-15"><span class="headline-date">15 Nov</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/49866510" target="_blank" rel="noopener">First Large-scale Cyberattack Using AI With Minimal Human Input</a><span class="article-summary">submitted by kid to cybersecurity 1 points | 0 comments https://cybersecuritynews.com/first-large-scale-cyberattack-using-ai/</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="five u.s. citizens plead guilty to helping north korean it workers infiltrate 136 companies" data-date="2025-11-15"><span class="headline-date">15 Nov</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/11/five-us-citizens-plead-guilty-to.html" target="_blank" rel="noopener">Five U.S. Citizens Plead Guilty to Helping North Korean IT Workers Infiltrate 136 Companies</a><span class="article-summary">The U.S. Department of Justice (DoJ) on Friday announced that five individuals have pleaded guilty to assisting North Korea's illicit revenue generation schemes by enabling information technology (IT) worker fraud in violation of international sanctions. The five individuals are …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="decades-old ‘finger’ protocol abused in clickfix malware attacks" data-date="2025-11-15"><span class="headline-date">15 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/decades-old-finger-protocol-abused-in-clickfix-malware-attacks/" target="_blank" rel="noopener">Decades-old ‘Finger’ protocol abused in ClickFix malware attacks</a><span class="article-summary">The decades-old "finger" command is making a comeback,, with threat actors using the protocol to retrieve remote commands to execute on Windows devices. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="my take: ai’s fortune-teller effect — why it’s all too easy to mistake pattern mastery for wisdom" data-date="2025-11-15"><span class="headline-date">15 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.lastwatchdog.com/my-take-ais-fortune-teller-effect-why-its-all-too-easy-to-mistake-pattern-mastery-for-wisdom/" target="_blank" rel="noopener">MY TAKE: AI’s fortune-teller effect — why it’s all too easy to mistake pattern mastery for wisdom</a><span class="article-summary">I hadn’t expected the machine’s answer to be that good. Related: The AI bubble is inflating It was a simple prompt — I needed help crafting a reply to a client. One of those mid-project check-ins where timing gets murky &#8230; (more…) The post MY TAKE: AI’s fortune-teller effect…</span></span><span class="headline-source">LASTWATCHDOG.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

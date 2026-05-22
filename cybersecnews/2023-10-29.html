@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2023-10-29</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,69 +109,56 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2023-10-29</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">9</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-10-29"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://twitter.com/SI_FalconTeam/status/1718346358950711807?t=skXn-DOlds2kkiushYmltg&s=19" target="_blank" rel="noopener">Cisco IOS XE exploit caught by honeypot</a></div><span class="article-meta">TWITTER.COM &mdash; 29 Oct 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-10-29"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/lazarus-group-looking-for-unpatched-software-vulnerabilities-a-23427" target="_blank" rel="noopener">Lazarus Group Looking for Unpatched Software Vulnerabilities</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-10-29</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-10-29"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/30354" target="_blank" rel="noopener">Spam or Phishing&amp;#x26;#x3f; Looking for Credentials &amp;#x26; Passwords, (Sun, Oct 29th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 29 Oct 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-10-29"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://haveibeenpwned.com/PwnedWebsites#MemeChat" target="_blank" rel="noopener">MemeChat - 4,348,570 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 29 Oct 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-10-29"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/new-hunters-international-ransomware-possible-rebrand-of-hive/" target="_blank" rel="noopener">New Hunters International ransomware possible rebrand of Hive</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 29 Oct 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-10-29"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://blog.knowbe4.com/the-outstanding-roi-of-knowbe4s-trusted-security-awareness-training" target="_blank" rel="noopener">The Outstanding ROI of KnowBe4's Trusted Security Awareness Training</a></div><span class="article-meta">KNOWBE4.COM &mdash; 29 Oct 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-10-29"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://blog.knowbe4.com/the-outstanding-roi-of-knowbe4s-security-awareness-training-platform" target="_blank" rel="noopener">The Outstanding ROI of KnowBe4's Security Awareness Training Platform</a></div><span class="article-meta">KNOWBE4.COM &mdash; 29 Oct 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-10-29"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/microsoft/windows-11-adds-support-for-11-file-archives-including-7-zip-and-rar/" target="_blank" rel="noopener">Windows 11 adds support for 11 file archives, including 7-Zip and RAR</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 29 Oct 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-10-29"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/pirate-iptv-network-in-austria-dismantled-and-174-million-seized/" target="_blank" rel="noopener">Pirate IPTV network in Austria dismantled and $1.74 million seized</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 29 Oct 2023</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisco ios xe exploit caught by honeypot" data-date="2023-10-29"><span class="headline-date">29 Oct</span><span class="headline-body"><a class="headline-title" href="https://twitter.com/SI_FalconTeam/status/1718346358950711807?t=skXn-DOlds2kkiushYmltg&s=19" target="_blank" rel="noopener">Cisco IOS XE exploit caught by honeypot</a><span class="article-summary">submitted by L4s to secops 1 points | 0 comments https://twitter.com/SI_FalconTeam/status/1718346358950711807?t=skXn-DOlds2kkiushYmltg&amp;s=19 Cisco IOS XE exploit caught by honeypot::🚨 #Cisco #IOSXE #CVE-2023-20198 #CVE-2023-20273 Patience is a virtue 🙂 We can confirm: New acti…</span></span><span class="headline-source">TWITTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="lazarus group looking for unpatched software vulnerabilities" data-date="2023-10-29"><span class="headline-date">29 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/lazarus-group-looking-for-unpatched-software-vulnerabilities-a-23427" target="_blank" rel="noopener">Lazarus Group Looking for Unpatched Software Vulnerabilities</a><span class="article-summary">North Korean Hackers Repeatedly Target Known Flaws in Legitimate Software North Korea's state-sponsored hackers are spreading malware through known vulnerabilities in legitimate software. In a new campaign spotted by Kaspersky researchers, the Lazarus group is targeting a version…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="spam or phishing&amp;#x26;#x3f; looking for credentials &amp;#x26; passwords, (sun, oct 29th)" data-date="2023-10-29"><span class="headline-date">29 Oct</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/30354" target="_blank" rel="noopener">Spam or Phishing&amp;#x26;#x3f; Looking for Credentials &amp;#x26; Passwords, (Sun, Oct 29th)</a><span class="article-summary">We are now at the end of the Cybersecurity Awareness month, it is important to remain digitally safe all year round &#x5b; 1 &#x5d;&#x5b; 2 &#x5d;&#x5b; 3 &#x5d;. &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="memechat - 4,348,570 breached accounts" data-date="2023-10-29"><span class="headline-date">29 Oct</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/PwnedWebsites#MemeChat" target="_blank" rel="noopener">MemeChat - 4,348,570 breached accounts</a><span class="article-summary">In mid-2022, &quot;the ultimate hub of memes&quot; MemeChat suffered a data breach that exposed 7.4M records . Alleged to be due to a misconfigured Elasticsearch instance, the data contained 4.3M unique email addresses alongside usernames.</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+<div class="headline" data-title="new hunters international ransomware possible rebrand of hive" data-date="2023-10-29"><span class="headline-date">29 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/new-hunters-international-ransomware-possible-rebrand-of-hive/" target="_blank" rel="noopener">New Hunters International ransomware possible rebrand of Hive</a><span class="article-summary">A new ransomware-as-a-service brand named Hunters International has emerged using code used by the Hive ransomware operation, leading to the valid assumption that the old gang has resumed activity under a different flag. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the outstanding roi of knowbe4's trusted security awareness training" data-date="2023-10-29"><span class="headline-date">29 Oct</span><span class="headline-body"><a class="headline-title" href="https://blog.knowbe4.com/the-outstanding-roi-of-knowbe4s-trusted-security-awareness-training" target="_blank" rel="noopener">The Outstanding ROI of KnowBe4's Trusted Security Awareness Training</a><span class="article-summary">Let me give you a quick introduction. My name is Stu Sjouwerman (pronounced shower-man). I’m the Founder and CEO of KnowBe4, my 5th startup. I have been in IT for 40+ years. The last 25 of those in Information Security.</span></span><span class="headline-source">KNOWBE4.COM</span></div>
+<div class="headline" data-title="the outstanding roi of knowbe4's security awareness training platform" data-date="2023-10-29"><span class="headline-date">29 Oct</span><span class="headline-body"><a class="headline-title" href="https://blog.knowbe4.com/the-outstanding-roi-of-knowbe4s-security-awareness-training-platform" target="_blank" rel="noopener">The Outstanding ROI of KnowBe4's Security Awareness Training Platform</a><span class="article-summary">Let me give you a quick introduction. My name is Stu Sjouwerman (pronounced shower-man). I’m the Founder and CEO of KnowBe4, my 5th startup. I have been in IT for 40+ years. The last 25 of those in Information Security.</span></span><span class="headline-source">KNOWBE4.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="windows 11 adds support for 11 file archives, including 7-zip and rar" data-date="2023-10-29"><span class="headline-date">29 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/microsoft/windows-11-adds-support-for-11-file-archives-including-7-zip-and-rar/" target="_blank" rel="noopener">Windows 11 adds support for 11 file archives, including 7-Zip and RAR</a><span class="article-summary">Microsoft says Windows 11 22H2 now natively supports almost a dozen additional archive formats, including RAR, 7-Zip, Tar, and GZ archives. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="pirate iptv network in austria dismantled and $1.74 million seized" data-date="2023-10-29"><span class="headline-date">29 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/pirate-iptv-network-in-austria-dismantled-and-174-million-seized/" target="_blank" rel="noopener">Pirate IPTV network in Austria dismantled and $1.74 million seized</a><span class="article-summary">The Austrian police have arrested 20 people across the country linked to an illegal IPTV network that, between 2016 and 2023, decrypted copyright-protected broadcasts and redistributed them to thousands of customers. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

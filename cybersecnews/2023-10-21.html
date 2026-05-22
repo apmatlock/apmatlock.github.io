@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2023-10-21</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,83 +109,74 @@
       <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2023-10-21</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">22</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-10-21"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2023/10/cisco-zero-day-exploited-to-implant.html?&web_view=true" target="_blank" rel="noopener">Cisco Zero-Day Exploited to Implant Malicious Lua Backdoor on Thousands of Devices</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 21 Oct 2023</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-10-21"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2023/10/cisco-zero-day-exploited-to-implant.html" target="_blank" rel="noopener">Cisco Zero-Day Exploited to Implant Malicious Lua Backdoor on Thousands of Devices</a></div><span class="kev-badge">KEV</span><span class="article-meta">THEHACKERNEWS.COM &mdash; 21 Oct 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-10-21"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/ismg-editors-impact-israel-hamas-war-on-cybersecurity-a-23364" target="_blank" rel="noopener">ISMG Editors: Impact of Israel-Hamas War on Cybersecurity</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-10-21</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-10-21"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/blogs/hackers-hit-secure-file-transfer-software-again-again-p-3529" target="_blank" rel="noopener">Hackers Hit Secure File Transfer Software Again and Again</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-10-21</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-10-21"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/critical-rce-flaws-found-in-solarwinds-access-audit-solution/?&web_view=true" target="_blank" rel="noopener">Critical RCE Flaws Found in Solarwinds Access Audit Solution</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 21 Oct 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-10-21"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2023/10/oktas-support-system-breach-exposes.html" target="_blank" rel="noopener">Okta's Support System Breach Exposes Customer Data to Unidentified Threat Actors</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 21 Oct 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-10-21"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/the-week-in-ransomware-october-20th-2023-fighting-back/" target="_blank" rel="noopener">The Week in Ransomware - October 20th 2023 - Fighting Back</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 21 Oct 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-10-21"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/attackers-exploiting-cisco-zero-day-malicious-backdoor-a-23368" target="_blank" rel="noopener">Attackers Exploiting Cisco Zero-Day With Malicious Backdoor</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-10-21</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-10-21"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/ivanti-security-advisory-av23-641" target="_blank" rel="noopener">Ivanti security advisory (AV23-641)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-10-21</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-10-21"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/vmware-security-advisory-av23-640" target="_blank" rel="noopener">VMware security advisory (AV23-640)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-10-21</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-10-21"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/uks-ai-leadership-goal-unrealistic-experts-warn-a-23367" target="_blank" rel="noopener">UK's AI Leadership Goal 'Unrealistic,' Experts Warn</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-10-21</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-10-21"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/nyc-mayor-adams-unveils-ai-action-plan-a-23365" target="_blank" rel="noopener">NYC Mayor Adams Unveils AI 'Action Plan'</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-10-21</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-10-21"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/okta-support-unit-breached-via-credential-stolen-by-hackers-a-23366" target="_blank" rel="noopener">Okta Support Unit Breached Via Credential Stolen by Hackers</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-10-21</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-10-21"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2023/10/europol-dismantles-ragnar-locker.html" target="_blank" rel="noopener">Europol Dismantles Ragnar Locker Ransomware Infrastructure, Nabs Key Developer</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 21 Oct 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-10-21"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/international-criminal-court-systems-breached-for-cyber-espionage/" target="_blank" rel="noopener">International Criminal Court systems breached for cyber espionage</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 21 Oct 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-10-21"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/american-family-insurance-confirms-cyberattack-is-behind-it-outages/" target="_blank" rel="noopener">American Family Insurance confirms cyberattack is behind IT outages</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 21 Oct 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-10-21"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://haveibeenpwned.com/PwnedWebsites#Tunngle" target="_blank" rel="noopener">Tunngle - 8,192,928 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 21 Oct 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-10-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.securityweek.com/fbi-thousands-of-remote-it-workers-sent-wages-to-north-korea-to-help-fund-weapons-program/?&web_view=true" target="_blank" rel="noopener">FBI: Thousands of Remote IT Workers Sent Wages to North Korea to Help Fund Weapons Program</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 21 Oct 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-10-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.malwarebytes.com/blog/threat-intelligence/2023/10/clever-malvertising-attack-uses-punycode-to-look-like-legitimate-website" target="_blank" rel="noopener">Clever malvertising attack uses Punycode to look like KeePass's official website</a></div><span class="article-meta">MALWAREBYTES.COM &mdash; 21 Oct 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-10-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://eval.blog/research/microsoft-account-token-leaks-in-harvest/" target="_blank" rel="noopener">Microsoft Account's OAuth tokens leaking via open redirect in Harvest App</a></div><span class="article-meta">EVAL.BLOG &mdash; 21 Oct 2023</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2023-10-21"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://therecord.media/cryptominer-keylogger-backdoor-threat-fbi-alert?&web_view=true" target="_blank" rel="noopener">Business-Oriented Threat Involving ‘Several Types of Malware All at Once’ Remains Active</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 21 Oct 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-10-21"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/webinars/live-webinar-identity-bedrock-our-digital-lives-w-5147" target="_blank" rel="noopener">Live Webinar | Identity: The Bedrock of our Digital Lives</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-10-21</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisco zero-day exploited to implant malicious lua backdoor on thousands of devices" data-date="2023-10-21"><span class="headline-date">21 Oct</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/10/cisco-zero-day-exploited-to-implant.html?&web_view=true" target="_blank" rel="noopener">Cisco Zero-Day Exploited to Implant Malicious Lua Backdoor on Thousands of Devices</a><span class="article-summary">The vulnerability, tracked as CVE-2023-20273, allows for privilege escalation through the Web UI. It has been used alongside another vulnerability, CVE-2023-20198, in an exploit chain to deploy a malicious implant.</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="cisco zero-day exploited to implant malicious lua backdoor on thousands of devices" data-date="2023-10-21"><span class="headline-date">21 Oct <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/10/cisco-zero-day-exploited-to-implant.html" target="_blank" rel="noopener">Cisco Zero-Day Exploited to Implant Malicious Lua Backdoor on Thousands of Devices</a><span class="article-summary">Cisco has warned of a new zero-day flaw in IOS XE that has been actively exploited by an unknown threat actor to deploy a malicious Lua-based implant on susceptible devices. Tracked as CVE-2023-20273 (CVSS score: 7.2), the issue relates to a privilege escalation flaw in the web U…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ismg editors: impact of israel-hamas war on cybersecurity" data-date="2023-10-21"><span class="headline-date">21 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/ismg-editors-impact-israel-hamas-war-on-cybersecurity-a-23364" target="_blank" rel="noopener">ISMG Editors: Impact of Israel-Hamas War on Cybersecurity</a><span class="article-summary">Also: AI in Banking, Highlights from ISMG New York Summit, Update on AI Rules in US In the latest weekly update, editors at Information Security Media Group discuss the impact of the Israel-Hamas war on the threat landscape and the workforce, the role of the U.S. in shaping the f…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+<div class="headline" data-title="hackers hit secure file transfer software again and again" data-date="2023-10-21"><span class="headline-date">21 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/blogs/hackers-hit-secure-file-transfer-software-again-again-p-3529" target="_blank" rel="noopener">Hackers Hit Secure File Transfer Software Again and Again</a><span class="article-summary">Researchers Race to Eliminate Flaws Before Attackers Can Launch Zero-Day Attacks The Clop ransomware operation's recent mass zero-day exploit of Progress Software's MOVEit secure managed file transfer software followed the criminals launching similar attacks against users of Acce…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+<div class="headline" data-title="critical rce flaws found in solarwinds access audit solution" data-date="2023-10-21"><span class="headline-date">21 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/critical-rce-flaws-found-in-solarwinds-access-audit-solution/?&web_view=true" target="_blank" rel="noopener">Critical RCE Flaws Found in Solarwinds Access Audit Solution</a><span class="article-summary">The vulnerabilities, which have been patched in version 2023.2.1, could be exploited by remote unauthenticated attackers to execute arbitrary code in the context of SYSTEM without authentication.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="okta's support system breach exposes customer data to unidentified threat actors" data-date="2023-10-21"><span class="headline-date">21 Oct</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/10/oktas-support-system-breach-exposes.html" target="_blank" rel="noopener">Okta's Support System Breach Exposes Customer Data to Unidentified Threat Actors</a><span class="article-summary">Identity services provider Okta on Friday disclosed a new security incident that allowed unidentified threat actors to leverage stolen credentials to access its support case management system. "The threat actor was able to view files uploaded by certain Okta customers as part of …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="the week in ransomware - october 20th 2023 - fighting back" data-date="2023-10-21"><span class="headline-date">21 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/the-week-in-ransomware-october-20th-2023-fighting-back/" target="_blank" rel="noopener">The Week in Ransomware - October 20th 2023 - Fighting Back</a><span class="article-summary">This was a bad week for ransomware, with the Trigona ransomware suffering a data breach and law enforcement disrupting the RagnarLocker ransomware operation. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="attackers exploiting cisco zero-day with malicious backdoor" data-date="2023-10-21"><span class="headline-date">21 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/attackers-exploiting-cisco-zero-day-malicious-backdoor-a-23368" target="_blank" rel="noopener">Attackers Exploiting Cisco Zero-Day With Malicious Backdoor</a><span class="article-summary">Second Flaw in IOS XE Operating System Puts Thousands of Cisco Users at Risk Threat actors are exploiting another zero-day flaw in Cisco's IOS XE software to implant a malicious backdoor. The IOS XE operating system run on a wide range of Cisco networking devices, including route…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ivanti security advisory (av23-641)" data-date="2023-10-21"><span class="headline-date">21 Oct</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/ivanti-security-advisory-av23-641" target="_blank" rel="noopener">Ivanti security advisory (AV23-641)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="vmware security advisory (av23-640)" data-date="2023-10-21"><span class="headline-date">21 Oct</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/vmware-security-advisory-av23-640" target="_blank" rel="noopener">VMware security advisory (AV23-640)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="uk's ai leadership goal 'unrealistic,' experts warn" data-date="2023-10-21"><span class="headline-date">21 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/uks-ai-leadership-goal-unrealistic-experts-warn-a-23367" target="_blank" rel="noopener">UK's AI Leadership Goal 'Unrealistic,' Experts Warn</a><span class="article-summary">Experts Cite Lack of Computing Power, Privacy Regulations and Immigration The British government's ambitions to turn the United Kingdom into a global leader in artificial intelligence are "unrealistic," warn researchers from the University of Cambridge. Experts say legal hurdles …</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+<div class="headline" data-title="nyc mayor adams unveils ai 'action plan'" data-date="2023-10-21"><span class="headline-date">21 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/nyc-mayor-adams-unveils-ai-action-plan-a-23365" target="_blank" rel="noopener">NYC Mayor Adams Unveils AI 'Action Plan'</a><span class="article-summary">Adams Ridicules Worries About 'Terminator' While Touting AI Robocalls in Mandarin Techno-optimistic New York City Mayor Eric Adams on Monday unveiled a plan he said can convert the notoriously bureaucratic city administration into an AI powerhouse. AI presents a "once-in-a-genera…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="okta support unit breached via credential stolen by hackers" data-date="2023-10-21"><span class="headline-date">21 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/okta-support-unit-breached-via-credential-stolen-by-hackers-a-23366" target="_blank" rel="noopener">Okta Support Unit Breached Via Credential Stolen by Hackers</a><span class="article-summary">BeyondTrust Says It Took Okta Nearly 3 Weeks to Confirm Breach It First Spotted A breach of Okta's support case management system using a stolen credential allowed attackers to access sensitive files uploaded by the identity security giant's customers. San Francisco-based Okta sa…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+<div class="headline" data-title="europol dismantles ragnar locker ransomware infrastructure, nabs key developer" data-date="2023-10-21"><span class="headline-date">21 Oct</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/10/europol-dismantles-ragnar-locker.html" target="_blank" rel="noopener">Europol Dismantles Ragnar Locker Ransomware Infrastructure, Nabs Key Developer</a><span class="article-summary">Europol on Friday announced the takedown of the infrastructure associated with Ragnar Locker ransomware, alongside the arrest of a "key target" in France. "In an action carried out between 16 and 20 October, searches were conducted in Czechia, Spain, and Latvia," the agency said.…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="international criminal court systems breached for cyber espionage" data-date="2023-10-21"><span class="headline-date">21 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/international-criminal-court-systems-breached-for-cyber-espionage/" target="_blank" rel="noopener">International Criminal Court systems breached for cyber espionage</a><span class="article-summary">The International Criminal Court provided additional information about the cyberattack five weeks ago, saying that it was a targeted operation for espionage purposes. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="american family insurance confirms cyberattack is behind it outages" data-date="2023-10-21"><span class="headline-date">21 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/american-family-insurance-confirms-cyberattack-is-behind-it-outages/" target="_blank" rel="noopener">American Family Insurance confirms cyberattack is behind IT outages</a><span class="article-summary">Insurance giant American Family Insurance has confirmed it suffered a cyberattack and shut down portions of its IT systems after customers reported website outages all week. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="tunngle - 8,192,928 breached accounts" data-date="2023-10-21"><span class="headline-date">21 Oct</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/PwnedWebsites#Tunngle" target="_blank" rel="noopener">Tunngle - 8,192,928 breached accounts</a><span class="article-summary">In 2016, the now defunct global LAN gaming network Tunngle suffered a data breach that exposed 8.2M unique email addresses. The compromised data also included usernames, IP addresses and passwords stored as salted MD5 hashes.</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="fbi: thousands of remote it workers sent wages to north korea to help fund weapons program" data-date="2023-10-21"><span class="headline-date">21 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/fbi-thousands-of-remote-it-workers-sent-wages-to-north-korea-to-help-fund-weapons-program/?&web_view=true" target="_blank" rel="noopener">FBI: Thousands of Remote IT Workers Sent Wages to North Korea to Help Fund Weapons Program</a><span class="article-summary">The workers used false identities to secure remote IT jobs and funneled their earnings to North Korea, while also infiltrating and stealing information from the companies they worked for.</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="clever malvertising attack uses punycode to look like keepass's official website" data-date="2023-10-21"><span class="headline-date">21 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.malwarebytes.com/blog/threat-intelligence/2023/10/clever-malvertising-attack-uses-punycode-to-look-like-legitimate-website" target="_blank" rel="noopener">Clever malvertising attack uses Punycode to look like KeePass's official website</a><span class="article-summary">submitted by throws_lemy to cybersecurity 33 points | 4 comments https://www.malwarebytes.com/blog/threat-intelligence/2023/10/clever-malvertising-attack-uses-punycode-to-look-like-legitimate-website</span></span><span class="headline-source">MALWAREBYTES.COM</span></div>
+<div class="headline" data-title="microsoft account's oauth tokens leaking via open redirect in harvest app" data-date="2023-10-21"><span class="headline-date">21 Oct</span><span class="headline-body"><a class="headline-title" href="https://eval.blog/research/microsoft-account-token-leaks-in-harvest/" target="_blank" rel="noopener">Microsoft Account's OAuth tokens leaking via open redirect in Harvest App</a><span class="article-summary">submitted by L4s to secops 1 points | 0 comments https://eval.blog/research/microsoft-account-token-leaks-in-harvest/ Microsoft Account’s OAuth tokens leaking via open redirect in Harvest App::Reported an OAuth token leak via open redirect in Harvest.</span></span><span class="headline-source">EVAL.BLOG</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="business-oriented threat involving ‘several types of malware all at once’ remains active" data-date="2023-10-21"><span class="headline-date">21 Oct</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/cryptominer-keylogger-backdoor-threat-fbi-alert?&web_view=true" target="_blank" rel="noopener">Business-Oriented Threat Involving ‘Several Types of Malware All at Once’ Remains Active</a><span class="article-summary">The campaign involves various types of malware, including cryptominers and keyloggers, and primarily targets enterprises that provide business-to-business (B2B) products and services.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="live webinar | identity: the bedrock of our digital lives" data-date="2023-10-21"><span class="headline-date">21 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/webinars/live-webinar-identity-bedrock-our-digital-lives-w-5147" target="_blank" rel="noopener">Live Webinar | Identity: The Bedrock of our Digital Lives</a></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-12-14</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,72 +109,47 @@
       <div class="stat"><span class="stat-value">3</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-12-14</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">15</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">10</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-14"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-39863" target="_blank" rel="noopener">CVE-2025-39863 wifi: brcmfmac: fix use-after-free when rescheduling brcmf_btcoex_info work</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 14 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-14"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-53370" target="_blank" rel="noopener">CVE-2023-53370 drm/amdgpu: fix memory leak in mes self test</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 14 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-14"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-39886" target="_blank" rel="noopener">CVE-2025-39886 bpf: Tell memcg to use allow_spinning=false path in bpf_timer_init()</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 14 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-14"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2022-50390" target="_blank" rel="noopener">CVE-2022-50390 drm/ttm: fix undefined behavior in bit shift for TTM_TT_FLAG_PRIV_POPULATED</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 14 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-14"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2022-50393" target="_blank" rel="noopener">CVE-2022-50393 drm/amdgpu: SDMA update use unlocked iterator</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 14 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-14"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2022-50418" target="_blank" rel="noopener">CVE-2022-50418 wifi: ath11k: mhi: fix potential memory leak in ath11k_mhi_register()</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 14 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-14"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-53371" target="_blank" rel="noopener">CVE-2023-53371 net/mlx5e: fix memory leak in mlx5e_fs_tt_redirect_any_create</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 14 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-14"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-53376" target="_blank" rel="noopener">CVE-2023-53376 scsi: mpi3mr: Use number of bits to manage bitmap sizes</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 14 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-14"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-53447" target="_blank" rel="noopener">CVE-2023-53447 f2fs: don't reset unchangable mount option in f2fs_remount()</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 14 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-14"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-58241" target="_blank" rel="noopener">CVE-2024-58241 Bluetooth: hci_core: Disable works on hci_unregister_dev</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 14 Dec 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-12-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/32568" target="_blank" rel="noopener">Wireshark 4.6.2 Released, (Sun, Dec 14th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 14 Dec 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-12-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2025/12/upcoming-speaking-engagements-51.html" target="_blank" rel="noopener">Upcoming Speaking Engagements</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2025-12-14</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-12-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/39057138" target="_blank" rel="noopener">How we got hit by Shai-Hulud: A complete post-mortem</a></div><span class="article-meta">INFOSEC.PUB &mdash; 14 Dec 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-12-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/39069879" target="_blank" rel="noopener">Fake ‘One Battle After Another’ torrent hides malware in subtitles</a></div><span class="article-meta">INFOSEC.PUB &mdash; 14 Dec 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-12-14"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/beware-paypal-subscriptions-abused-to-send-fake-purchase-emails/" target="_blank" rel="noopener">Beware: PayPal subscriptions abused to send fake purchase emails</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 14 Dec 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">10</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cve-2025-39863 wifi: brcmfmac: fix use-after-free when rescheduling brcmf_btcoex_info work" data-date="2025-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-39863" target="_blank" rel="noopener">CVE-2025-39863 wifi: brcmfmac: fix use-after-free when rescheduling brcmf_btcoex_info work</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2023-53370 drm/amdgpu: fix memory leak in mes self test" data-date="2025-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-53370" target="_blank" rel="noopener">CVE-2023-53370 drm/amdgpu: fix memory leak in mes self test</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-39886 bpf: tell memcg to use allow_spinning=false path in bpf_timer_init()" data-date="2025-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-39886" target="_blank" rel="noopener">CVE-2025-39886 bpf: Tell memcg to use allow_spinning=false path in bpf_timer_init()</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2022-50390 drm/ttm: fix undefined behavior in bit shift for ttm_tt_flag_priv_populated" data-date="2025-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2022-50390" target="_blank" rel="noopener">CVE-2022-50390 drm/ttm: fix undefined behavior in bit shift for TTM_TT_FLAG_PRIV_POPULATED</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2022-50393 drm/amdgpu: sdma update use unlocked iterator" data-date="2025-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2022-50393" target="_blank" rel="noopener">CVE-2022-50393 drm/amdgpu: SDMA update use unlocked iterator</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2022-50418 wifi: ath11k: mhi: fix potential memory leak in ath11k_mhi_register()" data-date="2025-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2022-50418" target="_blank" rel="noopener">CVE-2022-50418 wifi: ath11k: mhi: fix potential memory leak in ath11k_mhi_register()</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2023-53371 net/mlx5e: fix memory leak in mlx5e_fs_tt_redirect_any_create" data-date="2025-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-53371" target="_blank" rel="noopener">CVE-2023-53371 net/mlx5e: fix memory leak in mlx5e_fs_tt_redirect_any_create</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2023-53376 scsi: mpi3mr: use number of bits to manage bitmap sizes" data-date="2025-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-53376" target="_blank" rel="noopener">CVE-2023-53376 scsi: mpi3mr: Use number of bits to manage bitmap sizes</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2023-53447 f2fs: don't reset unchangable mount option in f2fs_remount()" data-date="2025-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-53447" target="_blank" rel="noopener">CVE-2023-53447 f2fs: don't reset unchangable mount option in f2fs_remount()</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2024-58241 bluetooth: hci_core: disable works on hci_unregister_dev" data-date="2025-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-58241" target="_blank" rel="noopener">CVE-2024-58241 Bluetooth: hci_core: Disable works on hci_unregister_dev</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="wireshark 4.6.2 released, (sun, dec 14th)" data-date="2025-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/32568" target="_blank" rel="noopener">Wireshark 4.6.2 Released, (Sun, Dec 14th)</a><span class="article-summary">Wireshark release 4.6.2 fixes 2 vulnerabilities and 5 bugs. &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="upcoming speaking engagements" data-date="2025-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2025/12/upcoming-speaking-engagements-51.html" target="_blank" rel="noopener">Upcoming Speaking Engagements</a><span class="article-summary">This is a current list of where and when I am scheduled to speak: I’m speaking and signing books at the Chicago Public Library in Chicago, Illinois, USA, at 6:00 PM CT on February 5, 2026. Details to come. I’m speaking at Capricon 44 in Chicago, Illinois, USA. The convention runs…</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="how we got hit by shai-hulud: a complete post-mortem" data-date="2025-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/39057138" target="_blank" rel="noopener">How we got hit by Shai-Hulud: A complete post-mortem</a><span class="article-summary">submitted by cm0002 to cybersecurity 1 points | 0 comments https://trigger.dev/blog/shai-hulud-postmortem</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="fake ‘one battle after another’ torrent hides malware in subtitles" data-date="2025-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/39069879" target="_blank" rel="noopener">Fake ‘One Battle After Another’ torrent hides malware in subtitles</a><span class="article-summary">submitted by cm0002 to cybersecurity 2 points | 0 comments https://www.bleepingcomputer.com/news/security/fake-one-battle-after-another-torrent-hides-malware-in-subtitles/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="beware: paypal subscriptions abused to send fake purchase emails" data-date="2025-12-14"><span class="headline-date">14 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/beware-paypal-subscriptions-abused-to-send-fake-purchase-emails/" target="_blank" rel="noopener">Beware: PayPal subscriptions abused to send fake purchase emails</a><span class="article-summary">An email scam is abusing abusing PayPal's "Subscriptions" billing feature to send legitimate PayPal emails that contain fake purchase notifications embedded in the Customer service URL field. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

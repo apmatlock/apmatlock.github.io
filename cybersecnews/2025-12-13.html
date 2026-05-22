@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-12-13</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,85 +109,76 @@
       <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-12-13</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">24</span></button>
-<button class="filter-btn" data-cat="CISA KEV" onclick="filterCat('CISA KEV', this)">CISA KEV <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">11</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="CISA KEV" data-date="2025-12-13"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://thehackernews.com/2025/12/cisa-adds-actively-exploited-sierra.html" target="_blank" rel="noopener">CISA Adds Actively Exploited Sierra Wireless Router Flaw Enabling RCE Attacks</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) on Friday added a high-severity flaw impacting Sierra Wireless AirLink ALEOS routers to its Known Exploited Vulnerabilities (KEV) catalog, following reports of active exploitation in the wild. CVE-2018-4063 (CVSS sc…</span></div><span class="kev-badge">KEV</span><span class="article-meta">THEHACKERNEWS.COM &mdash; 13 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2025/12/apple-issues-security-updates-after-two.html" target="_blank" rel="noopener">Apple Issues Security Updates After Two WebKit Flaws Found Exploited in the Wild</a></div><span class="kev-badge">KEV</span><span class="article-meta">THEHACKERNEWS.COM &mdash; 13 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-39925" target="_blank" rel="noopener">CVE-2025-39925 can: j1939: implement NETDEV_UNREGISTER notification handler</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 13 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-61662" target="_blank" rel="noopener">CVE-2025-61662 Grub2: missing unregister call for gettext command may lead to use-after-free</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 13 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-61663" target="_blank" rel="noopener">CVE-2025-61663 Grub2: missing unregister call for normal commands may lead to use-after-free</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 13 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-61661" target="_blank" rel="noopener">CVE-2025-61661 Grub2: grub2: out-of-bounds write via malicious usb device</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 13 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-61664" target="_blank" rel="noopener">CVE-2025-61664 Grub2: missing unregister call for normal_exit command may lead to use-after-free</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 13 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-14087" target="_blank" rel="noopener">CVE-2025-14087 Glib: glib: buffer underflow in gvariant parser leads to heap corruption</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 13 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-14512" target="_blank" rel="noopener">CVE-2025-14512 Glib: integer overflow in glib gio attribute escaping causes heap buffer overflow</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 13 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-14523" target="_blank" rel="noopener">CVE-2025-14523 Libsoup: libsoup: duplicate host header handling causes host-parsing discrepancy (first- vs last-value wins)</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 13 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-14104" target="_blank" rel="noopener">CVE-2025-14104 Util-linux: util-linux: heap buffer overread in setpwnam() when processing 256-byte usernames</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 13 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://gbhackers.com/apple-confirms-zero-day-exploitation/" target="_blank" rel="noopener">Apple Confirms Zero-Day Exploitation in Targeted Attacks on iPhone Users</a></div><span class="kev-badge">KEV</span><span class="article-meta">GBHACKERS.COM &mdash; 13 Dec 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-12-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/4105940/leaked-home-depot-credential-exposed-internal-systems-for-a-year.html" target="_blank" rel="noopener">Leaked Home Depot credential exposed internal systems for a year</a></div><span class="article-meta">CSOONLINE.COM &mdash; 13 Dec 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-12-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/4105950/microsoft-flips-security-script-in-scope-by-default-makes-all-vulnerabilities-fair-game-for-bug-bounties.html" target="_blank" rel="noopener">Microsoft flips security script: ‘In scope by default’ makes all vulnerabilities fair game for bug bounties</a></div><span class="article-meta">CSOONLINE.COM &mdash; 13 Dec 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-12-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/the-hidden-danger-of-storing-secrets-online-interview-with-jake-knott-from-watchtower" target="_blank" rel="noopener">The Hidden Danger of Storing Secrets Online | Interview with Jake Knott from Watchtower</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 13 Dec 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-12-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/empire-6-3-0-released/" target="_blank" rel="noopener">Empire 6.3.0 Released as Updated Post-Exploitation Framework for Red Teams</a></div><span class="article-meta">GBHACKERS.COM &mdash; 13 Dec 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-12-13"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://gbhackers.com/researchers-targeted-in-ai-driven-github-supply-chain-attack/" target="_blank" rel="noopener">Researchers and Developers Targeted in AI-Driven GitHub Supply Chain Attack</a></div><span class="article-meta">GBHACKERS.COM &mdash; 13 Dec 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-12-13"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/cybervolks-ransomware-debut-stumbles-on-cryptography-weakness/" target="_blank" rel="noopener">CyberVolk’s ransomware debut stumbles on cryptography weakness</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 13 Dec 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-12-13"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/hackers-target-windows-systems-using-phantom-stealer/" target="_blank" rel="noopener">Hackers Target Windows Systems Using Phantom Stealer Hidden in ISO Files</a></div><span class="article-meta">GBHACKERS.COM &mdash; 13 Dec 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-12-13"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/Y0M_Z6-HM3k" target="_blank" rel="noopener">China's Tech Lead: A 25-Year Shift</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-12-13</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-12-13"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/kali-linux-2025-4-released/" target="_blank" rel="noopener">Kali Linux 2025.4 Released Featuring 3 New Hacking Tools and Wifipumpkin3</a></div><span class="article-meta">GBHACKERS.COM &mdash; 13 Dec 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-12-13"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/luca-stealer-targeting-linux-and-windows/" target="_blank" rel="noopener">Hackers Launch Rust-Based Luca Stealer Targeting Linux and Windows</a></div><span class="article-meta">GBHACKERS.COM &mdash; 13 Dec 2025</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-12-13"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://thehackernews.com/2025/12/fake-osint-and-gpt-utility-github-repos.html" target="_blank" rel="noopener">Fake OSINT and GPT Utility GitHub Repos Spread PyStoreRAT Malware Payloads</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 13 Dec 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-12-13"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/32566" target="_blank" rel="noopener">ClickFix Attacks Still Using the Finger, (Sat, Dec 13th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 13 Dec 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa adds actively exploited sierra wireless router flaw enabling rce attacks" data-date="2025-12-13"><span class="headline-date">13 Dec <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/12/cisa-adds-actively-exploited-sierra.html" target="_blank" rel="noopener">CISA Adds Actively Exploited Sierra Wireless Router Flaw Enabling RCE Attacks</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) on Friday added a high-severity flaw impacting Sierra Wireless AirLink ALEOS routers to its Known Exploited Vulnerabilities (KEV) catalog, following reports of active exploitation in the wild. CVE-2018-4063 (CVSS sc…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">11</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="apple issues security updates after two webkit flaws found exploited in the wild" data-date="2025-12-13"><span class="headline-date">13 Dec <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/12/apple-issues-security-updates-after-two.html" target="_blank" rel="noopener">Apple Issues Security Updates After Two WebKit Flaws Found Exploited in the Wild</a><span class="article-summary">Apple on Friday released security updates for iOS, iPadOS, macOS, tvOS, watchOS, visionOS, and its Safari web browser to address two security flaws that it said have been exploited in the wild, one of which is the same flaw that was patched by Google in Chrome earlier this week. …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="cve-2025-39925 can: j1939: implement netdev_unregister notification handler" data-date="2025-12-13"><span class="headline-date">13 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-39925" target="_blank" rel="noopener">CVE-2025-39925 can: j1939: implement NETDEV_UNREGISTER notification handler</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-61662 grub2: missing unregister call for gettext command may lead to use-after-free" data-date="2025-12-13"><span class="headline-date">13 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-61662" target="_blank" rel="noopener">CVE-2025-61662 Grub2: missing unregister call for gettext command may lead to use-after-free</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-61663 grub2: missing unregister call for normal commands may lead to use-after-free" data-date="2025-12-13"><span class="headline-date">13 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-61663" target="_blank" rel="noopener">CVE-2025-61663 Grub2: missing unregister call for normal commands may lead to use-after-free</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-61661 grub2: grub2: out-of-bounds write via malicious usb device" data-date="2025-12-13"><span class="headline-date">13 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-61661" target="_blank" rel="noopener">CVE-2025-61661 Grub2: grub2: out-of-bounds write via malicious usb device</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-61664 grub2: missing unregister call for normal_exit command may lead to use-after-free" data-date="2025-12-13"><span class="headline-date">13 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-61664" target="_blank" rel="noopener">CVE-2025-61664 Grub2: missing unregister call for normal_exit command may lead to use-after-free</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-14087 glib: glib: buffer underflow in gvariant parser leads to heap corruption" data-date="2025-12-13"><span class="headline-date">13 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-14087" target="_blank" rel="noopener">CVE-2025-14087 Glib: glib: buffer underflow in gvariant parser leads to heap corruption</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-14512 glib: integer overflow in glib gio attribute escaping causes heap buffer overflow" data-date="2025-12-13"><span class="headline-date">13 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-14512" target="_blank" rel="noopener">CVE-2025-14512 Glib: integer overflow in glib gio attribute escaping causes heap buffer overflow</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-14523 libsoup: libsoup: duplicate host header handling causes host-parsing discrepancy (first- vs last-value wins)" data-date="2025-12-13"><span class="headline-date">13 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-14523" target="_blank" rel="noopener">CVE-2025-14523 Libsoup: libsoup: duplicate host header handling causes host-parsing discrepancy (first- vs last-value wins)</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-14104 util-linux: util-linux: heap buffer overread in setpwnam() when processing 256-byte usernames" data-date="2025-12-13"><span class="headline-date">13 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-14104" target="_blank" rel="noopener">CVE-2025-14104 Util-linux: util-linux: heap buffer overread in setpwnam() when processing 256-byte usernames</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="apple confirms zero-day exploitation in targeted attacks on iphone users" data-date="2025-12-13"><span class="headline-date">13 Dec <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/apple-confirms-zero-day-exploitation/" target="_blank" rel="noopener">Apple Confirms Zero-Day Exploitation in Targeted Attacks on iPhone Users</a><span class="article-summary">Apple has issued critical security patches addressing two actively exploited zero-day vulnerabilities affecting iPhone and iPad devices. The tech giant confirmed that both flaws were leveraged in extremely sophisticated attacks targeting specific individuals before iOS 26 was rel…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="leaked home depot credential exposed internal systems for a year" data-date="2025-12-13"><span class="headline-date">13 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4105940/leaked-home-depot-credential-exposed-internal-systems-for-a-year.html" target="_blank" rel="noopener">Leaked Home Depot credential exposed internal systems for a year</a><span class="article-summary">Home Depot exposed access to internal systems for a year, TechCrunch reports . According to security researcher Ben Zimmermann , a Home Depot employee published a private GitHub access token sometime in early 2024, likely by mistake. Zimmerman told TechCrunch that when he tested …</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="microsoft flips security script: ‘in scope by default’ makes all vulnerabilities fair game for bug bounties" data-date="2025-12-13"><span class="headline-date">13 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4105950/microsoft-flips-security-script-in-scope-by-default-makes-all-vulnerabilities-fair-game-for-bug-bounties.html" target="_blank" rel="noopener">Microsoft flips security script: ‘In scope by default’ makes all vulnerabilities fair game for bug bounties</a><span class="article-summary">Today’s AI-enabled attackers are agnostic: They’re not limiting themselves to specific companies, products, or services — they’re going where the vulnerabilities are. To meet them on this ground, Microsoft is pivoting its cybersecurity strategy to what it calls ‘In Scope by Defau…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="the hidden danger of storing secrets online | interview with jake knott from watchtower" data-date="2025-12-13"><span class="headline-date">13 Dec</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/the-hidden-danger-of-storing-secrets-online-interview-with-jake-knott-from-watchtower" target="_blank" rel="noopener">The Hidden Danger of Storing Secrets Online | Interview with Jake Knott from Watchtower</a><span class="article-summary">In this episode of Cybersecurity Today, host Jim Love discusses the shocking discovery of over 80,000 leaked credentials and secrets in online code formatting tools with Jake Knott, a principal security researcher from Watchtower. They delve into the vulnerabilities exposed by th…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="empire 6.3.0 released as updated post-exploitation framework for red teams" data-date="2025-12-13"><span class="headline-date">13 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/empire-6-3-0-released/" target="_blank" rel="noopener">Empire 6.3.0 Released as Updated Post-Exploitation Framework for Red Teams</a><span class="article-summary">Researcher has officially released Empire 6.3.0, a significant update to the widely used post-exploitation and adversary emulation framework designed for Red Teams and Penetration Testers. This latest version reinforces the tool’s modular architecture, offering operator flexibili…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="researchers and developers targeted in ai-driven github supply chain attack" data-date="2025-12-13"><span class="headline-date">13 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/researchers-targeted-in-ai-driven-github-supply-chain-attack/" target="_blank" rel="noopener">Researchers and Developers Targeted in AI-Driven GitHub Supply Chain Attack</a><span class="article-summary">A sophisticated AI-generated supply chain attack is targeting researchers, developers, and security professionals through compromised GitHub repositories, according to findings from Morphisec Threat Labs. The campaign leverages dormant GitHub accounts and polished, AI-crafted rep…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="cybervolk’s ransomware debut stumbles on cryptography weakness" data-date="2025-12-13"><span class="headline-date">13 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/cybervolks-ransomware-debut-stumbles-on-cryptography-weakness/" target="_blank" rel="noopener">CyberVolk’s ransomware debut stumbles on cryptography weakness</a><span class="article-summary">The pro-Russia hacktivist group CyberVolk launched a ransomware-as-a-service (RaaS) called VolkLocker that suffered from serious implementation flaws, allowing victims to potentially decrypt files for free. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="hackers target windows systems using phantom stealer hidden in iso files" data-date="2025-12-13"><span class="headline-date">13 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/hackers-target-windows-systems-using-phantom-stealer/" target="_blank" rel="noopener">Hackers Target Windows Systems Using Phantom Stealer Hidden in ISO Files</a><span class="article-summary">Seqrite Labs has uncovered an active Russian phishing campaign that delivers Phantom information-stealing malware through malicious ISO files embedded in fake payment confirmation emails. The sophisticated attack primarily targets finance and accounting professionals in Russia, u…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="china's tech lead: a 25-year shift" data-date="2025-12-13"><span class="headline-date">13 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/Y0M_Z6-HM3k" target="_blank" rel="noopener">China's Tech Lead: A 25-Year Shift</a><span class="article-summary">China is dominating the tech world, leading in 90% of crucial technologies like nuclear energy and quantum computing! 🚀🔍 In just 25 years, they've flipped the script, leaving others in the dust. What does this mean for global cybersecurity and innovation? Subscribe to our podcast…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="kali linux 2025.4 released featuring 3 new hacking tools and wifipumpkin3" data-date="2025-12-13"><span class="headline-date">13 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/kali-linux-2025-4-released/" target="_blank" rel="noopener">Kali Linux 2025.4 Released Featuring 3 New Hacking Tools and Wifipumpkin3</a><span class="article-summary">The release of Kali Linux 2025.4 marks a significant milestone for the ethical hacking distribution, bringing major architectural changes and a suite of fresh tools. This update focuses on stripping away &#8220;fluff&#8221; to prioritize performance, essential utilities, and impr…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="hackers launch rust-based luca stealer targeting linux and windows" data-date="2025-12-13"><span class="headline-date">13 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/luca-stealer-targeting-linux-and-windows/" target="_blank" rel="noopener">Hackers Launch Rust-Based Luca Stealer Targeting Linux and Windows</a><span class="article-summary">Cybercriminals are increasingly abandoning traditional programming languages like C and C++ in favor of modern alternatives such as Rust, Golang, and Nim. This strategic shift enables threat actors to write malicious code once and compile it for both Windows and Linux with minima…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="fake osint and gpt utility github repos spread pystorerat malware payloads" data-date="2025-12-13"><span class="headline-date">13 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/12/fake-osint-and-gpt-utility-github-repos.html" target="_blank" rel="noopener">Fake OSINT and GPT Utility GitHub Repos Spread PyStoreRAT Malware Payloads</a><span class="article-summary">Cybersecurity researchers are calling attention to a new campaign that's leveraging GitHub-hosted Python repositories to distribute a previously undocumented JavaScript-based Remote Access Trojan (RAT) dubbed PyStoreRAT. "These repositories, often themed as development utilities …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="clickfix attacks still using the finger, (sat, dec 13th)" data-date="2025-12-13"><span class="headline-date">13 Dec</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/32566" target="_blank" rel="noopener">ClickFix Attacks Still Using the Finger, (Sat, Dec 13th)</a><span class="article-summary">Introduction &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

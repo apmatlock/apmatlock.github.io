@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-12-17</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,102 +109,105 @@
       <div class="stat"><span class="stat-value">10</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-12-17</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">38</span></button>
-<button class="filter-btn" data-cat="CISA KEV" onclick="filterCat('CISA KEV', this)">CISA KEV <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">8</span></button>
-<button class="filter-btn" data-cat="Security Bulletins" onclick="filterCat('Security Bulletins', this)">SECURITY BULLETINS <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">9</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Podcasts" onclick="filterCat('Podcasts', this)">PODCASTS <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">4</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="CISA KEV" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2024/12/17/cisa-adds-one-known-exploited-vulnerability-catalog" target="_blank" rel="noopener">CISA Adds One Known Exploited Vulnerability to Catalog</a><span class="article-summary">CISA has added one new vulnerability to its&nbsp; Known Exploited Vulnerabilities Catalog , based on evidence of active exploitation. CVE-2024-55956 Cleo Multiple Products Unauthenticated File Upload Vulnerability These types of vulnerabilities are frequent attack vectors for mal…</span></div><span class="kev-badge">KEV</span><span class="article-meta">CISA.GOV &mdash; Tue, 17 Dec 24 1</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2024/12/cisa-and-fbi-raise-alerts-on-exploited.html" target="_blank" rel="noopener">CISA and FBI Raise Alerts on Exploited Flaws and Expanding HiatusRAT Campaign</a></div><span class="kev-badge">KEV</span><span class="article-meta">THEHACKERNEWS.COM &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/12/attackers-exploit-microsoft-teams-and.html" target="_blank" rel="noopener">Attackers Exploit Microsoft Teams and AnyDesk to Deploy DarkGate Malware</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/12/hackers-exploit-webview2-to-deploy.html" target="_blank" rel="noopener">Hackers Exploit Webview2 to Deploy CoinLurker Malware and Evade Security Detection</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2024/12/17/cisa-releases-five-industrial-control-systems-advisories" target="_blank" rel="noopener">CISA Releases Five Industrial Control Systems Advisories</a></div><span class="article-meta">CISA.GOV &mdash; Tue, 17 Dec 24 1</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2024/12/17/cisa-and-oncd-release-playbook-strengthening-cybersecurity-federal-grant-programs-critical" target="_blank" rel="noopener">CISA and ONCD Release Playbook for Strengthening Cybersecurity in Federal Grant Programs for Critical Infrastructure</a></div><span class="article-meta">CISA.GOV &mdash; Tue, 17 Dec 24 1</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://blog.knowbe4.com/darkgate-malware-distributed-via-microsoft-teams-voice-phishing" target="_blank" rel="noopener">DarkGate Malware Distributed Via Microsoft Teams Voice Phishing</a></div><span class="article-meta">KNOWBE4.COM &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/24/l/genai-prompt-injection-attack-threat.html" target="_blank" rel="noopener">Link Trap: GenAI Prompt Injection Attack</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/21291844" target="_blank" rel="noopener">Analyzing FLUX#CONSOLE: Using Tax-Themed Lures, Threat Actors Exploit Windows Management Console to Deliver Backdoor Payloads</a></div><span class="article-meta">INFOSEC.PUB &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/21291677" target="_blank" rel="noopener">The Mamont banker masquerades as an app for tracking bulk purchases</a></div><span class="article-meta">INFOSEC.PUB &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Security Bulletins" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(255,170,0,0.5);background:rgba(255,170,0,0.10);" title="Security Bulletins">📋</span><div class="article-body"><a href="https://news.sophos.com/en-us/2024/12/17/year-in-review-2024-the-major-headlines-and-moments-from-sophos-this-year/" target="_blank" rel="noopener">Year in Review 2024: The major headlines and moments from Sophos this year</a></div><span class="article-meta">SOPHOS.COM &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.cisa.gov/news-events/news/cisa-directs-federal-agencies-secure-cloud-environments" target="_blank" rel="noopener">CISA Directs Federal Agencies to Secure Cloud Environments</a></div><span class="article-meta">CISA.GOV &mdash; Tue, 17 Dec 24 1</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.cisa.gov/news-events/news/cisa-and-oncd-publish-guide-strengthen-cybersecurity-grant-funded-infrastructure-projects" target="_blank" rel="noopener">CISA and ONCD Publish Guide to Strengthen Cybersecurity of Grant-Funded Infrastructure Projects</a></div><span class="article-meta">CISA.GOV &mdash; Tue, 17 Dec 24 1</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31524" target="_blank" rel="noopener">Python Delivering AnyDesk Client as RAT, (Tue, Dec 17th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2024/12/17/cisa-issues-bod-25-01-implementing-secure-practices-cloud-services" target="_blank" rel="noopener">CISA Issues BOD 25-01, Implementing Secure Practices for Cloud Services</a></div><span class="article-meta">CISA.GOV &mdash; Tue, 17 Dec 24 1</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2024/12/even-great-companies-get-breached-find.html" target="_blank" rel="noopener">Even Great Companies Get Breached — Find Out Why and How to Stop It</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://blog.knowbe4.com/critical-infrastructure-under-siege-42-spike-in-ransomware-attacks-on-utilities" target="_blank" rel="noopener">Critical Infrastructure Under Siege: 42% Spike in Ransomware Attacks on Utilities</a></div><span class="article-meta">KNOWBE4.COM &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2024/12/17/texas-medical-school-says-hackers-stole-sensitive-health-data-of-1-4-million-individuals/" target="_blank" rel="noopener">Texas medical school says hackers stole sensitive health data of 1.4 million individuals</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.lastwatchdog.com/lw-roundtable-how-2024s-cyber-threats-will-transform-the-security-landscape-in-2025/" target="_blank" rel="noopener">LW ROUNDTABLE — How 2024’s cyber threats will transform the security landscape in 2025</a></div><span class="article-meta">LASTWATCHDOG.COM &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://securityintelligence.com/articles/testing-the-limits-of-generative-ai-red-teaming-exposes-vulnerabilities-in-ai-models/" target="_blank" rel="noopener">Testing the limits of generative AI: How red teaming exposes vulnerabilities in AI models</a></div><span class="article-meta">SECURITYINTELLIGENCE.COM &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://infosec.pub/post/21285903" target="_blank" rel="noopener">Hidden in Plain Sight: TA397’s New Attack Chain Delivers Espionage RATs</a></div><span class="article-meta">INFOSEC.PUB &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://infosec.pub/post/21281014" target="_blank" rel="noopener">Earth Koshchei Coopts Red Team Tools in Complex RDP Attacks</a></div><span class="article-meta">INFOSEC.PUB &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2024/12/hacking-digital-license-plates.html" target="_blank" rel="noopener">Hacking Digital License Plates</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2024-12-17</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2024/12/bitter-apt-targets-turkish-defense.html" target="_blank" rel="noopener">Bitter APT Targets Turkish Defense Sector with WmRAT and MiyaRAT Malware</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2024/12/the-mask-apt-resurfaces-with.html" target="_blank" rel="noopener">The Mask APT Resurfaces with Sophisticated Multi-Platform Malware Arsenal</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31526" target="_blank" rel="noopener">ISC Stormcast For Tuesday, December 17th, 2024 https://isc.sans.edu/podcastdetail/9258, (Tue, Dec 17th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://techcommunity.microsoft.com/blog/MicrosoftDefenderCloudBlog/microsoft-defender-for-cloud-named-a-leader-in-frost-radar%E2%84%A2-for-cnapp-for-the-se/4358036" target="_blank" rel="noopener">Microsoft Defender for Cloud named a Leader in Frost Radar™ for CNAPP for the second year in a row!</a></div><span class="article-meta">TECHCOMMUNITY.MICROSOFT.COM &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://blog.knowbe4.com/u.s.-justice-department-indictments-fake-it-works-from-north-korea" target="_blank" rel="noopener">U.S. Justice Department Indicts Fake IT Workers From North Korea</a></div><span class="article-meta">KNOWBE4.COM &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://blog.knowbe4.com/cyberheistnews-vol-14-51-phishing-attacks-are-now-leveraging-google-ads-to-hijack-employee-payments" target="_blank" rel="noopener">CyberheistNews Vol 14 #51 Phishing Attacks Are Now Leveraging Google Ads to Hijack Employee Payments</a></div><span class="article-meta">KNOWBE4.COM &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/24/l/earth-koshchei.html" target="_blank" rel="noopener">Earth Koshchei Coopts Red Team Tools in Complex RDP Attacks</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/21280244" target="_blank" rel="noopener">FBI: Watch Out For HiatusRAT Actors Hitting Webcams, DVRs</a></div><span class="article-meta">INFOSEC.PUB &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://thehackernews.com/2024/12/hackers-use-microsoft-msc-files-to.html" target="_blank" rel="noopener">Hackers Use Microsoft MSC Files to Deploy Obfuscated Backdoor in Pakistan Attacks</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://thehackernews.com/2024/12/5-practical-techniques-for-effective.html" target="_blank" rel="noopener">5 Practical Techniques for Effective Cyber Threat Hunting</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Podcasts" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(85,170,204,0.5);background:rgba(85,170,204,0.10);" title="Podcasts">🎙️</span><div class="article-body"><a href="https://grahamcluley.com/the-ai-fix-29/" target="_blank" rel="noopener">The AI Fix #29: AI on OnlyFans, and the bot that wants to be a billionaire</a></div><span class="article-meta">GRAHAMCLULEY.COM &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.f5.com/labs/articles/cisotociso/2025-cybersecurity-predictions" target="_blank" rel="noopener">2025 Cybersecurity Predictions</a></div><span class="article-meta">F5.COM &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.kaspersky.com/blog/mamont-banker-tracking-app/52786/" target="_blank" rel="noopener">Mamont banker under the guise of a tracking app | Kaspersky official blog</a></div><span class="article-meta">KASPERSKY.COM &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.f5.com/labs/labs/articles/2025-cybersecurity-predictions" target="_blank" rel="noopener">2025 Cybersecurity Predictions</a></div><span class="article-meta">F5.COM &mdash; 17 Dec 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-17"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.f5.com/labs/articles/2025-cybersecurity-predictions" target="_blank" rel="noopener">2025 Cybersecurity Predictions</a></div><span class="article-meta">F5.COM &mdash; 17 Dec 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa adds one known exploited vulnerability to catalog" data-date="2024-12-17"><span class="headline-date">17 Dec <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2024/12/17/cisa-adds-one-known-exploited-vulnerability-catalog" target="_blank" rel="noopener">CISA Adds One Known Exploited Vulnerability to Catalog</a><span class="article-summary">CISA has added one new vulnerability to its&nbsp; Known Exploited Vulnerabilities Catalog , based on evidence of active exploitation. CVE-2024-55956 Cleo Multiple Products Unauthenticated File Upload Vulnerability These types of vulnerabilities are frequent attack vectors for mal…</span></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa and fbi raise alerts on exploited flaws and expanding hiatusrat campaign" data-date="2024-12-17"><span class="headline-date">17 Dec <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/cisa-and-fbi-raise-alerts-on-exploited.html" target="_blank" rel="noopener">CISA and FBI Raise Alerts on Exploited Flaws and Expanding HiatusRAT Campaign</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) on Monday added two security flaws to its Known Exploited Vulnerabilities (KEV) catalog, citing evidence of active exploitation in the wild. The list of flaws is below - CVE-2024-20767 (CVSS score: 7.4) - Adobe Cold…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">8</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="attackers exploit microsoft teams and anydesk to deploy darkgate malware" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/attackers-exploit-microsoft-teams-and.html" target="_blank" rel="noopener">Attackers Exploit Microsoft Teams and AnyDesk to Deploy DarkGate Malware</a><span class="article-summary">A new social engineering campaign has leveraged Microsoft Teams as a way to facilitate the deployment of a known malware called DarkGate. "An attacker used social engineering via a Microsoft Teams call to impersonate a user's client and gain remote access to their system," Trend …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="hackers exploit webview2 to deploy coinlurker malware and evade security detection" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/hackers-exploit-webview2-to-deploy.html" target="_blank" rel="noopener">Hackers Exploit Webview2 to Deploy CoinLurker Malware and Evade Security Detection</a><span class="article-summary">Bogus software update lures are being used by threat actors to deliver a new stealer malware called CoinLurker. "Written in Go, CoinLurker employs cutting-edge obfuscation and anti-analysis techniques, making it a highly effective tool in modern cyber attacks," Morphisec research…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="cisa releases five industrial control systems advisories" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2024/12/17/cisa-releases-five-industrial-control-systems-advisories" target="_blank" rel="noopener">CISA Releases Five Industrial Control Systems Advisories</a><span class="article-summary">CISA released five Industrial Control Systems (ICS) advisories on December 17, 2024. These advisories provide timely information about current security issues, vulnerabilities, and exploits surrounding ICS. ICSA-24-352-01 ThreatQuotient ThreatQ Platform ICSA-24-352-02 Hitachi Ene…</span></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="cisa and oncd release playbook for strengthening cybersecurity in federal grant programs for critical infrastructure" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2024/12/17/cisa-and-oncd-release-playbook-strengthening-cybersecurity-federal-grant-programs-critical" target="_blank" rel="noopener">CISA and ONCD Release Playbook for Strengthening Cybersecurity in Federal Grant Programs for Critical Infrastructure</a><span class="article-summary">Today, CISA and the Office of the National Cyber Director (ONCD) published Playbook for Strengthening Cybersecurity in Federal Grant Programs for Critical Infrastructure to assist grant-making agencies to incorporate cybersecurity into their grant programs and assist grant-recipi…</span></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="darkgate malware distributed via microsoft teams voice phishing" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://blog.knowbe4.com/darkgate-malware-distributed-via-microsoft-teams-voice-phishing" target="_blank" rel="noopener">DarkGate Malware Distributed Via Microsoft Teams Voice Phishing</a><span class="article-summary">Threat actors are using voice phishing (vishing) attacks via Microsoft Teams in an attempt to trick victims into installing the DarkGate malware, according to researchers at Trend Micro.</span></span><span class="headline-source">KNOWBE4.COM</span></div>
+<div class="headline" data-title="link trap: genai prompt injection attack" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/24/l/genai-prompt-injection-attack-threat.html" target="_blank" rel="noopener">Link Trap: GenAI Prompt Injection Attack</a><span class="article-summary">Prompt injection exploits vulnerabilities in generative AI to manipulate its behavior, even without extensive permissions. This attack can expose sensitive data, making awareness and preventive measures essential. Learn how it works and how to stay protected.</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+<div class="headline" data-title="analyzing flux#console: using tax-themed lures, threat actors exploit windows management console to deliver backdoor payloads" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/21291844" target="_blank" rel="noopener">Analyzing FLUX#CONSOLE: Using Tax-Themed Lures, Threat Actors Exploit Windows Management Console to Deliver Backdoor Payloads</a><span class="article-summary">submitted by Joker to cybersecurity 3 points | 1 comments https://www.securonix.com/blog/analyzing-fluxconsole-using-tax-themed-lures-threat-actors-exploit-windows-management-console-to-deliver-backdoor-payloads/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="the mamont banker masquerades as an app for tracking bulk purchases" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/21291677" target="_blank" rel="noopener">The Mamont banker masquerades as an app for tracking bulk purchases</a><span class="article-summary">submitted by Joker to cybersecurity 5 points | 0 comments https://securelist.com/mamont-banker-disguised-as-parcel-tracking-app/115006/ In late October 2024, a new scheme for distributing a certain Android banking Trojan called “Mamont” was uncovered. The victim would receive an …</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-bulletins">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,170,0,0.5);" onclick="toggleSection(this)">📋 SECURITY BULLETINS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="year in review 2024: the major headlines and moments from sophos this year" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://news.sophos.com/en-us/2024/12/17/year-in-review-2024-the-major-headlines-and-moments-from-sophos-this-year/" target="_blank" rel="noopener">Year in Review 2024: The major headlines and moments from Sophos this year</a><span class="article-summary">From cyber attacks across the geopolitical landscapes, to product updates that help small businesses, Sophos was there in 2024.</span></span><span class="headline-source">SOPHOS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa directs federal agencies to secure cloud environments" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/news/cisa-directs-federal-agencies-secure-cloud-environments" target="_blank" rel="noopener">CISA Directs Federal Agencies to Secure Cloud Environments</a></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="cisa and oncd publish guide to strengthen cybersecurity of grant-funded infrastructure projects" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/news/cisa-and-oncd-publish-guide-strengthen-cybersecurity-grant-funded-infrastructure-projects" target="_blank" rel="noopener">CISA and ONCD Publish Guide to Strengthen Cybersecurity of Grant-Funded Infrastructure Projects</a></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="python delivering anydesk client as rat, (tue, dec 17th)" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31524" target="_blank" rel="noopener">Python Delivering AnyDesk Client as RAT, (Tue, Dec 17th)</a><span class="article-summary">RATs or &#xe2;&#x20ac;&#x153;Remote Access Tools&#xe2;&#x20ac;&#x9d; are very popular these days. From an attacker&#x27s point of view, it&#x27s a great way to search and exfiltrate interesting data but also to pivot internally in the network. Besides malicious RATs, they are leg…</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="cisa issues bod 25-01, implementing secure practices for cloud services" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2024/12/17/cisa-issues-bod-25-01-implementing-secure-practices-cloud-services" target="_blank" rel="noopener">CISA Issues BOD 25-01, Implementing Secure Practices for Cloud Services</a><span class="article-summary">Today, CISA issued Binding Operational Directive (BOD) 25-01, Implementing Secure Practices for Cloud Services to safeguard federal information and information systems. This Directive requires federal civilian agencies to identify specific cloud tenants, implement assessment tool…</span></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="even great companies get breached — find out why and how to stop it" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/even-great-companies-get-breached-find.html" target="_blank" rel="noopener">Even Great Companies Get Breached — Find Out Why and How to Stop It</a><span class="article-summary">Even the best companies with the most advanced tools can still get hacked. It’s a frustrating reality: you’ve invested in the right solutions, trained your team, and strengthened your defenses. But breaches still happen. So, what’s going wrong? The truth is, that attackers are co…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="critical infrastructure under siege: 42% spike in ransomware attacks on utilities" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://blog.knowbe4.com/critical-infrastructure-under-siege-42-spike-in-ransomware-attacks-on-utilities" target="_blank" rel="noopener">Critical Infrastructure Under Siege: 42% Spike in Ransomware Attacks on Utilities</a><span class="article-summary">Ransomware attacks targeting utilities have surged by 42% over the past year, with spear phishing playing a major role in 81% of cases, according to a ReliaQuest study spanning November 2023 to October 2024.</span></span><span class="headline-source">KNOWBE4.COM</span></div>
+<div class="headline" data-title="texas medical school says hackers stole sensitive health data of 1.4 million individuals" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/12/17/texas-medical-school-says-hackers-stole-sensitive-health-data-of-1-4-million-individuals/" target="_blank" rel="noopener">Texas medical school says hackers stole sensitive health data of 1.4 million individuals</a><span class="article-summary">The university's incident website blocks search engines from listing the site, making it more difficult for affected individuals to find the website in search results. © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="lw roundtable — how 2024’s cyber threats will transform the security landscape in 2025" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.lastwatchdog.com/lw-roundtable-how-2024s-cyber-threats-will-transform-the-security-landscape-in-2025/" target="_blank" rel="noopener">LW ROUNDTABLE — How 2024’s cyber threats will transform the security landscape in 2025</a><span class="article-summary">Continuing our look back at 2024, part two of Last Watchdog’s year-ender roundtable turns its focus to emerging threats vs. evolving defense tactics. Part two of a four-part series The explosion of AI-driven phishing, insider threats, and business logic abuse &#8230; (more…) The …</span></span><span class="headline-source">LASTWATCHDOG.COM</span></div>
+<div class="headline" data-title="testing the limits of generative ai: how red teaming exposes vulnerabilities in ai models" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://securityintelligence.com/articles/testing-the-limits-of-generative-ai-red-teaming-exposes-vulnerabilities-in-ai-models/" target="_blank" rel="noopener">Testing the limits of generative AI: How red teaming exposes vulnerabilities in AI models</a><span class="article-summary">With generative artificial intelligence (gen AI) on the frontlines of information security, red teams play an essential role in identifying vulnerabilities that others can overlook. With the average cost of a data breach reaching an all-time high of $4.88 million in 2024, busines…</span></span><span class="headline-source">SECURITYINTELLIGENCE.COM</span></div>
+<div class="headline" data-title="hidden in plain sight: ta397’s new attack chain delivers espionage rats" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/21285903" target="_blank" rel="noopener">Hidden in Plain Sight: TA397’s New Attack Chain Delivers Espionage RATs</a><span class="article-summary">submitted by Joker to cybersecurity 13 points | 0 comments https://www.proofpoint.com/us/blog/threat-insight/hidden-plain-sight-ta397s-new-attack-chain-delivers-espionage-rats Key findings &gt; - Proofpoint observed advanced persistent threat (APT) TA397 targeting a Turkish defen…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="earth koshchei coopts red team tools in complex rdp attacks" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/21281014" target="_blank" rel="noopener">Earth Koshchei Coopts Red Team Tools in Complex RDP Attacks</a><span class="article-summary">submitted by Joker to cybersecurity 5 points | 0 comments https://www.trendmicro.com/en_us/research/24/l/earth-koshchei.html APT group Earth Koshchei, suspected to be sponsored by the SVR, executed a large-scale rogue RDP campaign using spear-phishing emails, red team tools, and …</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">9</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="hacking digital license plates" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2024/12/hacking-digital-license-plates.html" target="_blank" rel="noopener">Hacking Digital License Plates</a><span class="article-summary">Not everything needs to be digital and &#8220;smart.&#8221; License plates, for example : Josep Rodriguez, a researcher at security firm IOActive, has revealed a technique to “jailbreak” digital license plates sold by Reviver, the leading vendor of those plates in the US with 65,…</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="bitter apt targets turkish defense sector with wmrat and miyarat malware" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/bitter-apt-targets-turkish-defense.html" target="_blank" rel="noopener">Bitter APT Targets Turkish Defense Sector with WmRAT and MiyaRAT Malware</a><span class="article-summary">A suspected South Asian cyber espionage threat group known as Bitter targeted a Turkish defense sector organization in November 2024 to deliver two C++-malware families tracked as WmRAT and MiyaRAT. "The attack chain used alternate data streams in a RAR archive to deliver a short…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="the mask apt resurfaces with sophisticated multi-platform malware arsenal" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/the-mask-apt-resurfaces-with.html" target="_blank" rel="noopener">The Mask APT Resurfaces with Sophisticated Multi-Platform Malware Arsenal</a><span class="article-summary">A little-known cyber espionage actor known as The Mask has been linked to a new set of attacks targeting an unnamed organization in Latin America twice in 2019 and 2022. "The Mask APT is a legendary threat actor that has been performing highly sophisticated attacks since at least…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="isc stormcast for tuesday, december 17th, 2024 https://isc.sans.edu/podcastdetail/9258, (tue, dec 17th)" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31526" target="_blank" rel="noopener">ISC Stormcast For Tuesday, December 17th, 2024 https://isc.sans.edu/podcastdetail/9258, (Tue, Dec 17th)</a><span class="article-summary">(c) SANS Internet Storm Center. https://isc.sans.edu Creative Commons Attribution-Noncommercial 3.0 United States License.</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="microsoft defender for cloud named a leader in frost radar™ for cnapp for the second year in a row!" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://techcommunity.microsoft.com/blog/MicrosoftDefenderCloudBlog/microsoft-defender-for-cloud-named-a-leader-in-frost-radar%E2%84%A2-for-cnapp-for-the-se/4358036" target="_blank" rel="noopener">Microsoft Defender for Cloud named a Leader in Frost Radar™ for CNAPP for the second year in a row!</a><span class="article-summary">In the ever-evolving landscape of cloud security, Microsoft continues to assert its dominance with its comprehensive and innovative solutions. The Frost Radar™: Cloud-Native Application Protection Platforms, 2024 report underscores Microsoft&#8217;s leadership in both &#8211; the…</span></span><span class="headline-source">TECHCOMMUNITY.MICROSOFT.COM</span></div>
+<div class="headline" data-title="u.s. justice department indicts fake it workers from north korea" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://blog.knowbe4.com/u.s.-justice-department-indictments-fake-it-works-from-north-korea" target="_blank" rel="noopener">U.S. Justice Department Indicts Fake IT Workers From North Korea</a><span class="article-summary">The U.S. Justice Department revealed indictments against 14 North Korean nationals for their involvement in a long-running scheme designed to pose as remote IT professionals.</span></span><span class="headline-source">KNOWBE4.COM</span></div>
+<div class="headline" data-title="cyberheistnews vol 14 #51 phishing attacks are now leveraging google ads to hijack employee payments" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://blog.knowbe4.com/cyberheistnews-vol-14-51-phishing-attacks-are-now-leveraging-google-ads-to-hijack-employee-payments" target="_blank" rel="noopener">CyberheistNews Vol 14 #51 Phishing Attacks Are Now Leveraging Google Ads to Hijack Employee Payments</a></span><span class="headline-source">KNOWBE4.COM</span></div>
+<div class="headline" data-title="earth koshchei coopts red team tools in complex rdp attacks" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/24/l/earth-koshchei.html" target="_blank" rel="noopener">Earth Koshchei Coopts Red Team Tools in Complex RDP Attacks</a><span class="article-summary">APT group Earth Koshchei, suspected to be sponsored by the SVR, executed a large-scale rogue RDP campaign using spear-phishing emails, red team tools, and sophisticated anonymization techniques to target high-profile sectors.</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+<div class="headline" data-title="fbi: watch out for hiatusrat actors hitting webcams, dvrs" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/21280244" target="_blank" rel="noopener">FBI: Watch Out For HiatusRAT Actors Hitting Webcams, DVRs</a><span class="article-summary">submitted by Joker to cybersecurity 16 points | 0 comments https://www.vulnu.com/p/fbi-watch-out-for-hiatusrat-actors-hitting-webcams-dvrs On Monday, the FBI released a private industry notification warning that actors behind a remote access trojan, HiatusRAT, are targeting Chine…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="hackers use microsoft msc files to deploy obfuscated backdoor in pakistan attacks" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/hackers-use-microsoft-msc-files-to.html" target="_blank" rel="noopener">Hackers Use Microsoft MSC Files to Deploy Obfuscated Backdoor in Pakistan Attacks</a><span class="article-summary">A new phishing campaign has been observed employing tax-themed lures to deliver a stealthy backdoor payload as part of attacks targeting Pakistan. Cybersecurity company Securonix, which is tracking the activity under the name FLUX#CONSOLE, said it likely starts with a phishing em…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="5 practical techniques for effective cyber threat hunting" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/5-practical-techniques-for-effective.html" target="_blank" rel="noopener">5 Practical Techniques for Effective Cyber Threat Hunting</a><span class="article-summary">Addressing cyber threats before they have a chance to strike or inflict serious damage is by far the best security approach any company can embrace. Achieving this takes a lot of research and proactive threat hunting. The problem here is that it is easy to get stuck in endless ar…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-podcasts">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(85,170,204,0.5);" onclick="toggleSection(this)">🎙️ PODCASTS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the ai fix #29: ai on onlyfans, and the bot that wants to be a billionaire" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://grahamcluley.com/the-ai-fix-29/" target="_blank" rel="noopener">The AI Fix #29: AI on OnlyFans, and the bot that wants to be a billionaire</a><span class="article-summary">In episode 29 of The AI Fix, an AI company makes the bold step of urging us to "stop hiring humans", Graham is wrong about GB AI, parents prepare their kids for the imminent Moxie-mageddon, Google releases Gemini 2.0, and a robot is found dead at work and nobody knows why. Graham…</span></span><span class="headline-source">GRAHAMCLULEY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="2025 cybersecurity predictions" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.f5.com/labs/articles/cisotociso/2025-cybersecurity-predictions" target="_blank" rel="noopener">2025 Cybersecurity Predictions</a><span class="article-summary">&amp;ldquo;I never think of the future. It comes soon enough.&amp;rdquo;</span></span><span class="headline-source">F5.COM</span></div>
+<div class="headline" data-title="mamont banker under the guise of a tracking app | kaspersky official blog" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.kaspersky.com/blog/mamont-banker-tracking-app/52786/" target="_blank" rel="noopener">Mamont banker under the guise of a tracking app | Kaspersky official blog</a><span class="article-summary">Mamont banker is distributed under the guise of an application for tracking the delivery of goods offered at wholesale prices.</span></span><span class="headline-source">KASPERSKY.COM</span></div>
+<div class="headline" data-title="2025 cybersecurity predictions" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.f5.com/labs/labs/articles/2025-cybersecurity-predictions" target="_blank" rel="noopener">2025 Cybersecurity Predictions</a><span class="article-summary">“I never think of the future. It comes soon enough.”</span></span><span class="headline-source">F5.COM</span></div>
+<div class="headline" data-title="2025 cybersecurity predictions" data-date="2024-12-17"><span class="headline-date">17 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.f5.com/labs/articles/2025-cybersecurity-predictions" target="_blank" rel="noopener">2025 Cybersecurity Predictions</a><span class="article-summary">“I never think of the future. It comes soon enough.”</span></span><span class="headline-source">F5.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

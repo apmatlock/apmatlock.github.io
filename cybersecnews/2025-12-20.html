@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-12-20</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,94 +109,73 @@
       <div class="stat"><span class="stat-value">4</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-12-20</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">36</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">23</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">4</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38062" target="_blank" rel="noopener">CVE-2025-38062 genirq/msi: Store the IOMMU IOVA directly in msi_desc instead of iommu_cookie</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38040" target="_blank" rel="noopener">CVE-2025-38040 serial: mctrl_gpio: split disable_ms into sync and no_sync APIs</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38148" target="_blank" rel="noopener">CVE-2025-38148 net: phy: mscc: Fix memory leak when using one step timestamping</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38198" target="_blank" rel="noopener">CVE-2025-38198 fbcon: Make sure modelist not set on unregistered console</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38215" target="_blank" rel="noopener">CVE-2025-38215 fbdev: Fix do_register_framebuffer to prevent null-ptr-deref in fb_videomode_to_var</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38236" target="_blank" rel="noopener">CVE-2025-38236 af_unix: Don't leave consecutive consumed OOB skbs.</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38251" target="_blank" rel="noopener">CVE-2025-38251 atm: clip: prevent NULL deref in clip_push()</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38257" target="_blank" rel="noopener">CVE-2025-38257 s390/pkey: Prevent overflow in size calculation for memdup_user()</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38262" target="_blank" rel="noopener">CVE-2025-38262 tty: serial: uartlite: register uart driver in init</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38263" target="_blank" rel="noopener">CVE-2025-38263 bcache: fix NULL pointer in cache_set_flush()</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38166" target="_blank" rel="noopener">CVE-2025-38166 bpf: fix ktls panic with sockmap</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38191" target="_blank" rel="noopener">CVE-2025-38191 ksmbd: fix null pointer dereference in destroy_previous_session</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38225" target="_blank" rel="noopener">CVE-2025-38225 media: imx-jpeg: Cleanup after an allocation error</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38230" target="_blank" rel="noopener">CVE-2025-38230 jfs: validate AG parameters in dbMount() to prevent crashes</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38245" target="_blank" rel="noopener">CVE-2025-38245 atm: Release atm_dev_mutex after removing procfs in atm_dev_deregister().</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38249" target="_blank" rel="noopener">CVE-2025-38249 ALSA: usb-audio: Fix out-of-bounds read in snd_usb_get_audioformat_uac3()</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38259" target="_blank" rel="noopener">CVE-2025-38259 ASoC: codecs: wcd9335: Fix missing free of regulator supplies</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38275" target="_blank" rel="noopener">CVE-2025-38275 phy: qcom-qmp-usb: Fix an NULL vs IS_ERR() bug</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38377" target="_blank" rel="noopener">CVE-2025-38377 rose: fix dangling neighbour pointers in rose_rt_device_down()</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38177" target="_blank" rel="noopener">CVE-2025-38177 sch_hfsc: make hfsc_qlen_notify() idempotent</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-68324" target="_blank" rel="noopener">CVE-2025-68324 scsi: imm: Fix use-after-free bug caused by unfinished delayed work</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-68390" target="_blank" rel="noopener">CVE-2025-68390 Elasticsearch Allocation of Resources Without Limits or Throttling</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-68384" target="_blank" rel="noopener">CVE-2025-68384 Elasticsearch Allocation of Resources Without Limits or Throttling</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/25000-forticloud-sso-enabled-systems-vulnerable/" target="_blank" rel="noopener">25,000+ FortiCloud SSO-Enabled Systems Vulnerable to Remote Exploitation</a></div><span class="article-meta">GBHACKERS.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/12/us-doj-charges-54-in-atm-jackpotting.html" target="_blank" rel="noopener">U.S. DOJ Charges 54 in ATM Jackpotting Scheme Using Ploutus Malware</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/39328971" target="_blank" rel="noopener">China-linked hackers exploit insecure setting in Cisco security products</a></div><span class="article-meta">INFOSEC.PUB &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://sh.itjust.works/post/51929260" target="_blank" rel="noopener">China-linked hackers exploit insecure setting in Cisco security products</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/39349309" target="_blank" rel="noopener">Primary time scale failure at NIST Boulder campus; significant impact on NTP services</a></div><span class="article-meta">INFOSEC.PUB &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://sh.itjust.works/post/51954118" target="_blank" rel="noopener">Primary time scale failure at NIST Boulder campus; significant impact on NTP services</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/year-end-review-the-highs-and-lows-of-cybersecurity-in-2025" target="_blank" rel="noopener">Year-End Review: The Highs and Lows of Cybersecurity in 2025</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://gbhackers.com/microsoft-teams-outage-causes-global-messaging-delays/" target="_blank" rel="noopener">Microsoft Teams Outage Causes Global Messaging Delays and Service Interruptions</a></div><span class="article-meta">GBHACKERS.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/ransomhouse-upgrades-encryption-with-multi-layered-data-processing/" target="_blank" rel="noopener">RansomHouse upgrades encryption with multi-layered data processing</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.troyhunt.com/weekly-update-483/" target="_blank" rel="noopener">Weekly Update 483</a></div><span class="article-meta">TROYHUNT.COM &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/FG4RtTGxzVA" target="_blank" rel="noopener">Trust Your Cats, Not AI</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-12-20</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/39333016" target="_blank" rel="noopener">North Korean infiltrator caught working in Amazon IT department thanks to lag — 110ms keystroke input raises red flags over true location</a></div><span class="article-meta">INFOSEC.PUB &mdash; 20 Dec 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-12-20"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/bangladeshi-operator-of-fake-id-marketplaces-charged/" target="_blank" rel="noopener">Bangladeshi Operator of Fake ID Marketplaces Charged in International Fraud Case</a></div><span class="article-meta">GBHACKERS.COM &mdash; 20 Dec 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">23</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cve-2025-38062 genirq/msi: store the iommu iova directly in msi_desc instead of iommu_cookie" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38062" target="_blank" rel="noopener">CVE-2025-38062 genirq/msi: Store the IOMMU IOVA directly in msi_desc instead of iommu_cookie</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-38040 serial: mctrl_gpio: split disable_ms into sync and no_sync apis" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38040" target="_blank" rel="noopener">CVE-2025-38040 serial: mctrl_gpio: split disable_ms into sync and no_sync APIs</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-38148 net: phy: mscc: fix memory leak when using one step timestamping" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38148" target="_blank" rel="noopener">CVE-2025-38148 net: phy: mscc: Fix memory leak when using one step timestamping</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-38198 fbcon: make sure modelist not set on unregistered console" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38198" target="_blank" rel="noopener">CVE-2025-38198 fbcon: Make sure modelist not set on unregistered console</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-38215 fbdev: fix do_register_framebuffer to prevent null-ptr-deref in fb_videomode_to_var" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38215" target="_blank" rel="noopener">CVE-2025-38215 fbdev: Fix do_register_framebuffer to prevent null-ptr-deref in fb_videomode_to_var</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-38236 af_unix: don't leave consecutive consumed oob skbs." data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38236" target="_blank" rel="noopener">CVE-2025-38236 af_unix: Don't leave consecutive consumed OOB skbs.</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-38251 atm: clip: prevent null deref in clip_push()" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38251" target="_blank" rel="noopener">CVE-2025-38251 atm: clip: prevent NULL deref in clip_push()</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-38257 s390/pkey: prevent overflow in size calculation for memdup_user()" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38257" target="_blank" rel="noopener">CVE-2025-38257 s390/pkey: Prevent overflow in size calculation for memdup_user()</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-38262 tty: serial: uartlite: register uart driver in init" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38262" target="_blank" rel="noopener">CVE-2025-38262 tty: serial: uartlite: register uart driver in init</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-38263 bcache: fix null pointer in cache_set_flush()" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38263" target="_blank" rel="noopener">CVE-2025-38263 bcache: fix NULL pointer in cache_set_flush()</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-38166 bpf: fix ktls panic with sockmap" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38166" target="_blank" rel="noopener">CVE-2025-38166 bpf: fix ktls panic with sockmap</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-38191 ksmbd: fix null pointer dereference in destroy_previous_session" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38191" target="_blank" rel="noopener">CVE-2025-38191 ksmbd: fix null pointer dereference in destroy_previous_session</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-38225 media: imx-jpeg: cleanup after an allocation error" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38225" target="_blank" rel="noopener">CVE-2025-38225 media: imx-jpeg: Cleanup after an allocation error</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-38230 jfs: validate ag parameters in dbmount() to prevent crashes" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38230" target="_blank" rel="noopener">CVE-2025-38230 jfs: validate AG parameters in dbMount() to prevent crashes</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-38245 atm: release atm_dev_mutex after removing procfs in atm_dev_deregister()." data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38245" target="_blank" rel="noopener">CVE-2025-38245 atm: Release atm_dev_mutex after removing procfs in atm_dev_deregister().</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-38249 alsa: usb-audio: fix out-of-bounds read in snd_usb_get_audioformat_uac3()" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38249" target="_blank" rel="noopener">CVE-2025-38249 ALSA: usb-audio: Fix out-of-bounds read in snd_usb_get_audioformat_uac3()</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-38259 asoc: codecs: wcd9335: fix missing free of regulator supplies" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38259" target="_blank" rel="noopener">CVE-2025-38259 ASoC: codecs: wcd9335: Fix missing free of regulator supplies</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-38275 phy: qcom-qmp-usb: fix an null vs is_err() bug" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38275" target="_blank" rel="noopener">CVE-2025-38275 phy: qcom-qmp-usb: Fix an NULL vs IS_ERR() bug</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-38377 rose: fix dangling neighbour pointers in rose_rt_device_down()" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38377" target="_blank" rel="noopener">CVE-2025-38377 rose: fix dangling neighbour pointers in rose_rt_device_down()</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-38177 sch_hfsc: make hfsc_qlen_notify() idempotent" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-38177" target="_blank" rel="noopener">CVE-2025-38177 sch_hfsc: make hfsc_qlen_notify() idempotent</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-68324 scsi: imm: fix use-after-free bug caused by unfinished delayed work" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-68324" target="_blank" rel="noopener">CVE-2025-68324 scsi: imm: Fix use-after-free bug caused by unfinished delayed work</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-68390 elasticsearch allocation of resources without limits or throttling" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-68390" target="_blank" rel="noopener">CVE-2025-68390 Elasticsearch Allocation of Resources Without Limits or Throttling</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2025-68384 elasticsearch allocation of resources without limits or throttling" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-68384" target="_blank" rel="noopener">CVE-2025-68384 Elasticsearch Allocation of Resources Without Limits or Throttling</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="25,000+ forticloud sso-enabled systems vulnerable to remote exploitation" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/25000-forticloud-sso-enabled-systems-vulnerable/" target="_blank" rel="noopener">25,000+ FortiCloud SSO-Enabled Systems Vulnerable to Remote Exploitation</a><span class="article-summary">The Shadowserver Foundation has identified over 25,000 internet-facing Fortinet devices globally with FortiCloud Single Sign-On (SSO) functionality enabled, raising concerns about potential exposure to critical authentication bypass vulnerabilities. The non-profit security organi…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="u.s. doj charges 54 in atm jackpotting scheme using ploutus malware" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/12/us-doj-charges-54-in-atm-jackpotting.html" target="_blank" rel="noopener">U.S. DOJ Charges 54 in ATM Jackpotting Scheme Using Ploutus Malware</a><span class="article-summary">The U.S. Department of Justice (DoJ) this week announced the indictment of 54 individuals in connection with a multi-million dollar ATM jackpotting scheme. The large-scale conspiracy involved deploying malware named Ploutus to hack into automated teller machines (ATMs) across the…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="china-linked hackers exploit insecure setting in cisco security products" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/39328971" target="_blank" rel="noopener">China-linked hackers exploit insecure setting in Cisco security products</a><span class="article-summary">submitted by tardigrade to cybersecurity 1 points | 0 comments https://www.cybersecuritydive.com/news/cisco-china-cyberattacks-asyncos-configuration/808258/ cross-posted from: scribe.disroot.org/post/6219559 Archived link China-linked hackers have been using misconfigured Cisco s…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="china-linked hackers exploit insecure setting in cisco security products" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/51929260" target="_blank" rel="noopener">China-linked hackers exploit insecure setting in Cisco security products</a><span class="article-summary">submitted by tardigrade to cybersecurity 1 points | 0 comments https://www.cybersecuritydive.com/news/cisco-china-cyberattacks-asyncos-configuration/808258/ Archived link China-linked hackers have been using misconfigured Cisco security products to deploy backdoors on target netw…</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="primary time scale failure at nist boulder campus; significant impact on ntp services" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/39349309" target="_blank" rel="noopener">Primary time scale failure at NIST Boulder campus; significant impact on NTP services</a><span class="article-summary">submitted by vk6flab to cybersecurity 1 points | 0 comments https://groups.google.com/a/list.nist.gov/g/internet-time-service/c/o0dDDcr1a8I cross-posted from: lemmy.radio/post/10939156 Dear colleagues, In short, the atomic ensemble time scale at our Boulder campus has failed due …</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="primary time scale failure at nist boulder campus; significant impact on ntp services" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/51954118" target="_blank" rel="noopener">Primary time scale failure at NIST Boulder campus; significant impact on NTP services</a><span class="article-summary">submitted by vk6flab to cybersecurity 1 points | 0 comments https://groups.google.com/a/list.nist.gov/g/internet-time-service/c/o0dDDcr1a8I cross-posted from: lemmy.radio/post/10939156 Dear colleagues, In short, the atomic ensemble time scale at our Boulder campus has failed due …</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="year-end review: the highs and lows of cybersecurity in 2025" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/year-end-review-the-highs-and-lows-of-cybersecurity-in-2025" target="_blank" rel="noopener">Year-End Review: The Highs and Lows of Cybersecurity in 2025</a><span class="article-summary">Cybersecurity Today brings you a special year-end episode, featuring noteworthy guests Tammy Harper from Flare, Laura Payne from White Tuque, David Shipley from Beauceron Security, and John Pinard, co-host of Project Synapse. This episode delves into the pivotal cybersecurity sto…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="microsoft teams outage causes global messaging delays and service interruptions" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/microsoft-teams-outage-causes-global-messaging-delays/" target="_blank" rel="noopener">Microsoft Teams Outage Causes Global Messaging Delays and Service Interruptions</a><span class="article-summary">Microsoft Teams users worldwide experienced significant service disruptions on December 20, 2025, as the collaboration platform encountered widespread issues affecting messaging functionality and other critical service operations. The company has acknowledged the incident and is …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="ransomhouse upgrades encryption with multi-layered data processing" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/ransomhouse-upgrades-encryption-with-multi-layered-data-processing/" target="_blank" rel="noopener">RansomHouse upgrades encryption with multi-layered data processing</a><span class="article-summary">The RansomHouse ransomware-as-a-service (RaaS) has recently upgraded its encryptor, switching from a relatively simple single-phase linear technique to a more complex, multi-layered method. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="weekly update 483" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.troyhunt.com/weekly-update-483/" target="_blank" rel="noopener">Weekly Update 483</a><span class="article-summary">Presently sponsored by: 1Password Extended Access Management: Secure every sign-in for every app on every device. Building out an IoT environment is a little like the old Maslow&apos;s Hierarchy of Needs. All the stuff on the top is only any good if all the stuff on the bottom is…</span></span><span class="headline-source">TROYHUNT.COM</span></div>
+<div class="headline" data-title="trust your cats, not ai" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/FG4RtTGxzVA" target="_blank" rel="noopener">Trust Your Cats, Not AI</a><span class="article-summary">AI might falter, but your cats will always be cats! 🐱 Delve into the humorous exploration of AI's quirks and the challenges it brings. Subscribe to our podcasts: https://securityweekly.com/subscribe #TechPitfalls #HumorInTech #SecurityWeekly #Cybersecurity #InformationSecurity #A…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="north korean infiltrator caught working in amazon it department thanks to lag — 110ms keystroke input raises red flags over true location" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/39333016" target="_blank" rel="noopener">North Korean infiltrator caught working in Amazon IT department thanks to lag — 110ms keystroke input raises red flags over true location</a><span class="article-summary">submitted by cm0002 to cybersecurity 1 points | 0 comments https://www.tomshardware.com/tech-industry/cyber-security/north-korean-infiltrator-caught-working-in-amazon-it-department-thanks-to-lag-110ms-keystroke-input-raises-red-flags-over-true-location</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="bangladeshi operator of fake id marketplaces charged in international fraud case" data-date="2025-12-20"><span class="headline-date">20 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/bangladeshi-operator-of-fake-id-marketplaces-charged/" target="_blank" rel="noopener">Bangladeshi Operator of Fake ID Marketplaces Charged in International Fraud Case</a><span class="article-summary">A 29-year-old Bangladeshi man has been indicted on federal charges for operating online marketplaces that sold fraudulent identity document templates to customers worldwide, U.S. authorities announced. Zahid Hasan of Dhaka, Bangladesh, faces nine federal counts, including six cou…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

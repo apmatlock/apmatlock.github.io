@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2023-07-29</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,85 +109,76 @@
       <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2023-07-29</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">24</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">5</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-07-29"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2023/07/ivanti-warns-of-another-endpoint.html" target="_blank" rel="noopener">Ivanti Warns of Another Endpoint Manager Mobile Vulnerability Under Active Attack</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 29 Jul 2023</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-07-29"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2023/07/ivanti-warns-of-another-endpoint.html?&web_view=true" target="_blank" rel="noopener">Ivanti Warns of Another Endpoint Manager Mobile Vulnerability Under Active Attack</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 29 Jul 2023</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-07-29"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.securityweek.com/exploitation-of-recent-citrix-sharefile-rce-vulnerability-begins/?&web_view=true" target="_blank" rel="noopener">Exploitation of Recent Citrix ShareFile RCE Vulnerability Begins</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 29 Jul 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-07-29"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.securityweek.com/weintek-weincloud-vulnerabilities-allowed-manipulation-damaging-of-ics-devices/?&web_view=true" target="_blank" rel="noopener">Weintek Weincloud Vulnerabilities Allowed Manipulation, Damaging of ICS Devices</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 29 Jul 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-07-29"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2023/07/hackers-deploy-submarine-backdoor-in.html" target="_blank" rel="noopener">Hackers Deploy "SUBMARINE" Backdoor in Barracuda Email Security Gateway Attacks</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 29 Jul 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-07-29"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2023/07/rfp-template-for-browser-security.html" target="_blank" rel="noopener">RFP Template for Browser Security</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 29 Jul 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-07-29"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/google/browser-developers-push-back-on-googles-web-drm-wei-api/" target="_blank" rel="noopener">Browser developers push back on Google's “web DRM” WEI API</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 29 Jul 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-07-29"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/ivanti-says-second-zero-day-used-in-norway-govt-breach-a-22690" target="_blank" rel="noopener">Ivanti Says Second Zero Day Used in Norway Govt Breach</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-07-29</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-07-29"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/41-zero-days-exploited/" target="_blank" rel="noopener">41 Zero-days Exploited In-the-Wild in 2022 – Google Report</a></div><span class="article-meta">GBHACKERS.COM &mdash; 29 Jul 2023</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-07-29"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.infosecurity-magazine.com/news/china-wuhan-earthquake-cyber-attack/?&web_view=true" target="_blank" rel="noopener">China’s Wuhan Earthquake Center Suffers Cyberattack</a></div><span class="article-meta">INFOSECURITY-MAGAZINE.COM &mdash; 29 Jul 2023</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-07-29"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.infosecurity-magazine.com/news/ncsc-publishes-new-guidance-on/?&web_view=true" target="_blank" rel="noopener">UK NCSC Publishes New Guidance on Shadow IT</a></div><span class="article-meta">INFOSECURITY-MAGAZINE.COM &mdash; 29 Jul 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-07-29"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/linux-version-of-abyss-locker-ransomware-targets-vmware-esxi-servers/" target="_blank" rel="noopener">Linux version of Abyss Locker ransomware targets VMware ESXi servers</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 29 Jul 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-07-29"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/n-korean-hackers-phishing-us-army-job-lures-a-22689" target="_blank" rel="noopener">N Korean Hackers Phishing With US Army Job Lures</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-07-29</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-07-29"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://securityaffairs.com/148895/cyber-crime/coinspaid-cyber-heist.html?&web_view=true" target="_blank" rel="noopener">CoinsPaid Blames North Korea-Linked APT Lazarus for Theft of $37M Worth of Cryptocurrency</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 29 Jul 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-07-29"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://blog.knowbe4.com/researchers-uncover-surprising-method-to-hack-the-guardrails-of-llms" target="_blank" rel="noopener">Researchers uncover surprising method to hack the guardrails of LLMs</a></div><span class="article-meta">KNOWBE4.COM &mdash; 29 Jul 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-07-29"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/30076" target="_blank" rel="noopener">Do Attackers Pay More Attention to IPv6&amp;#x3f;, (Sat, Jul 29th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 29 Jul 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-07-29"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://news.umich.edu/a-surprisingly-simple-way-to-foil-car-thieves/" target="_blank" rel="noopener">A surprisingly simple way to foil car thieves</a></div><span class="article-meta">UMICH.EDU &mdash; 29 Jul 2023</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2023-07-29"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.reversinglabs.com/blog/more-malicious-npm-packages-found-in-wake-of-jumpcloud-supply-chain-hack?&web_view=true" target="_blank" rel="noopener">Update: More Malicious NPM Packages Found in Wake of Jumpcloud Supply Chain Hack</a></div><span class="article-meta">REVERSINGLABS.COM &mdash; 29 Jul 2023</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2023-07-29"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://thehackernews.com/2023/07/new-android-malware-cherryblos.html" target="_blank" rel="noopener">New Android Malware CherryBlos Utilizing OCR to Steal Sensitive Data</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 29 Jul 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-07-29"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bankinfosecurity.com/coro-buys-privatise-to-infuse-sase-network-connectivity-a-22674?&web_view=true" target="_blank" rel="noopener">Coro Buys Privatise to Infuse SASE With Network Connectivity</a></div><span class="article-meta">BANKINFOSECURITY.COM &mdash; 29 Jul 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-07-29"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2023/07/apple-sets-new-rules-for-developers-to.html" target="_blank" rel="noopener">Apple Sets New Rules for Developers to Prevent Fingerprinting and Data Misuse</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 29 Jul 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-07-29"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://news.sophos.com/en-us/2023/07/29/sophos-central-turns-ten/" target="_blank" rel="noopener">Sophos Central Turns Ten!</a></div><span class="article-meta">SOPHOS.COM &mdash; 29 Jul 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-07-29"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/technology/apple-rejects-new-name-x-for-twitter-ios-app-because-rules/" target="_blank" rel="noopener">Apple rejects new name 'X' for Twitter iOS app because... rules</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 29 Jul 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-07-29"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/webinars/live-webinar-new-phishing-benchmarks-unlocked-your-organization-ahead-w-4959" target="_blank" rel="noopener">Live Webinar | New Phishing Benchmarks Unlocked: Is Your Organization Ahead of the Curve in 2023</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-07-29</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ivanti warns of another endpoint manager mobile vulnerability under active attack" data-date="2023-07-29"><span class="headline-date">29 Jul</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/07/ivanti-warns-of-another-endpoint.html" target="_blank" rel="noopener">Ivanti Warns of Another Endpoint Manager Mobile Vulnerability Under Active Attack</a><span class="article-summary">Ivanti has disclosed yet another security flaw impacting Endpoint Manager Mobile (EPMM), formerly known as MobileIron Core, that it said has been weaponized as part of an exploit chain by malicious actors in the wild. The new vulnerability, tracked as CVE-2023-35081 (CVSS score: …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="ivanti warns of another endpoint manager mobile vulnerability under active attack" data-date="2023-07-29"><span class="headline-date">29 Jul</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/07/ivanti-warns-of-another-endpoint.html?&web_view=true" target="_blank" rel="noopener">Ivanti Warns of Another Endpoint Manager Mobile Vulnerability Under Active Attack</a><span class="article-summary">The new vulnerability, tracked as CVE-2023-35081 (CVSS score: 7.8), impacts supported versions 11.10, 11.9, and 11.8, as well as those that are currently end-of-life (EoL).</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="exploitation of recent citrix sharefile rce vulnerability begins" data-date="2023-07-29"><span class="headline-date">29 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/exploitation-of-recent-citrix-sharefile-rce-vulnerability-begins/?&web_view=true" target="_blank" rel="noopener">Exploitation of Recent Citrix ShareFile RCE Vulnerability Begins</a><span class="article-summary">The vulnerability, tracked as CVE-2023-24489 (CVSS score of 9.1), was the result of errors leading to unauthenticated file upload, which could then be exploited to obtain RCE, says security firm Assetnote, which identified and reported the bug.</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="weintek weincloud vulnerabilities allowed manipulation, damaging of ics devices" data-date="2023-07-29"><span class="headline-date">29 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/weintek-weincloud-vulnerabilities-allowed-manipulation-damaging-of-ics-devices/?&web_view=true" target="_blank" rel="noopener">Weintek Weincloud Vulnerabilities Allowed Manipulation, Damaging of ICS Devices</a><span class="article-summary">Several vulnerabilities discovered by a researcher from industrial cybersecurity firm TXOne Networks in a Weintek product could have been exploited to manipulate and damage industrial control systems (ICS).</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="hackers deploy &quot;submarine&quot; backdoor in barracuda email security gateway attacks" data-date="2023-07-29"><span class="headline-date">29 Jul</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/07/hackers-deploy-submarine-backdoor-in.html" target="_blank" rel="noopener">Hackers Deploy "SUBMARINE" Backdoor in Barracuda Email Security Gateway Attacks</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) on Friday disclosed details of a "novel persistent backdoor" called SUBMARINE deployed by threat actors in connection with the hack on Barracuda Email Security Gateway (ESG) appliances. "SUBMARINE comprises multiple…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="rfp template for browser security" data-date="2023-07-29"><span class="headline-date">29 Jul</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/07/rfp-template-for-browser-security.html" target="_blank" rel="noopener">RFP Template for Browser Security</a><span class="article-summary">Increasing cyber threats and attacks have made protecting organizational data a paramount concern for businesses of all sizes. A group of experts have recognized the pressing need for comprehensive browser security solutions and collaborated to develop "The Definitive Browser Sec…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="browser developers push back on google's “web drm” wei api" data-date="2023-07-29"><span class="headline-date">29 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/google/browser-developers-push-back-on-googles-web-drm-wei-api/" target="_blank" rel="noopener">Browser developers push back on Google's “web DRM” WEI API</a><span class="article-summary">Google's plans to introduce the Web Environment Integrity (WEI) API on Chrome has been met with fierce backlash from internet software developers, drawing criticism for limiting user freedom and undermining the core principles of the open web. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="ivanti says second zero day used in norway govt breach" data-date="2023-07-29"><span class="headline-date">29 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/ivanti-says-second-zero-day-used-in-norway-govt-breach-a-22690" target="_blank" rel="noopener">Ivanti Says Second Zero Day Used in Norway Govt Breach</a><span class="article-summary">Exploitation No Longer Requires Admin Authentication When Chained with Earlier Flaw Threat actors who recently attacked a dozen Norwegian ministries by exploiting a zero-day vulnerability in Ivanti's endpoint management software appeared to have another zero day flaw that tied to…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+<div class="headline" data-title="41 zero-days exploited in-the-wild in 2022 – google report" data-date="2023-07-29"><span class="headline-date">29 Jul</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/41-zero-days-exploited/" target="_blank" rel="noopener">41 Zero-days Exploited In-the-Wild in 2022 – Google Report</a><span class="article-summary">In 2022, the detection of zero-day exploits in the wild decreased by 40% compared to the previous year. 41 in-the-wild 0-days were detected, the second-highest count since 2014, but lower than the 69 found in 2021. While a 40% drop appears as a security win but, the reality is mo…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="china’s wuhan earthquake center suffers cyberattack" data-date="2023-07-29"><span class="headline-date">29 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.infosecurity-magazine.com/news/china-wuhan-earthquake-cyber-attack/?&web_view=true" target="_blank" rel="noopener">China’s Wuhan Earthquake Center Suffers Cyberattack</a><span class="article-summary">The Global Times newspaper, owned by the Chinese Communist Party, reported on July 26 that the Wuhan Municipal Emergency Management Bureau revealed that the Monitoring Center had been subjected to a cyberattack by an “overseas organization.”</span></span><span class="headline-source">INFOSECURITY-MAGAZINE.COM</span></div>
+<div class="headline" data-title="uk ncsc publishes new guidance on shadow it" data-date="2023-07-29"><span class="headline-date">29 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.infosecurity-magazine.com/news/ncsc-publishes-new-guidance-on/?&web_view=true" target="_blank" rel="noopener">UK NCSC Publishes New Guidance on Shadow IT</a><span class="article-summary">Given the potentially serious repercussions of shadow IT, technical teams should focus on finding where it exists in the organization and addressing the underlying causes of it, the NCSC argued.</span></span><span class="headline-source">INFOSECURITY-MAGAZINE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="linux version of abyss locker ransomware targets vmware esxi servers" data-date="2023-07-29"><span class="headline-date">29 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/linux-version-of-abyss-locker-ransomware-targets-vmware-esxi-servers/" target="_blank" rel="noopener">Linux version of Abyss Locker ransomware targets VMware ESXi servers</a><span class="article-summary">The Abyss Locker operation is the latest to develop a Linux encryptor to target VMware's ESXi virtual machines platform in attacks on the enterprise. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="n korean hackers phishing with us army job lures" data-date="2023-07-29"><span class="headline-date">29 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/n-korean-hackers-phishing-us-army-job-lures-a-22689" target="_blank" rel="noopener">N Korean Hackers Phishing With US Army Job Lures</a><span class="article-summary">Researchers Say APT37 Group Likely Behind Campaign Targeting South Koreans Government-backed North Korean hackers are posting convincing U.S. military job recruitment documents to lure Korean-speaking victims into downloading malware staged from legitimate but compromised South K…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="coinspaid blames north korea-linked apt lazarus for theft of $37m worth of cryptocurrency" data-date="2023-07-29"><span class="headline-date">29 Jul</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/148895/cyber-crime/coinspaid-cyber-heist.html?&web_view=true" target="_blank" rel="noopener">CoinsPaid Blames North Korea-Linked APT Lazarus for Theft of $37M Worth of Cryptocurrency</a><span class="article-summary">“On July 22nd, CoinsPaid experienced a hacker attack, resulting in the theft of USD 37.3M,” reads the announcement published by the company. “We believe Lazarus expected the attack on CoinsPaid to be much more successful.”</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+<div class="headline" data-title="researchers uncover surprising method to hack the guardrails of llms" data-date="2023-07-29"><span class="headline-date">29 Jul</span><span class="headline-body"><a class="headline-title" href="https://blog.knowbe4.com/researchers-uncover-surprising-method-to-hack-the-guardrails-of-llms" target="_blank" rel="noopener">Researchers uncover surprising method to hack the guardrails of LLMs</a><span class="article-summary">Researchers from Carnegie Mellon University and the Center for A.I. Safety have discovered a new prompt injection method to override the guardrails of large language models (LLMs). These guardrails are safety measures designed to prevent AI from generating harmful content.</span></span><span class="headline-source">KNOWBE4.COM</span></div>
+<div class="headline" data-title="do attackers pay more attention to ipv6&amp;#x3f;, (sat, jul 29th)" data-date="2023-07-29"><span class="headline-date">29 Jul</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/30076" target="_blank" rel="noopener">Do Attackers Pay More Attention to IPv6&amp;#x3f;, (Sat, Jul 29th)</a><span class="article-summary">IPv6 has always been a hot topic&&#x23&#x3b;x26&#x3b;&#x23&#x3b;x21&#x3b; Available for years, many ISP&&#x23&#x3b;x26&#x3b;&#x23&#x3b;39&#x3b;s deployed IPv6 up to their residential customers. In Belgium, we were for a long time, the top-one country with IPv6 deployment because …</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="a surprisingly simple way to foil car thieves" data-date="2023-07-29"><span class="headline-date">29 Jul</span><span class="headline-body"><a class="headline-title" href="https://news.umich.edu/a-surprisingly-simple-way-to-foil-car-thieves/" target="_blank" rel="noopener">A surprisingly simple way to foil car thieves</a><span class="article-summary">submitted by agilob to security 13 points | 8 comments https://news.umich.edu/a-surprisingly-simple-way-to-foil-car-thieves/</span></span><span class="headline-source">UMICH.EDU</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="update: more malicious npm packages found in wake of jumpcloud supply chain hack" data-date="2023-07-29"><span class="headline-date">29 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.reversinglabs.com/blog/more-malicious-npm-packages-found-in-wake-of-jumpcloud-supply-chain-hack?&web_view=true" target="_blank" rel="noopener">Update: More Malicious NPM Packages Found in Wake of Jumpcloud Supply Chain Hack</a><span class="article-summary">An investigation by ReversingLabs researchers has uncovered evidence of more malicious npm packages, with links to the same infrastructure that also appear to target cryptocurrency providers.</span></span><span class="headline-source">REVERSINGLABS.COM</span></div>
+<div class="headline" data-title="new android malware cherryblos utilizing ocr to steal sensitive data" data-date="2023-07-29"><span class="headline-date">29 Jul</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/07/new-android-malware-cherryblos.html" target="_blank" rel="noopener">New Android Malware CherryBlos Utilizing OCR to Steal Sensitive Data</a><span class="article-summary">A new Android malware strain called CherryBlos has been observed making use of optical character recognition (OCR) techniques to gather sensitive data stored in pictures. CherryBlos, per Trend Micro, is distributed via bogus posts on social media platforms and comes with capabili…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="coro buys privatise to infuse sase with network connectivity" data-date="2023-07-29"><span class="headline-date">29 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.bankinfosecurity.com/coro-buys-privatise-to-infuse-sase-network-connectivity-a-22674?&web_view=true" target="_blank" rel="noopener">Coro Buys Privatise to Infuse SASE With Network Connectivity</a><span class="article-summary">The New York-based company said its acquisition of Jerusalem-based Privatise will provide Coro clients with a secure way to connect, manage and filter out malicious content, according to co-founder Dror Liwer.</span></span><span class="headline-source">BANKINFOSECURITY.COM</span></div>
+<div class="headline" data-title="apple sets new rules for developers to prevent fingerprinting and data misuse" data-date="2023-07-29"><span class="headline-date">29 Jul</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/07/apple-sets-new-rules-for-developers-to.html" target="_blank" rel="noopener">Apple Sets New Rules for Developers to Prevent Fingerprinting and Data Misuse</a><span class="article-summary">Apple has announced plans to require developers to submit reasons to use certain APIs in their apps starting later this year with the release of iOS 17, iPadOS 17, macOS Sonoma, tvOS 17, and watchOS 10 to prevent their abuse for data collection. "This will help ensure that apps o…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="sophos central turns ten!" data-date="2023-07-29"><span class="headline-date">29 Jul</span><span class="headline-body"><a class="headline-title" href="https://news.sophos.com/en-us/2023/07/29/sophos-central-turns-ten/" target="_blank" rel="noopener">Sophos Central Turns Ten!</a><span class="article-summary">The world’s most trusted cybersecurity platform now secures more than 25 million devices</span></span><span class="headline-source">SOPHOS.COM</span></div>
+<div class="headline" data-title="apple rejects new name 'x' for twitter ios app because... rules" data-date="2023-07-29"><span class="headline-date">29 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/technology/apple-rejects-new-name-x-for-twitter-ios-app-because-rules/" target="_blank" rel="noopener">Apple rejects new name 'X' for Twitter iOS app because... rules</a><span class="article-summary">Mr. Musk may have successfully pushed Twitter's new name and logo, 'X', and even made the vanity domain x.com redirect to the social media website, but that's not to say, the Mathematical double-struck letter will fit the bill everywhere. Apple's App Store can't accept Twitter iO…</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="live webinar | new phishing benchmarks unlocked: is your organization ahead of the curve in 2023" data-date="2023-07-29"><span class="headline-date">29 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/webinars/live-webinar-new-phishing-benchmarks-unlocked-your-organization-ahead-w-4959" target="_blank" rel="noopener">Live Webinar | New Phishing Benchmarks Unlocked: Is Your Organization Ahead of the Curve in 2023</a></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

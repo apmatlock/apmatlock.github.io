@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-08-09</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,83 +109,66 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-08-09</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">24</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">10</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-08-09"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://gbhackers.com/over-28000-microsoft-exchange-servers-exposed/" target="_blank" rel="noopener">Over 28,000 Microsoft Exchange Servers Exposed Online to CVE-2025-53786 Vulnerability</a></div><span class="article-meta">GBHACKERS.COM &mdash; 09 Aug 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-08-09"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://gbhackers.com/linux-kernel-vulnerability-allows-attackers-to-gain-full-kernel-level-control/" target="_blank" rel="noopener">Critical Linux Kernel Vulnerability Allows Attackers Gain Full Kernel-Level Control From Chrome Sandbox</a></div><span class="article-meta">GBHACKERS.COM &mdash; 09 Aug 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://sh.itjust.works/post/43703838" target="_blank" rel="noopener">Hackers Went Looking for a Backdoor in High-Security Safes—and Now Can Open Them in Seconds</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 9 Aug 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/08/cyberark-and-hashicorp-flaws-enable.html" target="_blank" rel="noopener">CyberArk and HashiCorp Flaws Enable Remote Vault Takeover Without Credentials</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 09 Aug 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/cybersecurity-today-month-in-review-august-9-2025" target="_blank" rel="noopener">Cybersecurity Today Month In Review: August 9, 2025</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 09 Aug 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/castlebot-maas-unleashes-diverse-payloads/" target="_blank" rel="noopener">CastleBot MaaS Released Diverse Payloads in Coordinated Mass Ransomware Attacks</a></div><span class="article-meta">GBHACKERS.COM &mdash; 09 Aug 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/researchers-discover-multiple-zero-day-exploits-that-bypass-bitlocker/" target="_blank" rel="noopener">Multiple Zero-Day Exploits Discover That Bypass BitLocker, Exposing All Encrypted Data</a></div><span class="article-meta">GBHACKERS.COM &mdash; 09 Aug 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.securityweek.com/free-wi-fi-leaves-buses-vulnerable-to-remote-hacking/" target="_blank" rel="noopener">Free Wi-Fi Leaves Buses Vulnerable to Remote Hacking</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 09 Aug 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/DSF1V72Ky5I" target="_blank" rel="noopener">Citrix Just Got Bypassed… Again</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-09</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/shorts/fahnyasP0l4" target="_blank" rel="noopener">Why Nation-State Hackers Keep Winning 🕵️</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-09</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/google-confirms-data-breach-exposed-potential-google-ads-customers-info/" target="_blank" rel="noopener">Google confirms data breach exposed potential Google Ads customers' info</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 09 Aug 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-08-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/32831364" target="_blank" rel="noopener">BitUnlocker – Multiple 0-days to Bypass BitLocker and Extract All Protected Data</a></div><span class="article-meta">INFOSEC.PUB &mdash; 9 Aug 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-08-09"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/shorts/V0lujkoPOaI" target="_blank" rel="noopener">“Let’s Just Turn Evil” — What?!</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-09</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-08-09"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/shorts/0vtxOxYtjGw" target="_blank" rel="noopener">Blockchain Is Terrifying… But Brilliant 💀🔐</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-09</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-08-09"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/shorts/Dh6va3lFEUw" target="_blank" rel="noopener">CEO Sent a Malware File… Guess What Happened</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-09</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-09"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/32786088" target="_blank" rel="noopener">Windows User Account Control Bypassed Using Character Editor to Escalate Privileges</a></div><span class="article-meta">INFOSEC.PUB &mdash; 9 Aug 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-09"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/32786442" target="_blank" rel="noopener">Flipper Zero &amp;#x27;DarkWeb&amp;#x27; Firmware Bypasses Rolling Code Security on Major Vehicle Brands</a></div><span class="article-meta">INFOSEC.PUB &mdash; 9 Aug 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-09"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/chromealone/" target="_blank" rel="noopener">ChromeAlone – A Browser Based Cobalt Strike Like C2 Tool That Turns Chrome Into a Hacker’s Playground</a></div><span class="article-meta">GBHACKERS.COM &mdash; 09 Aug 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-09"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/P9w3hWIQlhI" target="_blank" rel="noopener">When You’re in Charge but Not in Control 😨 #CyberLife</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-09</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-09"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/qle51CvAKE8" target="_blank" rel="noopener">When Microsoft Lets Your Devices Talk Behind Your Back 👀</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-09</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-09"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/DSXstU3KH0o" target="_blank" rel="noopener">Why You Might Never Talk To a Human Banker Again 🤖</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-09</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-08-09"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/eMXoZD0gbig" target="_blank" rel="noopener">4.7 BILLION DNS Requests in 34 Minutes?!</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-08-09</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-08-09"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2025/08/researchers-uncover-gpt-5-jailbreak-and.html" target="_blank" rel="noopener">Researchers Uncover GPT-5 Jailbreak and Zero-Click AI Agent Attacks Exposing Cloud and IoT Systems</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 09 Aug 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-08-09"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/60-malicious-ruby-gems-downloaded-275-000-times-steal-credentials/" target="_blank" rel="noopener">60 malicious Ruby gems downloaded 275,000 times steal credentials</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 09 Aug 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="over 28,000 microsoft exchange servers exposed online to cve-2025-53786 vulnerability" data-date="2025-08-09"><span class="headline-date">9 Aug</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/over-28000-microsoft-exchange-servers-exposed/" target="_blank" rel="noopener">Over 28,000 Microsoft Exchange Servers Exposed Online to CVE-2025-53786 Vulnerability</a><span class="article-summary">The cybersecurity community faces a significant threat as scanning data reveals over 28,000 unpatched Microsoft Exchange servers remain exposed on the public internet, vulnerable to a critical security flaw designated CVE-2025-53786. This high-severity vulnerability, which carrie…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="critical linux kernel vulnerability allows attackers gain full kernel-level control from chrome sandbox" data-date="2025-08-09"><span class="headline-date">9 Aug</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/linux-kernel-vulnerability-allows-attackers-to-gain-full-kernel-level-control/" target="_blank" rel="noopener">Critical Linux Kernel Vulnerability Allows Attackers Gain Full Kernel-Level Control From Chrome Sandbox</a><span class="article-summary">August 9, 2025: A severe security vulnerability in the Linux kernel, dubbed CVE-2025-38236, has been uncovered by Google Project Zero researcher Jann Horn, exposing a pathway for attackers ranging from native code execution within the Chrome renderer sandbox to full kernel-level …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">10</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="hackers went looking for a backdoor in high-security safes—and now can open them in seconds" data-date="2025-08-09"><span class="headline-date">9 Aug</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/43703838" target="_blank" rel="noopener">Hackers Went Looking for a Backdoor in High-Security Safes—and Now Can Open Them in Seconds</a><span class="article-summary">submitted by floofloof to cybersecurity 7 points | 0 comments https://www.wired.com/story/securam-prologic-safe-lock-backdoor-exploits/ archive.is/1NWAe Omo and Rowley say they informed Securam about both their safe-opening techniques in spring of last year, but have until now ke…</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+<div class="headline" data-title="cyberark and hashicorp flaws enable remote vault takeover without credentials" data-date="2025-08-09"><span class="headline-date">9 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/08/cyberark-and-hashicorp-flaws-enable.html" target="_blank" rel="noopener">CyberArk and HashiCorp Flaws Enable Remote Vault Takeover Without Credentials</a><span class="article-summary">Cybersecurity researchers have discovered over a dozen vulnerabilities in enterprise secure vaults from CyberArk and HashiCorp that, if successfully exploited, can allow remote attackers to crack open corporate identity systems and extract enterprise secrets and tokens from them.…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="cybersecurity today month in review: august 9, 2025" data-date="2025-08-09"><span class="headline-date">9 Aug</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/cybersecurity-today-month-in-review-august-9-2025" target="_blank" rel="noopener">Cybersecurity Today Month In Review: August 9, 2025</a><span class="article-summary">Cybersecurity Today: July Review - Massive Lawsuits, AI Warnings, and Major Breaches In this episode of Cybersecurity Today: The Month in Review, host Jim Love and an expert panel, including David Shipley, Anton Levaja, and Tammy Harper, discuss the most significant cybersecurity…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="castlebot maas released diverse payloads in coordinated mass ransomware attacks" data-date="2025-08-09"><span class="headline-date">9 Aug</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/castlebot-maas-unleashes-diverse-payloads/" target="_blank" rel="noopener">CastleBot MaaS Released Diverse Payloads in Coordinated Mass Ransomware Attacks</a><span class="article-summary">IBM X-Force has uncovered CastleBot, a nascent malware framework operating as a Malware-as-a-Service (MaaS) platform, enabling cybercriminals to deploy a spectrum of payloads ranging from infostealers to sophisticated backdoors implicated in ransomware operations. First detected …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="multiple zero-day exploits discover that bypass bitlocker, exposing all encrypted data" data-date="2025-08-09"><span class="headline-date">9 Aug</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/researchers-discover-multiple-zero-day-exploits-that-bypass-bitlocker/" target="_blank" rel="noopener">Multiple Zero-Day Exploits Discover That Bypass BitLocker, Exposing All Encrypted Data</a><span class="article-summary">Microsoft security researchers have uncovered four critical vulnerabilities in Windows BitLocker that could allow attackers with physical access to bypass the encryption system and extract sensitive data. The findings, revealed in research dubbed &#8220;BitUnlocker,&#8221; demons…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="free wi-fi leaves buses vulnerable to remote hacking" data-date="2025-08-09"><span class="headline-date">9 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/free-wi-fi-leaves-buses-vulnerable-to-remote-hacking/" target="_blank" rel="noopener">Free Wi-Fi Leaves Buses Vulnerable to Remote Hacking</a><span class="article-summary">Researchers showed how flaws in a bus’ onboard and remote systems can be exploited by hackers for tracking, control and spying. The post Free Wi-Fi Leaves Buses Vulnerable to Remote Hacking appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="citrix just got bypassed… again" data-date="2025-08-09"><span class="headline-date">9 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/DSF1V72Ky5I" target="_blank" rel="noopener">Citrix Just Got Bypassed… Again</a><span class="article-summary">Over 1,200 Citrix servers are still exposed to a critical authentication bypass flaw — and hackers are loving it. This Short breaks down how “Citrix Bleed 2” lets attackers hijack session tokens, skip MFA entirely, and walk right in like legit users. For cybersecurity pros, this …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="why nation-state hackers keep winning 🕵️" data-date="2025-08-09"><span class="headline-date">9 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/fahnyasP0l4" target="_blank" rel="noopener">Why Nation-State Hackers Keep Winning 🕵️</a><span class="article-summary">Cybersecurity leaders are under pressure—but are they adapting fast enough? In this powerful 30-second short, Aaran breaks down how nation-state attackers bypass security by exploiting outdated protocols, weak access controls, and untrained support teams. From social engineering …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="google confirms data breach exposed potential google ads customers' info" data-date="2025-08-09"><span class="headline-date">9 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/google-confirms-data-breach-exposed-potential-google-ads-customers-info/" target="_blank" rel="noopener">Google confirms data breach exposed potential Google Ads customers' info</a><span class="article-summary">Google has confirmed that a recently disclosed data breach of one of its Salesforce CRM instances involved the information of potential Google Ads customers. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="bitunlocker – multiple 0-days to bypass bitlocker and extract all protected data" data-date="2025-08-09"><span class="headline-date">9 Aug</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/32831364" target="_blank" rel="noopener">BitUnlocker – Multiple 0-days to Bypass BitLocker and Extract All Protected Data</a><span class="article-summary">submitted by cm0002 to cybersecurity 3 points | 0 comments https://cybersecuritynews.com/bitunlocker-bypass-bitlocker/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="“let’s just turn evil” — what?!" data-date="2025-08-09"><span class="headline-date">9 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/V0lujkoPOaI" target="_blank" rel="noopener">“Let’s Just Turn Evil” — What?!</a><span class="article-summary">What happens when a cybersecurity expert jokes about turning to the dark side? In this hilarious short, Doug White drops a bold prediction: cybercrime could soon rival the world's biggest economies. With a twist of sarcasm, he imagines a villainous retirement plan involving ranso…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="blockchain is terrifying… but brilliant 💀🔐" data-date="2025-08-09"><span class="headline-date">9 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/0vtxOxYtjGw" target="_blank" rel="noopener">Blockchain Is Terrifying… But Brilliant 💀🔐</a><span class="article-summary">Blockchain used to feel like just another buzzword... until cybersecurity expert Joshua Marpet dropped this chilling take. In this short, he reveals why blockchain is both fascinating and frightening — from Merkle trees to ransomware payments. Viewers will get a glimpse into how …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="ceo sent a malware file… guess what happened" data-date="2025-08-09"><span class="headline-date">9 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/Dh6va3lFEUw" target="_blank" rel="noopener">CEO Sent a Malware File… Guess What Happened</a><span class="article-summary">When the CEO of a cybersecurity company sent a suspicious executable file to the entire staff, no one expected what happened next. Despite quarterly training and top-tier security tools, 40% of the team still tried to run it. This short reveals the shocking reality of how authori…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="windows user account control bypassed using character editor to escalate privileges" data-date="2025-08-09"><span class="headline-date">9 Aug</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/32786088" target="_blank" rel="noopener">Windows User Account Control Bypassed Using Character Editor to Escalate Privileges</a><span class="article-summary">submitted by cm0002 to cybersecurity 3 points | 0 comments https://cybersecuritynews.com/windows-user-account-control-bypassed/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="flipper zero &amp;#x27;darkweb&amp;#x27; firmware bypasses rolling code security on major vehicle brands" data-date="2025-08-09"><span class="headline-date">9 Aug</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/32786442" target="_blank" rel="noopener">Flipper Zero &amp;#x27;DarkWeb&amp;#x27; Firmware Bypasses Rolling Code Security on Major Vehicle Brands</a><span class="article-summary">submitted by cm0002 to cybersecurity 4 points | 1 comments https://cybersecuritynews.com/flipper-zero-darkweb-firmware/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="chromealone – a browser based cobalt strike like c2 tool that turns chrome into a hacker’s playground" data-date="2025-08-09"><span class="headline-date">9 Aug</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/chromealone/" target="_blank" rel="noopener">ChromeAlone – A Browser Based Cobalt Strike Like C2 Tool That Turns Chrome Into a Hacker’s Playground</a><span class="article-summary">At DEF CON 33, security researcher Mike Weber of Praetorian Security unveiled ChromeAlone — a Chromium-based browser Command &#38; Control (C2) framework capable of replacing traditional offensive security implants like Cobalt Strike or Meterpreter. Not long ago, web browsers wer…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="when you’re in charge but not in control 😨 #cyberlife" data-date="2025-08-09"><span class="headline-date">9 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/P9w3hWIQlhI" target="_blank" rel="noopener">When You’re in Charge but Not in Control 😨 #CyberLife</a><span class="article-summary">When cybersecurity leaders feel powerless, it’s more than just stress—it’s terror. In this short, Alla Valente compares being a CISO today to riding a roller coaster you can’t get off. No brakes, no control, just chaos. Her raw honesty hits home for anyone navigating modern digit…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="when microsoft lets your devices talk behind your back 👀" data-date="2025-08-09"><span class="headline-date">9 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/qle51CvAKE8" target="_blank" rel="noopener">When Microsoft Lets Your Devices Talk Behind Your Back 👀</a><span class="article-summary">A little-known Microsoft 365 feature just raised eyebrows across the cybersecurity world. Doug White explains how apps, cloud services, even printers can send out broadcast messages—just like old-school mainframes. It started with special devices… but quickly escalated into a sys…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="why you might never talk to a human banker again 🤖" data-date="2025-08-09"><span class="headline-date">9 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/DSXstU3KH0o" target="_blank" rel="noopener">Why You Might Never Talk To a Human Banker Again 🤖</a><span class="article-summary">In 2025, banks are quietly shifting to AI—and most customers have no idea. This short reveals how artificial intelligence is taking over everyday financial services, from chatbots to full-on financial advisors. If you're in cybersecurity or finance, this AI takeover changes every…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="4.7 billion dns requests in 34 minutes?!" data-date="2025-08-09"><span class="headline-date">9 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/eMXoZD0gbig" target="_blank" rel="noopener">4.7 BILLION DNS Requests in 34 Minutes?!</a><span class="article-summary">In just 34 minutes, over 4.7 billion DNS queries were processed — a stat that blows the minds of even seasoned cybersecurity pros. This short reveals the staggering scale of DNS activity, using real data from 2021 and 2020 that shows just how crucial and chaotic the internet’s un…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="researchers uncover gpt-5 jailbreak and zero-click ai agent attacks exposing cloud and iot systems" data-date="2025-08-09"><span class="headline-date">9 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/08/researchers-uncover-gpt-5-jailbreak-and.html" target="_blank" rel="noopener">Researchers Uncover GPT-5 Jailbreak and Zero-Click AI Agent Attacks Exposing Cloud and IoT Systems</a><span class="article-summary">Cybersecurity researchers have uncovered a jailbreak technique to bypass ethical guardrails erected by OpenAI in its latest large language model (LLM) GPT-5 and produce illicit instructions. Generative artificial intelligence (AI) security platform NeuralTrust said it combined a …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="60 malicious ruby gems downloaded 275,000 times steal credentials" data-date="2025-08-09"><span class="headline-date">9 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/60-malicious-ruby-gems-downloaded-275-000-times-steal-credentials/" target="_blank" rel="noopener">60 malicious Ruby gems downloaded 275,000 times steal credentials</a><span class="article-summary">Sixty malicious Ruby gems containing credential-stealing code have been downloaded over 275,000 times since March 2023, targeting developer accounts. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

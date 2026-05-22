@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2026-05-09</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -23,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
-<a href="2026-05-21.html">2026-05-21</a>
-<a href="index.html" class="active">Today</a>
-<a href="2026-05-08.html">2026-05-08</a>
-<a href="2026-05-07.html">2026-05-07</a>
-<a href="2026-05-06.html">2026-05-06</a>
-<a href="2026-05-05.html">2026-05-05</a>
-<a href="2026-05-04.html">2026-05-04</a>
+<a href="2026-05-23.html">23 May</a>
+<a href="index.html">Today</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -39,71 +109,58 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2026-05-09</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">11</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-09"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2026/05/cpanel-whm-patch-3-new-vulnerabilities.html" target="_blank" rel="noopener">cPanel, WHM Release Fixes for Three New Vulnerabilities — Patch Now</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 09 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/nvidia-confirms-geforce-data-breach/" target="_blank" rel="noopener">NVIDIA Confirms GeForce Data Breach Exposed Users’ Personal Data</a></div><span class="article-meta">GBHACKERS.COM &mdash; 09 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/cybersecurity-today-month-in-review-ai-coding-risks-canvas-breach-qr-phishing-surge" target="_blank" rel="noopener">Cybersecurity Today Month in Review: AI Coding Risks, Canvas Breach, QR Phishing Surge</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 09 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/vidar-infostealer-campaign-steals-passwords-cookies/" target="_blank" rel="noopener">Vidar Infostealer Campaign Steals Passwords, Cookies, Crypto Wallets, and Device Data</a></div><span class="article-meta">GBHACKERS.COM &mdash; 09 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thecyberwire.com/newsletters/week-that-was/10/18" target="_blank" rel="noopener">ShinyHunters defaces Canvas portals during finals week.</a></div><span class="article-meta">THECYBERWIRE.COM &mdash; 09 May 2026</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2026-05-09"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.wired.com/story/security-news-this-week-hackable-robot-lawnmower-unlocks-a-new-nightmare/" target="_blank" rel="noopener">Hackable Robot Lawn Mower Unlocks a New Nightmare</a></div><span class="article-meta">WIRED.COM &mdash; 09 May 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-05-09"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://securityaffairs.com/191888/data-breach/braintrust-security-incident-raises-concerns-over-ai-supply-chain-risks.html" target="_blank" rel="noopener">Braintrust security incident raises concerns over AI supply chain risks</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 09 May 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-05-09"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thecyberwire.com/podcasts/research-saturday/424/notes" target="_blank" rel="noopener">The spy who logged me in.</a></div><span class="article-meta">THECYBERWIRE.COM &mdash; 09 May 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-05-09"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/tclbanker-malware-leverages-whatsapp-and-outlook/" target="_blank" rel="noopener">TCLBANKER Malware Leverages WhatsApp and Outlook Worm Features in Active Attacks</a></div><span class="article-meta">GBHACKERS.COM &mdash; 09 May 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-05-09"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/shorts/1pUDEqgivZ4" target="_blank" rel="noopener">AI Coding Agents Need Sandboxes</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2026-05-09</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2026-05-09"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://securityaffairs.com/191898/malware/quasar-linux-rat-qlnx-a-fileless-linux-implant-built-for-stealth-and-persistence.html" target="_blank" rel="noopener">Quasar Linux RAT (QLNX): A Fileless Linux Implant Built for Stealth and Persistence</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 09 May 2026</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cpanel, whm release fixes for three new vulnerabilities — patch now" data-date="2026-05-09"><span class="headline-date">9 May</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/05/cpanel-whm-patch-3-new-vulnerabilities.html" target="_blank" rel="noopener">cPanel, WHM Release Fixes for Three New Vulnerabilities — Patch Now</a><span class="article-summary">cPanel has released updates to address three vulnerabilities in cPanel and Web Host Manager (WHM) that could be exploited to achieve privilege escalation, code execution, and denial-of-service. The list of vulnerabilities is as follows - CVE-2026-29201 (CVSS score: 4.3) - An insu…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="nvidia confirms geforce data breach exposed users’ personal data" data-date="2026-05-09"><span class="headline-date">9 May</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/nvidia-confirms-geforce-data-breach/" target="_blank" rel="noopener">NVIDIA Confirms GeForce Data Breach Exposed Users’ Personal Data</a><span class="article-summary">GFN Cloud Internet Services, operating as the regional NVIDIA GeForce NOW cloud gaming partner, GFN.AM has officially confirmed a significant data breach. The security incident exposed personal information of users registered on their streaming platform. While the company has now…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="cybersecurity today month in review: ai coding risks, canvas breach, qr phishing surge" data-date="2026-05-09"><span class="headline-date">9 May</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/cybersecurity-today-month-in-review-ai-coding-risks-canvas-breach-qr-phishing-surge" target="_blank" rel="noopener">Cybersecurity Today Month in Review: AI Coding Risks, Canvas Breach, QR Phishing Surge</a><span class="article-summary">This week's panel dives into the cybersecurity stories that matter most for security leaders, IT teams, and anyone watching how AI is changing risk. Jim Love is joined by David Shipley (Beauceron Security), Laura Payne (White Tuque), and Jeff Williams (Contrast Security). Cyberse…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="vidar infostealer campaign steals passwords, cookies, crypto wallets, and device data" data-date="2026-05-09"><span class="headline-date">9 May</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/vidar-infostealer-campaign-steals-passwords-cookies/" target="_blank" rel="noopener">Vidar Infostealer Campaign Steals Passwords, Cookies, Crypto Wallets, and Device Data</a><span class="article-summary">A highly evasive multi-stage malware campaign deploying the Vidar Infostealer. First discovered in late 2018 and built on the Arkei stealer source code, Vidar is notorious for aggressively harvesting user credentials, browser session cookies, cryptocurrency wallets, and detailed …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="shinyhunters defaces canvas portals during finals week." data-date="2026-05-09"><span class="headline-date">9 May</span><span class="headline-body"><a class="headline-title" href="https://thecyberwire.com/newsletters/week-that-was/10/18" target="_blank" rel="noopener">ShinyHunters defaces Canvas portals during finals week.</a><span class="article-summary">CISA orders Federal agencies to patch Ivanti zero-day by Sunday. Progress Software urges customers to patch critical MOVEit flaw.</span></span><span class="headline-source">THECYBERWIRE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="hackable robot lawn mower unlocks a new nightmare" data-date="2026-05-09"><span class="headline-date">9 May</span><span class="headline-body"><a class="headline-title" href="https://www.wired.com/story/security-news-this-week-hackable-robot-lawnmower-unlocks-a-new-nightmare/" target="_blank" rel="noopener">Hackable Robot Lawn Mower Unlocks a New Nightmare</a><span class="article-summary">Plus: Meta officially kills encrypted Instagram DMs, the Trump administration targets “violent left wing extremists,” leaked documents reveal Russia's school for elite hackers, and more.</span></span><span class="headline-source">WIRED.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="braintrust security incident raises concerns over ai supply chain risks" data-date="2026-05-09"><span class="headline-date">9 May</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/191888/data-breach/braintrust-security-incident-raises-concerns-over-ai-supply-chain-risks.html" target="_blank" rel="noopener">Braintrust security incident raises concerns over AI supply chain risks</a><span class="article-summary">Braintrust warned customers to rotate API keys after hackers breached an AWS account, exposing secrets tied to cloud-based AI models. AI observability startup Braintrust warned customers to rotate API keys after attackers gained unauthorized access to one of the company’s AWS acc…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the spy who logged me in." data-date="2026-05-09"><span class="headline-date">9 May</span><span class="headline-body"><a class="headline-title" href="https://thecyberwire.com/podcasts/research-saturday/424/notes" target="_blank" rel="noopener">The spy who logged me in.</a><span class="article-summary">⁠Mark Kelly⁠, Staff Threat Researcher at ⁠Proofpoint⁠, is discussing their work on "I’d come running back to EU again: TA416 resumes European government espionage campaigns." China-linked threat group TA416 has resumed large-scale phishing and malware campaigns targeting European…</span></span><span class="headline-source">THECYBERWIRE.COM</span></div>
+<div class="headline" data-title="tclbanker malware leverages whatsapp and outlook worm features in active attacks" data-date="2026-05-09"><span class="headline-date">9 May</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/tclbanker-malware-leverages-whatsapp-and-outlook/" target="_blank" rel="noopener">TCLBANKER Malware Leverages WhatsApp and Outlook Worm Features in Active Attacks</a><span class="article-summary">A sophisticated Brazilian banking trojan named TCLBANKER, deployed through a trojanized Logitech installer and capable of hijacking victims&#8217; WhatsApp and Outlook accounts to spread itself to new targets. The campaign, tracked as REF3076, delivers TCLBANKER through a malicio…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="ai coding agents need sandboxes" data-date="2026-05-09"><span class="headline-date">9 May</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/1pUDEqgivZ4" target="_blank" rel="noopener">AI Coding Agents Need Sandboxes</a><span class="article-summary">The speaker argues that AI coding agents should be treated like privileged automation systems, not harmless autocomplete tools. Recommended controls include containerization, disposable workspaces, restricted network access, detailed process logging, and manual review of configur…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="quasar linux rat (qlnx): a fileless linux implant built for stealth and persistence" data-date="2026-05-09"><span class="headline-date">9 May</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/191898/malware/quasar-linux-rat-qlnx-a-fileless-linux-implant-built-for-stealth-and-persistence.html" target="_blank" rel="noopener">Quasar Linux RAT (QLNX): A Fileless Linux Implant Built for Stealth and Persistence</a><span class="article-summary">Researchers uncovered QLNX, a Linux RAT targeting developers to steal credentials, log keystrokes, monitor systems, and enable remote access. Security researchers discovered a previously undocumented Linux malware called Quasar Linux RAT (QLNX) that targets developers and DevOps …</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-05-09 23:01<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

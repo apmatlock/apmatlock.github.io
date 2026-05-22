@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2026-05-17</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -23,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
-<a href="2026-05-21.html">2026-05-21</a>
-<a href="2026-05-18.html">2026-05-18</a>
-<a href="index.html" class="active">Today</a>
-<a href="2026-05-16.html">2026-05-16</a>
-<a href="2026-05-15.html">2026-05-15</a>
-<a href="2026-05-14.html">2026-05-14</a>
-<a href="2026-05-13.html">2026-05-13</a>
+<a href="2026-05-23.html">23 May</a>
+<a href="index.html">Today</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html" class="active">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -39,73 +109,48 @@
       <div class="stat"><span class="stat-value">3</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2026-05-17</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">16</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">9</span></button>
-<button class="filter-btn" data-cat="Podcasts" onclick="filterCat('Podcasts', this)">PODCASTS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-17"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46483" target="_blank" rel="noopener">CVE-2026-46483 Vim: Command injection in tar#Vimuntar via missing shellescape {special} flag</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 17 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-17"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-44283" target="_blank" rel="noopener">CVE-2026-44283 etcd: Read access via PrevKv in etcd transactions may bypass RBAC authorization checks</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 17 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-17"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-8368" target="_blank" rel="noopener">CVE-2026-8368 LWP::UserAgent versions before 6.83 for Perl leak Authorization and Proxy-Authorization headers on cross-origin redirects</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 17 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-17"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-8328" target="_blank" rel="noopener">CVE-2026-8328 FTP PASV SSRF, ftpcp() does not use actual peer address, trusts server-supplied PASV host address</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 17 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-17"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2026/05/nginx-cve-2026-42945-exploited-in-wild.html" target="_blank" rel="noopener">NGINX CVE-2026-42945 Exploited in the Wild, Causing Worker Crashes and Possible RCE</a></div><span class="kev-badge">KEV</span><span class="article-meta">THEHACKERNEWS.COM &mdash; 17 May 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-05-17"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://securityaffairs.com/192278/security/security-affairs-malware-newsletter-round-97.html" target="_blank" rel="noopener">SECURITY AFFAIRS MALWARE NEWSLETTER ROUND 97</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 17 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://securityaffairs.com/192250/hacking/pwn2own-berlin-2026-day-three-devcore-crowned-master-of-pwn-1-298-million-total.html" target="_blank" rel="noopener">Pwn2Own Berlin 2026, Day Three: DEVCORE Crowned Master of Pwn, $1.298 Million Total</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 17 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2026/05/grafana-github-token-breach-led-to.html" target="_blank" rel="noopener">Grafana GitHub Token Breach Led to Codebase Download and Extortion Attempt</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 17 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.helpnetsecurity.com/2026/05/17/week-in-review-cisco-patches-sd-wan-0-day-unpatched-microsoft-exchange-server-flaw-exploited/" target="_blank" rel="noopener">Week in review: Cisco patches SD-WAN 0-day, unpatched Microsoft Exchange Server flaw exploited</a></div><span class="article-meta">HELPNETSECURITY.COM &mdash; 17 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://programming.dev/post/50529457" target="_blank" rel="noopener">GitHub Actions Cache Poisoning is eating open source</a></div><span class="article-meta">PROGRAMMING.DEV &mdash; 17 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cyberinsider.com/pwn2own-berlin-2026-concludes-with-1-29-million-paid-for-47-zero-days/" target="_blank" rel="noopener">Pwn2Own Berlin 2026 concludes with $1.29 million paid for 47 zero-days</a></div><span class="article-meta">CYBERINSIDER.COM &mdash; 17 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://securityaffairs.com/192269/security/security-affairs-newsletter-round-577-by-pierluigi-paganini-international-edition.html" target="_blank" rel="noopener">Security Affairs newsletter Round 577 by Pierluigi Paganini – INTERNATIONAL EDITION</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 17 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://securityaffairs.com/192260/cyber-crime/attackers-exploit-funnel-builder-bug-to-inject-e-skimmers-into-e-stores.html" target="_blank" rel="noopener">Attackers exploit Funnel Builder bug to inject e-skimmers into e-stores</a></div><span class="kev-badge">KEV</span><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 17 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cyberinsider.com/iodeos-review-privacy-focused-android-that-doesnt-get-in-your-way/" target="_blank" rel="noopener">iodéOS review: Privacy-focused Android that doesn’t get in your way</a></div><span class="article-meta">CYBERINSIDER.COM &mdash; 17 May 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-05-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.helpnetsecurity.com/2026/05/18/debian-13-5-released/" target="_blank" rel="noopener">Debian 13.5 point release lands with security fixes, bug patches</a></div><span class="article-meta">HELPNETSECURITY.COM &mdash; 17 May 2026</span></div>
-<div class="article-row" data-cat="Podcasts" data-date="2026-05-17"><span class="cat-badge" style="border:1px solid rgba(85,170,204,0.5);background:rgba(85,170,204,0.10);" title="Podcasts">🎙️</span><div class="article-body"><a href="https://thecyberwire.com/podcasts/tminus-space-cyber-briefing/707/notes" target="_blank" rel="noopener">From cyberspace to space-cyber.</a></div><span class="article-meta">THECYBERWIRE.COM &mdash; 17 May 2026</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cve-2026-46483 vim: command injection in tar#vimuntar via missing shellescape {special} flag" data-date="2026-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46483" target="_blank" rel="noopener">CVE-2026-46483 Vim: Command injection in tar#Vimuntar via missing shellescape {special} flag</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-44283 etcd: read access via prevkv in etcd transactions may bypass rbac authorization checks" data-date="2026-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-44283" target="_blank" rel="noopener">CVE-2026-44283 etcd: Read access via PrevKv in etcd transactions may bypass RBAC authorization checks</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-8368 lwp::useragent versions before 6.83 for perl leak authorization and proxy-authorization headers on cross-origin redirects" data-date="2026-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-8368" target="_blank" rel="noopener">CVE-2026-8368 LWP::UserAgent versions before 6.83 for Perl leak Authorization and Proxy-Authorization headers on cross-origin redirects</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-8328 ftp pasv ssrf, ftpcp() does not use actual peer address, trusts server-supplied pasv host address" data-date="2026-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-8328" target="_blank" rel="noopener">CVE-2026-8328 FTP PASV SSRF, ftpcp() does not use actual peer address, trusts server-supplied PASV host address</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="nginx cve-2026-42945 exploited in the wild, causing worker crashes and possible rce" data-date="2026-05-17"><span class="headline-date">17 May <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/05/nginx-cve-2026-42945-exploited-in-wild.html" target="_blank" rel="noopener">NGINX CVE-2026-42945 Exploited in the Wild, Causing Worker Crashes and Possible RCE</a><span class="article-summary">A newly disclosed security flaw impacting NGINX Plus and NGINX Open has come under active exploitation in the wild, days after its public disclosure, according to VulnCheck. The vulnerability, tracked as CVE-2026-42945 (CVSS score: 9.2), is a heap buffer overflow in ngx_http_rewr…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="security affairs malware newsletter round 97" data-date="2026-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/192278/security/security-affairs-malware-newsletter-round-97.html" target="_blank" rel="noopener">SECURITY AFFAIRS MALWARE NEWSLETTER ROUND 97</a><span class="article-summary">Security Affairs Malware newsletter includes a collection of the best articles and research on malware in the international landscape Malware Newsletter JDownloader site hacked to replace installers with Python RAT malware&#160;&#160;&#160;&#160; New TrickMo Variant: Device Take …</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">9</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="pwn2own berlin 2026, day three: devcore crowned master of pwn, $1.298 million total" data-date="2026-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/192250/hacking/pwn2own-berlin-2026-day-three-devcore-crowned-master-of-pwn-1-298-million-total.html" target="_blank" rel="noopener">Pwn2Own Berlin 2026, Day Three: DEVCORE Crowned Master of Pwn, $1.298 Million Total</a><span class="article-summary">Pwn2Own Berlin 2026 ended with 47 zero-days and $1.29M in payouts, as DEVCORE dominated the competition across all categories. Pwn2Own Berlin 2026 ended after three intense days, with participants discovering 47 unique zero-days, and earning $1,298,250 in total payouts. Pwn2Own B…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+<div class="headline" data-title="grafana github token breach led to codebase download and extortion attempt" data-date="2026-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/05/grafana-github-token-breach-led-to.html" target="_blank" rel="noopener">Grafana GitHub Token Breach Led to Codebase Download and Extortion Attempt</a><span class="article-summary">Grafana has disclosed that an "unauthorized party" obtained a token that granted them the ability to access the company's GitHub environment and download its codebase. "Our investigation has determined that no customer data or personal information was accessed during this inciden…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="week in review: cisco patches sd-wan 0-day, unpatched microsoft exchange server flaw exploited" data-date="2026-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/05/17/week-in-review-cisco-patches-sd-wan-0-day-unpatched-microsoft-exchange-server-flaw-exploited/" target="_blank" rel="noopener">Week in review: Cisco patches SD-WAN 0-day, unpatched Microsoft Exchange Server flaw exploited</a><span class="article-summary">Here’s an overview of some of last week’s most interesting news, articles, interviews and videos: Review: Foundations of Cybersecurity, 2nd edition Jason Andress has refreshed his introductory security text for No Starch Press. He writes in the introduction that the term security…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="github actions cache poisoning is eating open source" data-date="2026-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://programming.dev/post/50529457" target="_blank" rel="noopener">GitHub Actions Cache Poisoning is eating open source</a><span class="article-summary">submitted by codeinabox to security 3 points | 0 comments https://neciudan.dev/github-actions-poisoning</span></span><span class="headline-source">PROGRAMMING.DEV</span></div>
+<div class="headline" data-title="pwn2own berlin 2026 concludes with $1.29 million paid for 47 zero-days" data-date="2026-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://cyberinsider.com/pwn2own-berlin-2026-concludes-with-1-29-million-paid-for-47-zero-days/" target="_blank" rel="noopener">Pwn2Own Berlin 2026 concludes with $1.29 million paid for 47 zero-days</a><span class="article-summary">Pwn2Own Berlin 2026 wrapped up with another string of successful enterprise-targeted exploits, bringing the contest’s final tally to $1,298,250 awarded for 47 unique zero-day vulnerabilities discovered over three days. DEVCORE secured the “Master of Pwn” title with 50.5 points an…</span></span><span class="headline-source">CYBERINSIDER.COM</span></div>
+<div class="headline" data-title="security affairs newsletter round 577 by pierluigi paganini – international edition" data-date="2026-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/192269/security/security-affairs-newsletter-round-577-by-pierluigi-paganini-international-edition.html" target="_blank" rel="noopener">Security Affairs newsletter Round 577 by Pierluigi Paganini – INTERNATIONAL EDITION</a><span class="article-summary">A new round of the weekly Security Affairs newsletter has arrived! Every week, the best security articles from Security Affairs are free in your email box. Enjoy a new round of the weekly SecurityAffairs newsletter, including the international press. Attackers exploit Funnel Buil…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+<div class="headline" data-title="attackers exploit funnel builder bug to inject e-skimmers into e-stores" data-date="2026-05-17"><span class="headline-date">17 May <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/192260/cyber-crime/attackers-exploit-funnel-builder-bug-to-inject-e-skimmers-into-e-stores.html" target="_blank" rel="noopener">Attackers exploit Funnel Builder bug to inject e-skimmers into e-stores</a><span class="article-summary">Attackers are exploiting a critical flaw in the WordPress Funnel Builder plugin to inject skimming code into WooCommerce checkout pages. A critical vulnerability in the WordPress Funnel Builder plugin is being actively exploited to inject malicious JavaScript into WooCommerce che…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+<div class="headline" data-title="iodéos review: privacy-focused android that doesn’t get in your way" data-date="2026-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://cyberinsider.com/iodeos-review-privacy-focused-android-that-doesnt-get-in-your-way/" target="_blank" rel="noopener">iodéOS review: Privacy-focused Android that doesn’t get in your way</a><span class="article-summary">iodéOS is a privacy-oriented Android operating system developed by the French company iodé, based on the Android Open Source Project (AOSP). The project focuses on reducing user tracking and dependence on Google services while still maintaining broad Android app compatibility and…</span></span><span class="headline-source">CYBERINSIDER.COM</span></div>
+<div class="headline" data-title="debian 13.5 point release lands with security fixes, bug patches" data-date="2026-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/05/18/debian-13-5-released/" target="_blank" rel="noopener">Debian 13.5 point release lands with security fixes, bug patches</a><span class="article-summary">Debian 13.5 is the fifth point release for the stable distribution &#8220;trixie.&#8221; The update folds in roughly 100 Debian Security Advisories and corrections for more than 130 source packages, covering everything from the Linux kernel and Apache HTTP Server to OpenSSH, sudo…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-podcasts">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(85,170,204,0.5);" onclick="toggleSection(this)">🎙️ PODCASTS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="from cyberspace to space-cyber." data-date="2026-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://thecyberwire.com/podcasts/tminus-space-cyber-briefing/707/notes" target="_blank" rel="noopener">From cyberspace to space-cyber.</a><span class="article-summary">For years, in-space internet capabilities were rarely worth the hassle. Now, that’s changing. In today’s episode, ⁠Maria Varmazis⁠ and ⁠Ethan Cook⁠ sit down to discuss how internet data moves through space systems and its recent advancements. For decades, GEO satellites made up m…</span></span><span class="headline-source">THECYBERWIRE.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-05-17 23:01<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

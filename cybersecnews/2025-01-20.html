@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-01-20</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,78 +109,65 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-01-20</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">18</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Podcasts" onclick="filterCat('Podcasts', this)">PODCASTS <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">4</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://blog.knowbe4.com/threat-actors-abuse-google-translate-to-craft-phishing-links" target="_blank" rel="noopener">Threat Actors Abuse Google Translate to Craft Phishing Links</a></div><span class="article-meta">KNOWBE4.COM &mdash; 20 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://blog.knowbe4.com/phishing-campaign-attempts-to-bypass-ios-protections" target="_blank" rel="noopener">Phishing Campaign Attempts to Bypass iOS Protections</a></div><span class="article-meta">KNOWBE4.COM &mdash; 20 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/22631040" target="_blank" rel="noopener">Python-Based Bots Exploiting PHP Servers Fuel Gambling Platform Proliferation</a></div><span class="article-meta">INFOSEC.PUB &mdash; 20 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-20"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/22631027" target="_blank" rel="noopener">CISA and US and International Partners Publish Guidance for OT Owners and Operators</a></div><span class="article-meta">INFOSEC.PUB &mdash; 20 Jan 2025</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-20"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://thehackernews.com/2025/01/product-walkthrough-how-satori.html" target="_blank" rel="noopener">Product Walkthrough: How Satori Secures Sensitive Data From Production to AI</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 20 Jan 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-20"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2025/01/donot-team-linked-to-new-tanzeem.html" target="_blank" rel="noopener">DoNot Team Linked to New Tanzeem Android Malware Targeting Intelligence Collection</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 20 Jan 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-20"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2025/01/thn-weekly-recap-top-cybersecurity_20.html" target="_blank" rel="noopener">⚡ THN Weekly Recap: Top Cybersecurity Threats, Tools and Tips [20 January]</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 20 Jan 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-20"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://blog.knowbe4.com/from-pig-butchering-to-people-talking" target="_blank" rel="noopener">From Pig Butchering to People Talking</a></div><span class="article-meta">KNOWBE4.COM &mdash; 20 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-20"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31604" target="_blank" rel="noopener">ISC Stormcast For Monday, January 20th, 2025 https://isc.sans.edu/podcastdetail/9286, (Mon, Jan 20th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 20 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-20"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.lastwatchdog.com/my-take-heres-why-donald-trump-needs-to-fully-embrace-joe-bidens-cybersecurity-eo/" target="_blank" rel="noopener">MY TAKE: Here’s why Donald Trump really needs to fully embrace Joe Biden’s cybersecurity EO</a></div><span class="article-meta">LASTWATCHDOG.COM &mdash; 20 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-20"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/22631043" target="_blank" rel="noopener">Malicious PyPi package steals Discord auth tokens from devs</a></div><span class="article-meta">INFOSEC.PUB &mdash; 20 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-20"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/22631038" target="_blank" rel="noopener">New &amp;#x27;Sneaky 2FA&amp;#x27; Phishing Kit Targets Microsoft 365 Accounts with 2FA Code Bypass</a></div><span class="article-meta">INFOSEC.PUB &mdash; 20 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-20"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/22645039" target="_blank" rel="noopener">Mentorship Monday - Discussions for career and learning!</a></div><span class="article-meta">INFOSEC.PUB &mdash; 20 Jan 2025</span></div>
-<div class="article-row" data-cat="Podcasts" data-date="2025-01-20"><span class="cat-badge" style="border:1px solid rgba(85,170,204,0.5);background:rgba(85,170,204,0.10);" title="Podcasts">🎙️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/sneaky-2fa-attacks-microsoft-365-users-breaking-two-factor-authentication-2fa-cyber-security-today-monday-january-20-2025" target="_blank" rel="noopener">Sneaky 2FA Attacks Microsoft 365 Users Breaking Two Factor Authentication (2FA): Cyber Security Today Monday January 20, 2025</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 20 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-20"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.securityweek.com/industry-moves/jan-20-2025/" target="_blank" rel="noopener">Industry Moves for the week of January 20, 2025 - SecurityWeek</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 20 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-20"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2025/01/unsecured-tunneling-protocols-expose-42.html" target="_blank" rel="noopener">Unsecured Tunneling Protocols Expose 4.2 Million Hosts, Including VPNs and Routers</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 20 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-20"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2025/01/hackers-deploy-malicious-npm-packages.html" target="_blank" rel="noopener">Hackers Deploy Malicious npm Packages to Steal Solana Wallet Keys via Gmail SMTP</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 20 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-20"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31608" target="_blank" rel="noopener">Partial ZIP File Downloads, (Mon, Jan 20th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 20 Jan 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="threat actors abuse google translate to craft phishing links" data-date="2025-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://blog.knowbe4.com/threat-actors-abuse-google-translate-to-craft-phishing-links" target="_blank" rel="noopener">Threat Actors Abuse Google Translate to Craft Phishing Links</a><span class="article-summary">Threat actors are abusing Google Translate’s redirect feature to craft phishing links that appear to belong to, according to researchers at Abnormal Security.</span></span><span class="headline-source">KNOWBE4.COM</span></div>
+<div class="headline" data-title="phishing campaign attempts to bypass ios protections" data-date="2025-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://blog.knowbe4.com/phishing-campaign-attempts-to-bypass-ios-protections" target="_blank" rel="noopener">Phishing Campaign Attempts to Bypass iOS Protections</a><span class="article-summary">An SMS phishing (smishing) campaign is attempting to trick Apple device users into disabling measures designed to protect them against malicious links, BleepingComputer reports.</span></span><span class="headline-source">KNOWBE4.COM</span></div>
+<div class="headline" data-title="python-based bots exploiting php servers fuel gambling platform proliferation" data-date="2025-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/22631040" target="_blank" rel="noopener">Python-Based Bots Exploiting PHP Servers Fuel Gambling Platform Proliferation</a><span class="article-summary">submitted by IllNess to securitynews 9 points | 0 comments https://thehackernews.com/2025/01/python-based-bots-exploiting-php.html</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="cisa and us and international partners publish guidance for ot owners and operators" data-date="2025-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/22631027" target="_blank" rel="noopener">CISA and US and International Partners Publish Guidance for OT Owners and Operators</a><span class="article-summary">submitted by IllNess to securitynews 6 points | 0 comments https://www.darkreading.com/ics-ot-security/cisa-and-us-and-international-partners-publish-guidance-for-ot-owners-and-operators CISA: Secure by Demand: Priority Considerations for Operational Technology Owners and Operato…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="product walkthrough: how satori secures sensitive data from production to ai" data-date="2025-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/product-walkthrough-how-satori.html" target="_blank" rel="noopener">Product Walkthrough: How Satori Secures Sensitive Data From Production to AI</a><span class="article-summary">Every week seems to bring news of another data breach, and it’s no surprise why: securing sensitive data has become harder than ever. And it’s not just because companies are dealing with orders of magnitude more data. Data flows and user roles are constantly shifting, and data is…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="donot team linked to new tanzeem android malware targeting intelligence collection" data-date="2025-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/donot-team-linked-to-new-tanzeem.html" target="_blank" rel="noopener">DoNot Team Linked to New Tanzeem Android Malware Targeting Intelligence Collection</a><span class="article-summary">The Threat actor known as DoNot Team has been linked to a new Android malware as part of highly targeted cyber attacks. The artifacts in question, named Tanzeem (meaning "organization" in Urdu) and Tanzeem Update, were spotted in October and December 2024 by cybersecurity company…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="⚡ thn weekly recap: top cybersecurity threats, tools and tips [20 january]" data-date="2025-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/thn-weekly-recap-top-cybersecurity_20.html" target="_blank" rel="noopener">⚡ THN Weekly Recap: Top Cybersecurity Threats, Tools and Tips [20 January]</a><span class="article-summary">As the digital world becomes more complicated, the lines between national security and cybersecurity are starting to fade. Recent cyber sanctions and intelligence moves show a reality where malware and fake news are used as tools in global politics. Every cyberattack now seems to…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="from pig butchering to people talking" data-date="2025-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://blog.knowbe4.com/from-pig-butchering-to-people-talking" target="_blank" rel="noopener">From Pig Butchering to People Talking</a><span class="article-summary">Interpol has recently recommended discontinuing the use of the term "Pig Butchering" in cybercrime discussions, expressing concern that such terminology may discourage victims from reporting incidents due to feelings of shame or embarrassment.</span></span><span class="headline-source">KNOWBE4.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="isc stormcast for monday, january 20th, 2025 https://isc.sans.edu/podcastdetail/9286, (mon, jan 20th)" data-date="2025-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31604" target="_blank" rel="noopener">ISC Stormcast For Monday, January 20th, 2025 https://isc.sans.edu/podcastdetail/9286, (Mon, Jan 20th)</a><span class="article-summary">(c) SANS Internet Storm Center. https://isc.sans.edu Creative Commons Attribution-Noncommercial 3.0 United States License.</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="my take: here’s why donald trump really needs to fully embrace joe biden’s cybersecurity eo" data-date="2025-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.lastwatchdog.com/my-take-heres-why-donald-trump-needs-to-fully-embrace-joe-bidens-cybersecurity-eo/" target="_blank" rel="noopener">MY TAKE: Here’s why Donald Trump really needs to fully embrace Joe Biden’s cybersecurity EO</a><span class="article-summary">As one of his final official acts, President Joe Biden issued a landmark directive , addressing the evolving challenges posed by cyber threats while charting a strategic course toward a more secure digital ecosystem. Related: How Trump views of AI, &#8230; (more…) The post MY TAK…</span></span><span class="headline-source">LASTWATCHDOG.COM</span></div>
+<div class="headline" data-title="malicious pypi package steals discord auth tokens from devs" data-date="2025-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/22631043" target="_blank" rel="noopener">Malicious PyPi package steals Discord auth tokens from devs</a><span class="article-summary">submitted by IllNess to securitynews 11 points | 0 comments https://www.bleepingcomputer.com/news/security/malicious-pypi-package-steals-discord-auth-tokens-from-devs/ A malicious package named ‘pycord-self’ on the Python package index (PyPI) targets Discord developers to steal a…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="new &amp;#x27;sneaky 2fa&amp;#x27; phishing kit targets microsoft 365 accounts with 2fa code bypass" data-date="2025-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/22631038" target="_blank" rel="noopener">New &amp;#x27;Sneaky 2FA&amp;#x27; Phishing Kit Targets Microsoft 365 Accounts with 2FA Code Bypass</a><span class="article-summary">submitted by IllNess to securitynews 11 points | 0 comments https://thehackernews.com/2025/01/new-sneaky-2fa-phishing-kit-targets.html</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="mentorship monday - discussions for career and learning!" data-date="2025-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/22645039" target="_blank" rel="noopener">Mentorship Monday - Discussions for career and learning!</a><span class="article-summary">submitted by shellsharks to cybersecurity 11 points | 7 comments Weekly thread for any and all career, learning and general guidance questions. Thinking of taking a training or going for a cert? Wondering how to level up your career? Wondering what NOT to do? Got other questions?…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-podcasts">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(85,170,204,0.5);" onclick="toggleSection(this)">🎙️ PODCASTS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="sneaky 2fa attacks microsoft 365 users breaking two factor authentication (2fa): cyber security today monday january 20, 2025" data-date="2025-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/sneaky-2fa-attacks-microsoft-365-users-breaking-two-factor-authentication-2fa-cyber-security-today-monday-january-20-2025" target="_blank" rel="noopener">Sneaky 2FA Attacks Microsoft 365 Users Breaking Two Factor Authentication (2FA): Cyber Security Today Monday January 20, 2025</a><span class="article-summary">Cybersecurity Today: Sneaky 2FA Phishing Attack & AI-Powered Scams In this episode of Cybersecurity Today, host Jim Love explores the emergence of Sneaky 2FA, a new phishing-as-a-service attack that compromises two-factor authentication for Microsoft 365 users. The episode also c…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="industry moves for the week of january 20, 2025 - securityweek" data-date="2025-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/industry-moves/jan-20-2025/" target="_blank" rel="noopener">Industry Moves for the week of January 20, 2025 - SecurityWeek</a><span class="article-summary">Explore industry moves and significant changes in the industry for the week of January 20, 2025. Stay updated with the latest industry trends and shifts.</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="unsecured tunneling protocols expose 4.2 million hosts, including vpns and routers" data-date="2025-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/unsecured-tunneling-protocols-expose-42.html" target="_blank" rel="noopener">Unsecured Tunneling Protocols Expose 4.2 Million Hosts, Including VPNs and Routers</a><span class="article-summary">New research has uncovered security vulnerabilities in multiple tunneling protocols that could allow attackers to perform a wide range of attacks. "Internet hosts that accept tunneling packets without verifying the sender's identity can be hijacked to perform anonymous attacks an…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="hackers deploy malicious npm packages to steal solana wallet keys via gmail smtp" data-date="2025-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/hackers-deploy-malicious-npm-packages.html" target="_blank" rel="noopener">Hackers Deploy Malicious npm Packages to Steal Solana Wallet Keys via Gmail SMTP</a><span class="article-summary">Cybersecurity researchers have identified three sets of malicious packages across the npm and Python Package Index (PyPI) repository that come with capabilities to steal data and even delete sensitive data from infected systems. The list of identified packages is below - @async-m…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="partial zip file downloads, (mon, jan 20th)" data-date="2025-01-20"><span class="headline-date">20 Jan</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31608" target="_blank" rel="noopener">Partial ZIP File Downloads, (Mon, Jan 20th)</a><span class="article-summary">Say you want a file that is inside a huge online ZIP file (several gigabytes large). Downloading the complete ZIP file would take too long. &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

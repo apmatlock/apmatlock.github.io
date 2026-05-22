@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2023-07-06</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,70 +109,49 @@
       <div class="stat"><span class="stat-value">4</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2023-07-06</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">12</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">5</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-07-06"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisecurity.org/advisory/multiple-vulnerabilities-in-mozilla-products-could-allow-for-arbitrary-code-execution_2023-071" target="_blank" rel="noopener">Multiple Vulnerabilities in Mozilla Products Could Allow for Arbitrary Code Execution</a></div><span class="article-meta">CISECURITY.ORG &mdash; 06 Jul 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-07-06"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisecurity.org/advisory/multiple-vulnerabilities-in-google-android-os-could-allow-for-remote-code-execution_2023-072" target="_blank" rel="noopener">Multiple Vulnerabilities in Google Android OS Could Allow for Remote Code Execution</a></div><span class="article-meta">CISECURITY.ORG &mdash; 06 Jul 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-07-06"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/ciso/23/g/cybersecurity-awareness-training.html" target="_blank" rel="noopener">Cybersecurity Awareness Training to Fight Ransomware</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 06 Jul 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-07-06"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.darkreading.com/ics-ot/3-critical-rce-bugs-threaten-industrial-solar-panels" target="_blank" rel="noopener">DARKReading: 3 Critical RCE Bugs Threaten Industrial Solar Panels</a></div><span class="article-meta">DARKREADING.COM &mdash; 06 Jul 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-07-06"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.microsoft.com/en-us/security/blog/2023/07/06/the-five-day-job-a-blackbyte-ransomware-intrusion-case-study/" target="_blank" rel="noopener">The five-day job: A BlackByte ransomware intrusion case study</a></div><span class="article-meta">MICROSOFT.COM &mdash; 06 Jul 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-07-06"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.microsoft.com/en-us/security/blog/2023/07/06/microsoft-defender-for-endpoint-is-ranked-number-one-in-market-share-in-the-idc-worldwide-corporate-endpoint-security-market-shares-report-2022/" target="_blank" rel="noopener">Microsoft Defender for Endpoint is ranked number one in market share in the IDC Worldwide Corporate Endpoint Security Market Shares report, 2022</a></div><span class="article-meta">MICROSOFT.COM &mdash; 06 Jul 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-07-06"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://github.com/invictus-ir/ALFA" target="_blank" rel="noopener">ALFA: Automated Audit Log Forensic Analysis for Google Workspace</a></div><span class="article-meta">GITHUB.COM &mdash; 06 Jul 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-07-06"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://news.sophos.com/en-us/2023/07/06/health-scores-added-to-the-sophos-account-health-check/" target="_blank" rel="noopener">Health Scores added to the Sophos Account Health Check</a></div><span class="article-meta">SOPHOS.COM &mdash; 06 Jul 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-07-06"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/23/g/four-must-haves-strengthen-endpoint-security.html" target="_blank" rel="noopener">Four Must-haves to Strengthen Your Endpoint Security</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 06 Jul 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-07-06"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/devops/22/c/mitigate-top-5-common-cybersecurity-vulnerabilities.html" target="_blank" rel="noopener">Mitigate Top 5 Common Cybersecurity Vulnerabilities</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 06 Jul 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-07-06"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.welivesecurity.com/2023/07/06/whats-up-with-emotet/" target="_blank" rel="noopener">What’s up with Emotet?</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 06 Jul 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-07-06"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.ncsc.gov.uk/report/acd-the-sixth-year" target="_blank" rel="noopener">ACD - The Sixth Year</a></div><span class="article-meta">NCSC.GOV.UK &mdash; 06 Jul 2023</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="multiple vulnerabilities in mozilla products could allow for arbitrary code execution" data-date="2023-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.cisecurity.org/advisory/multiple-vulnerabilities-in-mozilla-products-could-allow-for-arbitrary-code-execution_2023-071" target="_blank" rel="noopener">Multiple Vulnerabilities in Mozilla Products Could Allow for Arbitrary Code Execution</a><span class="article-summary">Multiple vulnerabilities have been discovered in Mozilla products, the most severe of which could allow for arbitrary code execution. Mozilla Firefox is a web browser used to access the Internet. Mozilla Firefox ESR is a version of the web browser intended to be deployed in large…</span></span><span class="headline-source">CISECURITY.ORG</span></div>
+<div class="headline" data-title="multiple vulnerabilities in google android os could allow for remote code execution" data-date="2023-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.cisecurity.org/advisory/multiple-vulnerabilities-in-google-android-os-could-allow-for-remote-code-execution_2023-072" target="_blank" rel="noopener">Multiple Vulnerabilities in Google Android OS Could Allow for Remote Code Execution</a><span class="article-summary">Multiple vulnerabilities have been discovered in Google Android OS, the most severe of which could allow for remote code execution. Android is an operating system developed by Google for mobile devices, including, but not limited to, smartphones, tablets, and watches. Successful …</span></span><span class="headline-source">CISECURITY.ORG</span></div>
+<div class="headline" data-title="cybersecurity awareness training to fight ransomware" data-date="2023-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/ciso/23/g/cybersecurity-awareness-training.html" target="_blank" rel="noopener">Cybersecurity Awareness Training to Fight Ransomware</a><span class="article-summary">Advanced technologies allow organizations to discover, assess and mitigate cyber threats like ransomware. But truly strong cybersecurity also requires a threat-aware workforce—prompting more and more enterprises to focus on cybersecurity awareness training and testing.</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+<div class="headline" data-title="darkreading: 3 critical rce bugs threaten industrial solar panels" data-date="2023-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.darkreading.com/ics-ot/3-critical-rce-bugs-threaten-industrial-solar-panels" target="_blank" rel="noopener">DARKReading: 3 Critical RCE Bugs Threaten Industrial Solar Panels</a><span class="article-summary">submitted by IllNess to securitynews 7 points | 0 comments https://www.darkreading.com/ics-ot/3-critical-rce-bugs-threaten-industrial-solar-panels Exposed and unpatched solar power monitoring systems have been exploited by both amateurs and professionals, including Mirai botnet h…</span></span><span class="headline-source">DARKREADING.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the five-day job: a blackbyte ransomware intrusion case study" data-date="2023-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.microsoft.com/en-us/security/blog/2023/07/06/the-five-day-job-a-blackbyte-ransomware-intrusion-case-study/" target="_blank" rel="noopener">The five-day job: A BlackByte ransomware intrusion case study</a><span class="article-summary">In a recent investigation by Microsoft Incident Response of a BlackByte 2.0 ransomware attack, we found that the threat actor progressed through the full attack chain, from initial access to impact, in less than five days, causing significant business disruption for the victim or…</span></span><span class="headline-source">MICROSOFT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="microsoft defender for endpoint is ranked number one in market share in the idc worldwide corporate endpoint security market shares report, 2022" data-date="2023-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.microsoft.com/en-us/security/blog/2023/07/06/microsoft-defender-for-endpoint-is-ranked-number-one-in-market-share-in-the-idc-worldwide-corporate-endpoint-security-market-shares-report-2022/" target="_blank" rel="noopener">Microsoft Defender for Endpoint is ranked number one in market share in the IDC Worldwide Corporate Endpoint Security Market Shares report, 2022</a><span class="article-summary">Today, we are proud to share that Microsoft is ranked number one in market share in the IDC Worldwide Corporate Endpoint Security Market Shares report, 2022. More customers choose and trust Microsoft Defender for Endpoint and Microsoft Defender for Business to defend their multip…</span></span><span class="headline-source">MICROSOFT.COM</span></div>
+<div class="headline" data-title="alfa: automated audit log forensic analysis for google workspace" data-date="2023-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://github.com/invictus-ir/ALFA" target="_blank" rel="noopener">ALFA: Automated Audit Log Forensic Analysis for Google Workspace</a><span class="article-summary">submitted by 0xCBE to cloudsecurity 3 points | 0 comments https://github.com/invictus-ir/ALFA cross-posted from: infosec.pub/post/397812 Automated Audit Log Forensic Analysis (ALFA) for Google Workspace is a tool to acquire all Google Workspace audit logs and perform automated fo…</span></span><span class="headline-source">GITHUB.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="health scores added to the sophos account health check" data-date="2023-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://news.sophos.com/en-us/2023/07/06/health-scores-added-to-the-sophos-account-health-check/" target="_blank" rel="noopener">Health Scores added to the Sophos Account Health Check</a><span class="article-summary">Quickly identify areas needing attention in your Sophos Endpoint and Server Protection, and track progress in posture improvement</span></span><span class="headline-source">SOPHOS.COM</span></div>
+<div class="headline" data-title="four must-haves to strengthen your endpoint security" data-date="2023-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/23/g/four-must-haves-strengthen-endpoint-security.html" target="_blank" rel="noopener">Four Must-haves to Strengthen Your Endpoint Security</a><span class="article-summary">To combat complexity and achieve optimal security outcomes, there are four key factors an organization should consider when evaluating their endpoint security.</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+<div class="headline" data-title="mitigate top 5 common cybersecurity vulnerabilities" data-date="2023-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/devops/22/c/mitigate-top-5-common-cybersecurity-vulnerabilities.html" target="_blank" rel="noopener">Mitigate Top 5 Common Cybersecurity Vulnerabilities</a><span class="article-summary">Cybersecurity vulnerabilities in software and infrastructure are a fact of life for developers and SREs. But when you understand vulnerabilities, you can minimize their impact. Learn more about five common threats and how to mitigate them.</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+<div class="headline" data-title="what’s up with emotet?" data-date="2023-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/2023/07/06/whats-up-with-emotet/" target="_blank" rel="noopener">What’s up with Emotet?</a><span class="article-summary">A brief summary of what happened with Emotet since its comeback in November 2021</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+<div class="headline" data-title="acd - the sixth year" data-date="2023-07-06"><span class="headline-date">6 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.ncsc.gov.uk/report/acd-the-sixth-year" target="_blank" rel="noopener">ACD - The Sixth Year</a><span class="article-summary">Key findings and full report from the 6th year of the Active Cyber Defence (ACD) programme.</span></span><span class="headline-source">NCSC.GOV.UK</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

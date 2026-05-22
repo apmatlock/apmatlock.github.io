@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-01-21</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,91 +109,82 @@
       <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-01-21</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">30</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">8</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">8</span></button>
-<button class="filter-btn" data-cat="Podcasts" onclick="filterCat('Podcasts', this)">PODCASTS <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">5</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.f5.com/labs/labs/articles/continued-scanning-for-cve-2023-1389" target="_blank" rel="noopener">Continued Scanning for CVE-2023-1389</a></div><span class="article-meta">F5.COM &mdash; 21 Jan 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.f5.com/labs/articles/continued-scanning-for-cve-2023-1389" target="_blank" rel="noopener">Continued Scanning for CVE-2023-1389</a></div><span class="article-meta">F5.COM &mdash; 21 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/01/murdocbotnet-found-exploiting-avtech-ip.html" target="_blank" rel="noopener">Mirai Variant Murdoc Botnet Exploits AVTECH IP Cameras and Huawei Routers</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 21 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisecurity.org/advisory/oracle-quarterly-critical-patches-issued-january-21-2025_2025-008" target="_blank" rel="noopener">Oracle Quarterly Critical Patches Issued January 21, 2025</a></div><span class="article-meta">CISECURITY.ORG &mdash; 21 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2025/01/21/cisa-releases-three-industrial-control-systems-advisories" target="_blank" rel="noopener">CISA Releases Three Industrial Control Systems Advisories</a></div><span class="article-meta">CISA.GOV &mdash; Tue, 21 Jan 25 1</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://techcrunch.com/2025/01/21/hpe-investigating-security-breach-after-hacker-claims-theft-of-sensitive-data/" target="_blank" rel="noopener">HPE investigating security breach after hacker claims theft of sensitive data</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 21 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://msrc.microsoft.com/blog/2025/01/scaling-dynamic-application-security-testing-dast/" target="_blank" rel="noopener">Scaling Dynamic Application Security Testing (DAST)</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 21 Jan 2025</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://securityintelligence.com/articles/are-attackers-already-embedded-in-us-critical-infrastructure-networks/" target="_blank" rel="noopener">Are attackers already embedded in U.S. critical infrastructure networks?</a></div><span class="article-meta">SECURITYINTELLIGENCE.COM &mdash; 21 Jan 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.troyhunt.com/weekly-update-435/" target="_blank" rel="noopener">Weekly Update 435</a></div><span class="article-meta">TROYHUNT.COM &mdash; 21 Jan 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2025/01/13000-mikrotik-routers-hijacked-by.html" target="_blank" rel="noopener">13,000 MikroTik Routers Hijacked by Botnet for Malspam and Cyberattacks</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 21 Jan 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2025/01/pngplug-loader-delivers-valleyrat.html" target="_blank" rel="noopener">PNGPlug Loader Delivers ValleyRAT Malware Through Fake Software Installers</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 21 Jan 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2025/01/21/govtech-giant-conduent-wont-rule-out-cyberattack-as-outage-drags-on/" target="_blank" rel="noopener">Govtech giant Conduent won’t rule out cyberattack as outage drags on</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 21 Jan 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2025/01/21/toronto-school-district-says-40-years-of-student-data-stolen-in-powerschool-breach/" target="_blank" rel="noopener">Toronto school district says 40 years of student data stolen in PowerSchool breach</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 21 Jan 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.tripwire.com/state-of-security/medusa-ransomware-what-you-need-know" target="_blank" rel="noopener">Medusa ransomware: what you need to know</a></div><span class="article-meta">TRIPWIRE.COM &mdash; 21 Jan 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/watch?v=2lotP__ybf8" target="_blank" rel="noopener">50,000 critical exposures + one of the most vulnerable IT environments: our schools - ... - ESW #390</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-01-21</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.welivesecurity.com/en/business-security/under-lock-key-protecting-corporate-data-cyberthreats-2025/" target="_blank" rel="noopener">Under lock and key: Protecting corporate data from cyberthreats in 2025</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 21 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2025/01/cert-ua-warns-of-cyber-scams-using-fake.html" target="_blank" rel="noopener">CERT-UA Warns of Cyber Scams Using Fake AnyDesk Requests for Fraudulent Security Audits</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 21 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31612" target="_blank" rel="noopener">Geolocation and Starlink, (Tue, Jan 21st)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 21 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31610" target="_blank" rel="noopener">ISC Stormcast For Tuesday, January 21st, 2025 https://isc.sans.edu/podcastdetail/9288, (Tue, Jan 21st)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 21 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://blog.knowbe4.com/cyberheistnews-vol-14-03-waging-war-on-explicit-deepfakes-the-real-problem-behind-the-uk-crackdown" target="_blank" rel="noopener">CyberheistNews Vol 15 #03 Waging War on Explicit Deepfakes. The Real Problem Behind the UK Crackdown.</a></div><span class="article-meta">KNOWBE4.COM &mdash; 21 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://securityintelligence.com/articles/why-maintaining-data-cleanliness-is-essential-to-cybersecurity/" target="_blank" rel="noopener">Why maintaining data cleanliness is essential to cybersecurity</a></div><span class="article-meta">SECURITYINTELLIGENCE.COM &mdash; 21 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=o_mTxxer274" target="_blank" rel="noopener">Smishing, Microsoft, Star Blizzard, Sneaky Log, VMARE, Josh Marpet, and more... - SWN #444</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-01-21</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/22701859" target="_blank" rel="noopener">Botnet Unleashes Record-Breaking 5.6Tbps DDoS Attack</a></div><span class="article-meta">INFOSEC.PUB &mdash; 21 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="http://blog.quarkslab.com/security-audit-of-the-notary-project.html" target="_blank" rel="noopener">Security audit of the Notary Project</a></div><span class="article-meta">QUARKSLAB.COM &mdash; 2025-01-21</span></div>
-<div class="article-row" data-cat="Podcasts" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(85,170,204,0.5);background:rgba(85,170,204,0.10);" title="Podcasts">🎙️</span><div class="article-body"><a href="https://grahamcluley.com/the-ai-fix-34/" target="_blank" rel="noopener">The AI Fix #34: Fake Brad Pitt and why AI means we will lose our jobs</a></div><span class="article-meta">GRAHAMCLULEY.COM &mdash; 21 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2025/01/ex-cia-analyst-pleads-guilty-to-sharing.html" target="_blank" rel="noopener">Ex-CIA Analyst Pleads Guilty to Sharing Top-Secret Data with Unauthorized Parties</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 21 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2025/01/hackgate-setting-new-standards-for.html" target="_blank" rel="noopener">HackGATE: Setting New Standards for Visibility and Control in Penetration Testing Projects</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 21 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.kaspersky.com/blog/how-to-install-kaspersky-apps-from-alternative-stores/52889/" target="_blank" rel="noopener">How to download, install, and update Kaspersky apps for Android | Kaspersky official blog</a></div><span class="article-meta">KASPERSKY.COM &mdash; 21 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=xxE2XB1Zdrg" target="_blank" rel="noopener">The AI Phrase That Breaks ChatGPT! 😱</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-01-21</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-21"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.cisa.gov/news-events/news/unlocking-vulnrichment-enriching-cve-data" target="_blank" rel="noopener">Unlocking Vulnrichment: Enriching CVE Data</a></div><span class="article-meta">CISA.GOV &mdash; Tue, 21 Jan 25 1</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="continued scanning for cve-2023-1389" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.f5.com/labs/labs/articles/continued-scanning-for-cve-2023-1389" target="_blank" rel="noopener">Continued Scanning for CVE-2023-1389</a><span class="article-summary">TP-Link draws the attention of the US Government.</span></span><span class="headline-source">F5.COM</span></div>
+<div class="headline" data-title="continued scanning for cve-2023-1389" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.f5.com/labs/articles/continued-scanning-for-cve-2023-1389" target="_blank" rel="noopener">Continued Scanning for CVE-2023-1389</a><span class="article-summary">TP-Link draws the attention of the US Government.</span></span><span class="headline-source">F5.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="mirai variant murdoc botnet exploits avtech ip cameras and huawei routers" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/murdocbotnet-found-exploiting-avtech-ip.html" target="_blank" rel="noopener">Mirai Variant Murdoc Botnet Exploits AVTECH IP Cameras and Huawei Routers</a><span class="article-summary">Cybersecurity researchers have warned of a new large-scale campaign that exploits security flaws in AVTECH IP cameras and Huawei HG532 routers to rope the devices into a Mirai botnet variant dubbed Murdoc Botnet. The ongoing activity "demonstrates enhanced capabilities, exploitin…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="oracle quarterly critical patches issued january 21, 2025" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.cisecurity.org/advisory/oracle-quarterly-critical-patches-issued-january-21-2025_2025-008" target="_blank" rel="noopener">Oracle Quarterly Critical Patches Issued January 21, 2025</a><span class="article-summary">Multiple vulnerabilities have been discovered in Oracle products, the most severe of which could allow for remote code execution.</span></span><span class="headline-source">CISECURITY.ORG</span></div>
+<div class="headline" data-title="cisa releases three industrial control systems advisories" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2025/01/21/cisa-releases-three-industrial-control-systems-advisories" target="_blank" rel="noopener">CISA Releases Three Industrial Control Systems Advisories</a><span class="article-summary">CISA released three Industrial Control Systems (ICS) advisories on January 21, 2025. These advisories provide timely information about current security issues, vulnerabilities, and exploits surrounding ICS. ICSA-25-021-01 Traffic Alert and Collision Avoidance System (TCAS) II ICS…</span></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="hpe investigating security breach after hacker claims theft of sensitive data" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/01/21/hpe-investigating-security-breach-after-hacker-claims-theft-of-sensitive-data/" target="_blank" rel="noopener">HPE investigating security breach after hacker claims theft of sensitive data</a><span class="article-summary">A well-known hacker claims to have stolen source code and user data from the enterprise IT giant © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="scaling dynamic application security testing (dast)" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/blog/2025/01/scaling-dynamic-application-security-testing-dast/" target="_blank" rel="noopener">Scaling Dynamic Application Security Testing (DAST)</a><span class="article-summary">Introduction Microsoft engineering teams use the Security Development Lifecycle to ensure our products are built in alignment with Microsoft’s Secure Future Initiative security principles: Secure by Design, Secure by Default, and Secure Operations. A key component of the Security…</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="are attackers already embedded in u.s. critical infrastructure networks?" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://securityintelligence.com/articles/are-attackers-already-embedded-in-us-critical-infrastructure-networks/" target="_blank" rel="noopener">Are attackers already embedded in U.S. critical infrastructure networks?</a><span class="article-summary">The threat of cyberattacks against critical infrastructure in the United States has evolved beyond data theft and espionage. Intruders are already entrenched in the nation&#8217;s most vital systems, waiting to unleash attacks. For instance, CISA has raised alarms about Volt Typh…</span></span><span class="headline-source">SECURITYINTELLIGENCE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">8</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="weekly update 435" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.troyhunt.com/weekly-update-435/" target="_blank" rel="noopener">Weekly Update 435</a><span class="article-summary">Presently sponsored by: Report URI: Guarding you from rogue JavaScript! Don’t get pwned; get real-time alerts & prevent breaches #SecureYourSite If I&apos;m honest, I was in two minds about adding additional stealer logs to HIBP. Even with the new feature to include the domains a…</span></span><span class="headline-source">TROYHUNT.COM</span></div>
+<div class="headline" data-title="13,000 mikrotik routers hijacked by botnet for malspam and cyberattacks" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/13000-mikrotik-routers-hijacked-by.html" target="_blank" rel="noopener">13,000 MikroTik Routers Hijacked by Botnet for Malspam and Cyberattacks</a><span class="article-summary">A global network of about 13,000 hijacked Mikrotik routers has been employed as a botnet to propagate malware via spam campaigns, the latest addition to a list of botnets powered by MikroTik devices. The activity "take[s] advantage of misconfigured DNS records to pass email prote…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="pngplug loader delivers valleyrat malware through fake software installers" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/pngplug-loader-delivers-valleyrat.html" target="_blank" rel="noopener">PNGPlug Loader Delivers ValleyRAT Malware Through Fake Software Installers</a><span class="article-summary">Cybersecurity researchers are calling attention to a series of cyber attacks that have targeted Chinese-speaking regions like Hong Kong, Taiwan, and Mainland China with a known malware called ValleyRAT. The attacks leverage a multi-stage loader dubbed PNGPlug to deliver the Valle…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="govtech giant conduent won’t rule out cyberattack as outage drags on" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/01/21/govtech-giant-conduent-wont-rule-out-cyberattack-as-outage-drags-on/" target="_blank" rel="noopener">Govtech giant Conduent won’t rule out cyberattack as outage drags on</a><span class="article-summary">At least four states reported being affected by the outage, which Conduent says is ongoing. © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="toronto school district says 40 years of student data stolen in powerschool breach" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/01/21/toronto-school-district-says-40-years-of-student-data-stolen-in-powerschool-breach/" target="_blank" rel="noopener">Toronto school district says 40 years of student data stolen in PowerSchool breach</a><span class="article-summary">Canada’s largest school board says hackers may have accessed some 40 years&#8217; worth of student data during the recent PowerSchool breach.&#160; In a letter sent to parents this week, the Toronto District School Board (TDSB) said that the data breach affected all students enro…</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="medusa ransomware: what you need to know" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.tripwire.com/state-of-security/medusa-ransomware-what-you-need-know" target="_blank" rel="noopener">Medusa ransomware: what you need to know</a><span class="article-summary">Medusa is a ransomware-as-a-service (RaaS) platform that has targeted organisations around the world. Read more about it in my article on the Tripwire State of Security blog.</span></span><span class="headline-source">TRIPWIRE.COM</span></div>
+<div class="headline" data-title="50,000 critical exposures + one of the most vulnerable it environments: our schools - ... - esw #390" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=2lotP__ybf8" target="_blank" rel="noopener">50,000 critical exposures + one of the most vulnerable IT environments: our schools - ... - ESW #390</a><span class="article-summary">I've been so excited to see the external attack surface management (EASM) market take off in the past few years. This market category focuses exclusively on security issues exposed to the public Internet - issues ANYONE can see. All organizations have exposure management problems…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="under lock and key: protecting corporate data from cyberthreats in 2025" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/en/business-security/under-lock-key-protecting-corporate-data-cyberthreats-2025/" target="_blank" rel="noopener">Under lock and key: Protecting corporate data from cyberthreats in 2025</a><span class="article-summary">Data breaches can cause a loss of revenue and market value as a result of diminished customer trust and reputational damage</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">8</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cert-ua warns of cyber scams using fake anydesk requests for fraudulent security audits" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/cert-ua-warns-of-cyber-scams-using-fake.html" target="_blank" rel="noopener">CERT-UA Warns of Cyber Scams Using Fake AnyDesk Requests for Fraudulent Security Audits</a><span class="article-summary">The Computer Emergency Response Team of Ukraine (CERT-UA) is warning of ongoing attempts by unknown threat actors to impersonate the cybersecurity agency by sending AnyDesk connection requests. The AnyDesk requests claim to be for conducting an audit to assess the "level of secur…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="geolocation and starlink, (tue, jan 21st)" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31612" target="_blank" rel="noopener">Geolocation and Starlink, (Tue, Jan 21st)</a><span class="article-summary">Until now, satellite internet access has been more of a niche solution for internet access. But with the wide availability of Starlink, this is changing. Starlink&&#x23;x26;&#x23;39&&#x23;x26;&#x23;x3b;s performance and price are competitive for many rural users to forgo solution…</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="isc stormcast for tuesday, january 21st, 2025 https://isc.sans.edu/podcastdetail/9288, (tue, jan 21st)" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31610" target="_blank" rel="noopener">ISC Stormcast For Tuesday, January 21st, 2025 https://isc.sans.edu/podcastdetail/9288, (Tue, Jan 21st)</a><span class="article-summary">(c) SANS Internet Storm Center. https://isc.sans.edu Creative Commons Attribution-Noncommercial 3.0 United States License.</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="cyberheistnews vol 15 #03 waging war on explicit deepfakes. the real problem behind the uk crackdown." data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://blog.knowbe4.com/cyberheistnews-vol-14-03-waging-war-on-explicit-deepfakes-the-real-problem-behind-the-uk-crackdown" target="_blank" rel="noopener">CyberheistNews Vol 15 #03 Waging War on Explicit Deepfakes. The Real Problem Behind the UK Crackdown.</a></span><span class="headline-source">KNOWBE4.COM</span></div>
+<div class="headline" data-title="why maintaining data cleanliness is essential to cybersecurity" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://securityintelligence.com/articles/why-maintaining-data-cleanliness-is-essential-to-cybersecurity/" target="_blank" rel="noopener">Why maintaining data cleanliness is essential to cybersecurity</a><span class="article-summary">Data, in all its shapes and forms, is one of the most critical assets a business possesses. Not only does it provide organizations with critical information regarding their systems and processes, but it also fuels growth and enables better decision-making on all levels. However, …</span></span><span class="headline-source">SECURITYINTELLIGENCE.COM</span></div>
+<div class="headline" data-title="smishing, microsoft, star blizzard, sneaky log, vmare, josh marpet, and more... - swn #444" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=o_mTxxer274" target="_blank" rel="noopener">Smishing, Microsoft, Star Blizzard, Sneaky Log, VMARE, Josh Marpet, and more... - SWN #444</a><span class="article-summary">Smishing, Microsoft, Star Blizzard, Sneaky Log, VMARE, Josh Marpet, and more on the Security Weekly News. Visit https://www.securityweekly.com/swn for all the latest episodes! Show Notes: https://securityweekly.com/swn-444</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="botnet unleashes record-breaking 5.6tbps ddos attack" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/22701859" target="_blank" rel="noopener">Botnet Unleashes Record-Breaking 5.6Tbps DDoS Attack</a><span class="article-summary">submitted by cm0002 to cybersecurity 5 points | 0 comments https://www.pcmag.com/news/botnet-unleashes-record-breaking-56tbps-ddos-attack</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="security audit of the notary project" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="http://blog.quarkslab.com/security-audit-of-the-notary-project.html" target="_blank" rel="noopener">Security audit of the Notary Project</a><span class="article-summary">The OSTIF engaged with Quarkslab to perform a security audit of the Notary project , focused on new features.</span></span><span class="headline-source">QUARKSLAB.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-podcasts">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(85,170,204,0.5);" onclick="toggleSection(this)">🎙️ PODCASTS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the ai fix #34: fake brad pitt and why ai means we will lose our jobs" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://grahamcluley.com/the-ai-fix-34/" target="_blank" rel="noopener">The AI Fix #34: Fake Brad Pitt and why AI means we will lose our jobs</a><span class="article-summary">In episode 34 of The AI Fix, our hosts watch in horror as a vacuum cleaner sprouts a robotic arm and tiny little robot legs, a mind-reading helps a man chat up some French students, a robot dog runs as fast as Usain Bolt, and AI podcast hosts get impatient with their listeners. M…</span></span><span class="headline-source">GRAHAMCLULEY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ex-cia analyst pleads guilty to sharing top-secret data with unauthorized parties" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/ex-cia-analyst-pleads-guilty-to-sharing.html" target="_blank" rel="noopener">Ex-CIA Analyst Pleads Guilty to Sharing Top-Secret Data with Unauthorized Parties</a><span class="article-summary">A former analyst working for the U.S. Central Intelligence Agency (CIA) pleaded guilty to transmitting top secret National Defense Information (NDI) to individuals who did not have the necessary authorization to receive it and attempted to cover up the activity. Asif William Rahm…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="hackgate: setting new standards for visibility and control in penetration testing projects" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/hackgate-setting-new-standards-for.html" target="_blank" rel="noopener">HackGATE: Setting New Standards for Visibility and Control in Penetration Testing Projects</a><span class="article-summary">Imagine receiving a penetration test report that leaves you with more questions than answers. Questions like, "Were all functionalities of the web app tested?" or " Were there any security issues that could have been identified during testing?" often go unresolved, raising concer…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="how to download, install, and update kaspersky apps for android | kaspersky official blog" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.kaspersky.com/blog/how-to-install-kaspersky-apps-from-alternative-stores/52889/" target="_blank" rel="noopener">How to download, install, and update Kaspersky apps for Android | Kaspersky official blog</a><span class="article-summary">How to download, install, and update Kaspersky apps for Android from alternative stores.</span></span><span class="headline-source">KASPERSKY.COM</span></div>
+<div class="headline" data-title="the ai phrase that breaks chatgpt! 😱" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=xxE2XB1Zdrg" target="_blank" rel="noopener">The AI Phrase That Breaks ChatGPT! 😱</a><span class="article-summary">Ever wondered what happens when you push AI to its limits? 🤔 Some phrases can break the system, and "David Mayor" is one of them! But why? Is it a glitch, a rule, or something more? Dive into this strange AI mystery and discover the story behind it. The truth might surprise you! …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="unlocking vulnrichment: enriching cve data" data-date="2025-01-21"><span class="headline-date">21 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/news/unlocking-vulnrichment-enriching-cve-data" target="_blank" rel="noopener">Unlocking Vulnrichment: Enriching CVE Data</a></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

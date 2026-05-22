@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2026-04-18</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,74 +109,57 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2026-04-18</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">15</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-18"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thecyberwire.com/newsletters/week-that-was/10/15" target="_blank" rel="noopener">NVD shifts strategy to deal with a CVE backlog.</a></div><span class="article-meta">THECYBERWIRE.COM &mdash; 18 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-18"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2026/04/mirai-variant-nexcorium-exploits-cve.html" target="_blank" rel="noopener">Mirai Variant Nexcorium Exploits CVE-2024-3721 to Hijack TBK DVRs for DDoS Botnet</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 18 Apr 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-04-18"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://gbhackers.com/nexcorium-mirai-variant-weaponizes-tbk-dvr-vulnerability/" target="_blank" rel="noopener">Nexcorium Mirai Variant Weaponises TBK DVR Vulnerability in Fresh IoT Botnet Push</a></div><span class="article-meta">GBHACKERS.COM &mdash; 18 Apr 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-04-18"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/45136933" target="_blank" rel="noopener">Claude Opus wrote a Chrome exploit for $2,283</a></div><span class="article-meta">INFOSEC.PUB &mdash; 18 Apr 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-04-18"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/cybersecurity-today-month-in-review-of-marchapril-2026" target="_blank" rel="noopener">Cybersecurity Today Month in Review of March/April 2026</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 18 Apr 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-04-18"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://securityaffairs.com/190961/hacking/microsoft-defender-under-attack-as-three-zero-days-two-of-them-still-unpatched-enable-elevated-access.html" target="_blank" rel="noopener">Microsoft Defender under attack as three zero-days, two of them still unpatched, enable elevated access</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 18 Apr 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-04-18"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://securityaffairs.com/190974/malware/nexcorium-mirai-variant-exploits-tbk-dvr-flaw-to-launch-ddos-attacks.html" target="_blank" rel="noopener">Nexcorium Mirai variant exploits TBK DVR flaw to launch DDoS attacks</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 18 Apr 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-04-18"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/claude-opus-enabled-creation-of-working-chrome-exploit/" target="_blank" rel="noopener">Researcher Claims Claude Opus Enabled Creation of Working Chrome Exploit</a></div><span class="article-meta">GBHACKERS.COM &mdash; 18 Apr 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-04-18"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://securityaffairs.com/190982/security/hidden-vms-how-hackers-leverage-qemu-to-stealthily-steal-data-and-spread-malware.html" target="_blank" rel="noopener">Hidden VMs: how hackers leverage QEMU to stealthily steal data and spread malware</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 18 Apr 2026</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2026-04-18"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://infosec.pub/post/45164970" target="_blank" rel="noopener">NIST gives up enriching most CVEs</a></div><span class="article-meta">INFOSEC.PUB &mdash; 18 Apr 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-04-18"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thecyberwire.com/podcasts/research-saturday/421/notes" target="_blank" rel="noopener">A new breed of RAT.</a></div><span class="article-meta">THECYBERWIRE.COM &mdash; 18 Apr 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-04-18"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2026/04/1374m-hack-shuts-down-sanctioned-grinex.html" target="_blank" rel="noopener">$13.74M Hack Shuts Down Sanctioned Grinex Exchange After Intelligence Claims</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 18 Apr 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-04-18"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.heise.de/news/Proaktive-Ermittlungen-gegen-Cybercrime-auf-Landesebene-11263064.html" target="_blank" rel="noopener">Proaktive Ermittlungen gegen Cybercrime auf Landesebene</a></div><span class="article-meta">HEISE.DE &mdash; 2026-04-18</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-04-18"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/45165025" target="_blank" rel="noopener">HTTP desync in Discord's media proxy: Spying on a whole platform</a></div><span class="article-meta">INFOSEC.PUB &mdash; 18 Apr 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-04-18"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://sh.itjust.works/post/58746867" target="_blank" rel="noopener">It Is Time to Ban the Sale of Precise Geolocation</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 18 Apr 2026</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="nvd shifts strategy to deal with a cve backlog." data-date="2026-04-18"><span class="headline-date">18 Apr</span><span class="headline-body"><a class="headline-title" href="https://thecyberwire.com/newsletters/week-that-was/10/15" target="_blank" rel="noopener">NVD shifts strategy to deal with a CVE backlog.</a><span class="article-summary">US House extends FISA Section 702 for ten days. CISA recalls furloughed employees amid funding lapse.</span></span><span class="headline-source">THECYBERWIRE.COM</span></div>
+<div class="headline" data-title="mirai variant nexcorium exploits cve-2024-3721 to hijack tbk dvrs for ddos botnet" data-date="2026-04-18"><span class="headline-date">18 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/04/mirai-variant-nexcorium-exploits-cve.html" target="_blank" rel="noopener">Mirai Variant Nexcorium Exploits CVE-2024-3721 to Hijack TBK DVRs for DDoS Botnet</a><span class="article-summary">Threat actors are exploiting security flaws in TBK DVR and end‑of‑life (EoL) TP-Link Wi-Fi routers to deploy Mirai-botnet variants on compromised devices, according to findings from Fortinet FortiGuard Labs and Palo Alto Networks Unit 42. The attack targeting TBK DVR devices has …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="nexcorium mirai variant weaponises tbk dvr vulnerability in fresh iot botnet push" data-date="2026-04-18"><span class="headline-date">18 Apr</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/nexcorium-mirai-variant-weaponizes-tbk-dvr-vulnerability/" target="_blank" rel="noopener">Nexcorium Mirai Variant Weaponises TBK DVR Vulnerability in Fresh IoT Botnet Push</a><span class="article-summary">A newly discovered Mirai malware variant named Nexcorium is actively targeting unpatched Internet of Things (IoT) devices. According to recent threat research from FortiGuard Labs, attackers are exploiting a severe vulnerability in TBK DVR systems to build a massive botnet capabl…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="claude opus wrote a chrome exploit for $2,283" data-date="2026-04-18"><span class="headline-date">18 Apr</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/45136933" target="_blank" rel="noopener">Claude Opus wrote a Chrome exploit for $2,283</a><span class="article-summary">submitted by cm0002 to cybersecurity 3 points | 0 comments https://www.theregister.com/2026/04/17/claude_opus_wrote_chrome_exploit/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="cybersecurity today month in review of march/april 2026" data-date="2026-04-18"><span class="headline-date">18 Apr</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/cybersecurity-today-month-in-review-of-marchapril-2026" target="_blank" rel="noopener">Cybersecurity Today Month in Review of March/April 2026</a><span class="article-summary">Cybersecurity Today Month-in-Review: RSAC AI Hype, Agentic Risks, Mythos Claims, and Real-World Resilience Jim Love hosts a delayed March month-in-review with panelists David Shipley and Laura Payne, starting with RSAC takeaways: agentic AI everywhere, heightened marketing specta…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="microsoft defender under attack as three zero-days, two of them still unpatched, enable elevated access" data-date="2026-04-18"><span class="headline-date">18 Apr</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/190961/hacking/microsoft-defender-under-attack-as-three-zero-days-two-of-them-still-unpatched-enable-elevated-access.html" target="_blank" rel="noopener">Microsoft Defender under attack as three zero-days, two of them still unpatched, enable elevated access</a><span class="article-summary">Attackers exploit three Microsoft Defender zero-days, code-named BlueHammer, RedSun, and UnDefend, to gain elevated access. Attackers are exploiting three recently disclosed zero-day flaws in Microsoft Defender to gain higher privileges on compromised systems. The vulnerabilities…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+<div class="headline" data-title="nexcorium mirai variant exploits tbk dvr flaw to launch ddos attacks" data-date="2026-04-18"><span class="headline-date">18 Apr</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/190974/malware/nexcorium-mirai-variant-exploits-tbk-dvr-flaw-to-launch-ddos-attacks.html" target="_blank" rel="noopener">Nexcorium Mirai variant exploits TBK DVR flaw to launch DDoS attacks</a><span class="article-summary">A Mirai variant called Nexcorium exploits a flaw in TBK DVRs to infect devices and use them in DDoS attacks, along with outdated TP-Link routers. Fortinet researchers found that threat actors are exploiting vulnerabilities in TBK DVRs and end-of-life TP-Link routers to spread a M…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+<div class="headline" data-title="researcher claims claude opus enabled creation of working chrome exploit" data-date="2026-04-18"><span class="headline-date">18 Apr</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/claude-opus-enabled-creation-of-working-chrome-exploit/" target="_blank" rel="noopener">Researcher Claims Claude Opus Enabled Creation of Working Chrome Exploit</a><span class="article-summary">A security researcher has shown that Anthropic’s Claude Opus can help build a working browser exploit chain against Google Chrome’s V8 engine, raising fresh concerns about how quickly AI can speed up offensive security work. The experiment was published by Mohan Pedhapati, also k…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="hidden vms: how hackers leverage qemu to stealthily steal data and spread malware" data-date="2026-04-18"><span class="headline-date">18 Apr</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/190982/security/hidden-vms-how-hackers-leverage-qemu-to-stealthily-steal-data-and-spread-malware.html" target="_blank" rel="noopener">Hidden VMs: how hackers leverage QEMU to stealthily steal data and spread malware</a><span class="article-summary">Attackers abuse QEMU to hide malware in virtual machines, bypass detection, steal data, and deploy ransomware without leaving any trace. Sophos researchers report a rise in attackers abusing QEMU, an open-source emulator, to hide malicious activity inside virtual machines. By run…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="nist gives up enriching most cves" data-date="2026-04-18"><span class="headline-date">18 Apr</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/45164970" target="_blank" rel="noopener">NIST gives up enriching most CVEs</a><span class="article-summary">submitted by beep to cybersecurity 1 points | 0 comments https://risky.biz/risky-bulletin-nist-gives-up-enriching-most-cves/ Hacker News .</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="a new breed of rat." data-date="2026-04-18"><span class="headline-date">18 Apr</span><span class="headline-body"><a class="headline-title" href="https://thecyberwire.com/podcasts/research-saturday/421/notes" target="_blank" rel="noopener">A new breed of RAT.</a><span class="article-summary">Today we are joined by ⁠Dr. Darren Williams⁠, Founder and CEO of ⁠BlackFog⁠, to discuss his team's work on "Steaelite RAT Enables Double Extortion Attacks from a Single Panel." A new remote access trojan, Steaelite, is being marketed on underground forums as an all-in-one platfor…</span></span><span class="headline-source">THECYBERWIRE.COM</span></div>
+<div class="headline" data-title="$13.74m hack shuts down sanctioned grinex exchange after intelligence claims" data-date="2026-04-18"><span class="headline-date">18 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/04/1374m-hack-shuts-down-sanctioned-grinex.html" target="_blank" rel="noopener">$13.74M Hack Shuts Down Sanctioned Grinex Exchange After Intelligence Claims</a><span class="article-summary">Grinex, a Kyrgyzstan-incorporated cryptocurrency exchange sanctioned by the U.K. and the U.S. last year, said it's suspending operations after it blamed Western intelligence agencies for a $13.74 million hack. The exchange said it fell victim to what it described as a large-scale…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="proaktive ermittlungen gegen cybercrime auf landesebene" data-date="2026-04-18"><span class="headline-date">18 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.heise.de/news/Proaktive-Ermittlungen-gegen-Cybercrime-auf-Landesebene-11263064.html" target="_blank" rel="noopener">Proaktive Ermittlungen gegen Cybercrime auf Landesebene</a><span class="article-summary">Ransomware-Banden setzen auf KI und das Darknet, um kritische Infrastruktur zu treffen. Ermittler in Koblenz agieren zunehmend proaktiv.</span></span><span class="headline-source">HEISE.DE</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="http desync in discord's media proxy: spying on a whole platform" data-date="2026-04-18"><span class="headline-date">18 Apr</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/45165025" target="_blank" rel="noopener">HTTP desync in Discord's media proxy: Spying on a whole platform</a><span class="article-summary">submitted by beep to cybersecurity 1 points | 0 comments https://tmctmt.com/posts/http-desync-in-discord/ Lobsters .</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="it is time to ban the sale of precise geolocation" data-date="2026-04-18"><span class="headline-date">18 Apr</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/58746867" target="_blank" rel="noopener">It Is Time to Ban the Sale of Precise Geolocation</a><span class="article-summary">submitted by supersquirrel to cybersecurity 32 points | 0 comments https://www.lawfaremedia.org/article/it-is-time-to-ban-the-sale-of-precise-geolocation</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

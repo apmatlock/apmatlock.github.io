@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-12-31</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,89 +109,80 @@
       <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-12-31</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">28</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">7</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://gbhackers.com/cisa-warns-of-palo-alto-networks-pan-os-vulnerability/" target="_blank" rel="noopener">CISA Warns of Palo Alto Networks PAN-OS Vulnerability Exploited in Wild</a></div><span class="kev-badge">KEV</span><span class="article-meta">GBHACKERS.COM &mdash; 31 Dec 2024</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://gbhackers.com/truenas-core-vulnerability/" target="_blank" rel="noopener">TrueNAS CORE Vulnerability Let Attackers Execute Remote Code</a></div><span class="article-meta">GBHACKERS.COM &mdash; 31 Dec 2024</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.csoonline.com/article/3629418/top-12-ways-hackers-broke-into-your-systems-in-2024.html" target="_blank" rel="noopener">Top 12 ways hackers broke into your systems in 2024</a></div><span class="kev-badge">KEV</span><span class="article-meta">CSOONLINE.COM &mdash; 31 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/12/chinese-apt-exploits-beyondtrust-api.html" target="_blank" rel="noopener">Chinese APT Exploits BeyondTrust API Key to Access U.S. Treasury Systems and Documents</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 31 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/12/misconfigured-kubernetes-rbac-in-azure.html" target="_blank" rel="noopener">Misconfigured Kubernetes RBAC in Azure Airflow Could Expose Entire Cluster to Exploitation</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 31 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/3630539/us-treasury-department-workstations-breached-in-attack-attributed-to-china.html" target="_blank" rel="noopener">US Treasury Department workstations breached in attack attributed to China</a></div><span class="article-meta">CSOONLINE.COM &mdash; 31 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/3624463/vielen-cisos-droht-der-burnout.html" target="_blank" rel="noopener">Vielen CISOs droht der Burnout</a></div><span class="article-meta">CSOONLINE.COM &mdash; 31 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/21886496" target="_blank" rel="noopener">🎶 For Secured Times Gone By 🎶</a></div><span class="article-meta">INFOSEC.PUB &mdash; 31 Dec 2024</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://thehackernews.com/2024/12/new-us-doj-rule-halts-bulk-data.html" target="_blank" rel="noopener">New U.S. DoJ Rule Halts Bulk Data Transfers to Adversarial Nations to Protect Privacy</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 31 Dec 2024</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://gbhackers.com/us-treasury-department-breach-hackers-accessed-workstations/" target="_blank" rel="noopener">US Treasury Department Breach, Hackers Accessed Workstations</a></div><span class="article-meta">GBHACKERS.COM &mdash; 31 Dec 2024</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.youtube.com/watch?v=JzDM_5o6Rwo" target="_blank" rel="noopener">Cloud Security in Higher Education: Balancing Trust and Risk - Sheena Thomas - CSP #207</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-31</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/massive-healthcare-breaches-prompt-us-cybersecurity-rules-overhaul/" target="_blank" rel="noopener">Massive healthcare breaches prompt US cybersecurity rules overhaul</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 31 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.securityweek.com/rhode-islanders-data-was-leaked-from-a-cyberattack-on-state-health-benefits-website/" target="_blank" rel="noopener">Rhode Islanders’ Data Was Leaked From a Cyberattack on State Health Benefits Website</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 31 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.securityweek.com/chinese-hackers-accessed-us-treasury-workstations-in-major-cybersecurity-incident/" target="_blank" rel="noopener">Chinese Hackers Accessed US Treasury Workstations in ‘Major’ Cybersecurity Incident</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 31 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2024/12/gift-card-fraud.html" target="_blank" rel="noopener">Gift Card Fraud</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2024-12-31</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.securityweek.com/cyberhaven-chrome-extension-hack-linked-to-widening-supply-chain-campaign/" target="_blank" rel="noopener">Cyberhaven Chrome Extension Hack Linked to Widening Supply Chain Campaign</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 31 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://blog.knowbe4.com/ftc-warns-immigrants-about-rising-social-media-immigration-scams" target="_blank" rel="noopener">FTC Warns Immigrants About Rising Social Media Immigration Scams</a></div><span class="article-meta">KNOWBE4.COM &mdash; 31 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://securityintelligence.com/articles/5-most-impactful-cybersecurity-guidelines-3-that-fell-flat/" target="_blank" rel="noopener">The 5 most impactful cybersecurity guidelines (and 3 that fell flat)</a></div><span class="article-meta">SECURITYINTELLIGENCE.COM &mdash; 31 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=wSFLibbw5QE" target="_blank" rel="noopener">The Future in the Age of AI - SWN Vault</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-31</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/over-31-million-fake-stars-on-github-projects-used-to-boost-rankings/" target="_blank" rel="noopener">Over 3.1 million fake "stars" on GitHub projects used to boost rankings</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 31 Dec 2024</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.youtube.com/watch?v=FaQFTADfijk" target="_blank" rel="noopener">MITRE’s New AI Security Tool - Worth the Hype?</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-31</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/new-details-reveal-how-hackers-hijacked-35-google-chrome-extensions/" target="_blank" rel="noopener">New details reveal how hackers hijacked 35 Google Chrome extensions</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 31 Dec 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://krebsonsecurity.com/2024/12/u-s-army-soldier-arrested-in-att-verizon-extortions/" target="_blank" rel="noopener">U.S. Army Soldier Arrested in AT&amp;T, Verizon Extortions</a></div><span class="article-meta">KREBSONSECURITY.COM &mdash; 31 Dec 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31552" target="_blank" rel="noopener">No Holiday Season for Attackers, (Tue, Dec 31st)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 31 Dec 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2024/12/31/another-us-telco-says-its-network-is-now-clear-of-china-backed-salt-typhoon-hackers/" target="_blank" rel="noopener">US telco Lumen says its network is now clear of China’s Salt Typhoon hackers</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 31 Dec 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2024/12/31/new-year-cybersecurity-resolutions-that-every-startup-should-keep/" target="_blank" rel="noopener">New Year’s cybersecurity resolutions that every startup should keep</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 31 Dec 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=v9lcq_WzNC0" target="_blank" rel="noopener">Tech Overhead: The Hidden Maintenance You Pay For!</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-31</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-31"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=Gv0zCGb4C6M" target="_blank" rel="noopener">FBI Says STOP Texting? 😱 Here’s Why!</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-12-31</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa warns of palo alto networks pan-os vulnerability exploited in wild" data-date="2024-12-31"><span class="headline-date">31 Dec <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/cisa-warns-of-palo-alto-networks-pan-os-vulnerability/" target="_blank" rel="noopener">CISA Warns of Palo Alto Networks PAN-OS Vulnerability Exploited in Wild</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) has issued a high-priority alert on a critical vulnerability in Palo Alto Networks PAN-OS. Tracked as CVE-2024-3393, this flaw has been observed in active exploitation, putting systems at risk of remote disruption. …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="truenas core vulnerability let attackers execute remote code" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/truenas-core-vulnerability/" target="_blank" rel="noopener">TrueNAS CORE Vulnerability Let Attackers Execute Remote Code</a><span class="article-summary">Security researchers Daan Keuper, Thijs Alkemade, and Khaled Nassar from Computest Sector 7 disclosed a critical vulnerability in TrueNAS CORE, a widely-used open-source storage operating system developed by iXsystems. The vulnerability, CVE-2024-11944, allows network-adjacent at…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="top 12 ways hackers broke into your systems in 2024" data-date="2024-12-31"><span class="headline-date">31 Dec <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/3629418/top-12-ways-hackers-broke-into-your-systems-in-2024.html" target="_blank" rel="noopener">Top 12 ways hackers broke into your systems in 2024</a><span class="article-summary">In 2024, hackers had a field day finding sneaky ways into systems — from convincing phishing scams that played on human curiosity to brutal software flaws that exposed gaps in tech upkeep. It was a year of clever breaches, showing just how wide the gap is between user habits and …</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="chinese apt exploits beyondtrust api key to access u.s. treasury systems and documents" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/chinese-apt-exploits-beyondtrust-api.html" target="_blank" rel="noopener">Chinese APT Exploits BeyondTrust API Key to Access U.S. Treasury Systems and Documents</a><span class="article-summary">The United States Treasury Department said it suffered a "major cybersecurity incident" that allowed suspected Chinese threat actors to remotely access some computers and unclassified documents.&nbsp; "On December 8, 2024, Treasury was notified by a third-party software service p…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="misconfigured kubernetes rbac in azure airflow could expose entire cluster to exploitation" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/misconfigured-kubernetes-rbac-in-azure.html" target="_blank" rel="noopener">Misconfigured Kubernetes RBAC in Azure Airflow Could Expose Entire Cluster to Exploitation</a><span class="article-summary">Cybersecurity researchers have uncovered three security weaknesses in Microsoft's Azure Data Factory Apache Airflow integration that, if successfully exploited, could have allowed an attacker to gain the ability to conduct various covert actions, including data exfiltration and m…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="us treasury department workstations breached in attack attributed to china" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/3630539/us-treasury-department-workstations-breached-in-attack-attributed-to-china.html" target="_blank" rel="noopener">US Treasury Department workstations breached in attack attributed to China</a><span class="article-summary">The US Department of the Treasury revealed on Monday that an attacker was able to bypass security, access an undisclosed number of Treasury workstations, and steal “certain unclassified documents,” in what it called a “major cybersecurity incident”. In a letter to the US Senate’s…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="vielen cisos droht der burnout" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/3624463/vielen-cisos-droht-der-burnout.html" target="_blank" rel="noopener">Vielen CISOs droht der Burnout</a><span class="article-summary">loading="lazy" width="400px"> Wer seinen CISO verheizt, dem drohen noch mehr Cyberrisiken. Kaspars Grinvalds – shutterstock.com Mit der zunehmend komplexer werdenden Cyber-Bedrohungslage wächst der Stress für die Chief Information Security Officers (CISOs). 57 Prozent der Cyber-S…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="🎶 for secured times gone by 🎶" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/21886496" target="_blank" rel="noopener">🎶 For Secured Times Gone By 🎶</a><span class="article-summary">submitted by coolboole to cybersecurity 2 points | 0 comments (Tune: Auld Lang Syne) Should old accounts be all forgot, And passwords left to die, We’ll set them strong, revoke the weak, For secured times gone by. (Chorus) For secured times gone by, my friends, For safe and sure …</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new u.s. doj rule halts bulk data transfers to adversarial nations to protect privacy" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/new-us-doj-rule-halts-bulk-data.html" target="_blank" rel="noopener">New U.S. DoJ Rule Halts Bulk Data Transfers to Adversarial Nations to Protect Privacy</a><span class="article-summary">The U.S. Department of Justice (DoJ) has issued a final rule carrying out Executive Order (EO) 14117, which prevents mass transfer of citizens' personal data to countries of concern such as China (including Hong Kong and Macau), Cuba, Iran, North Korea, Russia, and Venezuela. "Th…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="us treasury department breach, hackers accessed workstations" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/us-treasury-department-breach-hackers-accessed-workstations/" target="_blank" rel="noopener">US Treasury Department Breach, Hackers Accessed Workstations</a><span class="article-summary">The Biden administration confirmed that a Chinese state-sponsored hacking group breached the U.S. Treasury Department, gaining unauthorized access to employee workstations and unclassified documents. This revelation follows a string of sophisticated surveillance operations target…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="cloud security in higher education: balancing trust and risk - sheena thomas - csp #207" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=JzDM_5o6Rwo" target="_blank" rel="noopener">Cloud Security in Higher Education: Balancing Trust and Risk - Sheena Thomas - CSP #207</a><span class="article-summary">In this episode of CISO Stories, Jess Hoffman and Sheena Thomas explore the challenges of cloud security in higher education. They discuss trust issues with cloud providers, the importance of understanding data sensitivity, and navigating regulatory compliance. Sheena highlights …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="massive healthcare breaches prompt us cybersecurity rules overhaul" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/massive-healthcare-breaches-prompt-us-cybersecurity-rules-overhaul/" target="_blank" rel="noopener">Massive healthcare breaches prompt US cybersecurity rules overhaul</a><span class="article-summary">The U.S. Department of Health and Human Services (HHS) has proposed updates to the Health Insurance Portability and Accountability Act of 1996 (HIPAA) to secure patients' health data following a surge in massive healthcare data leaks. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="rhode islanders’ data was leaked from a cyberattack on state health benefits website" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/rhode-islanders-data-was-leaked-from-a-cyberattack-on-state-health-benefits-website/" target="_blank" rel="noopener">Rhode Islanders’ Data Was Leaked From a Cyberattack on State Health Benefits Website</a><span class="article-summary">Cybercriminals who hacked Rhode Island’s system for health and benefits programs have released files to a site on the dark web, The post Rhode Islanders’ Data Was Leaked From a Cyberattack on State Health Benefits Website appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="chinese hackers accessed us treasury workstations in ‘major’ cybersecurity incident" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/chinese-hackers-accessed-us-treasury-workstations-in-major-cybersecurity-incident/" target="_blank" rel="noopener">Chinese Hackers Accessed US Treasury Workstations in ‘Major’ Cybersecurity Incident</a><span class="article-summary">Chinese hackers remotely accessed US Treasury Department workstations after compromising a cloud-based service operated by BeyondTrust. The post Chinese Hackers Accessed US Treasury Workstations in ‘Major&#8217; Cybersecurity Incident appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="gift card fraud" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2024/12/gift-card-fraud.html" target="_blank" rel="noopener">Gift Card Fraud</a><span class="article-summary">It&#8217;s becoming an organized crime tactic : Card draining is when criminals remove gift cards from a store display, open them in a separate location, and either record the card numbers and PINs or replace them with a new barcode. The crooks then repair the packaging, return t…</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="cyberhaven chrome extension hack linked to widening supply chain campaign" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/cyberhaven-chrome-extension-hack-linked-to-widening-supply-chain-campaign/" target="_blank" rel="noopener">Cyberhaven Chrome Extension Hack Linked to Widening Supply Chain Campaign</a><span class="article-summary">The recent compromise of Cyberhaven’s Chrome extension appears to be part of a broad campaign that started over a year ago. The post Cyberhaven Chrome Extension Hack Linked to Widening Supply Chain Campaign appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="ftc warns immigrants about rising social media immigration scams" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://blog.knowbe4.com/ftc-warns-immigrants-about-rising-social-media-immigration-scams" target="_blank" rel="noopener">FTC Warns Immigrants About Rising Social Media Immigration Scams</a><span class="article-summary">The Federal Trade Commission (FTC) has issued an urgent warning about a surge in immigration scams targeting immigrants and their families on social media platforms like Facebook.</span></span><span class="headline-source">KNOWBE4.COM</span></div>
+<div class="headline" data-title="the 5 most impactful cybersecurity guidelines (and 3 that fell flat)" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://securityintelligence.com/articles/5-most-impactful-cybersecurity-guidelines-3-that-fell-flat/" target="_blank" rel="noopener">The 5 most impactful cybersecurity guidelines (and 3 that fell flat)</a><span class="article-summary">The best cybersecurity guidelines have made a huge difference in protecting data from theft and compromise, both in the United States and around the world. These guidelines are comprehensive sets of recommended practices, procedures and principles designed to help organizations a…</span></span><span class="headline-source">SECURITYINTELLIGENCE.COM</span></div>
+<div class="headline" data-title="the future in the age of ai - swn vault" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=wSFLibbw5QE" target="_blank" rel="noopener">The Future in the Age of AI - SWN Vault</a><span class="article-summary">Our old friend Russ Beauchemin and Doug talk about the future of AI and what it may mean when AI is smarter than us all. Visit https://www.securityweekly.com/swn for all the latest episodes! Show Notes: https://securityweekly.com/vault-swn-25</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="over 3.1 million fake &quot;stars&quot; on github projects used to boost rankings" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/over-31-million-fake-stars-on-github-projects-used-to-boost-rankings/" target="_blank" rel="noopener">Over 3.1 million fake "stars" on GitHub projects used to boost rankings</a><span class="article-summary">GitHub has a problem with inauthentic "stars" used to artificially inflate the popularity of scam and malware distribution repositories, helping them reach more unsuspecting users. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="mitre’s new ai security tool - worth the hype?" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=FaQFTADfijk" target="_blank" rel="noopener">MITRE’s New AI Security Tool - Worth the Hype?</a><span class="article-summary">Cyber threats are evolving fast, but can AI really keep up? Discover how MITRE’s new AI-powered security tool is reshaping the future of application security. Is it just hype or the real deal for protecting your codebase? Stay ahead in the cybersecurity game by exploring this cut…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new details reveal how hackers hijacked 35 google chrome extensions" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/new-details-reveal-how-hackers-hijacked-35-google-chrome-extensions/" target="_blank" rel="noopener">New details reveal how hackers hijacked 35 Google Chrome extensions</a><span class="article-summary">New details have emerged about a phishing campaign targeting Chrome browser extension developers that led to the compromise of at least thirty-five extensions to inject data-stealing code, including those from cybersecurity firm Cyberhaven. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="u.s. army soldier arrested in at&amp;t, verizon extortions" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://krebsonsecurity.com/2024/12/u-s-army-soldier-arrested-in-att-verizon-extortions/" target="_blank" rel="noopener">U.S. Army Soldier Arrested in AT&amp;T, Verizon Extortions</a><span class="article-summary">Federal authorities have arrested and indicted a 20-year-old U.S. Army soldier on suspicion of being Kiberphant0m, a cybercriminal who has been selling and leaking sensitive customer call records stolen earlier this year from AT&#038;T and Verizon. As first reported by KrebsOnSec…</span></span><span class="headline-source">KREBSONSECURITY.COM</span></div>
+<div class="headline" data-title="no holiday season for attackers, (tue, dec 31st)" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31552" target="_blank" rel="noopener">No Holiday Season for Attackers, (Tue, Dec 31st)</a><span class="article-summary">While most of us are preparing the switch to a new year (If it&#x27s already the case for you: Happy New Year&#x21;), Attackers never stop and implement always new tricks to defeat our security controls. For a long time now, we have been flooded by sextortion emails. This is a ki…</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="us telco lumen says its network is now clear of china’s salt typhoon hackers" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/12/31/another-us-telco-says-its-network-is-now-clear-of-china-backed-salt-typhoon-hackers/" target="_blank" rel="noopener">US telco Lumen says its network is now clear of China’s Salt Typhoon hackers</a><span class="article-summary">Lumen says there is 'no evidence' that customer data was accessed during the intrusion © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="new year’s cybersecurity resolutions that every startup should keep" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/12/31/new-year-cybersecurity-resolutions-that-every-startup-should-keep/" target="_blank" rel="noopener">New Year’s cybersecurity resolutions that every startup should keep</a><span class="article-summary">These simple cybersecurity resolutions can help keep your startup protected from most malicious hackers. © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="tech overhead: the hidden maintenance you pay for!" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=v9lcq_WzNC0" target="_blank" rel="noopener">Tech Overhead: The Hidden Maintenance You Pay For!</a><span class="article-summary">Ever wondered why your tech products feel like they need constant attention? From setup to maintenance, every gadget has a hidden 'overhead' cost. Learn what it takes to keep them running smoothly and why some devices demand more effort than others. Define 'value' in a whole new …</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="fbi says stop texting? 😱 here’s why!" data-date="2024-12-31"><span class="headline-date">31 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=Gv0zCGb4C6M" target="_blank" rel="noopener">FBI Says STOP Texting? 😱 Here’s Why!</a><span class="article-summary">The FBI has issued a jaw-dropping warning: stop texting as we know it! But why? 🤔 Turns out, encrypted messaging might be the key to safer communication. From RCS protocols to the future of secure texting, this report has everyone talking. Are our texting habits about to change f…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

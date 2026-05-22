@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2023-11-11</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,84 +109,71 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2023-11-11</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">24</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">10</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">3</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-11-11"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://securityboulevard.com/2023/11/the-new-apt-group-darkcasino-and-the-global-surge-in-winrar-0-day-exploits/?&web_view=true" target="_blank" rel="noopener">New APT Group DarkCasino and the Global Surge in WinRAR 0-Day Exploits</a></div><span class="article-meta">SECURITYBOULEVARD.COM &mdash; 11 Nov 2023</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-11-11"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2023/11/alert-effluence-backdoor-persists.html?&web_view=true" target="_blank" rel="noopener">'Effluence' Backdoor Persists Despite Patching Atlassian Confluence Servers</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 11 Nov 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-11-11"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/burp-suite-2023-10-3-4-released/" target="_blank" rel="noopener">Burp Suite 2023.10.3.4 Released – What’s New!</a></div><span class="article-meta">GBHACKERS.COM &mdash; 11 Nov 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-11-11"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.sandiegouniontribune.com/news/health/story/2023-11-10/cyberattack-continues-to-affect-operations-at-tri-city-medical-center-in-oceanside?&web_view=true" target="_blank" rel="noopener">Cyberattack Continues to Affect Operations at Tri-City Medical Center in San Diego</a></div><span class="article-meta">SANDIEGOUNIONTRIBUNE.COM &mdash; 11 Nov 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-11-11"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cyware.com/news/spammers-abuse-google-forms-quizzes-to-perform-scams-2cec1586/?&web_view=true" target="_blank" rel="noopener">Spammers Abuse Google Forms Quizzes to Perform Scams</a></div><span class="article-meta">CYWARE.COM &mdash; 11 Nov 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-11"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://twitter.com/alvierid/status/1723145930252108064?s=46&t=Wx-OPAcOzAiA3A85FLO2mw" target="_blank" rel="noopener">Dragos Security allegedly breached by Russian APT BlackCat</a></div><span class="article-meta">TWITTER.COM &mdash; 11 Nov 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-11"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://news.sophos.com/en-us/2023/11/10/vice-society-and-rhysida-ransomware/" target="_blank" rel="noopener">Same threats, different ransomware</a></div><span class="article-meta">SOPHOS.COM &mdash; 11 Nov 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-11"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://therecord.media/washington-state-department-of-transportation-recovering-from-cyberattack?&web_view=true" target="_blank" rel="noopener">Washington State Department of Transportation Working To Recover From Cyberattack</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 11 Nov 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-11"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://securityaffairs.com/154014/data-breach/mclaren-health-care-data-breach.html?&web_view=true" target="_blank" rel="noopener">Update: McLaren Health Care Revealed That a Data Breach Impacted 2.2 Million People</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 11 Nov 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-11"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2023/11/stealthy-kamran-spyware-targeting-urdu.html?&web_view=true" target="_blank" rel="noopener">Stealthy Kamran Spyware Targeting Urdu-speaking Users in Gilgit-Baltistan</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 11 Nov 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-11"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/hackers-breach-healthcare-orgs-via-screenconnect-remote-access/?&web_view=true" target="_blank" rel="noopener">Hackers Breach Healthcare Organizations via ScreenConnect Remote Access</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 11 Nov 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-11"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://gbhackers.com/microsoft-authenticator-blocks-malicious-notification/" target="_blank" rel="noopener">Microsoft Authenticator New Feature Blocks Malicious Notification by Default</a></div><span class="article-meta">GBHACKERS.COM &mdash; 11 Nov 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-11"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://gbhackers.com/chinese-apt-mimics-cloud-backup/" target="_blank" rel="noopener">Chinese APT Infrastructure Mimics Cloud Backup Services</a></div><span class="article-meta">GBHACKERS.COM &mdash; 11 Nov 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-11"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/major-australian-ports-affected-by-cyber-incident-a-23581" target="_blank" rel="noopener">Major Australian Ports Affected By Cyber Incident</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-11-11</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-11-11"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.troyhunt.com/weekly-update-373/" target="_blank" rel="noopener">Weekly Update 373</a></div><span class="article-meta">TROYHUNT.COM &mdash; 11 Nov 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-11-11"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://developer.mozilla.org/en-US/blog/mdn-observatory/" target="_blank" rel="noopener">Comig Soon: MDN Observatory 2.0</a></div><span class="article-meta">DEVELOPER.MOZILLA.ORG &mdash; 11 Nov 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-11-11"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/ibm-cloud-native-qradar-siem/" target="_blank" rel="noopener">IBM Unveils Cloud-Native QRadar SIEM to Maximize Power of SOC Professionals</a></div><span class="article-meta">GBHACKERS.COM &mdash; 11 Nov 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-11-11"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/serbian-citizen-pleads-guilty/" target="_blank" rel="noopener">Serbian National Pleads Guilty For Operating a Darknet Website</a></div><span class="article-meta">GBHACKERS.COM &mdash; 11 Nov 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-11-11"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2023/11/microsoft-warns-of-fake-skills.html" target="_blank" rel="noopener">Microsoft Warns of Fake Skills Assessment Portals Targeting IT Job Seekers</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 11 Nov 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-11-11"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.jamf.com/blog/bluenoroff-strikes-again-with-new-macos-malware/" target="_blank" rel="noopener">BlueNoroff strikes again with new macOS malware</a></div><span class="article-meta">JAMF.COM &mdash; 11 Nov 2023</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2023-11-11"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://securityaffairs.com/154002/hacktivism/anonymous-sudan-ddos-on-cloudflare.html?&web_view=true" target="_blank" rel="noopener">After ChatGPT, Anonymous Sudan Took Down Cloudflare Website</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 11 Nov 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-11-11"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://krebsonsecurity.com/2023/11/its-still-easy-for-anyone-to-become-you-at-experian/" target="_blank" rel="noopener">It’s Still Easy for Anyone to Become You at Experian</a></div><span class="article-meta">KREBSONSECURITY.COM &mdash; 11 Nov 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-11-11"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/police-takes-down-bulletproftlink-large-scale-phishing-provider/" target="_blank" rel="noopener">Police takes down BulletProftLink large-scale phishing provider</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 11 Nov 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-11-11"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-outlook-desktop-bug-causing-slow-saving-issues/" target="_blank" rel="noopener">Microsoft fixes Outlook Desktop bug causing slow saving issues</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 11 Nov 2023</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new apt group darkcasino and the global surge in winrar 0-day exploits" data-date="2023-11-11"><span class="headline-date">11 Nov</span><span class="headline-body"><a class="headline-title" href="https://securityboulevard.com/2023/11/the-new-apt-group-darkcasino-and-the-global-surge-in-winrar-0-day-exploits/?&web_view=true" target="_blank" rel="noopener">New APT Group DarkCasino and the Global Surge in WinRAR 0-Day Exploits</a><span class="article-summary">DarkCasino exploited a WinRAR 0-day vulnerability (CVE-2023-38831) to launch phishing attacks against forum users, posing a significant threat due to the large installed base and difficulty in identifying and defending against these attacks.</span></span><span class="headline-source">SECURITYBOULEVARD.COM</span></div>
+<div class="headline" data-title="'effluence' backdoor persists despite patching atlassian confluence servers" data-date="2023-11-11"><span class="headline-date">11 Nov</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/11/alert-effluence-backdoor-persists.html?&web_view=true" target="_blank" rel="noopener">'Effluence' Backdoor Persists Despite Patching Atlassian Confluence Servers</a><span class="article-summary">Attackers exploited the CVE-2023-22515 vulnerability to gain initial access and embed a web shell, allowing them to execute malicious actions without needing a valid user account.</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="burp suite 2023.10.3.4 released – what’s new!" data-date="2023-11-11"><span class="headline-date">11 Nov</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/burp-suite-2023-10-3-4-released/" target="_blank" rel="noopener">Burp Suite 2023.10.3.4 Released – What’s New!</a><span class="article-summary">Burp Suite 2023.10.3.4 is the name of the newest version of Burp Suite, which was just published by the PortSwigger developers. The Burp Suite is a cybersecurity tool that is used for evaluating the security of online applications. It performs the role of an intercepting proxy an…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="cyberattack continues to affect operations at tri-city medical center in san diego" data-date="2023-11-11"><span class="headline-date">11 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.sandiegouniontribune.com/news/health/story/2023-11-10/cyberattack-continues-to-affect-operations-at-tri-city-medical-center-in-oceanside?&web_view=true" target="_blank" rel="noopener">Cyberattack Continues to Affect Operations at Tri-City Medical Center in San Diego</a><span class="article-summary">The hospital has taken its information systems offline and is working with cybersecurity specialists and law enforcement to restore functionality, but it is unclear if a ransom has been demanded or if patient data has been compromised.</span></span><span class="headline-source">SANDIEGOUNIONTRIBUNE.COM</span></div>
+<div class="headline" data-title="spammers abuse google forms quizzes to perform scams" data-date="2023-11-11"><span class="headline-date">11 Nov</span><span class="headline-body"><a class="headline-title" href="https://cyware.com/news/spammers-abuse-google-forms-quizzes-to-perform-scams-2cec1586/?&web_view=true" target="_blank" rel="noopener">Spammers Abuse Google Forms Quizzes to Perform Scams</a><span class="article-summary">Cisco's Talos Intelligence blog reveals a sophisticated spam exploit using Google Forms' quiz results feature, collecting email addresses subtly via a quiz template. The spammer leverages Google's infrastructure to send phishing emails, bypassing spam blockers until Google addres…</span></span><span class="headline-source">CYWARE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">10</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="dragos security allegedly breached by russian apt blackcat" data-date="2023-11-11"><span class="headline-date">11 Nov</span><span class="headline-body"><a class="headline-title" href="https://twitter.com/alvierid/status/1723145930252108064?s=46&t=Wx-OPAcOzAiA3A85FLO2mw" target="_blank" rel="noopener">Dragos Security allegedly breached by Russian APT BlackCat</a><span class="article-summary">submitted by SpacePirate to cybersecurity 1 points | 0 comments https://twitter.com/alvierid/status/1723145930252108064?s=46&amp;t=Wx-OPAcOzAiA3A85FLO2mw</span></span><span class="headline-source">TWITTER.COM</span></div>
+<div class="headline" data-title="same threats, different ransomware" data-date="2023-11-11"><span class="headline-date">11 Nov</span><span class="headline-body"><a class="headline-title" href="https://news.sophos.com/en-us/2023/11/10/vice-society-and-rhysida-ransomware/" target="_blank" rel="noopener">Same threats, different ransomware</a><span class="article-summary">A threat cluster's switch from Vice Society to Rhysida</span></span><span class="headline-source">SOPHOS.COM</span></div>
+<div class="headline" data-title="washington state department of transportation working to recover from cyberattack" data-date="2023-11-11"><span class="headline-date">11 Nov</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/washington-state-department-of-transportation-recovering-from-cyberattack?&web_view=true" target="_blank" rel="noopener">Washington State Department of Transportation Working To Recover From Cyberattack</a><span class="article-summary">The cause of the cyberattack is under investigation, and while some parts of the website are back up, certain features such as the travel map and online freight permits remain out of service.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="update: mclaren health care revealed that a data breach impacted 2.2 million people" data-date="2023-11-11"><span class="headline-date">11 Nov</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/154014/data-breach/mclaren-health-care-data-breach.html?&web_view=true" target="_blank" rel="noopener">Update: McLaren Health Care Revealed That a Data Breach Impacted 2.2 Million People</a><span class="article-summary">The ALPHV/BlackCat ransomware group claimed responsibility for the breach and accused McLaren of attempting to cover it up, stating that they still have access to the organization's network.</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+<div class="headline" data-title="stealthy kamran spyware targeting urdu-speaking users in gilgit-baltistan" data-date="2023-11-11"><span class="headline-date">11 Nov</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/11/stealthy-kamran-spyware-targeting-urdu.html?&web_view=true" target="_blank" rel="noopener">Stealthy Kamran Spyware Targeting Urdu-speaking Users in Gilgit-Baltistan</a><span class="article-summary">The spyware, disguised as an Android app, has been available on the website since January 2023 and has compromised at least 20 mobile devices, harvesting sensitive information and uploading it to a command-and-control server.</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="hackers breach healthcare organizations via screenconnect remote access" data-date="2023-11-11"><span class="headline-date">11 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/hackers-breach-healthcare-orgs-via-screenconnect-remote-access/?&web_view=true" target="_blank" rel="noopener">Hackers Breach Healthcare Organizations via ScreenConnect Remote Access</a><span class="article-summary">The attackers are targeting healthcare organizations in the U.S. using local ScreenConnect instances used by Transaction Data Systems (TDS), a pharmacy supply chain and management systems solution provider.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="microsoft authenticator new feature blocks malicious notification by default" data-date="2023-11-11"><span class="headline-date">11 Nov</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/microsoft-authenticator-blocks-malicious-notification/" target="_blank" rel="noopener">Microsoft Authenticator New Feature Blocks Malicious Notification by Default</a><span class="article-summary">In an age where online threats loom large, safeguarding our personal and professional accounts has never been more critical.&#160; With hackers tirelessly attempting to breach security barriers, the need for robust identity verification methods has become paramount.&#160; In resp…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="chinese apt infrastructure mimics cloud backup services" data-date="2023-11-11"><span class="headline-date">11 Nov</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/chinese-apt-mimics-cloud-backup/" target="_blank" rel="noopener">Chinese APT Infrastructure Mimics Cloud Backup Services</a><span class="article-summary">Cambodian government entities were discovered to be targeted and compromised by Chinese APT actors. The threat actors are using the infrastructure to masquerade as a cloud backup service. The infrastructure also exhibits several malicious nature and persistent connections. China …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="major australian ports affected by cyber incident" data-date="2023-11-11"><span class="headline-date">11 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/major-australian-ports-affected-by-cyber-incident-a-23581" target="_blank" rel="noopener">Major Australian Ports Affected By Cyber Incident</a><span class="article-summary">'Nationally Significant Cyber Incident' Impacts Imports and Exports A cybersecurity incident at an operator of major Australian maritime ports caused what a government official on Saturday called a "nationally significant" outage frustrating the movement of goods in and out of th…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+<div class="headline" data-title="weekly update 373" data-date="2023-11-11"><span class="headline-date">11 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.troyhunt.com/weekly-update-373/" target="_blank" rel="noopener">Weekly Update 373</a><span class="article-summary">Presently sponsored by: Webinar: 'How to Defend Against the Evilginx2.' Kuba Gretzky (Evilginx2) & Marcin Szary (Secfense) show a tool that counters MFA bypass. Most of this week&apos;s video went on the scraped (and faked) LinkedIn data, but it&apos;s the ransomware discussion t…</span></span><span class="headline-source">TROYHUNT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="comig soon: mdn observatory 2.0" data-date="2023-11-11"><span class="headline-date">11 Nov</span><span class="headline-body"><a class="headline-title" href="https://developer.mozilla.org/en-US/blog/mdn-observatory/" target="_blank" rel="noopener">Comig Soon: MDN Observatory 2.0</a><span class="article-summary">submitted by starman to security 0 points | 0 comments https://developer.mozilla.org/en-US/blog/mdn-observatory/ cross-posted from: programming.dev/post/5721685</span></span><span class="headline-source">DEVELOPER.MOZILLA.ORG</span></div>
+<div class="headline" data-title="ibm unveils cloud-native qradar siem to maximize power of soc professionals" data-date="2023-11-11"><span class="headline-date">11 Nov</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/ibm-cloud-native-qradar-siem/" target="_blank" rel="noopener">IBM Unveils Cloud-Native QRadar SIEM to Maximize Power of SOC Professionals</a><span class="article-summary">IBM has recently announced the launch of its Cloud-Native SIEM solution, which is designed to enhance the scale, speed, and flexibility of security teams. With this new offering, organizations can benefit from improved threat detection and response capabilities, empowering them t…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="serbian national pleads guilty for operating a darknet website" data-date="2023-11-11"><span class="headline-date">11 Nov</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/serbian-citizen-pleads-guilty/" target="_blank" rel="noopener">Serbian National Pleads Guilty For Operating a Darknet Website</a><span class="article-summary">After being apprehended by the US government, a Serbian citizen confessed to placing multiple orders on the Monopoly drugs market, which operates on the darknet. The individual in question has admitted to engaging in the illicit purchase of drugs through this platform. As per the…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="microsoft warns of fake skills assessment portals targeting it job seekers" data-date="2023-11-11"><span class="headline-date">11 Nov</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/11/microsoft-warns-of-fake-skills.html" target="_blank" rel="noopener">Microsoft Warns of Fake Skills Assessment Portals Targeting IT Job Seekers</a><span class="article-summary">A sub-cluster within the infamous Lazarus Group has established new infrastructure that impersonates skills assessment portals as part of its social engineering campaigns. Microsoft attributed the activity to a threat actor it calls Sapphire Sleet, describing it as a "shift in th…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="bluenoroff strikes again with new macos malware" data-date="2023-11-11"><span class="headline-date">11 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.jamf.com/blog/bluenoroff-strikes-again-with-new-macos-malware/" target="_blank" rel="noopener">BlueNoroff strikes again with new macOS malware</a><span class="article-summary">submitted by L4s to secops 1 points | 0 comments https://www.jamf.com/blog/bluenoroff-strikes-again-with-new-macos-malware/ BlueNoroff strikes again with new macOS malware::Newly discovered later-stage malware from BlueNoroff APT group targets macOS with characteristics similar t…</span></span><span class="headline-source">JAMF.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="after chatgpt, anonymous sudan took down cloudflare website" data-date="2023-11-11"><span class="headline-date">11 Nov</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/154002/hacktivism/anonymous-sudan-ddos-on-cloudflare.html?&web_view=true" target="_blank" rel="noopener">After ChatGPT, Anonymous Sudan Took Down Cloudflare Website</a><span class="article-summary">The attack caused intermittent connectivity issues for a few minutes but did not impact any services or products provided by Cloudflare. The group claims to have used the Skynet and Godzilla botnets for the recent attacks.</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="it’s still easy for anyone to become you at experian" data-date="2023-11-11"><span class="headline-date">11 Nov</span><span class="headline-body"><a class="headline-title" href="https://krebsonsecurity.com/2023/11/its-still-easy-for-anyone-to-become-you-at-experian/" target="_blank" rel="noopener">It’s Still Easy for Anyone to Become You at Experian</a><span class="article-summary">In the summer of 2022, KrebsOnSecurity documented the plight of several readers who had their accounts at big-three consumer credit reporting bureau Experian hijacked after identity thieves simply re-registered the accounts using a different email address. Sixteen months later, E…</span></span><span class="headline-source">KREBSONSECURITY.COM</span></div>
+<div class="headline" data-title="police takes down bulletproftlink large-scale phishing provider" data-date="2023-11-11"><span class="headline-date">11 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/police-takes-down-bulletproftlink-large-scale-phishing-provider/" target="_blank" rel="noopener">Police takes down BulletProftLink large-scale phishing provider</a><span class="article-summary">The notorious BulletProftLink phishing-as-a-service (PhaaS) platform that provided more than 300 phishing templates has been seized, the Royal Malaysian Police announced. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="microsoft fixes outlook desktop bug causing slow saving issues" data-date="2023-11-11"><span class="headline-date">11 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-outlook-desktop-bug-causing-slow-saving-issues/" target="_blank" rel="noopener">Microsoft fixes Outlook Desktop bug causing slow saving issues</a><span class="article-summary">Microsoft has resolved a known issue causing significant delays for Microsoft 365 customers when saving attachments in Outlook Desktop. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

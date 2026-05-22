@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-08-31</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,78 +109,65 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-08-31</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">18</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-08-31"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://infosec.pub/post/16915574" target="_blank" rel="noopener">North Korean hackers exploit Chrome zero-day to deploy rootkit</a></div><span class="article-meta">INFOSEC.PUB &mdash; 31 Aug 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-08-31"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/3499360/women-in-cyber-day-finds-those-it-celebrates-leaving-in-droves.html" target="_blank" rel="noopener">Women in Cyber Day finds those it celebrates ‘leaving in droves’</a></div><span class="article-meta">CSOONLINE.COM &mdash; 31 Aug 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-08-31"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/16915520" target="_blank" rel="noopener">Commercial Spyware Vendors Have a Copycat in Top Russian APT</a></div><span class="article-meta">INFOSEC.PUB &mdash; 31 Aug 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-08-31"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://securityonline.info/operation-deviltiger-apt-q-12s-shadowy-tactics-and-zero-day-exploits-unveiled/?&web_view=true" target="_blank" rel="noopener">Operation DevilTiger: APT-Q-12’s Shadowy Tactics and Zero-Day Exploits Unveiled</a></div><span class="article-meta">SECURITYONLINE.INFO &mdash; 31 Aug 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-08-31"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/mastering-ai-cybersecurity-navigating-the-future-a-special-panel-discussion" target="_blank" rel="noopener">Mastering AI &amp; Cybersecurity: Navigating the Future - A Special Panel Discussion</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 31 Aug 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-08-31"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/16930193" target="_blank" rel="noopener">Will Machine Learning Replace The WAF? - John Graham-Cumming - OWASP 2024</a></div><span class="article-meta">INFOSEC.PUB &mdash; 31 Aug 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-08-31"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://infosec.pub/post/16934357" target="_blank" rel="noopener">Researchers find SQL injection to bypass airport TSA security checks</a></div><span class="article-meta">INFOSEC.PUB &mdash; 31 Aug 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-08-31"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/08/north-korean-hackers-deploy-fudmodule.html" target="_blank" rel="noopener">North Korean Hackers Deploy FudModule Rootkit via Chrome Zero-Day Exploit</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 31 Aug 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-08-31"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/24/h/godzilla-fileless-backdoors.html?&web_view=true" target="_blank" rel="noopener">Godzilla Fileless Backdoors Targeting Atlassian Confluence</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 31 Aug 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-08-31"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/fbi-ransomhub-ransomware-breached-210-victims-since-february/?&web_view=true" target="_blank" rel="noopener">FBI: RansomHub Ransomware Breached 210 Victims Since February 2024</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 31 Aug 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-08-31"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.proofpoint.com/us/blog/threat-insight/malware-must-not-be-named-suspected-espionage-campaign-delivers-voldemort?&web_view=true" target="_blank" rel="noopener">Suspected Espionage Campaign Delivers New Voldemort Malware</a></div><span class="article-meta">PROOFPOINT.COM &mdash; 31 Aug 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-08-31"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31220" target="_blank" rel="noopener">Wireshark 4.4.0 is now available, (Sat, Aug 31st)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 31 Aug 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-08-31"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.darkreading.com/threat-intelligence/voldemort-malware-curses-orgs-global-tax-authorities" target="_blank" rel="noopener">&amp;#x27;Voldemort&amp;#x27; Malware Curses Orgs Using Global Tax Authorities</a></div><span class="article-meta">DARKREADING.COM &mdash; 31 Aug 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-08-31"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/16930084" target="_blank" rel="noopener">Global AppSec 2024 Lisbon</a></div><span class="article-meta">INFOSEC.PUB &mdash; 31 Aug 2024</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2024-08-31"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.threatfabric.com/blogs/the-trojan-horse-that-wanted-to-fly-rocinante#rocinante-or-pegasus?&web_view=true" target="_blank" rel="noopener">Rocinante: The Trojan Horse That Wanted to Fly</a></div><span class="article-meta">THREATFABRIC.COM &mdash; 31 Aug 2024</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2024-08-31"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/github-comments-abused-to-push-password-stealing-malware-masked-as-fixes/" target="_blank" rel="noopener">GitHub comments abused to push password stealing malware masked as fixes</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 31 Aug 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-08-31"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://securityonline.info/new-snake-keylogger-variant-slithers-into-phishing-campaigns/?&web_view=true" target="_blank" rel="noopener">New Snake Keylogger Variant Slithers Into Phishing Campaigns</a></div><span class="article-meta">SECURITYONLINE.INFO &mdash; 31 Aug 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-08-31"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/docker-osx-image-used-for-security-research-hit-by-apple-dmca-takedown/" target="_blank" rel="noopener">Docker-OSX image used for security research hit by Apple DMCA takedown</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 31 Aug 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="north korean hackers exploit chrome zero-day to deploy rootkit" data-date="2024-08-31"><span class="headline-date">31 Aug</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/16915574" target="_blank" rel="noopener">North Korean hackers exploit Chrome zero-day to deploy rootkit</a><span class="article-summary">submitted by IllNess to securitynews 1 points | 0 comments https://www.bleepingcomputer.com/news/security/north-korean-hackers-exploit-chrome-zero-day-to-deploy-rootkit/ North Korean hackers have exploited a recently patched Google Chrome zero-day (CVE-2024-7971) to deploy the Fu…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="women in cyber day finds those it celebrates ‘leaving in droves’" data-date="2024-08-31"><span class="headline-date">31 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/3499360/women-in-cyber-day-finds-those-it-celebrates-leaving-in-droves.html" target="_blank" rel="noopener">Women in Cyber Day finds those it celebrates ‘leaving in droves’</a><span class="article-summary">The information security industry has been trying for years to improve the participation of and respect for women in the cyber community, with some rising to CSO positions. But with International Women in Cyber Day being celebrated Sunday, Sept. 1, one US-based CISO thinks things…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="commercial spyware vendors have a copycat in top russian apt" data-date="2024-08-31"><span class="headline-date">31 Aug</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/16915520" target="_blank" rel="noopener">Commercial Spyware Vendors Have a Copycat in Top Russian APT</a><span class="article-summary">submitted by IllNess to securitynews 1 points | 0 comments https://www.darkreading.com/threat-intelligence/commercial-spyware-vendors-have-a-copycat-in-top-russian-apt In the watering-hole attacks, threat actors infected two websites, cabinet.gov[.]mn and mfa.gov[.]mn, which belo…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="operation deviltiger: apt-q-12’s shadowy tactics and zero-day exploits unveiled" data-date="2024-08-31"><span class="headline-date">31 Aug</span><span class="headline-body"><a class="headline-title" href="https://securityonline.info/operation-deviltiger-apt-q-12s-shadowy-tactics-and-zero-day-exploits-unveiled/?&web_view=true" target="_blank" rel="noopener">Operation DevilTiger: APT-Q-12’s Shadowy Tactics and Zero-Day Exploits Unveiled</a><span class="article-summary">The QiAnXin Threat Intelligence Center has revealed the details of "Operation DevilTiger," a cyber espionage campaign carried out by the elusive APT-Q-12 group, also known as "Pseudo Hunter."</span></span><span class="headline-source">SECURITYONLINE.INFO</span></div>
+<div class="headline" data-title="mastering ai &amp; cybersecurity: navigating the future - a special panel discussion" data-date="2024-08-31"><span class="headline-date">31 Aug</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/mastering-ai-cybersecurity-navigating-the-future-a-special-panel-discussion" target="_blank" rel="noopener">Mastering AI &amp; Cybersecurity: Navigating the Future - A Special Panel Discussion</a><span class="article-summary">Welcome to a special weekend edition of Cyber Security Today! In this long weekend episode, we delve into the world of artificial intelligence (AI) and its impact on various sectors, particularly as organizations ramp up their plans for the upcoming year. Join our host Jim Love a…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="will machine learning replace the waf? - john graham-cumming - owasp 2024" data-date="2024-08-31"><span class="headline-date">31 Aug</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/16930193" target="_blank" rel="noopener">Will Machine Learning Replace The WAF? - John Graham-Cumming - OWASP 2024</a><span class="article-summary">submitted by ashar to security_cpe 2 points | 0 comments https://lisbon.globalappsec.org/assets/images/logo.png Will Machine Learning Replace The WAF? - John Graham-Cumming Based on 20 years of experience using machine learning and keyword/pattern based systems this talk will loo…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="researchers find sql injection to bypass airport tsa security checks" data-date="2024-08-31"><span class="headline-date">31 Aug</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/16934357" target="_blank" rel="noopener">Researchers find SQL injection to bypass airport TSA security checks</a><span class="article-summary">submitted by IllNess to securitynews 3 points | 2 comments https://www.bleepingcomputer.com/news/security/researchers-find-sql-injection-to-bypass-airport-tsa-security-checks/ Researchers Ian Carroll and Sam Curry discovered the vulnerability in FlyCASS, a third-party web-based s…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="north korean hackers deploy fudmodule rootkit via chrome zero-day exploit" data-date="2024-08-31"><span class="headline-date">31 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/08/north-korean-hackers-deploy-fudmodule.html" target="_blank" rel="noopener">North Korean Hackers Deploy FudModule Rootkit via Chrome Zero-Day Exploit</a><span class="article-summary">A recently patched security flaw in Google Chrome and other Chromium web browsers was exploited as a zero-day by North Korean actors in a campaign designed to deliver the FudModule rootkit. The development is indicative of the persistent efforts made by the nation-state adversary…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="godzilla fileless backdoors targeting atlassian confluence" data-date="2024-08-31"><span class="headline-date">31 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/24/h/godzilla-fileless-backdoors.html?&web_view=true" target="_blank" rel="noopener">Godzilla Fileless Backdoors Targeting Atlassian Confluence</a><span class="article-summary">The Godzilla fileless backdoor relies on a complex series of actions, such as cryptographic operations, class loading, and dynamic injection, to establish unauthorized access.</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+<div class="headline" data-title="fbi: ransomhub ransomware breached 210 victims since february 2024" data-date="2024-08-31"><span class="headline-date">31 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/fbi-ransomhub-ransomware-breached-210-victims-since-february/?&web_view=true" target="_blank" rel="noopener">FBI: RansomHub Ransomware Breached 210 Victims Since February 2024</a><span class="article-summary">The ransomware operation focuses on data theft extortion rather than encrypting files, with victims facing the threat of stolen data being leaked or sold if negotiations fail.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="suspected espionage campaign delivers new voldemort malware" data-date="2024-08-31"><span class="headline-date">31 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.proofpoint.com/us/blog/threat-insight/malware-must-not-be-named-suspected-espionage-campaign-delivers-voldemort?&web_view=true" target="_blank" rel="noopener">Suspected Espionage Campaign Delivers New Voldemort Malware</a><span class="article-summary">The campaign, which targeted organizations worldwide, involved impersonating tax authorities from various countries and utilizing Google Sheets for command and control (C2).</span></span><span class="headline-source">PROOFPOINT.COM</span></div>
+<div class="headline" data-title="wireshark 4.4.0 is now available, (sat, aug 31st)" data-date="2024-08-31"><span class="headline-date">31 Aug</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31220" target="_blank" rel="noopener">Wireshark 4.4.0 is now available, (Sat, Aug 31st)</a><span class="article-summary">This is the first 4.4 release. Many new features have been added, details are here . &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="&amp;#x27;voldemort&amp;#x27; malware curses orgs using global tax authorities" data-date="2024-08-31"><span class="headline-date">31 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.darkreading.com/threat-intelligence/voldemort-malware-curses-orgs-global-tax-authorities" target="_blank" rel="noopener">&amp;#x27;Voldemort&amp;#x27; Malware Curses Orgs Using Global Tax Authorities</a><span class="article-summary">submitted by BrikoX to cybersecurity 1 points | 0 comments https://www.darkreading.com/threat-intelligence/voldemort-malware-curses-orgs-global-tax-authorities The global malware campaign (that must not be named?) is targeting organizations by impersonating tax authorities, and u…</span></span><span class="headline-source">DARKREADING.COM</span></div>
+<div class="headline" data-title="global appsec 2024 lisbon" data-date="2024-08-31"><span class="headline-date">31 Aug</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/16930084" target="_blank" rel="noopener">Global AppSec 2024 Lisbon</a><span class="article-summary">submitted by ashar to security_cpe 1 points | 0 comments https://lisbon.globalappsec.org/assets/images/logo.png Global AppSec 2024 Lisbon Playlist Global AppSec 2024 Lisbon Schedule</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="rocinante: the trojan horse that wanted to fly" data-date="2024-08-31"><span class="headline-date">31 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.threatfabric.com/blogs/the-trojan-horse-that-wanted-to-fly-rocinante#rocinante-or-pegasus?&web_view=true" target="_blank" rel="noopener">Rocinante: The Trojan Horse That Wanted to Fly</a><span class="article-summary">Once installed, the Rocinante malware prompts the victim to grant Accessibility Services and displays phishing screens tailored to different banks to steal personal information.</span></span><span class="headline-source">THREATFABRIC.COM</span></div>
+<div class="headline" data-title="github comments abused to push password stealing malware masked as fixes" data-date="2024-08-31"><span class="headline-date">31 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/github-comments-abused-to-push-password-stealing-malware-masked-as-fixes/" target="_blank" rel="noopener">GitHub comments abused to push password stealing malware masked as fixes</a><span class="article-summary">GitHub is being abused to distribute the Lumma Stealer information-stealing malware as fake fixes posted in project comments. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new snake keylogger variant slithers into phishing campaigns" data-date="2024-08-31"><span class="headline-date">31 Aug</span><span class="headline-body"><a class="headline-title" href="https://securityonline.info/new-snake-keylogger-variant-slithers-into-phishing-campaigns/?&web_view=true" target="_blank" rel="noopener">New Snake Keylogger Variant Slithers Into Phishing Campaigns</a><span class="article-summary">The attack starts with a phishing email disguised as a fund transfer notification, with an attached Excel file named “swift copy.xls” that triggers the deployment of Snake Keylogger on the victim's computer upon opening.</span></span><span class="headline-source">SECURITYONLINE.INFO</span></div>
+<div class="headline" data-title="docker-osx image used for security research hit by apple dmca takedown" data-date="2024-08-31"><span class="headline-date">31 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/docker-osx-image-used-for-security-research-hit-by-apple-dmca-takedown/" target="_blank" rel="noopener">Docker-OSX image used for security research hit by Apple DMCA takedown</a><span class="article-summary">The popular Docker-OSX project has been removed from Docker Hub after Apple filed a DMCA (Digital Millennium Copyright Act) takedown request, alleging that it violated its copyright. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

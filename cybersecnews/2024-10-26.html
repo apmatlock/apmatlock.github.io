@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-10-26</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,69 +109,48 @@
       <div class="stat"><span class="stat-value">4</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-10-26</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">11</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-10-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/10/cert-ua-identifies-malicious-rdp-files.html" target="_blank" rel="noopener">CERT-UA Identifies Malicious RDP Files in Latest Attack on Ukrainian Entities</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 26 Oct 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-10-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/over-70-zero-day-flaws-get-hackers-1-million-at-pwn2own-ireland/" target="_blank" rel="noopener">Over 70 zero-day flaws get hackers $1 million at Pwn2Own Ireland</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 26 Oct 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-10-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/new-windows-driver-signature-bypass-allows-kernel-rootkit-installs/" target="_blank" rel="noopener">New Windows Driver Signature bypass allows kernel rootkit installs</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 26 Oct 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-10-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/new-cisco-asa-and-ftd-features-block-vpn-brute-force-password-attacks/" target="_blank" rel="noopener">New Cisco ASA and FTD features block VPN brute-force password attacks</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 26 Oct 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-10-26"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.troyhunt.com/weekly-update-423/" target="_blank" rel="noopener">Weekly Update 423</a></div><span class="article-meta">TROYHUNT.COM &mdash; 26 Oct 2024</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-10-26"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/cyber-security-research-from-cdw-interview-with-ivo-wiens-field-cto-cybersecurity-cyber-security-today-weekend-for-october-26-2024" target="_blank" rel="noopener">Cyber Security Research from CDW: Interview with Ivo Wiens, Field CTO Cybersecurity: Cyber Security Today Weekend for October 26, 2024</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 26 Oct 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-10-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://haveibeenpwned.com/PwnedWebsites#TheClubPenguinExperience" target="_blank" rel="noopener">The Club Penguin Experience - 6,342 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 26 Oct 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-10-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2024/10/notorious-hacker-group-teamtnt-launches.html" target="_blank" rel="noopener">Notorious Hacker Group TeamTNT Launches New Cloud Attacks for Crypto Mining</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 26 Oct 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-10-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2024/10/four-revil-ransomware-members-sentenced.html" target="_blank" rel="noopener">Four REvil Ransomware Members Sentenced in Rare Russian Cybercrime Convictions</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 26 Oct 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-10-26"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/watch?v=7QFlumkwVvU" target="_blank" rel="noopener">Password Failures Are Still Happening in 2024?</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-10-26</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-10-26"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://sh.itjust.works/post/27164948" target="_blank" rel="noopener">Hacker attack causes log-in problems for Swiss media</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 26 Oct 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cert-ua identifies malicious rdp files in latest attack on ukrainian entities" data-date="2024-10-26"><span class="headline-date">26 Oct</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/10/cert-ua-identifies-malicious-rdp-files.html" target="_blank" rel="noopener">CERT-UA Identifies Malicious RDP Files in Latest Attack on Ukrainian Entities</a><span class="article-summary">The Computer Emergency Response Team of Ukraine (CERT-UA) has detailed a new malicious email campaign targeting government agencies, enterprises, and military entities. "The messages exploit the appeal of integrating popular services like Amazon or Microsoft and implementing a ze…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="over 70 zero-day flaws get hackers $1 million at pwn2own ireland" data-date="2024-10-26"><span class="headline-date">26 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/over-70-zero-day-flaws-get-hackers-1-million-at-pwn2own-ireland/" target="_blank" rel="noopener">Over 70 zero-day flaws get hackers $1 million at Pwn2Own Ireland</a><span class="article-summary">The fourth day of Pwn2Own Ireland 2024 marked the end of the hacking competition with more than $1 million in prizes for over 70 unique zero-day vulnerabilities in fully patched devices. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="new windows driver signature bypass allows kernel rootkit installs" data-date="2024-10-26"><span class="headline-date">26 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/new-windows-driver-signature-bypass-allows-kernel-rootkit-installs/" target="_blank" rel="noopener">New Windows Driver Signature bypass allows kernel rootkit installs</a><span class="article-summary">Attackers can downgrade Windows kernel components to bypass security features such as Driver Signature Enforcement and deploy rootkits on fully patched systems. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="new cisco asa and ftd features block vpn brute-force password attacks" data-date="2024-10-26"><span class="headline-date">26 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/new-cisco-asa-and-ftd-features-block-vpn-brute-force-password-attacks/" target="_blank" rel="noopener">New Cisco ASA and FTD features block VPN brute-force password attacks</a><span class="article-summary">Cisco has added new security features that significantly mitigate brute-force and password spray attacks on Cisco ASA and Firepower Threat Defense (FTD), helping protect the network from breaches and reducing resource utilization on devices. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="weekly update 423" data-date="2024-10-26"><span class="headline-date">26 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.troyhunt.com/weekly-update-423/" target="_blank" rel="noopener">Weekly Update 423</a><span class="article-summary">Presently sponsored by: 1Password Extended Access Management: Secure every sign-in for every app on every device. Firstly, my apologies for the minute and a bit of echo at the start of this video, OBS had somehow magically decided to start recording both the primary mic and the o…</span></span><span class="headline-source">TROYHUNT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cyber security research from cdw: interview with ivo wiens, field cto cybersecurity: cyber security today weekend for october 26, 2024" data-date="2024-10-26"><span class="headline-date">26 Oct</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/cyber-security-research-from-cdw-interview-with-ivo-wiens-field-cto-cybersecurity-cyber-security-today-weekend-for-october-26-2024" target="_blank" rel="noopener">Cyber Security Research from CDW: Interview with Ivo Wiens, Field CTO Cybersecurity: Cyber Security Today Weekend for October 26, 2024</a><span class="article-summary">Mastering Cybersecurity: From AI Threats to Quantum Encryption - Insights with CDW Join host Jim Love in a riveting discussion with Ivo Wiens, Field CTO for CDW Canada, as they review CDW's cyber security research and discussions with CISO's about the state of cyber security in C…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the club penguin experience - 6,342 breached accounts" data-date="2024-10-26"><span class="headline-date">26 Oct</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/PwnedWebsites#TheClubPenguinExperience" target="_blank" rel="noopener">The Club Penguin Experience - 6,342 breached accounts</a><span class="article-summary">In October 2024, The Club Penguin Experience (TCPE) suffered a data breach . The incident exposed over 6k subscribers' email addresses alongside usernames, age groups, passwords stored as bcrypt hashes and in some cases, plain text password hints. TCPE sent prompt disclosure noti…</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+<div class="headline" data-title="notorious hacker group teamtnt launches new cloud attacks for crypto mining" data-date="2024-10-26"><span class="headline-date">26 Oct</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/10/notorious-hacker-group-teamtnt-launches.html" target="_blank" rel="noopener">Notorious Hacker Group TeamTNT Launches New Cloud Attacks for Crypto Mining</a><span class="article-summary">The infamous cryptojacking group known as TeamTNT appears to be readying for a new large-scale campaign targeting cloud-native environments for mining cryptocurrencies and renting out breached servers to third-parties. "The group is currently targeting exposed Docker daemons to d…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="four revil ransomware members sentenced in rare russian cybercrime convictions" data-date="2024-10-26"><span class="headline-date">26 Oct</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/10/four-revil-ransomware-members-sentenced.html" target="_blank" rel="noopener">Four REvil Ransomware Members Sentenced in Rare Russian Cybercrime Convictions</a><span class="article-summary">Four members of the now-defunct REvil ransomware operation have been sentenced to several years in prison in Russia, marking one of the rare instances where cybercriminals from the country have been convicted of hacking and money laundering charges. Russian news publication Komme…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="password failures are still happening in 2024?" data-date="2024-10-26"><span class="headline-date">26 Oct</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=7QFlumkwVvU" target="_blank" rel="noopener">Password Failures Are Still Happening in 2024?</a><span class="article-summary">Still using weak passwords in 2024? 🤯 Hackers are waiting for you to slip up! With companies scrambling to patch security flaws only after attacks happen, it’s time to take control. From ransomware nightmares to missing out on MFA (multi-factor authentication), simple mistakes ar…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="hacker attack causes log-in problems for swiss media" data-date="2024-10-26"><span class="headline-date">26 Oct</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/27164948" target="_blank" rel="noopener">Hacker attack causes log-in problems for Swiss media</a><span class="article-summary">submitted by vovo to cybersecurity 2 points | 0 comments https://www.bluewin.ch/en/news/hacker-attack-causes-log-in-problems-for-swiss-media-2420128.html</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

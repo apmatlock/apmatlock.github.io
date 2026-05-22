@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-07-14</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,67 +109,46 @@
       <div class="stat"><span class="stat-value">4</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-07-14</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">9</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-07-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://today.ucsd.edu/story/a-simple-firmware-update-completely-hides-a-devices-bluetooth-fingerprint" target="_blank" rel="noopener">A Simple Firmware Update Completely Hides a Device’s Bluetooth Fingerprint</a></div><span class="article-meta">TODAY.UCSD.EDU &mdash; 14 Jul 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-07-14"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31068" target="_blank" rel="noopener">Wireshark 4.2.6 Released, (Sun, Jul 14th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 14 Jul 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-07-14"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2024/07/14/how-to-tell-if-your-online-accounts-have-been-hacked/" target="_blank" rel="noopener">How to tell if your online accounts have been hacked</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 14 Jul 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-07-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2024/07/upcoming-speaking-engagements-38.html" target="_blank" rel="noopener">Upcoming Speaking Engagements</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2024-07-14</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-07-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.wired.com/story/atandt-paid-hacker-300000-to-delete-stolen-call-records/" target="_blank" rel="noopener">AT&amp;amp;T Paid a Hacker $370,000 to Delete Stolen Phone Records</a></div><span class="article-meta">WIRED.COM &mdash; 14 Jul 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-07-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.securityweek.com/google-in-advanced-talks-to-buy-wiz-for-23b-wsj-report/" target="_blank" rel="noopener">Google in Advanced Talks to Buy Wiz for $23B: WSJ Report</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 14 Jul 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-07-14"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/experts-warn-post-trump-shooting-misinformation-scams-a-25764" target="_blank" rel="noopener">Experts Warn of Post-Trump Shooting Misinformation, Scams</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2024-07-14</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-07-14"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/banks-in-singapore-to-phase-out-one-time-passwords-in-3-months/" target="_blank" rel="noopener">Banks in Singapore to phase out one-time passwords in 3 months</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 14 Jul 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-07-14"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2024/07/14/google-reportedly-in-talks-to-acquire-cloud-security-company-wiz-for-23b/" target="_blank" rel="noopener">Google reportedly in talks to acquire cloud security company Wiz for $23B</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 14 Jul 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="a simple firmware update completely hides a device’s bluetooth fingerprint" data-date="2024-07-14"><span class="headline-date">14 Jul</span><span class="headline-body"><a class="headline-title" href="https://today.ucsd.edu/story/a-simple-firmware-update-completely-hides-a-devices-bluetooth-fingerprint" target="_blank" rel="noopener">A Simple Firmware Update Completely Hides a Device’s Bluetooth Fingerprint</a><span class="article-summary">submitted by BrikoX to cybersecurity 1 points | 0 comments https://today.ucsd.edu/story/a-simple-firmware-update-completely-hides-a-devices-bluetooth-fingerprint A smartphone’s unique Bluetooth fingerprint could be used to track the device’s user–until now. A team of researchers …</span></span><span class="headline-source">TODAY.UCSD.EDU</span></div>
+<div class="headline" data-title="wireshark 4.2.6 released, (sun, jul 14th)" data-date="2024-07-14"><span class="headline-date">14 Jul</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31068" target="_blank" rel="noopener">Wireshark 4.2.6 Released, (Sun, Jul 14th)</a><span class="article-summary">Wireshark release 4.2.6 fixes 1 vulnerability ( SPRT parser crash ) and 10 bugs. &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="how to tell if your online accounts have been hacked" data-date="2024-07-14"><span class="headline-date">14 Jul</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/07/14/how-to-tell-if-your-online-accounts-have-been-hacked/" target="_blank" rel="noopener">How to tell if your online accounts have been hacked</a><span class="article-summary">This is a guide on how to check whether someone compromised your online accounts. © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="upcoming speaking engagements" data-date="2024-07-14"><span class="headline-date">14 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2024/07/upcoming-speaking-engagements-38.html" target="_blank" rel="noopener">Upcoming Speaking Engagements</a><span class="article-summary">This is a current list of where and when I am scheduled to speak: I&#8217;m speaking on &#8220;Reimagining Democracy in the Age of AI&#8221; at the Bozeman Library in Bozeman, Montana, USA, July 18, 2024. The event will also be available via Zoom. I&#8217;m speaking at the TEDxBi…</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="at&amp;amp;t paid a hacker $370,000 to delete stolen phone records" data-date="2024-07-14"><span class="headline-date">14 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.wired.com/story/atandt-paid-hacker-300000-to-delete-stolen-call-records/" target="_blank" rel="noopener">AT&amp;amp;T Paid a Hacker $370,000 to Delete Stolen Phone Records</a><span class="article-summary">submitted by Lanky_Pomegranate530 to cybersecurity 4 points | 0 comments https://www.wired.com/story/atandt-paid-hacker-300000-to-delete-stolen-call-records/</span></span><span class="headline-source">WIRED.COM</span></div>
+<div class="headline" data-title="google in advanced talks to buy wiz for $23b: wsj report" data-date="2024-07-14"><span class="headline-date">14 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/google-in-advanced-talks-to-buy-wiz-for-23b-wsj-report/" target="_blank" rel="noopener">Google in Advanced Talks to Buy Wiz for $23B: WSJ Report</a><span class="article-summary">Google's parent company Alphabet is reportedly in advanced talks to acquire the hotshot Israeli data security startup. The post Google in Advanced Talks to Buy Wiz for $23B: WSJ Report appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="experts warn of post-trump shooting misinformation, scams" data-date="2024-07-14"><span class="headline-date">14 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/experts-warn-post-trump-shooting-misinformation-scams-a-25764" target="_blank" rel="noopener">Experts Warn of Post-Trump Shooting Misinformation, Scams</a><span class="article-summary">'Russian Troll Farms Are Highly Active' as FBI Investigates Attempted Assassination As the investigation of the attempted assassination of former President Trump unfolds, authorities and cybersecurity experts advise individuals and organizations to beware of online threats in the…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="banks in singapore to phase out one-time passwords in 3 months" data-date="2024-07-14"><span class="headline-date">14 Jul</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/banks-in-singapore-to-phase-out-one-time-passwords-in-3-months/" target="_blank" rel="noopener">Banks in Singapore to phase out one-time passwords in 3 months</a><span class="article-summary">The Monetary Authority of Singapore (MAS) has announced a new requirement impacting all major retail banks in the country to phase out the use of one-time passwords (OTPs) within the next three months. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="google reportedly in talks to acquire cloud security company wiz for $23b" data-date="2024-07-14"><span class="headline-date">14 Jul</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/07/14/google-reportedly-in-talks-to-acquire-cloud-security-company-wiz-for-23b/" target="_blank" rel="noopener">Google reportedly in talks to acquire cloud security company Wiz for $23B</a><span class="article-summary">Google’s parent company Alphabet might be on the verge of making its biggest acquisition ever. The Wall Street Journal reports that Alphabet is in advanced talks to acquire Wiz for around $23 billion. While the deal isn’t finalized, the WSJ says it could come together soon. Neith…</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

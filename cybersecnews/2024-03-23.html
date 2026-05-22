@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-03-23</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,78 +109,65 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-03-23</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">18</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">8</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-03-23"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://gbhackers.com/xbox-gaming-services-privilege-escalation/" target="_blank" rel="noopener">Microsoft Xbox Gaming Services Flaw Let Attackers Gain SYSTEM Privileges</a></div><span class="article-meta">GBHACKERS.COM &mdash; 23 Mar 2024</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-03-23"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/exploit-released-for-fortinet-rce-bug-used-in-attacks-patch-now/?&web_view=true" target="_blank" rel="noopener">Update: Exploit Released for Fortinet RCE Bug Used in Attacks, Patch Now</a></div><span class="kev-badge">KEV</span><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 23 Mar 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-03-23"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/mozilla-fixes-two-firefox-zero-day-bugs-exploited-at-pwn2own/?&web_view=true" target="_blank" rel="noopener">Mozilla Fixes Two Firefox Zero-Day Bugs Exploited at Pwn2Own</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 23 Mar 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-03-23"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/unsaflok-flaw-can-let-hackers-unlock-millions-of-hotel-doors/?&web_view=true" target="_blank" rel="noopener">Unsaflok Flaw can Let Hackers Unlock Millions of Hotel Doors</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 23 Mar 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-03-23"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/gofetch-side-channel-attack/" target="_blank" rel="noopener">GoFetch Side-Channel Attack Impact Apple CPUs: Attackers Steal Secret Keys</a></div><span class="article-meta">GBHACKERS.COM &mdash; 23 Mar 2024</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-03-23"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.infosecurity-magazine.com/news/us-ddos-attack-guidance-public/?&web_view=true" target="_blank" rel="noopener">US Government Releases New DDoS Attack Guidance for Public Sector</a></div><span class="article-meta">INFOSECURITY-MAGAZINE.COM &mdash; 23 Mar 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-03-23"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2024/03/russian-hackers-use-wineloader-malware.html" target="_blank" rel="noopener">Russian Hackers Use 'WINELOADER' Malware to Target German Political Parties</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 23 Mar 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-03-23"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://therecord.media/illinois-county-gov-college-hit-with-ransomware?&web_view=true" target="_blank" rel="noopener">Illinois County Government, Local College Affected by Ransomware Attacks</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 23 Mar 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-03-23"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.securityweek.com/german-authorities-shut-down-online-marketplace-for-drugs-data-and-cybercrime-services/" target="_blank" rel="noopener">German Authorities Shut Down Online Marketplace for Drugs, Data and Cybercrime Services</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 23 Mar 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-03-23"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.securityweek.com/finite-state-raises-20-million-to-grow-software-supply-chain-security-business/" target="_blank" rel="noopener">Finite State Raises $20 Million to Grow Software Supply Chain Security Business</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 23 Mar 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-03-23"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/iranian-ta450-group-tries-out-new-tactics-on-israelis-a-24697" target="_blank" rel="noopener">Iranian TA450 Group Tries Out New Tactics on Israelis</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2024-03-23</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-03-23"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.malwarebytes.com/blog/threat-intelligence/2024/03/new-go-loader-pushes-rhadamanthys/?&web_view=true" target="_blank" rel="noopener">New Go Loader Pushes Rhadamanthys Stealer</a></div><span class="article-meta">MALWAREBYTES.COM &mdash; 23 Mar 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-03-23"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.bankinfosecurity.com/iranian-ta450-group-tries-out-new-tactics-on-israelis-a-24697?&web_view=true" target="_blank" rel="noopener">Iranian TA450 Group Tries Out New Tactics on Israelis</a></div><span class="article-meta">BANKINFOSECURITY.COM &mdash; 23 Mar 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-03-23"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/hackers-deploy-strrat-vcurms-malware-on-windows-via-github/" target="_blank" rel="noopener">Hackers Deploy STRRAT &amp; VCURMS Malware on Windows Via GitHub</a></div><span class="article-meta">GBHACKERS.COM &mdash; 23 Mar 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-03-23"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/30770" target="_blank" rel="noopener">1768.py's Experimental Mode, (Sat, Mar 23rd)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 23 Mar 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-03-23"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2024/03/russian-hackers-use-wineloader-malware.html?m=1" target="_blank" rel="noopener">Russian Hackers Use &amp;#x27;WINELOADER&amp;#x27; Malware to Target German Political Parties</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 23 Mar 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-03-23"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/technology/opera-sees-big-jump-in-eu-users-on-ios-android-after-dma-update/" target="_blank" rel="noopener">Opera sees big jump in EU users on iOS, Android after DMA update</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 23 Mar 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-03-23"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/microsoft/microsoft-to-shut-down-50-cloud-services-for-russian-businesses/" target="_blank" rel="noopener">Microsoft to shut down 50 cloud services for Russian businesses</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 23 Mar 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="microsoft xbox gaming services flaw let attackers gain system privileges" data-date="2024-03-23"><span class="headline-date">23 Mar</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/xbox-gaming-services-privilege-escalation/" target="_blank" rel="noopener">Microsoft Xbox Gaming Services Flaw Let Attackers Gain SYSTEM Privileges</a><span class="article-summary">A new elevation of privilege vulnerability has been discovered in the Xbox Gaming services that allow a threat actor to elevate their privileges to that of a SYSTEM. This particular vulnerability has been assigned CVE-2024-28916, and its severity has been given as 8.8 (High). Whe…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="update: exploit released for fortinet rce bug used in attacks, patch now" data-date="2024-03-23"><span class="headline-date">23 Mar <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/exploit-released-for-fortinet-rce-bug-used-in-attacks-patch-now/?&web_view=true" target="_blank" rel="noopener">Update: Exploit Released for Fortinet RCE Bug Used in Attacks, Patch Now</a><span class="article-summary">While the company didn't initially mention that CVE-2023-48788 was being used in attacks, it has since silently updated the advisory to say that the "vulnerability is exploited in the wild."</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="mozilla fixes two firefox zero-day bugs exploited at pwn2own" data-date="2024-03-23"><span class="headline-date">23 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/mozilla-fixes-two-firefox-zero-day-bugs-exploited-at-pwn2own/?&web_view=true" target="_blank" rel="noopener">Mozilla Fixes Two Firefox Zero-Day Bugs Exploited at Pwn2Own</a><span class="article-summary">Mozilla fixed the security flaws in Firefox 124.0.1 and Firefox ESR 115.9.1 to block potential remote code execution attacks targeting unpatched web browsers on desktop devices.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="unsaflok flaw can let hackers unlock millions of hotel doors" data-date="2024-03-23"><span class="headline-date">23 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/unsaflok-flaw-can-let-hackers-unlock-millions-of-hotel-doors/?&web_view=true" target="_blank" rel="noopener">Unsaflok Flaw can Let Hackers Unlock Millions of Hotel Doors</a><span class="article-summary">Researchers disclosed vulnerabilities today that impact 3 million Saflok electronic RFID locks deployed in 13,000 hotels and homes worldwide, allowing the researchers to easily unlock any door in a hotel by forging a pair of keycards.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="gofetch side-channel attack impact apple cpus: attackers steal secret keys" data-date="2024-03-23"><span class="headline-date">23 Mar</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/gofetch-side-channel-attack/" target="_blank" rel="noopener">GoFetch Side-Channel Attack Impact Apple CPUs: Attackers Steal Secret Keys</a><span class="article-summary">Researchers have unveiled a new class of microarchitectural side-channel attacks that pose a severe threat to the security of Apple CPUs. The attack, GoFetch, exploits the Data Memory-dependent Prefetchers (DMPs) in modern processors to extract secret cryptographic keys from cons…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="us government releases new ddos attack guidance for public sector" data-date="2024-03-23"><span class="headline-date">23 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.infosecurity-magazine.com/news/us-ddos-attack-guidance-public/?&web_view=true" target="_blank" rel="noopener">US Government Releases New DDoS Attack Guidance for Public Sector</a><span class="article-summary">The joint advisory from the CISA, the FBI, and the MS-ISAC, highlighted three main types of DDoS attacks public sector entities must be prepared for, including Volume-based attacks, Protocol-based attacks, and Application layer-based attacks.</span></span><span class="headline-source">INFOSECURITY-MAGAZINE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="russian hackers use 'wineloader' malware to target german political parties" data-date="2024-03-23"><span class="headline-date">23 Mar</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/03/russian-hackers-use-wineloader-malware.html" target="_blank" rel="noopener">Russian Hackers Use 'WINELOADER' Malware to Target German Political Parties</a><span class="article-summary">The WINELOADER backdoor used in recent cyber attacks targeting diplomatic entities with wine-tasting phishing lures has been attributed as the handiwork of a hacking group with links to Russia's Foreign Intelligence Service (SVR), which was responsible for&nbsp;breaching SolarWin…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="illinois county government, local college affected by ransomware attacks" data-date="2024-03-23"><span class="headline-date">23 Mar</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/illinois-county-gov-college-hit-with-ransomware?&web_view=true" target="_blank" rel="noopener">Illinois County Government, Local College Affected by Ransomware Attacks</a><span class="article-summary">Henry County has been dealing with a wide-ranging cyberattack since March 18, Mat Schnepple, director of the Emergency Management (OEM) office in Henry County, confirmed to Recorded Future News.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">8</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="german authorities shut down online marketplace for drugs, data and cybercrime services" data-date="2024-03-23"><span class="headline-date">23 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/german-authorities-shut-down-online-marketplace-for-drugs-data-and-cybercrime-services/" target="_blank" rel="noopener">German Authorities Shut Down Online Marketplace for Drugs, Data and Cybercrime Services</a><span class="article-summary">German authorities took down the Nemesis Market, a major online marketplace for drugs, cybercrime services and stolen credit card data. The post German Authorities Shut Down Online Marketplace for Drugs, Data and Cybercrime Services appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="finite state raises $20 million to grow software supply chain security business" data-date="2024-03-23"><span class="headline-date">23 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/finite-state-raises-20-million-to-grow-software-supply-chain-security-business/" target="_blank" rel="noopener">Finite State Raises $20 Million to Grow Software Supply Chain Security Business</a><span class="article-summary">Software risk management firm Finite State has raised a $20 million growth round led by Energy Impact Partners (EIP). The post Finite State Raises $20 Million to Grow Software Supply Chain Security Business appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="iranian ta450 group tries out new tactics on israelis" data-date="2024-03-23"><span class="headline-date">23 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/iranian-ta450-group-tries-out-new-tactics-on-israelis-a-24697" target="_blank" rel="noopener">Iranian TA450 Group Tries Out New Tactics on Israelis</a><span class="article-summary">Proofpoint Researchers Say Beware of Phishing Emails, Embedded Links in PDFs Iran-aligned threat actor TA450, also called MuddyWater, is using fake salary, compensation and financial incentive emails to trick Israeli employees at multi-national organizations into clicking malicio…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+<div class="headline" data-title="new go loader pushes rhadamanthys stealer" data-date="2024-03-23"><span class="headline-date">23 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.malwarebytes.com/blog/threat-intelligence/2024/03/new-go-loader-pushes-rhadamanthys/?&web_view=true" target="_blank" rel="noopener">New Go Loader Pushes Rhadamanthys Stealer</a><span class="article-summary">PuTTY is a very popular SSH and Telnet client for Windows used by IT admins for years. The threat actor bought an ad that claims to be the PuTTY homepage and appeared at the top of the Google search results page, right before the official website.</span></span><span class="headline-source">MALWAREBYTES.COM</span></div>
+<div class="headline" data-title="iranian ta450 group tries out new tactics on israelis" data-date="2024-03-23"><span class="headline-date">23 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.bankinfosecurity.com/iranian-ta450-group-tries-out-new-tactics-on-israelis-a-24697?&web_view=true" target="_blank" rel="noopener">Iranian TA450 Group Tries Out New Tactics on Israelis</a><span class="article-summary">Iran-aligned threat actor TA450 is using fake salary, compensation and financial incentive emails to trick Israeli employees at multi-national organizations into clicking malicious links, according to researchers at security firm Proofpoint.</span></span><span class="headline-source">BANKINFOSECURITY.COM</span></div>
+<div class="headline" data-title="hackers deploy strrat &amp; vcurms malware on windows via github" data-date="2024-03-23"><span class="headline-date">23 Mar</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/hackers-deploy-strrat-vcurms-malware-on-windows-via-github/" target="_blank" rel="noopener">Hackers Deploy STRRAT &amp; VCURMS Malware on Windows Via GitHub</a><span class="article-summary">A new phishing campaign targets users with emails containing a button to &#8220;verify payment information.&#8221; Clicking the button triggers the download of a malicious JAR file (disguised as an invoice) that leverages a PowerShell command to download two additional JARs.&#160…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="1768.py's experimental mode, (sat, mar 23rd)" data-date="2024-03-23"><span class="headline-date">23 Mar</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/30770" target="_blank" rel="noopener">1768.py's Experimental Mode, (Sat, Mar 23rd)</a><span class="article-summary">The reason I extracted a PE file in my last diary entry , is that I discovered it was the dropper of a Cobalt Strike beacon &&#x23&#x3b;x26&#x3b;&#x23&#x3b;x40&#x3b;DebugPrivilege had pointed me to . My 1768.py tool crashed on the process memory dump. This is fixed now, but it st…</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="russian hackers use &amp;#x27;wineloader&amp;#x27; malware to target german political parties" data-date="2024-03-23"><span class="headline-date">23 Mar</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/03/russian-hackers-use-wineloader-malware.html?m=1" target="_blank" rel="noopener">Russian Hackers Use &amp;#x27;WINELOADER&amp;#x27; Malware to Target German Political Parties</a><span class="article-summary">submitted by Lanky_Pomegranate530 to cybersecurity 1 points | 0 comments https://thehackernews.com/2024/03/russian-hackers-use-wineloader-malware.html?m=1</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="opera sees big jump in eu users on ios, android after dma update" data-date="2024-03-23"><span class="headline-date">23 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/technology/opera-sees-big-jump-in-eu-users-on-ios-android-after-dma-update/" target="_blank" rel="noopener">Opera sees big jump in EU users on iOS, Android after DMA update</a><span class="article-summary">Opera has reported a substantial 164% increase in new European Union users on iOS devices after Apple introduced a new feature to comply with the EU's Digital Markets Act (DMA). [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="microsoft to shut down 50 cloud services for russian businesses" data-date="2024-03-23"><span class="headline-date">23 Mar</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/microsoft/microsoft-to-shut-down-50-cloud-services-for-russian-businesses/" target="_blank" rel="noopener">Microsoft to shut down 50 cloud services for Russian businesses</a><span class="article-summary">Microsoft plans to limit access to over fifty cloud products for Russian organizations by the end of March as part of the sanctions requirements against the country issued by EU regulators last December. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

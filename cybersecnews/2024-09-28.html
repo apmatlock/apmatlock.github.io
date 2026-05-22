@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-09-28</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,76 +109,67 @@
       <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-09-28</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">15</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">3</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-09-28"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://securityaffairs.com/168953/ics-scada/openplc-critical-flaw.html?&web_view=true" target="_blank" rel="noopener">Critical RCE Vulnerability Found in OpenPLC</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 28 Sep 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-09-28"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/09/cloudflare-warns-of-india-linked.html?&web_view=true" target="_blank" rel="noopener">Cloudflare Warns of India-Linked Hackers Targeting South and East Asian Entities</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 28 Sep 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-09-28"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/kia-dealer-portal-flaw-could-let-attackers-hack-millions-of-cars/?&web_view=true" target="_blank" rel="noopener">Kia Dealer Portal Flaw Could Let Attackers Hack Millions of Cars</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 28 Sep 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-09-28"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/09/crypto-scam-app-disguised-as.html" target="_blank" rel="noopener">Crypto Scam App Disguised as WalletConnect Steals $70K in Five-Month Campaign</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 28 Sep 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-09-28"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://sh.itjust.works/post/25875140" target="_blank" rel="noopener">Novel Exploit Chain Enables Windows UAC Bypass</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 28 Sep 2024</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-09-28"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.troyhunt.com/weekly-update-419/" target="_blank" rel="noopener">Weekly Update 419</a></div><span class="article-meta">TROYHUNT.COM &mdash; 28 Sep 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-09-28"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2024/09/chatgpt-macos-flaw-couldve-enabled-long.html?&web_view=true" target="_blank" rel="noopener">ChatGPT macOS Flaw Could've Enabled Long-Term Spyware via Memory Function</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 28 Sep 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-09-28"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://securityaffairs.com/168941/apt/salt-typhoon-china-linked-threat-actors-breached-us-isp.html?&web_view=true" target="_blank" rel="noopener">China-linked APT group Salt Typhoon compromised some US ISPs</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 28 Sep 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-09-28"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/cyber-security-today-week-in-review-for-september-28th-2024" target="_blank" rel="noopener">Cyber Security Today - Week in Review for September 28th, 2024</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 28 Sep 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-09-28"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://sh.itjust.works/post/25886530" target="_blank" rel="noopener">An HTTP flood tool for Android</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 28 Sep 2024</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2024-09-28"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/hackers-deploy-ai-written-malware-in-targeted-attacks/?&web_view=true" target="_blank" rel="noopener">Hackers Deploy AI-Written Malware in Targeted Attacks</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 28 Sep 2024</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2024-09-28"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.gdatasoftware.com/blog/2024/09/38039-bbtok-deobfuscating-net-loader?&web_view=true" target="_blank" rel="noopener">BBTok Targeting Brazil Using the AppDomain Manager Injection Technique</a></div><span class="article-meta">GDATASOFTWARE.COM &mdash; 28 Sep 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-09-28"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2024/09/us-charges-three-iranian-nationals-for.html" target="_blank" rel="noopener">U.S. Charges Three Iranian Nationals for Election Interference and Cybercrimes</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 28 Sep 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-09-28"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.theregister.com/2024/09/26/hpe_aruba_patch_papi/?&web_view=true" target="_blank" rel="noopener">HPE Patches Three Critical Security Holes in Aruba PAPI</a></div><span class="article-meta">THEREGISTER.COM &mdash; 28 Sep 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-09-28"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/legal/ireland-fines-meta-91-million-for-storing-passwords-in-plaintext/" target="_blank" rel="noopener">Ireland fines Meta €91 million for storing passwords in plaintext</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 28 Sep 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="critical rce vulnerability found in openplc" data-date="2024-09-28"><span class="headline-date">28 Sep</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/168953/ics-scada/openplc-critical-flaw.html?&web_view=true" target="_blank" rel="noopener">Critical RCE Vulnerability Found in OpenPLC</a><span class="article-summary">The most severe issue is a stack-based buffer overflow vulnerability (CVE-2024-34026) that allows an attacker to execute remote code. Users are advised to update to the latest version of OpenPLC to protect against these security risks.</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cloudflare warns of india-linked hackers targeting south and east asian entities" data-date="2024-09-28"><span class="headline-date">28 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/09/cloudflare-warns-of-india-linked.html?&web_view=true" target="_blank" rel="noopener">Cloudflare Warns of India-Linked Hackers Targeting South and East Asian Entities</a><span class="article-summary">SloppyLemming has been active since at least July 2021 and has targeted the government, law enforcement, energy, education, telecommunications, and technology sectors in countries such as Pakistan, Sri Lanka, Bangladesh, China, Nepal, and Indonesia.</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="kia dealer portal flaw could let attackers hack millions of cars" data-date="2024-09-28"><span class="headline-date">28 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/kia-dealer-portal-flaw-could-let-attackers-hack-millions-of-cars/?&web_view=true" target="_blank" rel="noopener">Kia Dealer Portal Flaw Could Let Attackers Hack Millions of Cars</a><span class="article-summary">The vulnerabilities could be exploited to remotely control Kia vehicles equipped with remote hardware in under 30 seconds, exposing the sensitive personal information of car owners.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="crypto scam app disguised as walletconnect steals $70k in five-month campaign" data-date="2024-09-28"><span class="headline-date">28 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/09/crypto-scam-app-disguised-as.html" target="_blank" rel="noopener">Crypto Scam App Disguised as WalletConnect Steals $70K in Five-Month Campaign</a><span class="article-summary">Cybersecurity researchers have discovered a malicious Android app on the Google Play Store that enabled the threat actors behind it to steal approximately $70,000 in cryptocurrency from victims over a period of nearly five months. The dodgy app, identified by Check Point, masquer…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="novel exploit chain enables windows uac bypass" data-date="2024-09-28"><span class="headline-date">28 Sep</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/25875140" target="_blank" rel="noopener">Novel Exploit Chain Enables Windows UAC Bypass</a><span class="article-summary">submitted by kid to cybersecurity 2 points | 0 comments https://www.darkreading.com/vulnerabilities-threats/exploit-chain-windows-uac-bypass</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="weekly update 419" data-date="2024-09-28"><span class="headline-date">28 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.troyhunt.com/weekly-update-419/" target="_blank" rel="noopener">Weekly Update 419</a><span class="article-summary">Presently sponsored by: Lithnet Access Manager. Level up your lateral movement defence with RapidLAPS, the passwordless LAPS experience. It&apos;s not a green screen! It&apos;s just a weird a weird hotel room in Pittsburgh, but it did make for a cool backdrop for this week&apos;s…</span></span><span class="headline-source">TROYHUNT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="chatgpt macos flaw could've enabled long-term spyware via memory function" data-date="2024-09-28"><span class="headline-date">28 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/09/chatgpt-macos-flaw-couldve-enabled-long.html?&web_view=true" target="_blank" rel="noopener">ChatGPT macOS Flaw Could've Enabled Long-Term Spyware via Memory Function</a><span class="article-summary">A security flaw in OpenAI's ChatGPT app for macOS, now patched, could have allowed attackers to implant persistent spyware into the AI tool's memory. This could lead to continuous data exfiltration of user information across chat sessions.</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="china-linked apt group salt typhoon compromised some us isps" data-date="2024-09-28"><span class="headline-date">28 Sep</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/168941/apt/salt-typhoon-china-linked-threat-actors-breached-us-isp.html?&web_view=true" target="_blank" rel="noopener">China-linked APT group Salt Typhoon compromised some US ISPs</a><span class="article-summary">Experts are investigating whether the hackers gained access to Cisco Systems routers, a key component of ISP infrastructures, but Cisco has not found any indication of router involvement.</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+<div class="headline" data-title="cyber security today - week in review for september 28th, 2024" data-date="2024-09-28"><span class="headline-date">28 Sep</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/cyber-security-today-week-in-review-for-september-28th-2024" target="_blank" rel="noopener">Cyber Security Today - Week in Review for September 28th, 2024</a><span class="article-summary">Cyber Security Week in Review: Data Breaches, MFA Bypassing, and Surveillance Insights Join host Jim Love along with an expert panel featuring Terry Cutler, David Shipley, and Laura Payne to discuss this week in cybersecurity. Topics include the latest methods of bypassing MFA, d…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="an http flood tool for android" data-date="2024-09-28"><span class="headline-date">28 Sep</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/25886530" target="_blank" rel="noopener">An HTTP flood tool for Android</a><span class="article-summary">submitted by Super_gamer46861 to cybersecurity 3 points | 0 comments https://lemmy.world/pictrs/image/695f1f8d-fb59-4ded-9a36-e9915096ecb8.png github.com/umutcamliyurt/DoSDroid</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="hackers deploy ai-written malware in targeted attacks" data-date="2024-09-28"><span class="headline-date">28 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/hackers-deploy-ai-written-malware-in-targeted-attacks/?&web_view=true" target="_blank" rel="noopener">Hackers Deploy AI-Written Malware in Targeted Attacks</a><span class="article-summary">Hackers are now using AI-generated malware in targeted attacks. In a recent email campaign in France, researchers found malicious code crafted with the help of generative AI to distribute the AsyncRAT malware.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="bbtok targeting brazil using the appdomain manager injection technique" data-date="2024-09-28"><span class="headline-date">28 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.gdatasoftware.com/blog/2024/09/38039-bbtok-deobfuscating-net-loader?&web_view=true" target="_blank" rel="noopener">BBTok Targeting Brazil Using the AppDomain Manager Injection Technique</a><span class="article-summary">The Brazilian-targeted threat BBTok has a complex infection chain that starts with an email containing an ISO image. The malware compiles C# code directly on the infected machine and uses the AppDomain Manager Injection technique.</span></span><span class="headline-source">GDATASOFTWARE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="u.s. charges three iranian nationals for election interference and cybercrimes" data-date="2024-09-28"><span class="headline-date">28 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/09/us-charges-three-iranian-nationals-for.html" target="_blank" rel="noopener">U.S. Charges Three Iranian Nationals for Election Interference and Cybercrimes</a><span class="article-summary">U.S. federal prosecutors on Friday unsealed criminal charges against three Iranian nationals who are allegedly employed with the Islamic Revolutionary Guard Corps (IRGC) for their targeting of current and former officials to steal sensitive data. The Department of Justice (DoJ) a…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="hpe patches three critical security holes in aruba papi" data-date="2024-09-28"><span class="headline-date">28 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.theregister.com/2024/09/26/hpe_aruba_patch_papi/?&web_view=true" target="_blank" rel="noopener">HPE Patches Three Critical Security Holes in Aruba PAPI</a><span class="article-summary">HPE has released patches for three critical security vulnerabilities in Aruba's networking access points, which could allow attackers to run code on the systems by sending specially crafted packets to UDP port 8211.</span></span><span class="headline-source">THEREGISTER.COM</span></div>
+<div class="headline" data-title="ireland fines meta €91 million for storing passwords in plaintext" data-date="2024-09-28"><span class="headline-date">28 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/legal/ireland-fines-meta-91-million-for-storing-passwords-in-plaintext/" target="_blank" rel="noopener">Ireland fines Meta €91 million for storing passwords in plaintext</a><span class="article-summary">The Data Protection Commission (DPC) in Ireland has fined Meta Platforms Ireland Limited (MPIL) €91 million ($100 million) for storing in plaintext passwords of hundreds of millions of users. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

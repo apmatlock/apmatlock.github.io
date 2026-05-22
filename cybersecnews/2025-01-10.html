@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-01-10</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,83 +109,74 @@
       <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-01-10</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">22</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">4</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-01-10"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2025/01/google-project-zero-researcher-uncovers.html" target="_blank" rel="noopener">Google Project Zero Researcher Uncovers Zero-Click Exploit Targeting Samsung Devices</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 10 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/90-percent-of-free-vpns-have-security-weaknesses-cyber-security-today-for-friday-january-10-2025" target="_blank" rel="noopener">90 Percent of Free VPNs Have Security Weaknesses: Cyber Security Today for Friday, January 10, 2025</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 10 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/01/crowdstrike-warns-of-phishing-scam.html" target="_blank" rel="noopener">CrowdStrike Warns of Phishing Scam Targeting Job Seekers with XMRig Cryptominer</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 10 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2025/01/10/cisa-releases-four-industrial-control-systems-advisories" target="_blank" rel="noopener">CISA Releases Four Industrial Control Systems Advisories</a></div><span class="article-meta">CISA.GOV &mdash; Fri, 10 Jan 25 1</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2025/01/10/cisa-releases-cybersecurity-performance-goals-adoption-report" target="_blank" rel="noopener">CISA Releases the Cybersecurity Performance Goals Adoption Report</a></div><span class="article-meta">CISA.GOV &mdash; Fri, 10 Jan 25 1</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://medium.com/anton-on-security/new-paper-future-of-soc-transform-the-how-paper-5-0de3caa72971?source=rss----8e8c3ed26c4c---4" target="_blank" rel="noopener">New Paper: “Future of SOC: Transform the ‘How’” (Paper 5)</a></div><span class="article-meta">MEDIUM.COM &mdash; 10 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://securityintelligence.com/articles/is-the-water-safe-state-of-critical-infrastructure-cybersecurity/" target="_blank" rel="noopener">Is the water safe? The state of critical infrastructure cybersecurity</a></div><span class="article-meta">SECURITYINTELLIGENCE.COM &mdash; 10 Jan 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-01-10"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.kaspersky.com/blog/badram-cpu-attack/52849/" target="_blank" rel="noopener">BadRAM: attack using malicious RAM module | Kaspersky official blog</a></div><span class="article-meta">KASPERSKY.COM &mdash; 10 Jan 2025</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-01-10"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.cisa.gov/news-events/news/cisa-through-years-policy-and-impact" target="_blank" rel="noopener">CISA Through the Years: Policy and Impact</a></div><span class="article-meta">CISA.GOV &mdash; Fri, 10 Jan 25 1</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-10"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2025/01/apps-that-are-spying-on-your-location.html" target="_blank" rel="noopener">Apps That Are Spying on Your Location</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2025-01-10</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-10"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://thehackernews.com/2025/01/ai-driven-ransomware-funksec-targets-85.html" target="_blank" rel="noopener">AI-Driven Ransomware FunkSec Targets 85 Victims Using Double Extortion Tactics</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 10 Jan 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-10"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2025/01/10/us-government-charges-operators-of-crypto-mixing-service-used-by-north-korea-and-ransomware-gangs/" target="_blank" rel="noopener">US government charges operators of crypto mixing service used by North Korea and ransomware gangs</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 10 Jan 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-10"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2025/01/10/china-hacked-us-treasurys-cfius-which-reviews-foreign-investments-for-national-security-risks/" target="_blank" rel="noopener">China hacked US Treasury’s CFIUS, which reviews foreign investments for national security risks</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 10 Jan 2025</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-01-10"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2025/01/10/cannabis-company-stiiizy-says-hackers-accessed-customers-id-documents/" target="_blank" rel="noopener">Cannabis company Stiiizy says hackers accessed customers’ ID documents</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 10 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-10"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2025/01/friday-squid-blogging-cotton-and-squid-bone-sponge.html" target="_blank" rel="noopener">Friday Squid Blogging: Cotton-and-Squid-Bone Sponge</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2025-01-10</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-10"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2025/01/reddelta-deploys-plugx-malware-to.html" target="_blank" rel="noopener">RedDelta Deploys PlugX Malware to Target Mongolia and Taiwan in Espionage Campaigns</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 10 Jan 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-01-10"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/22278398" target="_blank" rel="noopener">Off-Topic Friday</a></div><span class="article-meta">INFOSEC.PUB &mdash; 10 Jan 2025</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-01-10"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/25/a/how-cracks-and-installers-bring-malware-to-your-device.html" target="_blank" rel="noopener">How Cracks and Installers Bring Malware to Your Device</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 10 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-10"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2025/01/taking-pain-out-of-cybersecurity.html" target="_blank" rel="noopener">Taking the Pain Out of Cybersecurity Reporting: A Practical Guide for MSPs</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 10 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-10"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2025/01/hands-on-walkthrough-microsegmentation.html" target="_blank" rel="noopener">Hands-On Walkthrough: Microsegmentation For all Users, Workloads and Devices by Elisity</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 10 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-10"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2025/01/10/microsoft-accuses-group-of-developing-tool-to-abuse-its-ai-service-in-new-lawsuit/" target="_blank" rel="noopener">Microsoft accuses group of developing tool to abuse its AI service in new lawsuit</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 10 Jan 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-01-10"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bitdefender.com/en-us/blog/hotforsecurity/canadian-man-loses-a-cryptocurrency-fortune-to-scammers-heres-how-you-can-stop-it-happening-to-you" target="_blank" rel="noopener">Canadian man loses a cryptocurrency fortune to scammers – here’s how you can stop it happening to you</a></div><span class="article-meta">BITDEFENDER.COM &mdash; 10 Jan 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="google project zero researcher uncovers zero-click exploit targeting samsung devices" data-date="2025-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/google-project-zero-researcher-uncovers.html" target="_blank" rel="noopener">Google Project Zero Researcher Uncovers Zero-Click Exploit Targeting Samsung Devices</a><span class="article-summary">Cybersecurity researchers have detailed a now-patched security flaw impacting Monkey's Audio (APE) decoder on Samsung smartphones that could lead to code execution. The high-severity vulnerability, tracked as CVE-2024-49415 (CVSS score: 8.1), affects Samsung devices running Andro…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="90 percent of free vpns have security weaknesses: cyber security today for friday, january 10, 2025" data-date="2025-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/90-percent-of-free-vpns-have-security-weaknesses-cyber-security-today-for-friday-january-10-2025" target="_blank" rel="noopener">90 Percent of Free VPNs Have Security Weaknesses: Cyber Security Today for Friday, January 10, 2025</a><span class="article-summary">Cybersecurity Alert: Free VPN Risks, Packers' Data Breach, and SonicWall Vulnerability In this episode, host Jim Love delves into critical cybersecurity issues including the hidden dangers of free VPNs, a payment skimmer attack on the Green Bay Packers’ online pro shop, and a sev…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="crowdstrike warns of phishing scam targeting job seekers with xmrig cryptominer" data-date="2025-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/crowdstrike-warns-of-phishing-scam.html" target="_blank" rel="noopener">CrowdStrike Warns of Phishing Scam Targeting Job Seekers with XMRig Cryptominer</a><span class="article-summary">Cybersecurity company CrowdStrike is alerting of a phishing campaign that exploits its own branding to distribute a cryptocurrency miner that's disguised as an employee CRM application as part of a supposed recruitment process. "The attack begins with a phishing email impersonati…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="cisa releases four industrial control systems advisories" data-date="2025-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2025/01/10/cisa-releases-four-industrial-control-systems-advisories" target="_blank" rel="noopener">CISA Releases Four Industrial Control Systems Advisories</a><span class="article-summary">CISA released four Industrial Control Systems (ICS) advisories on January 10, 2025. These advisories provide timely information about current security issues, vulnerabilities, and exploits surrounding ICS. ICSA-25-010-01 Schneider Electric PowerChute Serial Shutdown ICSA-25-010-0…</span></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="cisa releases the cybersecurity performance goals adoption report" data-date="2025-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2025/01/10/cisa-releases-cybersecurity-performance-goals-adoption-report" target="_blank" rel="noopener">CISA Releases the Cybersecurity Performance Goals Adoption Report</a><span class="article-summary">Today, CISA released the Cybersecurity Performance Goals Adoption Report to highlight how adoption of Cybersecurity Performance Goals (CPGs) benefits our nation’s critical infrastructure sectors. Originally released in October 2022, CISA’s CPGs are voluntary practices that critic…</span></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="new paper: “future of soc: transform the ‘how’” (paper 5)" data-date="2025-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://medium.com/anton-on-security/new-paper-future-of-soc-transform-the-how-paper-5-0de3caa72971?source=rss----8e8c3ed26c4c---4" target="_blank" rel="noopener">New Paper: “Future of SOC: Transform the ‘How’” (Paper 5)</a><span class="article-summary">After a long, long, long writing effort … eh … break, we are ready with our 5th Deloitte and Google Cloud Future of the SOC paper “Future of SOC: Transform the ‘How’.” As a reminder (and I promise you do need it; it has been years…), the previous 4 papers are: “New Paper: “Future…</span></span><span class="headline-source">MEDIUM.COM</span></div>
+<div class="headline" data-title="is the water safe? the state of critical infrastructure cybersecurity" data-date="2025-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://securityintelligence.com/articles/is-the-water-safe-state-of-critical-infrastructure-cybersecurity/" target="_blank" rel="noopener">Is the water safe? The state of critical infrastructure cybersecurity</a><span class="article-summary">On September 25, CISA issued a stark reminder that critical infrastructure remains a primary target for cyberattacks. Vulnerable systems in industrial sectors, including water utilities, continue to be exploited due to poor cyber hygiene practices. Using unsophisticated methods l…</span></span><span class="headline-source">SECURITYINTELLIGENCE.COM</span></div>
+<div class="headline" data-title="badram: attack using malicious ram module | kaspersky official blog" data-date="2025-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.kaspersky.com/blog/badram-cpu-attack/52849/" target="_blank" rel="noopener">BadRAM: attack using malicious RAM module | Kaspersky official blog</a><span class="article-summary">Theoretical BadRAM attack on virtualization systems exploits a vulnerability in AMD EPYC processors.</span></span><span class="headline-source">KASPERSKY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa through the years: policy and impact" data-date="2025-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/news/cisa-through-years-policy-and-impact" target="_blank" rel="noopener">CISA Through the Years: Policy and Impact</a></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="apps that are spying on your location" data-date="2025-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2025/01/apps-that-are-spying-on-your-location.html" target="_blank" rel="noopener">Apps That Are Spying on Your Location</a><span class="article-summary">404 Media and Wired are reporting on all the apps that are spying on your location, based on a hack of the location data company Gravy Analytics: The thousands of apps, included in hacked files from location data company Gravy Analytics, include everything from games like Candy C…</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="ai-driven ransomware funksec targets 85 victims using double extortion tactics" data-date="2025-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/ai-driven-ransomware-funksec-targets-85.html" target="_blank" rel="noopener">AI-Driven Ransomware FunkSec Targets 85 Victims Using Double Extortion Tactics</a><span class="article-summary">Cybersecurity researchers have shed light on a nascent artificial intelligence (AI) assisted ransomware family called FunkSec that sprang forth in late 2024, and has claimed more than 85 victims to date. "The group uses double extortion tactics, combining data theft with encrypti…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="us government charges operators of crypto mixing service used by north korea and ransomware gangs" data-date="2025-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/01/10/us-government-charges-operators-of-crypto-mixing-service-used-by-north-korea-and-ransomware-gangs/" target="_blank" rel="noopener">US government charges operators of crypto mixing service used by North Korea and ransomware gangs</a><span class="article-summary">Three Russian citizens were charged with money laundering for their role in operating Blender.io and Sinbad.io crypto mixing services. © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="china hacked us treasury’s cfius, which reviews foreign investments for national security risks" data-date="2025-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/01/10/china-hacked-us-treasurys-cfius-which-reviews-foreign-investments-for-national-security-risks/" target="_blank" rel="noopener">China hacked US Treasury’s CFIUS, which reviews foreign investments for national security risks</a><span class="article-summary">The hackers targeting the Treasury are dubbed Silk Typhoon, and previously mass-hacked thousands of corporate email servers. © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="cannabis company stiiizy says hackers accessed customers’ id documents" data-date="2025-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/01/10/cannabis-company-stiiizy-says-hackers-accessed-customers-id-documents/" target="_blank" rel="noopener">Cannabis company Stiiizy says hackers accessed customers’ ID documents</a><span class="article-summary">A ransomware gang took credit for the breach, claiming to have stolen over 400,000 government-issued identity documents from customers. © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="friday squid blogging: cotton-and-squid-bone sponge" data-date="2025-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2025/01/friday-squid-blogging-cotton-and-squid-bone-sponge.html" target="_blank" rel="noopener">Friday Squid Blogging: Cotton-and-Squid-Bone Sponge</a><span class="article-summary">News : A sponge made of cotton and squid bone that has absorbed about 99.9% of microplastics in water samples in China could provide an elusive answer to ubiquitous microplastic pollution in water across the globe, a new report suggests. [&#8230;] The study tested the material in…</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="reddelta deploys plugx malware to target mongolia and taiwan in espionage campaigns" data-date="2025-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/reddelta-deploys-plugx-malware-to.html" target="_blank" rel="noopener">RedDelta Deploys PlugX Malware to Target Mongolia and Taiwan in Espionage Campaigns</a><span class="article-summary">Mongolia, Taiwan, Myanmar, Vietnam, and Cambodia have been targeted by the China-nexus RedDelta threat actor to deliver a customized version of the PlugX backdoor between July 2023 and December 2024. "The group used lure documents themed around the 2024 Taiwanese presidential can…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="off-topic friday" data-date="2025-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/22278398" target="_blank" rel="noopener">Off-Topic Friday</a><span class="article-summary">submitted by shellsharks to cybersecurity 8 points | 1 comments Wanna chat about something non-infosec amongst those of us who frequent /c/cybersecurity? Here’s your chance! (Keep things civil &amp; respectful please)</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="how cracks and installers bring malware to your device" data-date="2025-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/25/a/how-cracks-and-installers-bring-malware-to-your-device.html" target="_blank" rel="noopener">How Cracks and Installers Bring Malware to Your Device</a><span class="article-summary">Our research shows how attackers use platforms like YouTube to spread fake installers via trusted hosting services, employing encryption to evade detection and steal sensitive browser data.</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="taking the pain out of cybersecurity reporting: a practical guide for msps" data-date="2025-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/taking-pain-out-of-cybersecurity.html" target="_blank" rel="noopener">Taking the Pain Out of Cybersecurity Reporting: A Practical Guide for MSPs</a><span class="article-summary">Cybersecurity reporting is a critical yet often overlooked opportunity for service providers managing cybersecurity for their clients, and specifically for virtual Chief Information Security Officers (vCISOs). While reporting is seen as a requirement for tracking cybersecurity pr…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="hands-on walkthrough: microsegmentation for all users, workloads and devices by elisity" data-date="2025-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/01/hands-on-walkthrough-microsegmentation.html" target="_blank" rel="noopener">Hands-On Walkthrough: Microsegmentation For all Users, Workloads and Devices by Elisity</a><span class="article-summary">Network segmentation remains a critical security requirement, yet organizations struggle with traditional approaches that demand extensive hardware investments, complex policy management, and disruptive network changes. Healthcare and manufacturing sectors face particular challen…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="microsoft accuses group of developing tool to abuse its ai service in new lawsuit" data-date="2025-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/01/10/microsoft-accuses-group-of-developing-tool-to-abuse-its-ai-service-in-new-lawsuit/" target="_blank" rel="noopener">Microsoft accuses group of developing tool to abuse its AI service in new lawsuit</a><span class="article-summary">Microsoft has taken legal action against a group the company claims intentionally developed and used tools to bypass the safety guardrails of its cloud AI products. According to a complaint filed by the company in December in the U.S. District Court for the Eastern District of Vi…</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="canadian man loses a cryptocurrency fortune to scammers – here’s how you can stop it happening to you" data-date="2025-01-10"><span class="headline-date">10 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bitdefender.com/en-us/blog/hotforsecurity/canadian-man-loses-a-cryptocurrency-fortune-to-scammers-heres-how-you-can-stop-it-happening-to-you" target="_blank" rel="noopener">Canadian man loses a cryptocurrency fortune to scammers – here’s how you can stop it happening to you</a><span class="article-summary">A Canadian man lost a $100,000 cryptocurrency fortune - all because he did a careless Google search. Read more in my article on the Hot for Security blog.</span></span><span class="headline-source">BITDEFENDER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

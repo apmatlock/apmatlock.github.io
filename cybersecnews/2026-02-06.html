@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2026-02-06</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,67 +109,46 @@
       <div class="stat"><span class="stat-value">4</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2026-02-06</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">9</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">3</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-06"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-1862" target="_blank" rel="noopener">Chromium: CVE-2026-1862 Type Confusion in V8</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 06 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-06"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="http://www.zerodayinitiative.com/advisories/ZDI-26-070/" target="_blank" rel="noopener">ZDI-26-070: Adobe ColdFusion CAR File Parsing Directory Traversal Remote Code Execution Vulnerability</a></div><span class="article-meta">ZERODAYINITIATIVE.COM &mdash; 06 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-06"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="http://www.zerodayinitiative.com/advisories/ZDI-26-069/" target="_blank" rel="noopener">ZDI-26-069: (0Day) Xmind Attachment Insufficient UI Warning Remote Code Execution Vulnerability</a></div><span class="article-meta">ZERODAYINITIATIVE.COM &mdash; 06 Feb 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-02-06"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/openclaw-moltbot-clawdbot-from-bad-to-worse" target="_blank" rel="noopener">OpenClaw, MoltBot, Clawdbot - From Bad to Worse</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 06 Feb 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-02-06"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://haveibeenpwned.com/Breach/Substack" target="_blank" rel="noopener">Substack - 663,121 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 06 Feb 2026</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2026-02-06"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://programming.dev/post/45307657" target="_blank" rel="noopener">How recruitment fraud turned cloud IAM into a $2 billion attack surface</a></div><span class="article-meta">PROGRAMMING.DEV &mdash; 6 Feb 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-02-06"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/26/b/us-public-sector-under-siege.html" target="_blank" rel="noopener">U.S. Public Sector Under Siege</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 06 Feb 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-02-06"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.kaspersky.com/blog/how-to-recognize-a-deepfake/55247/" target="_blank" rel="noopener">How to protect yourself from deepfake scammers and save your money | Kaspersky official blog</a></div><span class="article-meta">KASPERSKY.COM &mdash; 06 Feb 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-02-06"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/26/b/what-openclaw-reveals-about-agentic-assistants.html" target="_blank" rel="noopener">Viral AI, Invisible Risks:  What OpenClaw Reveals About Agentic Assistants</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 06 Feb 2026</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="chromium: cve-2026-1862 type confusion in v8" data-date="2026-02-06"><span class="headline-date">6 Feb</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-1862" target="_blank" rel="noopener">Chromium: CVE-2026-1862 Type Confusion in V8</a><span class="article-summary">This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2024 ) for more information.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="zdi-26-070: adobe coldfusion car file parsing directory traversal remote code execution vulnerability" data-date="2026-02-06"><span class="headline-date">6 Feb</span><span class="headline-body"><a class="headline-title" href="http://www.zerodayinitiative.com/advisories/ZDI-26-070/" target="_blank" rel="noopener">ZDI-26-070: Adobe ColdFusion CAR File Parsing Directory Traversal Remote Code Execution Vulnerability</a><span class="article-summary">This vulnerability allows remote attackers to execute arbitrary code on affected installations of Adobe ColdFusion. Authentication is required to exploit this vulnerability. The ZDI has assigned a CVSS rating of 7.2. The following CVEs are assigned: CVE-2025-61808.</span></span><span class="headline-source">ZERODAYINITIATIVE.COM</span></div>
+<div class="headline" data-title="zdi-26-069: (0day) xmind attachment insufficient ui warning remote code execution vulnerability" data-date="2026-02-06"><span class="headline-date">6 Feb</span><span class="headline-body"><a class="headline-title" href="http://www.zerodayinitiative.com/advisories/ZDI-26-069/" target="_blank" rel="noopener">ZDI-26-069: (0Day) Xmind Attachment Insufficient UI Warning Remote Code Execution Vulnerability</a><span class="article-summary">This vulnerability allows remote attackers to execute arbitrary code on affected installations of Xmind. User interaction is required to exploit this vulnerability in that the target must visit a malicious page or open a malicious file. The ZDI has assigned a CVSS rating of 7.8. …</span></span><span class="headline-source">ZERODAYINITIATIVE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="openclaw, moltbot, clawdbot - from bad to worse" data-date="2026-02-06"><span class="headline-date">6 Feb</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/openclaw-moltbot-clawdbot-from-bad-to-worse" target="_blank" rel="noopener">OpenClaw, MoltBot, Clawdbot - From Bad to Worse</a><span class="article-summary">In this episode of Cybersecurity Today, host Jim Love discusses the latest advancements in AI-driven cyber attacks and their implications for security infrastructure. The episode covers a variety of topics, including the vulnerabilities in OpenClaw Marketplace, a rapid AI-assiste…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="substack - 663,121 breached accounts" data-date="2026-02-06"><span class="headline-date">6 Feb</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/Breach/Substack" target="_blank" rel="noopener">Substack - 663,121 breached accounts</a><span class="article-summary">In October 2025, the publishing platform Substack suffered a data breach that was subsequently circulated more widely in February 2026. The breach exposed 663k account holder records containing email addresses along with publicly visible profile information from Substack accounts…</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+<div class="headline" data-title="how recruitment fraud turned cloud iam into a $2 billion attack surface" data-date="2026-02-06"><span class="headline-date">6 Feb</span><span class="headline-body"><a class="headline-title" href="https://programming.dev/post/45307657" target="_blank" rel="noopener">How recruitment fraud turned cloud IAM into a $2 billion attack surface</a><span class="article-summary">submitted by codeinabox to security 9 points | 1 comments https://venturebeat.com/security/recruitment-fraud-cloud-iam-2-billion-attack-surface A developer gets a LinkedIn message from a recruiter. The role looks legitimate. The coding assessment requires installing a package. Th…</span></span><span class="headline-source">PROGRAMMING.DEV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="u.s. public sector under siege" data-date="2026-02-06"><span class="headline-date">6 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/26/b/us-public-sector-under-siege.html" target="_blank" rel="noopener">U.S. Public Sector Under Siege</a><span class="article-summary">Discover why Government and Education must prioritize Cyber Risk Management.</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+<div class="headline" data-title="how to protect yourself from deepfake scammers and save your money | kaspersky official blog" data-date="2026-02-06"><span class="headline-date">6 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.kaspersky.com/blog/how-to-recognize-a-deepfake/55247/" target="_blank" rel="noopener">How to protect yourself from deepfake scammers and save your money | Kaspersky official blog</a><span class="article-summary">Here’s how to spot deepfakes, protect yourself from identity theft, and avoid falling for neural network scams.</span></span><span class="headline-source">KASPERSKY.COM</span></div>
+<div class="headline" data-title="viral ai, invisible risks:  what openclaw reveals about agentic assistants" data-date="2026-02-06"><span class="headline-date">6 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/26/b/what-openclaw-reveals-about-agentic-assistants.html" target="_blank" rel="noopener">Viral AI, Invisible Risks:  What OpenClaw Reveals About Agentic Assistants</a><span class="article-summary">OpenClaw (aka Clawdbot or Moltbot) represents a new frontier in agentic AI: powerful, highly autonomous, and surprisingly easy to use. In this research, we examine how its capabilities compare to its predecessors’ and highlight the security risks inherent to the agentic AI paradi…</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

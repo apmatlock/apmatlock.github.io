@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-09-07</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,77 +109,60 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-09-07</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">18</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">6</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-09-07"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://securityonline.info/veeam-backup-replication-faces-rce-flaw-cve-2024-40711-cvss-9-8-allows-full-system-takeover/?&web_view=true" target="_blank" rel="noopener">Veeam Backup &amp; Replication Faces RCE Flaw Allows Full System Takeover</a></div><span class="article-meta">SECURITYONLINE.INFO &mdash; 07 Sep 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-09-07"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://securityonline.info/darkcracks-a-new-stealthy-malware-framework-exploiting-glpi-and-wordpress/?&web_view=true" target="_blank" rel="noopener">New Stealthy Malware Campaign Dubbed DarkCracks Exploits GLPI and WordPress Sites</a></div><span class="article-meta">SECURITYONLINE.INFO &mdash; 07 Sep 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-09-07"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://adlumin.com/post/fog-ransomware-now-targeting-the-financial-sector/?&web_view=true" target="_blank" rel="noopener">Fog Ransomware Now Targeting the Financial Sector</a></div><span class="article-meta">ADLUMIN.COM &mdash; 07 Sep 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-09-07"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/apache-fixes-critical-ofbiz-remote-code-execution-vulnerability/?&web_view=true" target="_blank" rel="noopener">Apache fixes critical OFBiz remote code execution vulnerability</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 07 Sep 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-09-07"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31240" target="_blank" rel="noopener">Python &amp;#x26; Notepad&amp;#x2b;&amp;#x2b;, (Sat, Sep 7th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 07 Sep 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-09-07"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://securityonline.info/cybervolk-ransomware-a-new-and-evolving-threat-to-global-cybersecurity/?&web_view=true" target="_blank" rel="noopener">CyberVolk Ransomware: A New and Evolving Threat to Global Cybersecurity</a></div><span class="article-meta">SECURITYONLINE.INFO &mdash; 07 Sep 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-09-07"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://infosec.pub/post/17234802" target="_blank" rel="noopener">Transport for London staff faces systems disruptions after cyberattack</a></div><span class="article-meta">INFOSEC.PUB &mdash; 7 Sep 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-09-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2024/09/north-korean-threat-actors-deploy.html" target="_blank" rel="noopener">North Korean Threat Actors Deploy COVERTCATCH Malware via LinkedIn Job Scams</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 07 Sep 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-09-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.zscaler.com/blogs/security-research/blindeagle-targets-colombian-insurance-sector-blotchyquasar?&web_view=true" target="_blank" rel="noopener">BlindEagle Targets Colombian Insurance Sector with BlotchyQuasar</a></div><span class="article-meta">ZSCALER.COM &mdash; 07 Sep 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-09-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/17228964" target="_blank" rel="noopener">TROOPERS24  IT Security Conference - 19 videos</a></div><span class="article-meta">INFOSEC.PUB &mdash; 7 Sep 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-09-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/17234424" target="_blank" rel="noopener">North Korean Threat Actors Deploy COVERTCATCH Malware via LinkedIn Job Scams</a></div><span class="article-meta">INFOSEC.PUB &mdash; 7 Sep 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-09-07"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.darkreading.com/application-security/freebsd-gets-stf-funding-boost-security-features" target="_blank" rel="noopener">FreeBSD Gets €686,400 to Boost Security Features</a></div><span class="article-meta">DARKREADING.COM &mdash; 7 Sep 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-09-07"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://therecord.media/penpie-defi-protocol-ethereum-stolen?&web_view=true" target="_blank" rel="noopener">Penpie DeFi platform files reports with FBI, Singapore police after $27 million crypto theft</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 07 Sep 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-09-07"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2024/09/fbi-cracks-down-on-dark-web-marketplace.html" target="_blank" rel="noopener">FBI Cracks Down on Dark Web Marketplace Managed by Russian and Kazakh Nationals</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 07 Sep 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-09-07"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2024/09/07/for-security-we-have-to-stop-picking-up-the-phone/" target="_blank" rel="noopener">For security, we have to stop picking up the phone</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 07 Sep 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-09-07"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/sextortion-scam-now-use-your-cheating-spouses-name-as-a-lure/" target="_blank" rel="noopener">Sextortion scam now use your "cheating" spouse’s name as a lure</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 07 Sep 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-09-07"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/new-rambo-attack-steals-data-using-ram-in-air-gapped-computers/" target="_blank" rel="noopener">New RAMBO attack steals data using RAM in air-gapped computers</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 07 Sep 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-09-07"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/sextortion-scams-now-use-your-cheating-spouses-name-as-a-lure/" target="_blank" rel="noopener">Sextortion scams now use your "cheating" spouse’s name as a lure</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 07 Sep 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="veeam backup &amp; replication faces rce flaw allows full system takeover" data-date="2024-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://securityonline.info/veeam-backup-replication-faces-rce-flaw-cve-2024-40711-cvss-9-8-allows-full-system-takeover/?&web_view=true" target="_blank" rel="noopener">Veeam Backup &amp; Replication Faces RCE Flaw Allows Full System Takeover</a><span class="article-summary">A critical Remote Code Execution (RCE) flaw, CVE-2024-40711, with a CVSS score of 9. 8 has been discovered in Veeam Backup & Replication, allowing unauthorized attackers to take full control over systems.</span></span><span class="headline-source">SECURITYONLINE.INFO</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new stealthy malware campaign dubbed darkcracks exploits glpi and wordpress sites" data-date="2024-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://securityonline.info/darkcracks-a-new-stealthy-malware-framework-exploiting-glpi-and-wordpress/?&web_view=true" target="_blank" rel="noopener">New Stealthy Malware Campaign Dubbed DarkCracks Exploits GLPI and WordPress Sites</a><span class="article-summary">DarkCracks isn’t your typical malware campaign—it’s a sophisticated Launcher designed for long-term exploitation. It deploys malicious payloads through public websites, like school portals and booking systems, to infect unsuspecting users.</span></span><span class="headline-source">SECURITYONLINE.INFO</span></div>
+<div class="headline" data-title="fog ransomware now targeting the financial sector" data-date="2024-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://adlumin.com/post/fog-ransomware-now-targeting-the-financial-sector/?&web_view=true" target="_blank" rel="noopener">Fog Ransomware Now Targeting the Financial Sector</a><span class="article-summary">Fog, a variant of STOP/DJVU family, targets various sectors, exploiting VPN vulnerabilities to infiltrate network defenses. After infiltration, Fog ransomware disables protective measures, encrypts vital files, and demands ransom via the Tor network.</span></span><span class="headline-source">ADLUMIN.COM</span></div>
+<div class="headline" data-title="apache fixes critical ofbiz remote code execution vulnerability" data-date="2024-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/apache-fixes-critical-ofbiz-remote-code-execution-vulnerability/?&web_view=true" target="_blank" rel="noopener">Apache fixes critical OFBiz remote code execution vulnerability</a><span class="article-summary">Apache has addressed a critical remote code execution vulnerability in its OFBiz software, which could allow attackers to run malicious code on Linux and Windows servers. OFBiz is a CRM and ERP suite that serves as a Java-based web framework.</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="python &amp;#x26; notepad&amp;#x2b;&amp;#x2b;, (sat, sep 7th)" data-date="2024-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31240" target="_blank" rel="noopener">Python &amp;#x26; Notepad&amp;#x2b;&amp;#x2b;, (Sat, Sep 7th)</a><span class="article-summary">PythonScript is a Notepad&#x2b;&#x2b; plugin that provides a Python interpreter to edit Notepad&#x2b;&#x2b; documents. &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cybervolk ransomware: a new and evolving threat to global cybersecurity" data-date="2024-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://securityonline.info/cybervolk-ransomware-a-new-and-evolving-threat-to-global-cybersecurity/?&web_view=true" target="_blank" rel="noopener">CyberVolk Ransomware: A New and Evolving Threat to Global Cybersecurity</a><span class="article-summary">CyberVolk, infamous for DDoS attacks and data breaches, has gained particular notoriety for its ransomware, detected in July 2024, due to its advanced features and capabilities.</span></span><span class="headline-source">SECURITYONLINE.INFO</span></div>
+<div class="headline" data-title="transport for london staff faces systems disruptions after cyberattack" data-date="2024-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/17234802" target="_blank" rel="noopener">Transport for London staff faces systems disruptions after cyberattack</a><span class="article-summary">submitted by IllNess to securitynews 1 points | 0 comments https://www.bleepingcomputer.com/news/security/transport-for-london-staff-faces-systems-disruptions-after-cyberattack/ Transport for London, the city’s public transportation agency, revealed today that its staff has limit…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="north korean threat actors deploy covertcatch malware via linkedin job scams" data-date="2024-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/09/north-korean-threat-actors-deploy.html" target="_blank" rel="noopener">North Korean Threat Actors Deploy COVERTCATCH Malware via LinkedIn Job Scams</a><span class="article-summary">Threat actors affiliated with North Korea have been observed leveraging LinkedIn as a way to target developers as part of a fake job recruiting operation. These attacks employ coding tests as a common initial infection vector, Google-owned Mandiant said in a new report about thre…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="blindeagle targets colombian insurance sector with blotchyquasar" data-date="2024-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.zscaler.com/blogs/security-research/blindeagle-targets-colombian-insurance-sector-blotchyquasar?&web_view=true" target="_blank" rel="noopener">BlindEagle Targets Colombian Insurance Sector with BlotchyQuasar</a><span class="article-summary">The BlindEagle APT group has recently targeted the Colombian insurance sector. The attack chain starts with a phishing email impersonating DIAN, the Colombian tax authority.</span></span><span class="headline-source">ZSCALER.COM</span></div>
+<div class="headline" data-title="troopers24  it security conference - 19 videos" data-date="2024-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/17228964" target="_blank" rel="noopener">TROOPERS24  IT Security Conference - 19 videos</a><span class="article-summary">submitted by ashar to security_cpe 1 points | 0 comments TROOPERS24 Playlist TROOPERS24 Schedule</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="north korean threat actors deploy covertcatch malware via linkedin job scams" data-date="2024-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/17234424" target="_blank" rel="noopener">North Korean Threat Actors Deploy COVERTCATCH Malware via LinkedIn Job Scams</a><span class="article-summary">submitted by IllNess to securitynews 2 points | 0 comments https://thehackernews.com/2024/09/north-korean-threat-actors-deploy.html “After an initial chat conversation, the attacker sent a ZIP file that contained COVERTCATCH malware disguised as a Python coding challenge,” resear…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="freebsd gets €686,400 to boost security features" data-date="2024-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.darkreading.com/application-security/freebsd-gets-stf-funding-boost-security-features" target="_blank" rel="noopener">FreeBSD Gets €686,400 to Boost Security Features</a><span class="article-summary">submitted by BrikoX to cybersecurity 2 points | 0 comments https://www.darkreading.com/application-security/freebsd-gets-stf-funding-boost-security-features The funds from Germany’s Sovereign Tech Fund will be used to integrate security features such as zero trust capabilities an…</span></span><span class="headline-source">DARKREADING.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="penpie defi platform files reports with fbi, singapore police after $27 million crypto theft" data-date="2024-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/penpie-defi-protocol-ethereum-stolen?&web_view=true" target="_blank" rel="noopener">Penpie DeFi platform files reports with FBI, Singapore police after $27 million crypto theft</a><span class="article-summary">The Penpie DeFi platform recently reported a $27 million cryptocurrency theft to the FBI and Singapore police. Hackers targeted the protocol, stealing ethereum and prompting Penpie to halt withdrawals and deposits.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="fbi cracks down on dark web marketplace managed by russian and kazakh nationals" data-date="2024-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/09/fbi-cracks-down-on-dark-web-marketplace.html" target="_blank" rel="noopener">FBI Cracks Down on Dark Web Marketplace Managed by Russian and Kazakh Nationals</a><span class="article-summary">Two men have been indicted in the U.S. for their alleged involvement in managing a dark web marketplace called WWH Club that specializes in the sale of sensitive personal and financial information. Alex Khodyrev, a 35-year-old Kazakhstan national, and Pavel Kublitskii, a 37-year-…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="for security, we have to stop picking up the phone" data-date="2024-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/09/07/for-security-we-have-to-stop-picking-up-the-phone/" target="_blank" rel="noopener">For security, we have to stop picking up the phone</a><span class="article-summary">Today's scams can be as simple as picking up a phone call. To avoid the next fraud, there are good reasons to let your calls run to voicemail. © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="sextortion scam now use your &quot;cheating&quot; spouse’s name as a lure" data-date="2024-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/sextortion-scam-now-use-your-cheating-spouses-name-as-a-lure/" target="_blank" rel="noopener">Sextortion scam now use your "cheating" spouse’s name as a lure</a><span class="article-summary">A new variant of the ongoing sextortion email scams is now targeting spouses, saying that their husband or wife is cheating on them, with links to the alleged proof. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="new rambo attack steals data using ram in air-gapped computers" data-date="2024-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/new-rambo-attack-steals-data-using-ram-in-air-gapped-computers/" target="_blank" rel="noopener">New RAMBO attack steals data using RAM in air-gapped computers</a><span class="article-summary">A novel side-channel attack dubbed "RAMBO" (Radiation of Air-gapped Memory Bus for Offense) generates electromagnetic radiation from a device's RAM to send data from air-gapped computers. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="sextortion scams now use your &quot;cheating&quot; spouse’s name as a lure" data-date="2024-09-07"><span class="headline-date">7 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/sextortion-scams-now-use-your-cheating-spouses-name-as-a-lure/" target="_blank" rel="noopener">Sextortion scams now use your "cheating" spouse’s name as a lure</a><span class="article-summary">A new variant of the ongoing sextortion email scams is now targeting spouses, saying that their husband or wife is cheating on them, with links to the alleged proof. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

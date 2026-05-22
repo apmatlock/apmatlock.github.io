@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2023-12-09</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,106 +109,101 @@
       <div class="stat"><span class="stat-value">8</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2023-12-09</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">44</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">7</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">11</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Podcasts" onclick="filterCat('Podcasts', this)">PODCASTS <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">13</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/ismg-editors-ugly-health-data-breach-trends-in-2023-a-23823" target="_blank" rel="noopener">ISMG Editors: Ugly Health Data Breach Trends in 2023</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://github.com/skysafe/reblog/tree/main/cve-2023-45866" target="_blank" rel="noopener">CVE-2023-45866: Unauthenticated Bluetooth keystroke-injection in Android, Linux, macOS and iOS</a></div><span class="article-meta">GITHUB.COM &mdash; 09 Dec 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cyber.gc.ca/en/guidance/cyber-threats-elections" target="_blank" rel="noopener">Cyber threats to elections</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.helpnetsecurity.com/2023/12/07/automated-jailbreak-llms/?&web_view=true" target="_blank" rel="noopener">Researchers Automated Jailbreaking of LLMs With Other LLMs</a></div><span class="article-meta">HELPNETSECURITY.COM &mdash; 09 Dec 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://westernpeople.ie/news/hackers-hit-erris-water-in-stance-over-israel_arid-4982.html?&web_view=true" target="_blank" rel="noopener">Hackers Hit Erris Water in Stance Over Israel</a></div><span class="article-meta">WESTERNPEOPLE.IE &mdash; 09 Dec 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2023/12/slam-attack-new-spectre-based.html" target="_blank" rel="noopener">SLAM Attack: New Spectre-based Vulnerability Impacts Intel, AMD, and Arm CPUs</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 09 Dec 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2023/12/researchers-unveal-guloader-malwares.html" target="_blank" rel="noopener">Researchers Unveal GuLoader Malware's Latest Anti-Analysis Techniques</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 09 Dec 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://blog.knowbe4.com/maximizing-your-purchasing-power-a-source-for-validated-knowbe4-reviews" target="_blank" rel="noopener">Maximizing Your Purchasing Power: A Source For Validated  KnowBe4 Reviews</a></div><span class="article-meta">KNOWBE4.COM &mdash; 09 Dec 2023</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/wordpress-pop-chain-flaw/" target="_blank" rel="noopener">WordPress POP Chain Flaw Exposes Over 800M+ Websites to Attack</a></div><span class="article-meta">GBHACKERS.COM &mdash; 09 Dec 2023</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/microsoft-edge-security-advisory-av23-749" target="_blank" rel="noopener">Microsoft Edge security advisory (AV23-749)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/apache-security-advisory-av23-748" target="_blank" rel="noopener">Apache security advisory (AV23-748)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/control-systems-sierra-wireless-security-advisory-av23-747" target="_blank" rel="noopener">[Control systems] Sierra Wireless security advisory (AV23-747)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/control-systems-schweitzer-engineering-laboratories-security-advisory-av23-746" target="_blank" rel="noopener">[Control systems] Schweitzer Engineering Laboratories security advisory (AV23-746)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/control-systems-mitsubishi-electric-security-advisory-av23-745" target="_blank" rel="noopener">[Control systems] Mitsubishi Electric security advisory (AV23-745)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/control-systems-johnson-controls-security-advisory-av23-744" target="_blank" rel="noopener">[Control systems] Johnson Controls security advisory (AV23-744)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/control-systems-controlbyweb-security-advisory-av23-743" target="_blank" rel="noopener">[Control systems] ControlbyWeb security advisory (AV23-743)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/atlassian-security-advisory-av23-742" target="_blank" rel="noopener">Atlassian security advisory (AV23-742)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://cyber.gc.ca/en/alerts-advisories/google-chrome-security-advisory-av23-741" target="_blank" rel="noopener">Google Chrome security advisory (AV23-741)</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/europe-reaches-deal-on-ai-act-marking-regulatory-first-a-23828" target="_blank" rel="noopener">Europe Reaches Deal on AI Act, Marking a Regulatory First</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/interviews/supporting-cisa-focal-point-our-defensive-efforts-i-5328" target="_blank" rel="noopener">Supporting CISA - The 'Focal Point of Our Defensive Efforts'</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/fbi-to-evaluate-bids-to-delay-reporting-cybersecurity-events-a-23824" target="_blank" rel="noopener">FBI to Evaluate Bids to Delay Reporting Cybersecurity Events</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://therecord.media/central-va-transit-system-cyberattack?&web_view=true" target="_blank" rel="noopener">Central Virginia Transit System Affected by Cyber Incident</a></div><span class="article-meta">THERECORD.MEDIA &mdash; 09 Dec 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://gbhackers.com/star-blizzard-new-evasion-techniques/" target="_blank" rel="noopener">Russian Star Blizzard New Evasion Techniques to Hijack Email Accounts</a></div><span class="article-meta">GBHACKERS.COM &mdash; 09 Dec 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://haveibeenpwned.com/PwnedWebsites#Kaneva" target="_blank" rel="noopener">Kaneva - 3,901,179 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 09 Dec 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://haveibeenpwned.com/PwnedWebsites#Gemplex" target="_blank" rel="noopener">Gemplex - 4,563,166 breached accounts</a></div><span class="article-meta">HAVEIBEENPWNED.COM &mdash; 09 Dec 2023</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.securityweek.com/europe-reaches-a-deal-on-the-worlds-first-comprehensive-ai-rules/" target="_blank" rel="noopener">Europe Reaches a Deal on the World’s First Comprehensive AI Rules</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 09 Dec 2023</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/ismg-editors-call-for-cooperation-at-black-hat-europe-2023-a-23826" target="_blank" rel="noopener">ISMG Editors: Call for Cooperation at Black Hat Europe 2023</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/webinars/ondemand-threat-actor-mapping-finding-achilles-heel-in-sophisticated-w-5305" target="_blank" rel="noopener">OnDemand | Threat Actor Mapping: Finding the Achilles Heel in Sophisticated Attackers</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.canada.ca/en/communications-security/news/2023/12/cyber-threats-to-canadas-democratic-process-2023-update.html" target="_blank" rel="noopener">CSE and the Cyber release Cyber Threats to Canada’s Democratic Process: 2023 Update</a></div><span class="article-meta">CANADA.CA &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://cyber.gc.ca/en/guidance/cyber-threats-canadas-democratic-process-2023-update" target="_blank" rel="noopener">Cyber Threats to Canada’s Democratic Process: 2023 update</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Podcasts" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(85,170,204,0.5);background:rgba(85,170,204,0.10);" title="Podcasts">🎙️</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/interviews/israel-hamas-war-we-all-know-someone-that-lost-someone-i-5323" target="_blank" rel="noopener">Israel-Hamas War: 'We All Know Someone That Lost Someone'</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://cyber.gc.ca/en/news-events/case-memory-safety-roadmaps" target="_blank" rel="noopener">The case for memory safety roadmaps</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://cyber.gc.ca/en/guidance/cyber-security-advice-political-candidates" target="_blank" rel="noopener">Cyber security advice for political candidates</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://cyber.gc.ca/en/guidance/campaign-teams-identify-handle-malicious-messages" target="_blank" rel="noopener">Campaign teams: Identify and handle malicious messages</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://cyber.gc.ca/en/guidance/parliamentarians-know-how-manage-account-compromise" target="_blank" rel="noopener">Parliamentarians: Know how to manage an account compromise</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://cyber.gc.ca/en/guidance/parliamentarians-report-social-media-account-impersonation" target="_blank" rel="noopener">Parliamentarians: Report social media account impersonation</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://cyber.gc.ca/en/guidance/fact-sheet-canadian-political-campaigns-protect-yourself-online" target="_blank" rel="noopener">Fact sheet for Canadian political campaigns: Protect yourself online</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://cyber.gc.ca/en/guidance/fact-sheet-canadian-voters-online-influence-activities" target="_blank" rel="noopener">Fact sheet for Canadian voters: Online influence activities</a></div><span class="article-meta">CYBER.GC.CA &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/webinars/on-demand-genai-building-cybersecurity-wall-before-storm-w-5317" target="_blank" rel="noopener">On Demand | GenAI: Building a Cybersecurity Wall Before the Storm</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/interviews/how-ceo-runs-company-in-wartime-i-5326" target="_blank" rel="noopener">How a CEO Runs a Company in Wartime</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2023-12-09</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/autospill-attack-steals-credentials-from-android-password-managers/" target="_blank" rel="noopener">AutoSpill attack steals credentials from Android password managers</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 09 Dec 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://securityaffairs.com/155464/hacking/pool-party-bypassing-edr.html?&web_view=true" target="_blank" rel="noopener">Bypassing Major EDRs Using Pool Party Process Injection Techniques</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 09 Dec 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://thehackernews.com/2023/12/new-5g-modems-flaws-affect-ios-devices.html?&web_view=true" target="_blank" rel="noopener">New 5G Modem Flaws Affect iOS Devices and Android Models from Major Brands</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 09 Dec 2023</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2023-12-09"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://securityaffairs.com/155444/mobile-2/android-barcode-scanner-app-exposes-user-passwords.html?&web_view=true" target="_blank" rel="noopener">Android Barcode Scanner App Exposes User Passwords</a></div><span class="article-meta">SECURITYAFFAIRS.COM &mdash; 09 Dec 2023</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ismg editors: ugly health data breach trends in 2023" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/ismg-editors-ugly-health-data-breach-trends-in-2023-a-23823" target="_blank" rel="noopener">ISMG Editors: Ugly Health Data Breach Trends in 2023</a><span class="article-summary">Also: Top Threat Actors Are Targeting Hospitals; Remembering Steve Katz In the latest weekly update, editors at ISMG discuss the rampant rise in healthcare sector attacks and breaches in 2023, the most common vulnerabilities and targets, and remember the life of the Steve Katz, t…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+<div class="headline" data-title="cve-2023-45866: unauthenticated bluetooth keystroke-injection in android, linux, macos and ios" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://github.com/skysafe/reblog/tree/main/cve-2023-45866" target="_blank" rel="noopener">CVE-2023-45866: Unauthenticated Bluetooth keystroke-injection in Android, Linux, macOS and iOS</a><span class="article-summary">submitted by L4s to secops 13 points | 2 comments https://github.com/skysafe/reblog/tree/main/cve-2023-45866 CVE-2023-45866: Unauthenticated Bluetooth keystroke-injection in Android, Linux, macOS and iOS::undefined</span></span><span class="headline-source">GITHUB.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cyber threats to elections" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/guidance/cyber-threats-elections" target="_blank" rel="noopener">Cyber threats to elections</a><span class="article-summary">Resources to learn more about cyber threats to elections and mitigate their impacts</span></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="researchers automated jailbreaking of llms with other llms" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2023/12/07/automated-jailbreak-llms/?&web_view=true" target="_blank" rel="noopener">Researchers Automated Jailbreaking of LLMs With Other LLMs</a><span class="article-summary">Researchers have developed an automated machine learning technique, called TAP, that can quickly exploit vulnerabilities in large language models (LLMs) and make them produce harmful and toxic responses.</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="hackers hit erris water in stance over israel" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://westernpeople.ie/news/hackers-hit-erris-water-in-stance-over-israel_arid-4982.html?&web_view=true" target="_blank" rel="noopener">Hackers Hit Erris Water in Stance Over Israel</a><span class="article-summary">Cybercriminals targeted a private group water scheme in the Erris area, causing disruption to 180 homeowners and highlighting the vulnerability of critical infrastructure to politically motivated cyber-attacks.</span></span><span class="headline-source">WESTERNPEOPLE.IE</span></div>
+<div class="headline" data-title="slam attack: new spectre-based vulnerability impacts intel, amd, and arm cpus" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/12/slam-attack-new-spectre-based.html" target="_blank" rel="noopener">SLAM Attack: New Spectre-based Vulnerability Impacts Intel, AMD, and Arm CPUs</a><span class="article-summary">Researchers from the Vrije Universiteit Amsterdam have disclosed a new side-channel attack called&nbsp;SLAM&nbsp;that could be exploited to leak sensitive information from kernel memory on current and upcoming CPUs from Intel, AMD, and Arm. The attack is an end-to-end exploit for…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="researchers unveal guloader malware's latest anti-analysis techniques" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/12/researchers-unveal-guloader-malwares.html" target="_blank" rel="noopener">Researchers Unveal GuLoader Malware's Latest Anti-Analysis Techniques</a><span class="article-summary">Threat hunters have unmasked the latest tricks adopted by a malware strain called&nbsp;GuLoader&nbsp;in an effort to make analysis more challenging. "While GuLoader's core functionality hasn't changed drastically over the past few years, these constant updates in their obfuscatio…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="maximizing your purchasing power: a source for validated  knowbe4 reviews" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://blog.knowbe4.com/maximizing-your-purchasing-power-a-source-for-validated-knowbe4-reviews" target="_blank" rel="noopener">Maximizing Your Purchasing Power: A Source For Validated  KnowBe4 Reviews</a><span class="article-summary">One of the key strategies to maximize your purchasing power is to research products and compare total cost of ownership. Take the time to do research and gather data about the platforms you are interested in.</span></span><span class="headline-source">KNOWBE4.COM</span></div>
+<div class="headline" data-title="wordpress pop chain flaw exposes over 800m+ websites to attack" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/wordpress-pop-chain-flaw/" target="_blank" rel="noopener">WordPress POP Chain Flaw Exposes Over 800M+ Websites to Attack</a><span class="article-summary">A critical remote code execution vulnerability has been patched as part of the WordPress 6.4.2 version. This vulnerability exists in the POP chain introduced in version 6.4, which can be combined with a separate Object Injection, resulting in the execution of arbitrary PHP code o…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">11</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="microsoft edge security advisory (av23-749)" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/microsoft-edge-security-advisory-av23-749" target="_blank" rel="noopener">Microsoft Edge security advisory (AV23-749)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="apache security advisory (av23-748)" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/apache-security-advisory-av23-748" target="_blank" rel="noopener">Apache security advisory (AV23-748)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="[control systems] sierra wireless security advisory (av23-747)" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/control-systems-sierra-wireless-security-advisory-av23-747" target="_blank" rel="noopener">[Control systems] Sierra Wireless security advisory (AV23-747)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="[control systems] schweitzer engineering laboratories security advisory (av23-746)" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/control-systems-schweitzer-engineering-laboratories-security-advisory-av23-746" target="_blank" rel="noopener">[Control systems] Schweitzer Engineering Laboratories security advisory (AV23-746)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="[control systems] mitsubishi electric security advisory (av23-745)" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/control-systems-mitsubishi-electric-security-advisory-av23-745" target="_blank" rel="noopener">[Control systems] Mitsubishi Electric security advisory (AV23-745)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="[control systems] johnson controls security advisory (av23-744)" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/control-systems-johnson-controls-security-advisory-av23-744" target="_blank" rel="noopener">[Control systems] Johnson Controls security advisory (AV23-744)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="[control systems] controlbyweb security advisory (av23-743)" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/control-systems-controlbyweb-security-advisory-av23-743" target="_blank" rel="noopener">[Control systems] ControlbyWeb security advisory (AV23-743)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="atlassian security advisory (av23-742)" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/atlassian-security-advisory-av23-742" target="_blank" rel="noopener">Atlassian security advisory (AV23-742)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="google chrome security advisory (av23-741)" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/google-chrome-security-advisory-av23-741" target="_blank" rel="noopener">Google Chrome security advisory (AV23-741)</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="europe reaches deal on ai act, marking a regulatory first" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/europe-reaches-deal-on-ai-act-marking-regulatory-first-a-23828" target="_blank" rel="noopener">Europe Reaches Deal on AI Act, Marking a Regulatory First</a><span class="article-summary">European Union Will Enact Comprehensive Regulations on AI EU officials announced a compromise over a regulation on artificial intelligence in the works since 2021, making the trading bloc first in the world to comprehensively regulate the nascent technology. Europe understands "t…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+<div class="headline" data-title="supporting cisa - the 'focal point of our defensive efforts'" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/interviews/supporting-cisa-focal-point-our-defensive-efforts-i-5328" target="_blank" rel="noopener">Supporting CISA - The 'Focal Point of Our Defensive Efforts'</a><span class="article-summary">On Nov. 8, Tenable Chairman and CEO Amit Yoran wrote a letter to Congress in support of CISA. In this episode of "Cybersecurity Insights," Yoran calls the agency the "primary focal point of our defensive efforts" and discusses why the country needs to stay unified on defeating cy…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="fbi to evaluate bids to delay reporting cybersecurity events" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/fbi-to-evaluate-bids-to-delay-reporting-cybersecurity-events-a-23824" target="_blank" rel="noopener">FBI to Evaluate Bids to Delay Reporting Cybersecurity Events</a><span class="article-summary">SEC Says Large Companies Must Report Material Incidents to Investors as of Dec. 18 The FBI outlined procedures for publicly traded companies to invoke a delay in reporting material cybersecurity incidents to investors as required under a U.S. SEC rule. Regulators allow companies …</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+<div class="headline" data-title="central virginia transit system affected by cyber incident" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/central-va-transit-system-cyberattack?&web_view=true" target="_blank" rel="noopener">Central Virginia Transit System Affected by Cyber Incident</a><span class="article-summary">The Greater Richmond Transit Company (GRTC) experienced a cyberattack over the Thanksgiving holiday, resulting in a temporary disruption to their computer network. The Play ransomware gang has claimed responsibility for the attack.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="russian star blizzard new evasion techniques to hijack email accounts" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/star-blizzard-new-evasion-techniques/" target="_blank" rel="noopener">Russian Star Blizzard New Evasion Techniques to Hijack Email Accounts</a><span class="article-summary">Hackers target email accounts because they contain valuable personal and financial information. Successful email breaches enable threat actors to:- Cybersecurity researchers at Microsoft Threat Intelligence team recently unveiled that the Russian state-sponsored actor, Star Blizz…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="kaneva - 3,901,179 breached accounts" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/PwnedWebsites#Kaneva" target="_blank" rel="noopener">Kaneva - 3,901,179 breached accounts</a><span class="article-summary">In July 2016, now defunct website Kaneva, the service to &quot;build and explore virtual worlds&quot;, suffered a data breach that exposed 3.9M user records. The data included email addresses, usernames, dates of birth and salted MD5 password hashes.</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+<div class="headline" data-title="gemplex - 4,563,166 breached accounts" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/PwnedWebsites#Gemplex" target="_blank" rel="noopener">Gemplex - 4,563,166 breached accounts</a><span class="article-summary">In February 2021, the Indian streaming platform Gemplex suffered a data breach that exposed 4.6M user accounts. The impacted data included device information, names, phone numbers, email addresses and bcrypt password hashes.</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+<div class="headline" data-title="europe reaches a deal on the world’s first comprehensive ai rules" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/europe-reaches-a-deal-on-the-worlds-first-comprehensive-ai-rules/" target="_blank" rel="noopener">Europe Reaches a Deal on the World’s First Comprehensive AI Rules</a><span class="article-summary">Researchers have warned that powerful AI models could be used to supercharge online disinformation, cyberattacks or creation of bioweapons. The post Europe Reaches a Deal on the World’s First Comprehensive AI Rules appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ismg editors: call for cooperation at black hat europe 2023" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/ismg-editors-call-for-cooperation-at-black-hat-europe-2023-a-23826" target="_blank" rel="noopener">ISMG Editors: Call for Cooperation at Black Hat Europe 2023</a><span class="article-summary">Highlights From the Conference on Improving Public-Private Sector Collaboration In this special edition at Black Hat Europe 2023 in London, three ISMG editors cover the highlights of the conference, including a resounding call for better collaboration between government agencies …</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+<div class="headline" data-title="ondemand | threat actor mapping: finding the achilles heel in sophisticated attackers" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/webinars/ondemand-threat-actor-mapping-finding-achilles-heel-in-sophisticated-w-5305" target="_blank" rel="noopener">OnDemand | Threat Actor Mapping: Finding the Achilles Heel in Sophisticated Attackers</a></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cse and the cyber release cyber threats to canada’s democratic process: 2023 update" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.canada.ca/en/communications-security/news/2023/12/cyber-threats-to-canadas-democratic-process-2023-update.html" target="_blank" rel="noopener">CSE and the Cyber release Cyber Threats to Canada’s Democratic Process: 2023 Update</a></span><span class="headline-source">CANADA.CA</span></div>
+<div class="headline" data-title="cyber threats to canada’s democratic process: 2023 update" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/guidance/cyber-threats-canadas-democratic-process-2023-update" target="_blank" rel="noopener">Cyber Threats to Canada’s Democratic Process: 2023 update</a><span class="article-summary">Report on global cyber threats to elections and their implications for Canada.</span></span><span class="headline-source">CYBER.GC.CA</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-podcasts">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(85,170,204,0.5);" onclick="toggleSection(this)">🎙️ PODCASTS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="israel-hamas war: 'we all know someone that lost someone'" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/interviews/israel-hamas-war-we-all-know-someone-that-lost-someone-i-5323" target="_blank" rel="noopener">Israel-Hamas War: 'We All Know Someone That Lost Someone'</a><span class="article-summary">After the latest Israel-Hamas war began, Kollender found herself trying to return to her homeland, but "no airline was flying to or from Israel," she said. In this episode of CyberEd.io's podcast series "Cybersecurity Insights," she discussed her personal views about the Israel-H…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">13</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the case for memory safety roadmaps" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/news-events/case-memory-safety-roadmaps" target="_blank" rel="noopener">The case for memory safety roadmaps</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="cyber security advice for political candidates" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/guidance/cyber-security-advice-political-candidates" target="_blank" rel="noopener">Cyber security advice for political candidates</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="campaign teams: identify and handle malicious messages" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/guidance/campaign-teams-identify-handle-malicious-messages" target="_blank" rel="noopener">Campaign teams: Identify and handle malicious messages</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="parliamentarians: know how to manage an account compromise" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/guidance/parliamentarians-know-how-manage-account-compromise" target="_blank" rel="noopener">Parliamentarians: Know how to manage an account compromise</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="parliamentarians: report social media account impersonation" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/guidance/parliamentarians-report-social-media-account-impersonation" target="_blank" rel="noopener">Parliamentarians: Report social media account impersonation</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="fact sheet for canadian political campaigns: protect yourself online" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/guidance/fact-sheet-canadian-political-campaigns-protect-yourself-online" target="_blank" rel="noopener">Fact sheet for Canadian political campaigns: Protect yourself online</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="fact sheet for canadian voters: online influence activities" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/guidance/fact-sheet-canadian-voters-online-influence-activities" target="_blank" rel="noopener">Fact sheet for Canadian voters: Online influence activities</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="on demand | genai: building a cybersecurity wall before the storm" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/webinars/on-demand-genai-building-cybersecurity-wall-before-storm-w-5317" target="_blank" rel="noopener">On Demand | GenAI: Building a Cybersecurity Wall Before the Storm</a></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+<div class="headline" data-title="how a ceo runs a company in wartime" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/interviews/how-ceo-runs-company-in-wartime-i-5326" target="_blank" rel="noopener">How a CEO Runs a Company in Wartime</a><span class="article-summary">Yossi Appleboum, CEO of Sepio Systems in Israel, discusses the international support for Israel in the Israel-Hamas war and what his employees are doing to support the war effort, how the war is affecting Sepio Systems' performance and how generative AI can be "not a tool but a m…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+<div class="headline" data-title="autospill attack steals credentials from android password managers" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/autospill-attack-steals-credentials-from-android-password-managers/" target="_blank" rel="noopener">AutoSpill attack steals credentials from Android password managers</a><span class="article-summary">Security researchers developed a new attack, which they named AutoSpill, to steal account credentials on Android during the autofill operation. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="bypassing major edrs using pool party process injection techniques" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/155464/hacking/pool-party-bypassing-edr.html?&web_view=true" target="_blank" rel="noopener">Bypassing Major EDRs Using Pool Party Process Injection Techniques</a><span class="article-summary">The technique utilizes Windows thread pools and includes a chain of three primitives for memory allocation, writing malicious code, and executing it, making it more flexible than existing process injection techniques.</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+<div class="headline" data-title="new 5g modem flaws affect ios devices and android models from major brands" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2023/12/new-5g-modems-flaws-affect-ios-devices.html?&web_view=true" target="_blank" rel="noopener">New 5G Modem Flaws Affect iOS Devices and Android Models from Major Brands</a><span class="article-summary">The set of vulnerabilities, collectively known as 5Ghoul, impacts USB and IoT modems as well as smartphones running Android and iOS, affecting 714 smartphones from 24 brands.</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="android barcode scanner app exposes user passwords" data-date="2023-12-09"><span class="headline-date">9 Dec</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/155444/mobile-2/android-barcode-scanner-app-exposes-user-passwords.html?&web_view=true" target="_blank" rel="noopener">Android Barcode Scanner App Exposes User Passwords</a><span class="article-summary">The Android app Barcode to Sheet, with over 100k downloads, has left sensitive user data exposed due to an open instance, including plaintext enterprise data and weakly hashed passwords.</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

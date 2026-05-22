@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2026-02-13</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,79 +109,66 @@
       <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2026-02-13</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">19</span></button>
-<button class="filter-btn" data-cat="CISA KEV" onclick="filterCat('CISA KEV', this)">CISA KEV <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">12</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="CISA KEV" data-date="2026-02-13"><span class="cat-badge" style="border:1px solid rgba(255,51,0,0.7);background:rgba(255,51,0,0.15);" title="CISA KEV">🚨</span><div class="article-body"><a href="https://www.cisa.gov/news-events/alerts/2026/02/13/cisa-adds-one-known-exploited-vulnerability-catalog" target="_blank" rel="noopener">CISA Adds One Known Exploited Vulnerability to Catalog</a><span class="article-summary">CISA has added one new vulnerability to its&nbsp; Known Exploited Vulnerabilities (KEV) Catalog , based on evidence of active exploitation. CVE-2026-1731 BeyondTrust Remote Support (RS) and Privileged Remote Access (PRA) OS Command Injection Vulnerability These types of vulnerabi…</span></div><span class="kev-badge">KEV</span><span class="article-meta">CISA.GOV &mdash; Fri, 13 Feb 26 1</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-21517" target="_blank" rel="noopener">CVE-2026-21517 Windows App for Mac Installer Elevation of Privilege Vulnerability</a></div><span class="article-meta">MSRC.MICROSOFT.COM &mdash; 13 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="http://www.zerodayinitiative.com/advisories/ZDI-26-105/" target="_blank" rel="noopener">ZDI-26-105: MLflow Tracking Server Artifact Handler Directory Traversal Remote Code Execution Vulnerability</a></div><span class="article-meta">ZERODAYINITIATIVE.COM &mdash; 13 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="http://www.zerodayinitiative.com/advisories/ZDI-26-104/" target="_blank" rel="noopener">ZDI-26-104: Sante DICOM Viewer Pro DCM File Parsing Buffer Overflow Remote Code Execution Vulnerability</a></div><span class="article-meta">ZERODAYINITIATIVE.COM &mdash; 13 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="http://www.zerodayinitiative.com/advisories/ZDI-26-103/" target="_blank" rel="noopener">ZDI-26-103: Oracle VirtualBox VMSVGA Out-Of-Bounds Access Local Privilege Escalation Vulnerability</a></div><span class="article-meta">ZERODAYINITIATIVE.COM &mdash; 13 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="http://www.zerodayinitiative.com/advisories/ZDI-26-102/" target="_blank" rel="noopener">ZDI-26-102: Oracle VirtualBox VMSVGA Out-Of-Bounds Write Local Privilege Escalation Vulnerability</a></div><span class="article-meta">ZERODAYINITIATIVE.COM &mdash; 13 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="http://www.zerodayinitiative.com/advisories/ZDI-26-101/" target="_blank" rel="noopener">ZDI-26-101: Oracle VirtualBox BusLogic Uninitialized Memory Information Disclosure Vulnerability</a></div><span class="article-meta">ZERODAYINITIATIVE.COM &mdash; 13 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="http://www.zerodayinitiative.com/advisories/ZDI-26-100/" target="_blank" rel="noopener">ZDI-26-100: Oracle VirtualBox LsiLogic Uninitialized Memory Information Disclosure Vulnerability</a></div><span class="article-meta">ZERODAYINITIATIVE.COM &mdash; 13 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="http://www.zerodayinitiative.com/advisories/ZDI-26-099/" target="_blank" rel="noopener">ZDI-26-099: Oracle VirtualBox VMSVGA Race Condition Local Privilege Escalation Vulnerability</a></div><span class="article-meta">ZERODAYINITIATIVE.COM &mdash; 13 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="http://www.zerodayinitiative.com/advisories/ZDI-26-098/" target="_blank" rel="noopener">ZDI-26-098: Oracle VirtualBox VMSVGA Use-After-Free Local Privilege Escalation Vulnerability</a></div><span class="article-meta">ZERODAYINITIATIVE.COM &mdash; 13 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="http://www.zerodayinitiative.com/advisories/ZDI-26-097/" target="_blank" rel="noopener">ZDI-26-097: Oracle VirtualBox VMSVGA Heap-based Buffer Overflow Local Privilege Escalation Vulnerability</a></div><span class="article-meta">ZERODAYINITIATIVE.COM &mdash; 13 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="http://www.zerodayinitiative.com/advisories/ZDI-26-096/" target="_blank" rel="noopener">ZDI-26-096: Dassault Systèmes eDrawings Viewer EPRT File Parsing Heap-based Buffer Overflow Remote Code Execution Vulnerability</a></div><span class="article-meta">ZERODAYINITIATIVE.COM &mdash; 13 Feb 2026</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2026-02-13"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="http://www.zerodayinitiative.com/advisories/ZDI-26-095/" target="_blank" rel="noopener">ZDI-26-095: Dassault Systèmes eDrawings Viewer EPRT File Parsing Out-Of-Bounds Write Remote Code Execution Vulnerability</a></div><span class="article-meta">ZERODAYINITIATIVE.COM &mdash; 13 Feb 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-02-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/exploited-microsoft-vulnerabilities-phishing-tactics-romance-scams-cybersecurity-today" target="_blank" rel="noopener">Exploited Microsoft Vulnerabilities, Phishing Tactics &amp; Romance Scams: Cybersecurity Today</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 13 Feb 2026</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2026-02-13"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisa.gov/news-events/news/end-just-beginning-better-security-enhanced-vulnerability-management-openeox" target="_blank" rel="noopener">The End is Just the Beginning of Better Security: Enhanced Vulnerability Management with OpenEoX</a></div><span class="article-meta">CISA.GOV &mdash; Fri, 13 Feb 26 1</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2026-02-13"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.cisa.gov/news-events/news/cisa-announces-new-town-halls-engage-stakeholders-cyber-incident-reporting-critical-infrastructure" target="_blank" rel="noopener">CISA Announces New Town Halls to Engage with Stakeholders on Cyber Incident Reporting for Critical Infrastructure</a></div><span class="article-meta">CISA.GOV &mdash; Fri, 13 Feb 26 1</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-02-13"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/42008391" target="_blank" rel="noopener">Fake AI Chrome extensions with 300K users steal credentials, emails</a></div><span class="article-meta">INFOSEC.PUB &mdash; 13 Feb 2026</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2026-02-13"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/41994735" target="_blank" rel="noopener">Off-Topic Friday</a></div><span class="article-meta">INFOSEC.PUB &mdash; 13 Feb 2026</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2026-02-13"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.kaspersky.com/blog/how-technology-changes-love/55283/" target="_blank" rel="noopener">How tech is rewiring romance: dating apps, AI relationships, and emoji | Kaspersky official blog</a></div><span class="article-meta">KASPERSKY.COM &mdash; 13 Feb 2026</span></div>
-    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa adds one known exploited vulnerability to catalog" data-date="2026-02-13"><span class="headline-date">13 Feb <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/alerts/2026/02/13/cisa-adds-one-known-exploited-vulnerability-catalog" target="_blank" rel="noopener">CISA Adds One Known Exploited Vulnerability to Catalog</a><span class="article-summary">CISA has added one new vulnerability to its&nbsp; Known Exploited Vulnerabilities (KEV) Catalog , based on evidence of active exploitation. CVE-2026-1731 BeyondTrust Remote Support (RS) and Privileged Remote Access (PRA) OS Command Injection Vulnerability These types of vulnerabi…</span></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">12</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cve-2026-21517 windows app for mac installer elevation of privilege vulnerability" data-date="2026-02-13"><span class="headline-date">13 Feb</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-21517" target="_blank" rel="noopener">CVE-2026-21517 Windows App for Mac Installer Elevation of Privilege Vulnerability</a><span class="article-summary">Download links fixed</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="zdi-26-105: mlflow tracking server artifact handler directory traversal remote code execution vulnerability" data-date="2026-02-13"><span class="headline-date">13 Feb</span><span class="headline-body"><a class="headline-title" href="http://www.zerodayinitiative.com/advisories/ZDI-26-105/" target="_blank" rel="noopener">ZDI-26-105: MLflow Tracking Server Artifact Handler Directory Traversal Remote Code Execution Vulnerability</a><span class="article-summary">This vulnerability allows remote attackers to execute arbitrary code on affected installations of MLflow Tracking Server. Authentication is not required to exploit this vulnerability. The ZDI has assigned a CVSS rating of 8.1. The following CVEs are assigned: CVE-2026-2033.</span></span><span class="headline-source">ZERODAYINITIATIVE.COM</span></div>
+<div class="headline" data-title="zdi-26-104: sante dicom viewer pro dcm file parsing buffer overflow remote code execution vulnerability" data-date="2026-02-13"><span class="headline-date">13 Feb</span><span class="headline-body"><a class="headline-title" href="http://www.zerodayinitiative.com/advisories/ZDI-26-104/" target="_blank" rel="noopener">ZDI-26-104: Sante DICOM Viewer Pro DCM File Parsing Buffer Overflow Remote Code Execution Vulnerability</a><span class="article-summary">This vulnerability allows remote attackers to execute arbitrary code on affected installations of Sante DICOM Viewer Pro. User interaction is required to exploit this vulnerability in that the target must visit a malicious page or open a malicious file. The ZDI has assigned a CVS…</span></span><span class="headline-source">ZERODAYINITIATIVE.COM</span></div>
+<div class="headline" data-title="zdi-26-103: oracle virtualbox vmsvga out-of-bounds access local privilege escalation vulnerability" data-date="2026-02-13"><span class="headline-date">13 Feb</span><span class="headline-body"><a class="headline-title" href="http://www.zerodayinitiative.com/advisories/ZDI-26-103/" target="_blank" rel="noopener">ZDI-26-103: Oracle VirtualBox VMSVGA Out-Of-Bounds Access Local Privilege Escalation Vulnerability</a><span class="article-summary">This vulnerability allows local attackers to escalate privileges on affected installations of Oracle VirtualBox. An attacker must first obtain the ability to execute high-privileged code on the target guest system in order to exploit this vulnerability. The ZDI has assigned a CVS…</span></span><span class="headline-source">ZERODAYINITIATIVE.COM</span></div>
+<div class="headline" data-title="zdi-26-102: oracle virtualbox vmsvga out-of-bounds write local privilege escalation vulnerability" data-date="2026-02-13"><span class="headline-date">13 Feb</span><span class="headline-body"><a class="headline-title" href="http://www.zerodayinitiative.com/advisories/ZDI-26-102/" target="_blank" rel="noopener">ZDI-26-102: Oracle VirtualBox VMSVGA Out-Of-Bounds Write Local Privilege Escalation Vulnerability</a><span class="article-summary">This vulnerability allows local attackers to escalate privileges on affected installations of Oracle VirtualBox. An attacker must first obtain the ability to execute high-privileged code on the target guest system in order to exploit this vulnerability. The ZDI has assigned a CVS…</span></span><span class="headline-source">ZERODAYINITIATIVE.COM</span></div>
+<div class="headline" data-title="zdi-26-101: oracle virtualbox buslogic uninitialized memory information disclosure vulnerability" data-date="2026-02-13"><span class="headline-date">13 Feb</span><span class="headline-body"><a class="headline-title" href="http://www.zerodayinitiative.com/advisories/ZDI-26-101/" target="_blank" rel="noopener">ZDI-26-101: Oracle VirtualBox BusLogic Uninitialized Memory Information Disclosure Vulnerability</a><span class="article-summary">This vulnerability allows local attackers to disclose sensitive information on affected installations of Oracle VirtualBox. An attacker must first obtain the ability to execute high-privileged code on the target guest system in order to exploit this vulnerability. The ZDI has ass…</span></span><span class="headline-source">ZERODAYINITIATIVE.COM</span></div>
+<div class="headline" data-title="zdi-26-100: oracle virtualbox lsilogic uninitialized memory information disclosure vulnerability" data-date="2026-02-13"><span class="headline-date">13 Feb</span><span class="headline-body"><a class="headline-title" href="http://www.zerodayinitiative.com/advisories/ZDI-26-100/" target="_blank" rel="noopener">ZDI-26-100: Oracle VirtualBox LsiLogic Uninitialized Memory Information Disclosure Vulnerability</a><span class="article-summary">This vulnerability allows local attackers to disclose sensitive information on affected installations of Oracle VirtualBox. An attacker must first obtain the ability to execute high-privileged code on the target guest system in order to exploit this vulnerability. The ZDI has ass…</span></span><span class="headline-source">ZERODAYINITIATIVE.COM</span></div>
+<div class="headline" data-title="zdi-26-099: oracle virtualbox vmsvga race condition local privilege escalation vulnerability" data-date="2026-02-13"><span class="headline-date">13 Feb</span><span class="headline-body"><a class="headline-title" href="http://www.zerodayinitiative.com/advisories/ZDI-26-099/" target="_blank" rel="noopener">ZDI-26-099: Oracle VirtualBox VMSVGA Race Condition Local Privilege Escalation Vulnerability</a><span class="article-summary">This vulnerability allows local attackers to escalate privileges on affected installations of Oracle VirtualBox. An attacker must first obtain the ability to execute high-privileged code on the target guest system in order to exploit this vulnerability. The ZDI has assigned a CVS…</span></span><span class="headline-source">ZERODAYINITIATIVE.COM</span></div>
+<div class="headline" data-title="zdi-26-098: oracle virtualbox vmsvga use-after-free local privilege escalation vulnerability" data-date="2026-02-13"><span class="headline-date">13 Feb</span><span class="headline-body"><a class="headline-title" href="http://www.zerodayinitiative.com/advisories/ZDI-26-098/" target="_blank" rel="noopener">ZDI-26-098: Oracle VirtualBox VMSVGA Use-After-Free Local Privilege Escalation Vulnerability</a><span class="article-summary">This vulnerability allows local attackers to escalate privileges on affected installations of Oracle VirtualBox. An attacker must first obtain the ability to execute high-privileged code on the target guest system in order to exploit this vulnerability. The ZDI has assigned a CVS…</span></span><span class="headline-source">ZERODAYINITIATIVE.COM</span></div>
+<div class="headline" data-title="zdi-26-097: oracle virtualbox vmsvga heap-based buffer overflow local privilege escalation vulnerability" data-date="2026-02-13"><span class="headline-date">13 Feb</span><span class="headline-body"><a class="headline-title" href="http://www.zerodayinitiative.com/advisories/ZDI-26-097/" target="_blank" rel="noopener">ZDI-26-097: Oracle VirtualBox VMSVGA Heap-based Buffer Overflow Local Privilege Escalation Vulnerability</a><span class="article-summary">This vulnerability allows local attackers to escalate privileges on affected installations of Oracle VirtualBox. An attacker must first obtain the ability to execute high-privileged code on the target guest system in order to exploit this vulnerability. The ZDI has assigned a CVS…</span></span><span class="headline-source">ZERODAYINITIATIVE.COM</span></div>
+<div class="headline" data-title="zdi-26-096: dassault systèmes edrawings viewer eprt file parsing heap-based buffer overflow remote code execution vulnerability" data-date="2026-02-13"><span class="headline-date">13 Feb</span><span class="headline-body"><a class="headline-title" href="http://www.zerodayinitiative.com/advisories/ZDI-26-096/" target="_blank" rel="noopener">ZDI-26-096: Dassault Systèmes eDrawings Viewer EPRT File Parsing Heap-based Buffer Overflow Remote Code Execution Vulnerability</a><span class="article-summary">This vulnerability allows remote attackers to execute arbitrary code on affected installations of Dassault Syst��mes eDrawings Viewer. User interaction is required to exploit this vulnerability in that the target must visit a malicious page or open a malicious file. The ZDI has a…</span></span><span class="headline-source">ZERODAYINITIATIVE.COM</span></div>
+<div class="headline" data-title="zdi-26-095: dassault systèmes edrawings viewer eprt file parsing out-of-bounds write remote code execution vulnerability" data-date="2026-02-13"><span class="headline-date">13 Feb</span><span class="headline-body"><a class="headline-title" href="http://www.zerodayinitiative.com/advisories/ZDI-26-095/" target="_blank" rel="noopener">ZDI-26-095: Dassault Systèmes eDrawings Viewer EPRT File Parsing Out-Of-Bounds Write Remote Code Execution Vulnerability</a><span class="article-summary">This vulnerability allows remote attackers to execute arbitrary code on affected installations of Dassault Syst��mes eDrawings Viewer. User interaction is required to exploit this vulnerability in that the target must visit a malicious page or open a malicious file. The ZDI has a…</span></span><span class="headline-source">ZERODAYINITIATIVE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="exploited microsoft vulnerabilities, phishing tactics &amp; romance scams: cybersecurity today" data-date="2026-02-13"><span class="headline-date">13 Feb</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/exploited-microsoft-vulnerabilities-phishing-tactics-romance-scams-cybersecurity-today" target="_blank" rel="noopener">Exploited Microsoft Vulnerabilities, Phishing Tactics &amp; Romance Scams: Cybersecurity Today</a><span class="article-summary">In this episode of Cybersecurity Today with host Jim Love, we discuss six critical exploited Microsoft vulnerabilities, new phishing tactics using your own servers, and a zero-click vulnerability in Claude's code desktop extensions. We also explore trends in modern romance scams …</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="the end is just the beginning of better security: enhanced vulnerability management with openeox" data-date="2026-02-13"><span class="headline-date">13 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/news/end-just-beginning-better-security-enhanced-vulnerability-management-openeox" target="_blank" rel="noopener">The End is Just the Beginning of Better Security: Enhanced Vulnerability Management with OpenEoX</a></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa announces new town halls to engage with stakeholders on cyber incident reporting for critical infrastructure" data-date="2026-02-13"><span class="headline-date">13 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/news/cisa-announces-new-town-halls-engage-stakeholders-cyber-incident-reporting-critical-infrastructure" target="_blank" rel="noopener">CISA Announces New Town Halls to Engage with Stakeholders on Cyber Incident Reporting for Critical Infrastructure</a></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="fake ai chrome extensions with 300k users steal credentials, emails" data-date="2026-02-13"><span class="headline-date">13 Feb</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/42008391" target="_blank" rel="noopener">Fake AI Chrome extensions with 300K users steal credentials, emails</a><span class="article-summary">submitted by cm0002 to cybersecurity 15 points | 2 comments https://www.bleepingcomputer.com/news/security/fake-ai-chrome-extensions-with-300k-users-steal-credentials-emails/ A malicious campaign of 30 Chrome extensions masquerading as AI assistants has infected over 300,000 user…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="off-topic friday" data-date="2026-02-13"><span class="headline-date">13 Feb</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/41994735" target="_blank" rel="noopener">Off-Topic Friday</a><span class="article-summary">submitted by shellsharks to cybersecurity 11 points | 0 comments Wanna chat about something non-infosec amongst those of us who frequent /c/cybersecurity? Here’s your chance! (Keep things civil &amp; respectful please)</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="how tech is rewiring romance: dating apps, ai relationships, and emoji | kaspersky official blog" data-date="2026-02-13"><span class="headline-date">13 Feb</span><span class="headline-body"><a class="headline-title" href="https://www.kaspersky.com/blog/how-technology-changes-love/55283/" target="_blank" rel="noopener">How tech is rewiring romance: dating apps, AI relationships, and emoji | Kaspersky official blog</a><span class="article-summary">Why do we have a love-hate relationship with dating apps, and what are they doing to our brains? Can an emoji start a war? Is marrying an AI actually a thing? We’re exploring how modern tech is redefining love and our very ideas of it.</span></span><span class="headline-source">KASPERSKY.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

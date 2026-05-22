@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-04-23</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,85 +109,80 @@
       <div class="stat"><span class="stat-value">8</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-04-23</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">23</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Podcasts" onclick="filterCat('Podcasts', this)">PODCASTS <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">4</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-23"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/cybersecurity-today-virtual-employees-ai-security-agents-and-cve-program-updates" target="_blank" rel="noopener">Cybersecurity Today: Virtual Employees, AI Security Agents, and CVE Program Updates</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 23 Apr 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-23"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://infosec.pub/post/27133462" target="_blank" rel="noopener">Chinese hackers undertaking global infiltration campaign across 12 countries and 20 industries</a></div><span class="article-meta">INFOSEC.PUB &mdash; 23 Apr 2025</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-04-23"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://sh.itjust.works/post/36650421" target="_blank" rel="noopener">ASUS releases fix for AMI bug that lets hackers brick servers</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 23 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-23"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2025/04/regulating-ai-behavior-with-a-hypervisor.html" target="_blank" rel="noopener">Regulating AI Behavior with a Hypervisor</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2025-04-23</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-23"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/04/three-reasons-why-browser-is-best-for.html" target="_blank" rel="noopener">Three Reasons Why the Browser is Best for Stopping Phishing Attacks</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 23 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-23"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2025/04/russian-hackers-exploit-microsoft-oauth.html" target="_blank" rel="noopener">Russian Hackers Exploit Microsoft OAuth to Target Ukraine Allies via Signal and WhatsApp</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 23 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-23"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.microsoft.com/en-us/security/blog/2025/04/23/understanding-the-threat-landscape-for-kubernetes-and-containerized-assets/" target="_blank" rel="noopener">Understanding the threat landscape for Kubernetes and containerized assets</a></div><span class="article-meta">MICROSOFT.COM &mdash; 23 Apr 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-04-23"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.kaspersky.com/blog/ai-slopsquatting-supply-chain-risk/53327/" target="_blank" rel="noopener">What is slopsquatting, and how to protect your organization</a></div><span class="article-meta">KASPERSKY.COM &mdash; 23 Apr 2025</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2025-04-23"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://www.cisa.gov/news-events/news/cisa-dhs-st-inl-lsu-help-energy-industry-partners-strengthen-incident-response-and-ot-cybersecurity" target="_blank" rel="noopener">CISA, DHS S&amp;T, INL, LSU Help Energy Industry Partners Strengthen Incident Response and OT Cybersecurity</a></div><span class="article-meta">CISA.GOV &mdash; Wed, 23 Apr 25 1</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-04-23"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2025/04/23/cynomi-cinches-37m-for-its-ai-based-virtual-ciso-for-smb-cybersecurity/" target="_blank" rel="noopener">Cynomi cinches $37M for its AI-based ‘virtual CISO’ for SMB cybersecurity</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 23 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-23"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2025/04/dprk-hackers-steal-137m-from-tron-users.html" target="_blank" rel="noopener">DPRK Hackers Steal $137M from TRON Users in Single-Day Phishing Attack</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 23 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-23"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2025/04/iran-linked-hackers-target-israel-with.html" target="_blank" rel="noopener">Iran-Linked Hackers Target Israel with MURKYTOUR Malware via Fake Job Campaign</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 23 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-23"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/27127132" target="_blank" rel="noopener">America&amp;#x27;s cyber defenses are being dismantled from the inside</a></div><span class="article-meta">INFOSEC.PUB &mdash; 23 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-23"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/27123488" target="_blank" rel="noopener">What are You Working on Wednesday</a></div><span class="article-meta">INFOSEC.PUB &mdash; 23 Apr 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-04-23"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.trendmicro.com/en_us/research/25/d/russian-infrastructure-north-korean-cybercrime.html" target="_blank" rel="noopener">Russian Infrastructure Plays Crucial Role in North Korean Cybercrime Operations</a></div><span class="article-meta">TRENDMICRO.COM &mdash; 23 Apr 2025</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-04-23"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://thehackernews.com/2025/04/android-spyware-disguised-as-alpine.html" target="_blank" rel="noopener">Android Spyware Disguised as Alpine Quest App Targets Russian Military Devices</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 23 Apr 2025</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-04-23"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://techcrunch.com/2025/04/23/endor-labs-which-builds-tools-to-scan-ai-generated-code-for-vulnerabilities-lands-93m/" target="_blank" rel="noopener">Endor Labs, which builds tools to scan AI-generated code for vulnerabilities, lands $93M</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 23 Apr 2025</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2025-04-23"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.welivesecurity.com/en/scams/how-fraudsters-abuse-google-forms-spread-scams/" target="_blank" rel="noopener">How fraudsters abuse Google Forms to spread scams</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 23 Apr 2025</span></div>
-<div class="article-row" data-cat="Podcasts" data-date="2025-04-23"><span class="cat-badge" style="border:1px solid rgba(85,170,204,0.5);background:rgba(85,170,204,0.10);" title="Podcasts">🎙️</span><div class="article-body"><a href="https://grahamcluley.com/smashing-security-podcast-414/" target="_blank" rel="noopener">Smashing Security podcast #414: Zoom.. just one click and your data goes boom!</a></div><span class="article-meta">GRAHAMCLULEY.COM &mdash; 23 Apr 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-04-23"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.cisa.gov/news-events/news/statement-matt-hartman-cve-program" target="_blank" rel="noopener">Statement from Matt Hartman on the CVE Program</a></div><span class="article-meta">CISA.GOV &mdash; Wed, 23 Apr 25 1</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-04-23"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://krebsonsecurity.com/2025/04/doge-workers-code-supports-nlrb-whistleblower/" target="_blank" rel="noopener">DOGE Worker’s Code Supports NLRB Whistleblower</a></div><span class="article-meta">KREBSONSECURITY.COM &mdash; 23 Apr 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-04-23"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2025/04/23/blue-shield-of-california-shared-the-private-health-data-of-millions-with-google-for-years/" target="_blank" rel="noopener">Blue Shield of California shared the private health data of millions with Google for years</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 23 Apr 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-04-23"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2025/04/22/how-to-build-resilient-tech-nazo-moosa-of-paladin-talks-cyber-ai-and-deep-tech-at-strictlyvc-london/" target="_blank" rel="noopener">Tech resilience, breakout startups, and banking reinvented: The big conversations at StrictlyVC London in May</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 23 Apr 2025</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cybersecurity today: virtual employees, ai security agents, and cve program updates" data-date="2025-04-23"><span class="headline-date">23 Apr</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/cybersecurity-today-virtual-employees-ai-security-agents-and-cve-program-updates" target="_blank" rel="noopener">Cybersecurity Today: Virtual Employees, AI Security Agents, and CVE Program Updates</a><span class="article-summary">In this episode of 'Cybersecurity Today,' host Jim Love discusses various pressing topics in the realm of cybersecurity. Highlights include Anthropic's prediction on AI-powered virtual employees and their potential security risks, Microsoft’s introduction of AI security agents to…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="chinese hackers undertaking global infiltration campaign across 12 countries and 20 industries" data-date="2025-04-23"><span class="headline-date">23 Apr</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/27133462" target="_blank" rel="noopener">Chinese hackers undertaking global infiltration campaign across 12 countries and 20 industries</a><span class="article-summary">submitted by randomname to cybersecurity 26 points | 1 comments https://teamt5.org/en/posts/china-nexus-apt-exploits-ivanti-connect-secure-vpn-vulnerability-to-infiltrate-multiple-entities cross-posted from: scribe.disroot.org/post/2539529 Archived version Here is also a report .…</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="asus releases fix for ami bug that lets hackers brick servers" data-date="2025-04-23"><span class="headline-date">23 Apr</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/36650421" target="_blank" rel="noopener">ASUS releases fix for AMI bug that lets hackers brick servers</a><span class="article-summary">submitted by BrikoX to cybersecurity 5 points | 0 comments https://www.bleepingcomputer.com/news/security/asus-releases-fix-for-ami-bug-that-lets-hackers-brick-servers/ ASUS has released security updates to address CVE-2024-54085, a maximum severity flaw that could allow attacker…</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="regulating ai behavior with a hypervisor" data-date="2025-04-23"><span class="headline-date">23 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2025/04/regulating-ai-behavior-with-a-hypervisor.html" target="_blank" rel="noopener">Regulating AI Behavior with a Hypervisor</a><span class="article-summary">Interesting research: &#8220; Guillotine: Hypervisors for Isolating Malicious AIs .&#8221; Abstract :As AI models become more embedded in critical sectors like finance, healthcare, and the military, their inscrutable behavior poses ever-greater risks to society. To mitigate this …</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="three reasons why the browser is best for stopping phishing attacks" data-date="2025-04-23"><span class="headline-date">23 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/three-reasons-why-browser-is-best-for.html" target="_blank" rel="noopener">Three Reasons Why the Browser is Best for Stopping Phishing Attacks</a><span class="article-summary">Phishing attacks remain a huge challenge for organizations in 2025. In fact, with attackers increasingly leveraging identity-based techniques over software exploits, phishing arguably poses a bigger threat than ever before.&nbsp; Attackers are increasingly leveraging identity-bas…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="russian hackers exploit microsoft oauth to target ukraine allies via signal and whatsapp" data-date="2025-04-23"><span class="headline-date">23 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/russian-hackers-exploit-microsoft-oauth.html" target="_blank" rel="noopener">Russian Hackers Exploit Microsoft OAuth to Target Ukraine Allies via Signal and WhatsApp</a><span class="article-summary">Multiple suspected Russia-linked threat actors are "aggressively" targeting individuals and organizations with ties to Ukraine and human rights with an aim to gain unauthorized access to Microsoft 365 accounts since early March 2025. The highly targeted social engineering operati…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="understanding the threat landscape for kubernetes and containerized assets" data-date="2025-04-23"><span class="headline-date">23 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.microsoft.com/en-us/security/blog/2025/04/23/understanding-the-threat-landscape-for-kubernetes-and-containerized-assets/" target="_blank" rel="noopener">Understanding the threat landscape for Kubernetes and containerized assets</a><span class="article-summary">The dynamic nature of containers can make it challenging for security teams to detect runtime anomalies or pinpoint the source of a security incident, presenting an opportunity for attackers to stay undetected. Microsoft Threat Intelligence has observed threat actors taking advan…</span></span><span class="headline-source">MICROSOFT.COM</span></div>
+<div class="headline" data-title="what is slopsquatting, and how to protect your organization" data-date="2025-04-23"><span class="headline-date">23 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.kaspersky.com/blog/ai-slopsquatting-supply-chain-risk/53327/" target="_blank" rel="noopener">What is slopsquatting, and how to protect your organization</a><span class="article-summary">How to protect your IT developers from attacks exploiting AI-hallucinated packages</span></span><span class="headline-source">KASPERSKY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa, dhs s&amp;t, inl, lsu help energy industry partners strengthen incident response and ot cybersecurity" data-date="2025-04-23"><span class="headline-date">23 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/news/cisa-dhs-st-inl-lsu-help-energy-industry-partners-strengthen-incident-response-and-ot-cybersecurity" target="_blank" rel="noopener">CISA, DHS S&amp;T, INL, LSU Help Energy Industry Partners Strengthen Incident Response and OT Cybersecurity</a></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cynomi cinches $37m for its ai-based ‘virtual ciso’ for smb cybersecurity" data-date="2025-04-23"><span class="headline-date">23 Apr</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/04/23/cynomi-cinches-37m-for-its-ai-based-virtual-ciso-for-smb-cybersecurity/" target="_blank" rel="noopener">Cynomi cinches $37M for its AI-based ‘virtual CISO’ for SMB cybersecurity</a><span class="article-summary">Small and medium businesses are the latest targets for cybersecurity attacks, with one in three small businesses experiencing a data breach last year. SMBs are becoming more proactive in detecting and stopping these threats, and today a startup called Cynomi is announcing $37 mil…</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="dprk hackers steal $137m from tron users in single-day phishing attack" data-date="2025-04-23"><span class="headline-date">23 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/dprk-hackers-steal-137m-from-tron-users.html" target="_blank" rel="noopener">DPRK Hackers Steal $137M from TRON Users in Single-Day Phishing Attack</a><span class="article-summary">Multiple threat activity clusters with ties to North Korea (aka Democratic People's Republic of Korea or DPRK) have been linked to attacks targeting organizations and individuals in the Web3 and cryptocurrency space. "The focus on Web3 and cryptocurrency appears to be primarily f…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="iran-linked hackers target israel with murkytour malware via fake job campaign" data-date="2025-04-23"><span class="headline-date">23 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/iran-linked-hackers-target-israel-with.html" target="_blank" rel="noopener">Iran-Linked Hackers Target Israel with MURKYTOUR Malware via Fake Job Campaign</a><span class="article-summary">The Iran-nexus threat actor known as UNC2428 has been observed delivering a backdoor known as MURKYTOUR as part of a job-themed social engineering campaign aimed at Israel in October 2024. Google-owned Mandiant described UNC2428 as a threat actor aligned with Iran that engages in…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="america&amp;#x27;s cyber defenses are being dismantled from the inside" data-date="2025-04-23"><span class="headline-date">23 Apr</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/27127132" target="_blank" rel="noopener">America&amp;#x27;s cyber defenses are being dismantled from the inside</a><span class="article-summary">submitted by cm0002 to cybersecurity 52 points | 0 comments https://www.theregister.com/2025/04/23/trump_us_security/</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="what are you working on wednesday" data-date="2025-04-23"><span class="headline-date">23 Apr</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/27123488" target="_blank" rel="noopener">What are You Working on Wednesday</a><span class="article-summary">submitted by shellsharks to cybersecurity 3 points | 0 comments Weekly thread to discuss whatever you’re working on, big or small, at work or in your free time.</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="russian infrastructure plays crucial role in north korean cybercrime operations" data-date="2025-04-23"><span class="headline-date">23 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.trendmicro.com/en_us/research/25/d/russian-infrastructure-north-korean-cybercrime.html" target="_blank" rel="noopener">Russian Infrastructure Plays Crucial Role in North Korean Cybercrime Operations</a><span class="article-summary">In this blog entry, we discuss how North Korea's significant role in cybercrime – including campaigns attributed to Void Dokkaebi – is facilitated by extensive use of anonymization networks and the use of Russian IP ranges.</span></span><span class="headline-source">TRENDMICRO.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="android spyware disguised as alpine quest app targets russian military devices" data-date="2025-04-23"><span class="headline-date">23 Apr</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2025/04/android-spyware-disguised-as-alpine.html" target="_blank" rel="noopener">Android Spyware Disguised as Alpine Quest App Targets Russian Military Devices</a><span class="article-summary">Cybersecurity researchers have revealed that Russian military personnel are the target of a new malicious campaign that distributes Android spyware under the guise of the Alpine Quest mapping software. "The attackers hide this trojan inside modified Alpine Quest mapping software …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="endor labs, which builds tools to scan ai-generated code for vulnerabilities, lands $93m" data-date="2025-04-23"><span class="headline-date">23 Apr</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/04/23/endor-labs-which-builds-tools-to-scan-ai-generated-code-for-vulnerabilities-lands-93m/" target="_blank" rel="noopener">Endor Labs, which builds tools to scan AI-generated code for vulnerabilities, lands $93M</a><span class="article-summary">AI-generated code is no doubt changing how software is built, but it’s also introducing new security challenges. More than 50% of organizations encounter security issues with AI-produced code sometimes or frequently, according to a late 2023 survey by developer security platform …</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="how fraudsters abuse google forms to spread scams" data-date="2025-04-23"><span class="headline-date">23 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/en/scams/how-fraudsters-abuse-google-forms-spread-scams/" target="_blank" rel="noopener">How fraudsters abuse Google Forms to spread scams</a><span class="article-summary">The form and quiz-building tool is a popular vector for social engineering and malware. Here’s how to stay safe.</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-podcasts">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(85,170,204,0.5);" onclick="toggleSection(this)">🎙️ PODCASTS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="smashing security podcast #414: zoom.. just one click and your data goes boom!" data-date="2025-04-23"><span class="headline-date">23 Apr</span><span class="headline-body"><a class="headline-title" href="https://grahamcluley.com/smashing-security-podcast-414/" target="_blank" rel="noopener">Smashing Security podcast #414: Zoom.. just one click and your data goes boom!</a><span class="article-summary">Graham explores how the Elusive Comet cybercrime gang are using a sneaky trick of stealing your cryptocurrency via an innocent-appearing Zoom call, and Carole goes under the covers to explore the extraordinary lengths bio-hacking millionaire Bryan Johnson is attempting to extend …</span></span><span class="headline-source">GRAHAMCLULEY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="statement from matt hartman on the cve program" data-date="2025-04-23"><span class="headline-date">23 Apr</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/news/statement-matt-hartman-cve-program" target="_blank" rel="noopener">Statement from Matt Hartman on the CVE Program</a></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="doge worker’s code supports nlrb whistleblower" data-date="2025-04-23"><span class="headline-date">23 Apr</span><span class="headline-body"><a class="headline-title" href="https://krebsonsecurity.com/2025/04/doge-workers-code-supports-nlrb-whistleblower/" target="_blank" rel="noopener">DOGE Worker’s Code Supports NLRB Whistleblower</a><span class="article-summary">A whistleblower at the National Labor Relations Board (NLRB) alleged last week that denizens of Elon Musk's Department of Government Efficiency (DOGE) siphoned gigabytes of data from the agency's sensitive case files in early March. The whistleblower said accounts created for DOG…</span></span><span class="headline-source">KREBSONSECURITY.COM</span></div>
+<div class="headline" data-title="blue shield of california shared the private health data of millions with google for years" data-date="2025-04-23"><span class="headline-date">23 Apr</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/04/23/blue-shield-of-california-shared-the-private-health-data-of-millions-with-google-for-years/" target="_blank" rel="noopener">Blue Shield of California shared the private health data of millions with Google for years</a><span class="article-summary">The health insurance giant is notifying at least 4.7 million patients of the security lapse.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="tech resilience, breakout startups, and banking reinvented: the big conversations at strictlyvc london in may" data-date="2025-04-23"><span class="headline-date">23 Apr</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2025/04/22/how-to-build-resilient-tech-nazo-moosa-of-paladin-talks-cyber-ai-and-deep-tech-at-strictlyvc-london/" target="_blank" rel="noopener">Tech resilience, breakout startups, and banking reinvented: The big conversations at StrictlyVC London in May</a><span class="article-summary">StrictlyVC is heading to London on May 13, uniting top investors and entrepreneurs to spark meaningful connections and drive forward innovation. We’re thrilled to welcome industry leaders like Nazo Moosa, general partner at Paladin Capital Group; Sonali De Rycker, partner at Acce…</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

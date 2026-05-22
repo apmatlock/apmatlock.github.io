@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2022-11-17</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,66 +109,37 @@
       <div class="stat"><span class="stat-value">2</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2022-11-17</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">10</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">5</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2022-11-17"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa18-284a" target="_blank" rel="noopener">Publicly Available Tools Seen in Cyber Incidents Worldwide</a></div><span class="article-meta">CISA.GOV &mdash; 17 Nov 2022</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2022-11-17"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa19-168a" target="_blank" rel="noopener">Microsoft Operating Systems BlueKeep Vulnerability</a></div><span class="article-meta">CISA.GOV &mdash; 17 Nov 2022</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2022-11-17"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa19-339a" target="_blank" rel="noopener">Dridex Malware</a></div><span class="article-meta">CISA.GOV &mdash; 17 Nov 2022</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2022-11-17"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-010a" target="_blank" rel="noopener">Continued Exploitation of Pulse Secure VPN Vulnerability</a></div><span class="article-meta">CISA.GOV &mdash; 17 Nov 2022</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2022-11-17"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-014a" target="_blank" rel="noopener">Critical Vulnerabilities in Microsoft Windows Operating Systems</a></div><span class="article-meta">CISA.GOV &mdash; 17 Nov 2022</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2022-11-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa18-337a" target="_blank" rel="noopener">SamSam Ransomware</a></div><span class="article-meta">CISA.GOV &mdash; 17 Nov 2022</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2022-11-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa19-024a" target="_blank" rel="noopener">DNS Infrastructure Hijacking Campaign</a></div><span class="article-meta">CISA.GOV &mdash; 17 Nov 2022</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2022-11-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa19-122a" target="_blank" rel="noopener">New Exploits for Unsecure SAP Systems</a></div><span class="article-meta">CISA.GOV &mdash; 17 Nov 2022</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2022-11-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa19-290a" target="_blank" rel="noopener">Microsoft Ending Support for Windows 7 and Windows Server 2008 R2</a></div><span class="article-meta">CISA.GOV &mdash; 17 Nov 2022</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2022-11-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-006a" target="_blank" rel="noopener">Potential for Iranian Cyber Response to U.S. Military Strike in Baghdad</a></div><span class="article-meta">CISA.GOV &mdash; 17 Nov 2022</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="publicly available tools seen in cyber incidents worldwide" data-date="2022-11-17"><span class="headline-date">17 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa18-284a" target="_blank" rel="noopener">Publicly Available Tools Seen in Cyber Incidents Worldwide</a><span class="article-summary">Summary This report is a collaborative research effort by the cyber security authorities of five nations: Australia, Canada, New Zealand, the United Kingdom, and the United States.[1][2][3][4][5] In it we highlight the use of five publicly available tools, which have been used fo…</span></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="microsoft operating systems bluekeep vulnerability" data-date="2022-11-17"><span class="headline-date">17 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa19-168a" target="_blank" rel="noopener">Microsoft Operating Systems BlueKeep Vulnerability</a><span class="article-summary">Summary The Cybersecurity and Infrastructure Security Agency (CISA) is issuing this Activity Alert to provide information on a vulnerability, known as “BlueKeep,” that exists in the following Microsoft Windows Operating Systems (OSs), including both 32- and 64-bit versions, as we…</span></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="dridex malware" data-date="2022-11-17"><span class="headline-date">17 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa19-339a" target="_blank" rel="noopener">Dridex Malware</a><span class="article-summary">Summary This Alert is the result of recent collaboration between the Department of the Treasury Financial Sector Cyber Information Group (CIG) and the Department of the Treasury’s Financial Crimes Enforcement Network (FinCEN) to identify and share information with the financial s…</span></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="continued exploitation of pulse secure vpn vulnerability" data-date="2022-11-17"><span class="headline-date">17 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-010a" target="_blank" rel="noopener">Continued Exploitation of Pulse Secure VPN Vulnerability</a><span class="article-summary">Summary Unpatched Pulse Secure VPN servers continue to be an attractive target for malicious actors. Affected organizations that have not applied the software patch to fix an arbitrary file reading vulnerability, known as CVE-2019-11510, can become compromised in an attack.[ 1 ] …</span></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="critical vulnerabilities in microsoft windows operating systems" data-date="2022-11-17"><span class="headline-date">17 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-014a" target="_blank" rel="noopener">Critical Vulnerabilities in Microsoft Windows Operating Systems</a><span class="article-summary">Summary New vulnerabilities are continually emerging, but the best defense against attackers exploiting patched vulnerabilities is simple: keep software up to date. Timely patching is one of the most efficient and cost-effective steps an organization can take to minimize its expo…</span></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="samsam ransomware" data-date="2022-11-17"><span class="headline-date">17 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa18-337a" target="_blank" rel="noopener">SamSam Ransomware</a><span class="article-summary">Summary The Department of Homeland Security (DHS) National Cybersecurity and Communications Integration Center (NCCIC) and the Federal Bureau of Investigation (FBI) are issuing this activity alert to inform computer network defenders about SamSam ransomware, also known as MSIL/Sa…</span></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="dns infrastructure hijacking campaign" data-date="2022-11-17"><span class="headline-date">17 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa19-024a" target="_blank" rel="noopener">DNS Infrastructure Hijacking Campaign</a><span class="article-summary">Summary The National Cybersecurity and Communications Integration Center (NCCIC), part of the Cybersecurity and Infrastructure Security Agency (CISA), is aware of a global Domain Name System (DNS) infrastructure hijacking campaign. Using compromised credentials, an attacker can m…</span></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="new exploits for unsecure sap systems" data-date="2022-11-17"><span class="headline-date">17 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa19-122a" target="_blank" rel="noopener">New Exploits for Unsecure SAP Systems</a><span class="article-summary">Summary The Cybersecurity and Infrastructure Security Agency (CISA) is issuing this activity alert in response to recently disclosed exploits that target unsecure configurations of SAP components. [ 1 ] Technical Details A presentation at the April 2019 Operation for Community De…</span></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="microsoft ending support for windows 7 and windows server 2008 r2" data-date="2022-11-17"><span class="headline-date">17 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa19-290a" target="_blank" rel="noopener">Microsoft Ending Support for Windows 7 and Windows Server 2008 R2</a><span class="article-summary">Summary Note : This alert does not apply to federally certified voting systems running Windows 7. Microsoft will continue to provide free security updates to those systems through the 2020 election. See Microsoft’s article, Extending free Windows 7 security updates to voting syst…</span></span><span class="headline-source">CISA.GOV</span></div>
+<div class="headline" data-title="potential for iranian cyber response to u.s. military strike in baghdad" data-date="2022-11-17"><span class="headline-date">17 Nov</span><span class="headline-body"><a class="headline-title" href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-006a" target="_blank" rel="noopener">Potential for Iranian Cyber Response to U.S. Military Strike in Baghdad</a><span class="article-summary">Summary The Cybersecurity and Infrastructure Security Agency (CISA) is sharing the following information with the cybersecurity community as a primer for assisting in the protection of our Nation’s critical infrastructure in light of the current tensions between the Islamic Repub…</span></span><span class="headline-source">CISA.GOV</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

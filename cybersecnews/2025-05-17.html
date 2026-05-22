@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2025-05-17</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,72 +109,55 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2025-05-17</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">13</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2025-05-17"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://cybersecuritytoday.libsyn.com/the-monthly-cybersecurity-review-data-breaches-ransomware-and-critical-infrastructure" target="_blank" rel="noopener">The Monthly Cybersecurity Review: Data Breaches, Ransomware, and Critical Infrastructure</a></div><span class="article-meta">CYBERSECURITYTODAY.LIBSYN.COM &mdash; 17 May 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-05-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://gbhackers.com/vmware-esxi-firefox-red-hat-linux-sharepoint-hacked/" target="_blank" rel="noopener">VMware ESXi, Firefox, Red Hat Linux &amp; SharePoint Hacked – Pwn2Own Day 2</a></div><span class="article-meta">GBHACKERS.COM &mdash; 17 May 2025</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-05-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=Pu3k3Hi74ng" target="_blank" rel="noopener">This Exploit is Like Digital Ebola 😱</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-05-17</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2025-05-17"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=3F6PDdz_Z10" target="_blank" rel="noopener">Running Processes + Open Ports = Your Real Threats</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-05-17</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-05-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/watch?v=lUhO2eLRvKY" target="_blank" rel="noopener">Ransomware vs. Ethics: A Cybersecurity Nightmare</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-05-17</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-05-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/watch?v=T0Ed3MzjMm0" target="_blank" rel="noopener">What Happens When AI Watches You Hack?</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-05-17</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-05-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/watch?v=6WX_IbLshjY" target="_blank" rel="noopener">Stop Saying You Care About Security… SHOW US!</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-05-17</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2025-05-17"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.youtube.com/watch?v=P2VHUk8QU7k" target="_blank" rel="noopener">Cybersecurity is Like American Health? Yeah, It’s That Bad.</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-05-17</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-05-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31858" target="_blank" rel="noopener">xorsearch.py: Python Functions, (Sat, May 17th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 17 May 2025</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-05-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=H7KTjULU2H4" target="_blank" rel="noopener">Cybersecurity Conference Survival Guide (No BS)</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-05-17</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2025-05-17"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=rGMWtrYLHn8" target="_blank" rel="noopener">Is This a Honeypot... or Just Insane? 🐝💻</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-05-17</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-05-17"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/microsoft/new-defendnot-tool-tricks-windows-into-disabling-microsoft-defender/" target="_blank" rel="noopener">New 'Defendnot' tool tricks Windows into disabling Microsoft Defender</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 17 May 2025</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2025-05-17"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.youtube.com/watch?v=1F1LZe_Ww48" target="_blank" rel="noopener">CISOs Have Been Underrated for Too Long!</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2025-05-17</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the monthly cybersecurity review: data breaches, ransomware, and critical infrastructure" data-date="2025-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/the-monthly-cybersecurity-review-data-breaches-ransomware-and-critical-infrastructure" target="_blank" rel="noopener">The Monthly Cybersecurity Review: Data Breaches, Ransomware, and Critical Infrastructure</a><span class="article-summary">In this episode of 'Cybersecurity Today', host Jim Love is joined by panelists Laura Payne from White Tuque and David Shipley from Beauceron Security to review significant cybersecurity events over the past month. The discussion covers various impactful stories such as the disapp…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="vmware esxi, firefox, red hat linux &amp; sharepoint hacked – pwn2own day 2" data-date="2025-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/vmware-esxi-firefox-red-hat-linux-sharepoint-hacked/" target="_blank" rel="noopener">VMware ESXi, Firefox, Red Hat Linux &amp; SharePoint Hacked – Pwn2Own Day 2</a><span class="article-summary">Security researchers demonstrated their prowess on the second day of Pwn2Own Berlin 2025, discovering critical vulnerabilities across major enterprise platforms and earning $435,000 in bounties. The competition, now in its second day at the OffensiveCon conference in Berlin, has …</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="this exploit is like digital ebola 😱" data-date="2025-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=Pu3k3Hi74ng" target="_blank" rel="noopener">This Exploit is Like Digital Ebola 😱</a><span class="article-summary">A terrifying PHP CGI vulnerability is now under mass exploitation — and it’s being compared to digital Ebola. In this short, cybersecurity expert Doug White breaks down how an unpatched flaw in Windows PHP installations (running in CGI mode) allows unauthenticated attackers to ex…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="running processes + open ports = your real threats" data-date="2025-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=3F6PDdz_Z10" target="_blank" rel="noopener">Running Processes + Open Ports = Your Real Threats</a><span class="article-summary">When a security advisory drops with 700+ vulnerabilities, where do you even begin? This short breaks down how cybersecurity pros prioritize threats by focusing on running processes and open sockets. Not all vulns are created equal — and this is how you cut through the noise. Perf…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ransomware vs. ethics: a cybersecurity nightmare" data-date="2025-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=lUhO2eLRvKY" target="_blank" rel="noopener">Ransomware vs. Ethics: A Cybersecurity Nightmare</a><span class="article-summary">When ransomware locks down a hospital’s critical systems, what’s the right move? This short dives into the real-world ethical dilemma cybersecurity pros face: protect patient lives or uphold legal boundaries. Aaran explains why paying a ransom might be more than just a business d…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="what happens when ai watches you hack?" data-date="2025-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=T0Ed3MzjMm0" target="_blank" rel="noopener">What Happens When AI Watches You Hack?</a><span class="article-summary">James Kettle and the PortSwigger team have taken cybersecurity to the next level by building Shadow Repeater — an AI-powered tool that watches hackers in real-time, learning from their actions and testing its own variations in the background. Imagine making a typo or using the wr…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="stop saying you care about security… show us!" data-date="2025-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=6WX_IbLshjY" target="_blank" rel="noopener">Stop Saying You Care About Security… SHOW US!</a><span class="article-summary">Some companies say they "take security seriously"—but their actions tell a different story. This short dives into why transparency matters more than just issuing a patch. Featuring a heated take on vendor accountability and what real secure design should look like. Watch till the…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="cybersecurity is like american health? yeah, it’s that bad." data-date="2025-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=P2VHUk8QU7k" target="_blank" rel="noopener">Cybersecurity is Like American Health? Yeah, It’s That Bad.</a><span class="article-summary">In this jaw-dropping clip, Summer Craze Fowler draws a bold comparison between cybersecurity and the American healthcare crisis — and it hits hard. She explains how the biggest problem in cybersecurity isn’t cutting-edge attacks or complex systems… it’s the basics. Just like poor…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="xorsearch.py: python functions, (sat, may 17th)" data-date="2025-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31858" target="_blank" rel="noopener">xorsearch.py: Python Functions, (Sat, May 17th)</a><span class="article-summary">A couple years ago I published tool xorsearch.py for this diary entry: " Small Challenge: A Simple Word Maldoc - Part 4 ". &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="cybersecurity conference survival guide (no bs)" data-date="2025-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=H7KTjULU2H4" target="_blank" rel="noopener">Cybersecurity Conference Survival Guide (No BS)</a><span class="article-summary">Cybersecurity experts Jackie McGuire, Adrian Sanabria, and Jason Wood break down the real RSA experience—charley horses, sore feet, and sleep deprivation included. This isn’t your typical highlight reel. From marathon schedules to party burnout, this short shows what it really ta…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="is this a honeypot... or just insane? 🐝💻" data-date="2025-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=rGMWtrYLHn8" target="_blank" rel="noopener">Is This a Honeypot... or Just Insane? 🐝💻</a><span class="article-summary">When a cybersecurity expert tries to capture a real-life bee swarm using a wet/dry vacuum, things get very real—and hilariously chaotic. What starts as a harmless idea quickly turns into a moment of disbelief, complete with jokes about honeypots, queen bees, and questionable swar…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new 'defendnot' tool tricks windows into disabling microsoft defender" data-date="2025-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/microsoft/new-defendnot-tool-tricks-windows-into-disabling-microsoft-defender/" target="_blank" rel="noopener">New 'Defendnot' tool tricks Windows into disabling Microsoft Defender</a><span class="article-summary">A new tool called 'Defendnot' can disable Microsoft Defender on Windows devices by registering a fake antivirus product, even when no real AV is installed. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="cisos have been underrated for too long!" data-date="2025-05-17"><span class="headline-date">17 May</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=1F1LZe_Ww48" target="_blank" rel="noopener">CISOs Have Been Underrated for Too Long!</a><span class="article-summary">For years, CISOs have been seen as risk managers, but what if they’re actually driving revenue? 🚀 Jeff Pollard passionately argues that CISOs contribute more to the bottom line than they realize—yet rarely get credit for it. Ben Carr and Jess Burn weigh in on the evolving role of…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

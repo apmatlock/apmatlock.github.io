@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-01-01</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,73 +109,56 @@
       <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-01-01</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">14</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">6</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">1</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-01-01"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2024/01/new-terrapin-flaw-could-let-attackers.html" target="_blank" rel="noopener">New Terrapin Flaw Could Let Attackers Downgrade SSH Protocol Security</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 01 Jan 2024</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-01-01"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.youtube.com/watch?v=NtQx8C_9hIA" target="_blank" rel="noopener">HTTP RFCs Have Evolved, Breaking Into Cloud, Scaling AppSec at Netflix, &amp; Confluence ... - ASW Vault</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-01-01</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-01-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/01/new-variant-of-dll-search-order.html" target="_blank" rel="noopener">New Variant of DLL Search Order Hijacking Bypasses Windows 10 and 11 Protections</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 01 Jan 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-01-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://media.ccc.de/v/37c3-11859-operation_triangulation_what_you_get_when_attack_iphones_of_researchers" target="_blank" rel="noopener">Operation Triangulation: What You Get When Attack iPhones of Security Researchers</a></div><span class="article-meta">MEDIA.CCC.DE &mdash; 1 Jan 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-01-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/the-law-enforcement-operations-targeting-cybercrime-in-2023/" target="_blank" rel="noopener">The law enforcement operations targeting cybercrime in 2023</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 01 Jan 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-01-01"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/the-biggest-cybersecurity-and-cyberattack-stories-of-2023/" target="_blank" rel="noopener">The biggest cybersecurity and cyberattack stories of 2023</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 01 Jan 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-01-01"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.databreachtoday.co.uk/cybersecurity-trends-to-watch-in-2024-a-24005" target="_blank" rel="noopener">Cybersecurity Trends to Watch in 2024</a></div><span class="article-meta">DATABREACHTODAY.CO.UK &mdash; 2024-01-01</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-01-01"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2024/01/new-jinxloader-targeting-users-with.html" target="_blank" rel="noopener">New JinxLoader Targeting Users with Formbook and XLoader Malware</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 01 Jan 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-01-01"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://gbhackers.com/network-security-tools/" target="_blank" rel="noopener">50+ Network  Penetration Testing Tools for Hackers &amp; Security Professionals – 2024</a></div><span class="article-meta">GBHACKERS.COM &mdash; 01 Jan 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-01-01"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://web.archive.org/web/20230604104001/https://www.tau.ac.il/~tromer/papers/acoustic-20131218.pdf" target="_blank" rel="noopener">It is possible to extract encryption keys by recording coil whine with a phone next to the computer (2013 paper)</a></div><span class="article-meta">WEB.ARCHIVE.ORG &mdash; 1 Jan 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-01-01"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://infosec.pub/post/6658035" target="_blank" rel="noopener">Mentorship Monday - Discussions for career and learning!</a></div><span class="article-meta">INFOSEC.PUB &mdash; 1 Jan 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-01-01"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://youtu.be/4LhDpXSCggQ" target="_blank" rel="noopener">AI Wars 2024: The Race for Ethical Artificial Intelligence</a></div><span class="article-meta">YOUTU.BE &mdash; 1 Jan 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-01-01"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.youtube.com/watch?v=xrwmuUdYA64" target="_blank" rel="noopener">The Booming Business of Cybersecurity - Robert Herjavec - BSW Vault</a></div><span class="article-meta">YOUTUBE.COM &mdash; 2024-01-01</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-01-01"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://www.securityweek.com/industry-moves/jan-01-2024/" target="_blank" rel="noopener">Industry Moves for the week of January 1, 2024 - SecurityWeek</a></div><span class="article-meta">SECURITYWEEK.COM &mdash; 01 Jan 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new terrapin flaw could let attackers downgrade ssh protocol security" data-date="2024-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/01/new-terrapin-flaw-could-let-attackers.html" target="_blank" rel="noopener">New Terrapin Flaw Could Let Attackers Downgrade SSH Protocol Security</a><span class="article-summary">Security researchers from Ruhr University Bochum have discovered a vulnerability in the Secure Shell (SSH) cryptographic network protocol that could allow an attacker to downgrade the connection's security by breaking the integrity of the secure channel. Called&nbsp;Terrapin&nbsp…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="http rfcs have evolved, breaking into cloud, scaling appsec at netflix, &amp; confluence ... - asw vault" data-date="2024-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=NtQx8C_9hIA" target="_blank" rel="noopener">HTTP RFCs Have Evolved, Breaking Into Cloud, Scaling AppSec at Netflix, &amp; Confluence ... - ASW Vault</a><span class="article-summary">HTTP RFCs have evolved: A Cloudflare view of HTTP usage trends, Career Advice and Professional Development, Active Exploitation of Confluence CVE-2022-26134 Visit https://www.securityweekly.com/asw for all the latest episodes! Show Notes: https://securityweekly.com/vault-asw-7</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new variant of dll search order hijacking bypasses windows 10 and 11 protections" data-date="2024-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/01/new-variant-of-dll-search-order.html" target="_blank" rel="noopener">New Variant of DLL Search Order Hijacking Bypasses Windows 10 and 11 Protections</a><span class="article-summary">Security researchers have detailed a new variant of a dynamic link library (DLL) search order hijacking technique that could be used by threat actors to bypass security mechanisms and achieve execution of malicious code on systems running Microsoft Windows 10 and Windows 11. The …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="operation triangulation: what you get when attack iphones of security researchers" data-date="2024-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://media.ccc.de/v/37c3-11859-operation_triangulation_what_you_get_when_attack_iphones_of_researchers" target="_blank" rel="noopener">Operation Triangulation: What You Get When Attack iPhones of Security Researchers</a><span class="article-summary">submitted by c0mmando to netsec 1 points | 0 comments https://media.ccc.de/v/37c3-11859-operation_triangulation_what_you_get_when_attack_iphones_of_researchers Imagine discovering a zero-click attack targeting Apple mobile devices of your colleagues and managing to capture all th…</span></span><span class="headline-source">MEDIA.CCC.DE</span></div>
+<div class="headline" data-title="the law enforcement operations targeting cybercrime in 2023" data-date="2024-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/the-law-enforcement-operations-targeting-cybercrime-in-2023/" target="_blank" rel="noopener">The law enforcement operations targeting cybercrime in 2023</a><span class="article-summary">In 2023, we saw numerous law enforcement operations targeting cybercrime operations, including cryptocurrency scams, phishing attacks, credential theft, malware development, and ransomware attacks. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="the biggest cybersecurity and cyberattack stories of 2023" data-date="2024-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/the-biggest-cybersecurity-and-cyberattack-stories-of-2023/" target="_blank" rel="noopener">The biggest cybersecurity and cyberattack stories of 2023</a><span class="article-summary">2023 was a big year for cybersecurity, with significant cyberattacks, data breaches, new threat groups emerging, and, of course, zero-day vulnerabilities. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cybersecurity trends to watch in 2024" data-date="2024-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.databreachtoday.co.uk/cybersecurity-trends-to-watch-in-2024-a-24005" target="_blank" rel="noopener">Cybersecurity Trends to Watch in 2024</a><span class="article-summary">Expert Panelists Debate Impact of AI, Geopolitics and New Tactics in the Year Ahead In conjunction with a new report from CyberEd.io, Information Security Media Group asked some of the industry's leading cybersecurity and privacy experts about 10 top trends to watch in 2024. Rans…</span></span><span class="headline-source">DATABREACHTODAY.CO.UK</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new jinxloader targeting users with formbook and xloader malware" data-date="2024-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/01/new-jinxloader-targeting-users-with.html" target="_blank" rel="noopener">New JinxLoader Targeting Users with Formbook and XLoader Malware</a><span class="article-summary">A new Go-based malware loader called&nbsp;JinxLoader&nbsp;is being used by threat actors to deliver next-stage payloads such as&nbsp;Formbook and its successor XLoader. The&nbsp;disclosure&nbsp;comes from cybersecurity firms Palo Alto Networks Unit 42 and Symantec, both of which …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="50+ network  penetration testing tools for hackers &amp; security professionals – 2024" data-date="2024-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://gbhackers.com/network-security-tools/" target="_blank" rel="noopener">50+ Network  Penetration Testing Tools for Hackers &amp; Security Professionals – 2024</a><span class="article-summary">Network Security tools for Penetration testing is more often used by security industries to test the vulnerabilities in network and applications. Here you can find the Comprehensive Network Security Tools list that covers Performing Penetration testing Operations in all Environme…</span></span><span class="headline-source">GBHACKERS.COM</span></div>
+<div class="headline" data-title="it is possible to extract encryption keys by recording coil whine with a phone next to the computer (2013 paper)" data-date="2024-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://web.archive.org/web/20230604104001/https://www.tau.ac.il/~tromer/papers/acoustic-20131218.pdf" target="_blank" rel="noopener">It is possible to extract encryption keys by recording coil whine with a phone next to the computer (2013 paper)</a><span class="article-summary">submitted by HiddenLayer5 to security 2 points | 1 comments https://web.archive.org/web/20230604104001/https://www.tau.ac.il/~tromer/papers/acoustic-20131218.pdf A more TLDR article about this: extremetech.com/…/173108-researchers-crack-the-wo… FAQs from the researchers: web.arch…</span></span><span class="headline-source">WEB.ARCHIVE.ORG</span></div>
+<div class="headline" data-title="mentorship monday - discussions for career and learning!" data-date="2024-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://infosec.pub/post/6658035" target="_blank" rel="noopener">Mentorship Monday - Discussions for career and learning!</a><span class="article-summary">submitted by shellsharks to cybersecurity 2 points | 0 comments Weekly thread for any and all career, learning and general guidance questions. Thinking of taking a training or going for a cert? Wondering how to level up your career? Wondering what NOT to do? Got other questions? …</span></span><span class="headline-source">INFOSEC.PUB</span></div>
+<div class="headline" data-title="ai wars 2024: the race for ethical artificial intelligence" data-date="2024-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://youtu.be/4LhDpXSCggQ" target="_blank" rel="noopener">AI Wars 2024: The Race for Ethical Artificial Intelligence</a><span class="article-summary">submitted by UBER_GheistXL to securitynews 1 points | 0 comments https://youtu.be/4LhDpXSCggQ</span></span><span class="headline-source">YOUTU.BE</span></div>
+<div class="headline" data-title="the booming business of cybersecurity - robert herjavec - bsw vault" data-date="2024-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/watch?v=xrwmuUdYA64" target="_blank" rel="noopener">The Booming Business of Cybersecurity - Robert Herjavec - BSW Vault</a><span class="article-summary">Robert Herjavec, CEO of Cyderes, was the keynote speaker at InfoSec World 2022, where he discussed the momentum we continue to see in the cybersecurity industry. Topics included mergers & acquisitions, Robert's outlook on the cyber market, staffing shortages, and nation state thr…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="industry moves for the week of january 1, 2024 - securityweek" data-date="2024-01-01"><span class="headline-date">1 Jan</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/industry-moves/jan-01-2024/" target="_blank" rel="noopener">Industry Moves for the week of January 1, 2024 - SecurityWeek</a><span class="article-summary">Explore industry moves and significant changes in the industry for the week of January 1, 2024. Stay updated with the latest industry trends and shifts.</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>

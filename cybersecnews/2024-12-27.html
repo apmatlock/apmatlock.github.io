@@ -6,6 +6,76 @@
 <title>matlock.ca // THREAT INTELLIGENCE — 2024-12-27</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -14,6 +84,7 @@
     <a href="/">Home</a>
     <a href="/claudeblog/">Walkthroughs</a>
     <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
     <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="/cybersecnews/feed.xml">RSS</a>
   </nav>
@@ -22,13 +93,13 @@
 <nav class="subnav">
   <span class="nav-label">// JUMP</span>
 <a href="archive.html">Archive</a>
+<a href="2026-05-23.html">23 May</a>
 <a href="index.html">Today</a>
-<a href="2026-04-24.html">2026-04-24</a>
-<a href="2026-04-23.html">2026-04-23</a>
-<a href="2026-04-22.html">2026-04-22</a>
-<a href="2026-04-21.html">2026-04-21</a>
-<a href="2026-04-20.html">2026-04-20</a>
-<a href="2026-04-19.html">2026-04-19</a>
+<a href="2026-05-21.html">Yesterday</a>
+<a href="2026-05-20.html">20 May</a>
+<a href="2026-05-19.html">19 May</a>
+<a href="2026-05-18.html">18 May</a>
+<a href="2026-05-17.html">17 May</a>
 
 </nav>
 <main class="container wide">
@@ -38,81 +109,72 @@
       <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2024-12-27</span><span class="stat-label">Date</span></div>
     </div>
-    <div class="filter-bar">
-<button class="filter-btn active" data-cat="all" onclick="filterCat('all', this)">ALL <span class="filter-count">20</span></button>
-<button class="filter-btn" data-cat="Common Vulnerabilities and Exposures" onclick="filterCat('Common Vulnerabilities and Exposures', this)">COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">5</span></button>
-<button class="filter-btn" data-cat="Vulnerability Disclosure" onclick="filterCat('Vulnerability Disclosure', this)">VULNERABILITY DISCLOSURE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Security Advisories" onclick="filterCat('Security Advisories', this)">SECURITY ADVISORIES <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Incident Reporting" onclick="filterCat('Incident Reporting', this)">INCIDENT REPORTING <span class="filter-count">3</span></button>
-<button class="filter-btn" data-cat="Threat Intelligence" onclick="filterCat('Threat Intelligence', this)">THREAT INTELLIGENCE <span class="filter-count">4</span></button>
-<button class="filter-btn" data-cat="Cyber Threat Landscape" onclick="filterCat('Cyber Threat Landscape', this)">CYBER THREAT LANDSCAPE <span class="filter-count">1</span></button>
-<button class="filter-btn" data-cat="Infosec News" onclick="filterCat('Infosec News', this)">INFOSEC NEWS <span class="filter-count">2</span></button>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
-    <div class="articles-list">
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-12-27"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://news.sophos.com/en-us/2024/12/27/prioritizing-patching-a-deep-dive-into-frameworks-and-tools-part-1-cvss/" target="_blank" rel="noopener">Prioritizing patching: A deep dive into frameworks and tools – Part 1: CVSS</a></div><span class="article-meta">SOPHOS.COM &mdash; 27 Dec 2024</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-12-27"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/hackers-exploit-dos-flaw-to-disable-palo-alto-networks-firewalls/" target="_blank" rel="noopener">Hackers exploit DoS flaw to disable Palo Alto Networks firewalls</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 27 Dec 2024</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-12-27"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2024/12/cloud-atlas-deploys-vbcloud-malware.html" target="_blank" rel="noopener">Cloud Atlas Deploys VBCloud Malware: Over 80% of Targets Found in Russia</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 27 Dec 2024</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-12-27"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2024/12/palo-alto-releases-patch-for-pan-os-dos.html" target="_blank" rel="noopener">Palo Alto Releases Patch for PAN-OS DoS Flaw — Update Immediately</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 27 Dec 2024</span></div>
-<div class="article-row" data-cat="Common Vulnerabilities and Exposures" data-date="2024-12-27"><span class="cat-badge" style="border:1px solid rgba(255,102,0,0.6);background:rgba(255,102,0,0.12);" title="Common Vulnerabilities and Exposures">🐛</span><div class="article-body"><a href="https://thehackernews.com/2024/12/apache-mina-cve-2024-52046-cvss-100.html" target="_blank" rel="noopener">Apache MINA CVE-2024-52046: CVSS 10.0 Flaw Enables RCE via Unsafe Serialization</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 27 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-27"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://thehackernews.com/2024/12/ficora-and-kaiten-botnets-exploit-old-d.html" target="_blank" rel="noopener">FICORA and Kaiten Botnets Exploit Old D-Link Vulnerabilities for Global Attacks</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 27 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-27"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/3628704/data-protection-challenges-abound-as-volumes-surge-and-threats-evolve.html" target="_blank" rel="noopener">Data protection challenges abound as volumes surge and threats evolve</a></div><span class="article-meta">CSOONLINE.COM &mdash; 27 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-27"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.csoonline.com/article/3627433/security-awareness-trainings-ein-ratgeber.html" target="_blank" rel="noopener">Security-Awareness-Trainings – ein Ratgeber</a></div><span class="article-meta">CSOONLINE.COM &mdash; 27 Dec 2024</span></div>
-<div class="article-row" data-cat="Vulnerability Disclosure" data-date="2024-12-27"><span class="cat-badge" style="border:1px solid rgba(255,140,0,0.5);background:rgba(255,140,0,0.10);" title="Vulnerability Disclosure">⚠️</span><div class="article-body"><a href="https://www.welivesecurity.com/en/videos/month-security-tony-anscombe-december-2024-edition/" target="_blank" rel="noopener">This month in security with Tony Anscombe – December 2024 edition</a></div><span class="article-meta">WELIVESECURITY.COM &mdash; 27 Dec 2024</span></div>
-<div class="article-row" data-cat="Security Advisories" data-date="2024-12-27"><span class="cat-badge" style="border:1px solid rgba(204,170,0,0.5);background:rgba(204,170,0,0.10);" title="Security Advisories">📢</span><div class="article-body"><a href="https://securityintelligence.com/articles/cisas-cyber-incident-reporting-portal-progress-future-plans/" target="_blank" rel="noopener">CISA’s cyber incident reporting portal: Progress and future plans</a></div><span class="article-meta">SECURITYINTELLIGENCE.COM &mdash; 27 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-27"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://www.bleepingcomputer.com/news/security/white-house-links-ninth-telecom-breach-to-chinese-hackers/" target="_blank" rel="noopener">White House links ninth telecom breach to Chinese hackers</a></div><span class="article-meta">BLEEPINGCOMPUTER.COM &mdash; 27 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-27"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://techcrunch.com/2024/12/27/record-breaking-ransoms-and-breaches-a-timeline-of-ransomware-in-2024/" target="_blank" rel="noopener">Record-breaking ransoms and breaches: A timeline of ransomware in 2024</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 27 Dec 2024</span></div>
-<div class="article-row" data-cat="Incident Reporting" data-date="2024-12-27"><span class="cat-badge" style="border:1px solid rgba(221,68,68,0.5);background:rgba(221,68,68,0.10);" title="Incident Reporting">🔥</span><div class="article-body"><a href="https://sh.itjust.works/post/30159349" target="_blank" rel="noopener">VW Suffers Major Breach Exposing Location of 800,000 Electric Vehicles</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 27 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-27"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2024/12/casino-players-using-hidden-cameras-for-cheating.html" target="_blank" rel="noopener">Casino Players Using Hidden Cameras for Cheating</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2024-12-27</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-27"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://www.schneier.com/blog/archives/2024/12/friday-squid-blogging-squid-on-pizza.html" target="_blank" rel="noopener">Friday Squid Blogging: Squid on Pizza</a></div><span class="article-meta">SCHNEIER.COM &mdash; 2024-12-27</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-27"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://thehackernews.com/2024/12/north-korean-hackers-deploy-ottercookie.html" target="_blank" rel="noopener">North Korean Hackers Deploy OtterCookie Malware in Contagious Interview Campaign</a></div><span class="article-meta">THEHACKERNEWS.COM &mdash; 27 Dec 2024</span></div>
-<div class="article-row" data-cat="Threat Intelligence" data-date="2024-12-27"><span class="cat-badge" style="border:1px solid rgba(170,68,221,0.5);background:rgba(170,68,221,0.10);" title="Threat Intelligence">🕵️</span><div class="article-body"><a href="https://sh.itjust.works/post/30159001" target="_blank" rel="noopener">Texas awards $170M contract to SAIC for IT, cybersecurity services | StateScoop</a></div><span class="article-meta">SH.ITJUST.WORKS &mdash; 27 Dec 2024</span></div>
-<div class="article-row" data-cat="Cyber Threat Landscape" data-date="2024-12-27"><span class="cat-badge" style="border:1px solid rgba(68,136,204,0.5);background:rgba(68,136,204,0.10);" title="Cyber Threat Landscape">🌐</span><div class="article-body"><a href="https://www.kaspersky.com/blog/cybersecurity-resolutions-2025/52820/" target="_blank" rel="noopener">Cybersecurity trends in 2025 | Kaspersky official blog</a></div><span class="article-meta">KASPERSKY.COM &mdash; 27 Dec 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-27"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://isc.sans.edu/diary/rss/31548" target="_blank" rel="noopener">Phishing for Banking Information, (Fri, Dec 27th)</a></div><span class="article-meta">ISC.SANS.EDU &mdash; 27 Dec 2024</span></div>
-<div class="article-row" data-cat="Infosec News" data-date="2024-12-27"><span class="cat-badge" style="border:1px solid rgba(122,68,34,0.4);background:rgba(122,68,34,0.08);" title="Infosec News">📡</span><div class="article-body"><a href="https://techcrunch.com/2024/12/27/cyberhaven-says-it-was-hacked-to-publish-a-malicious-update-to-its-chrome-extension/" target="_blank" rel="noopener">Cyber firm’s Chrome extension hijacked to steal user passwords</a></div><span class="article-meta">TECHCRUNCH.COM &mdash; 27 Dec 2024</span></div>
-    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="prioritizing patching: a deep dive into frameworks and tools – part 1: cvss" data-date="2024-12-27"><span class="headline-date">27 Dec</span><span class="headline-body"><a class="headline-title" href="https://news.sophos.com/en-us/2024/12/27/prioritizing-patching-a-deep-dive-into-frameworks-and-tools-part-1-cvss/" target="_blank" rel="noopener">Prioritizing patching: A deep dive into frameworks and tools – Part 1: CVSS</a><span class="article-summary">In the first of a two-part series exploring tools and frameworks which can help organizations with remediation prioritization, Sophos X-Ops takes a look at the Common Vulnerability Scoring System (CVSS)</span></span><span class="headline-source">SOPHOS.COM</span></div>
+<div class="headline" data-title="hackers exploit dos flaw to disable palo alto networks firewalls" data-date="2024-12-27"><span class="headline-date">27 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/hackers-exploit-dos-flaw-to-disable-palo-alto-networks-firewalls/" target="_blank" rel="noopener">Hackers exploit DoS flaw to disable Palo Alto Networks firewalls</a><span class="article-summary">Palo Alto Networks is warning that hackers are exploiting the CVE-2024-3393 denial of service vulnerability to disable firewall protections by forcing it to reboot. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="cloud atlas deploys vbcloud malware: over 80% of targets found in russia" data-date="2024-12-27"><span class="headline-date">27 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/cloud-atlas-deploys-vbcloud-malware.html" target="_blank" rel="noopener">Cloud Atlas Deploys VBCloud Malware: Over 80% of Targets Found in Russia</a><span class="article-summary">The threat actor known as Cloud Atlas has been observed using a previously undocumented malware called VBCloud as part of its cyber attack campaigns targeting "several dozen users" in 2024. "Victims get infected via phishing emails containing a malicious document that exploits a …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="palo alto releases patch for pan-os dos flaw — update immediately" data-date="2024-12-27"><span class="headline-date">27 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/palo-alto-releases-patch-for-pan-os-dos.html" target="_blank" rel="noopener">Palo Alto Releases Patch for PAN-OS DoS Flaw — Update Immediately</a><span class="article-summary">Palo Alto Networks has disclosed a high-severity vulnerability impacting PAN-OS software that could cause a denial-of-service (DoS) condition on susceptible devices. The flaw, tracked as CVE-2024-3393 (CVSS score: 8.7), impacts PAN-OS versions 10.X and 11.X, as well as Prisma Acc…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="apache mina cve-2024-52046: cvss 10.0 flaw enables rce via unsafe serialization" data-date="2024-12-27"><span class="headline-date">27 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/apache-mina-cve-2024-52046-cvss-100.html" target="_blank" rel="noopener">Apache MINA CVE-2024-52046: CVSS 10.0 Flaw Enables RCE via Unsafe Serialization</a><span class="article-summary">The Apache Software Foundation (ASF) has released patches to address a maximum severity vulnerability in the MINA Java network application framework that could result in remote code execution under specific conditions. Tracked as CVE-2024-52046, the vulnerability carries a CVSS s…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ficora and kaiten botnets exploit old d-link vulnerabilities for global attacks" data-date="2024-12-27"><span class="headline-date">27 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/ficora-and-kaiten-botnets-exploit-old-d.html" target="_blank" rel="noopener">FICORA and Kaiten Botnets Exploit Old D-Link Vulnerabilities for Global Attacks</a><span class="article-summary">Cybersecurity researchers are warning about a spike in malicious activity that involves roping vulnerable D-Link routers into two different botnets, a Mirai variant dubbed FICORA and a Kaiten (aka Tsunami) variant called CAPSAICIN. "These botnets are frequently spread through doc…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="data protection challenges abound as volumes surge and threats evolve" data-date="2024-12-27"><span class="headline-date">27 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/3628704/data-protection-challenges-abound-as-volumes-surge-and-threats-evolve.html" target="_blank" rel="noopener">Data protection challenges abound as volumes surge and threats evolve</a><span class="article-summary">In the global digital economy, data is the most important asset organizations must protect from theft and damage. CISOs are fundamentally guardians of that asset, obligated to keep it secure and available to relevant users when and where they need it. “Every company has become a …</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="security-awareness-trainings – ein ratgeber" data-date="2024-12-27"><span class="headline-date">27 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/3627433/security-awareness-trainings-ein-ratgeber.html" target="_blank" rel="noopener">Security-Awareness-Trainings – ein Ratgeber</a><span class="article-summary">Wenn Ihre erste Verteidigungslinie fällt, haben Cyberschurken leichtes Spiel. Leremy | shutterstock.com Security-Awareness-Schulungen sind für Unternehmen und Organisationen obligatorisch und sollten Teil jeder übergreifenden Cybersecurity-Strategie sein. Zumindest, wenn sämtlich…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="this month in security with tony anscombe – december 2024 edition" data-date="2024-12-27"><span class="headline-date">27 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.welivesecurity.com/en/videos/month-security-tony-anscombe-december-2024-edition/" target="_blank" rel="noopener">This month in security with Tony Anscombe – December 2024 edition</a><span class="article-summary">From attacks leveraging new new zero-day exploits to a major law enforcement crackdown, December 2024 was packed with impactful cybersecurity news</span></span><span class="headline-source">WELIVESECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa’s cyber incident reporting portal: progress and future plans" data-date="2024-12-27"><span class="headline-date">27 Dec</span><span class="headline-body"><a class="headline-title" href="https://securityintelligence.com/articles/cisas-cyber-incident-reporting-portal-progress-future-plans/" target="_blank" rel="noopener">CISA’s cyber incident reporting portal: Progress and future plans</a><span class="article-summary">On August 29, 2024, CISA announced the launch of a new cyber-incident Reporting Portal, part of the new CISA Services Portal. &#8220;The Incident Reporting Portal enables entities and individuals reporting cyber incidents to create unique accounts, save reports and return to subm…</span></span><span class="headline-source">SECURITYINTELLIGENCE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="white house links ninth telecom breach to chinese hackers" data-date="2024-12-27"><span class="headline-date">27 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/white-house-links-ninth-telecom-breach-to-chinese-hackers/" target="_blank" rel="noopener">White House links ninth telecom breach to Chinese hackers</a><span class="article-summary">A White House official has added a ninth U.S. telecommunications company to the list of telecoms breached in a Chinese hacking campaign that impacted dozens of countries. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="record-breaking ransoms and breaches: a timeline of ransomware in 2024" data-date="2024-12-27"><span class="headline-date">27 Dec</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/12/27/record-breaking-ransoms-and-breaches-a-timeline-of-ransomware-in-2024/" target="_blank" rel="noopener">Record-breaking ransoms and breaches: A timeline of ransomware in 2024</a><span class="article-summary">From LoanDepot to Evolve Bank and Blue Yonder, these ransomware attacks affect tens of millions of people. © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+<div class="headline" data-title="vw suffers major breach exposing location of 800,000 electric vehicles" data-date="2024-12-27"><span class="headline-date">27 Dec</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/30159349" target="_blank" rel="noopener">VW Suffers Major Breach Exposing Location of 800,000 Electric Vehicles</a><span class="article-summary">submitted by minyaen to cybersecurity 224 points | 26 comments https://cyberinsider.com/vw-suffers-major-breach-exposing-location-of-800000-electric-vehicles/ If emphasis wasn’t already concentrated on the security of these connected vehicles, major oversight obviously…</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="casino players using hidden cameras for cheating" data-date="2024-12-27"><span class="headline-date">27 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2024/12/casino-players-using-hidden-cameras-for-cheating.html" target="_blank" rel="noopener">Casino Players Using Hidden Cameras for Cheating</a><span class="article-summary">The basic strategy is to place a device with a hidden camera in a position to capture normally hidden card values, which are interpreted by an accomplice off-site and fed back to the player via a hidden microphone. Miniaturization is making these devices harder to detect. Presuma…</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="friday squid blogging: squid on pizza" data-date="2024-12-27"><span class="headline-date">27 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2024/12/friday-squid-blogging-squid-on-pizza.html" target="_blank" rel="noopener">Friday Squid Blogging: Squid on Pizza</a><span class="article-summary">Pizza Hut in Taiwan has a history of weird pizzas, including a &#8220;2022 scalloped pizza with Oreos around the edge, and deep-fried chicken and calamari studded throughout the middle.&#8221; Blog moderation policy.</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="north korean hackers deploy ottercookie malware in contagious interview campaign" data-date="2024-12-27"><span class="headline-date">27 Dec</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2024/12/north-korean-hackers-deploy-ottercookie.html" target="_blank" rel="noopener">North Korean Hackers Deploy OtterCookie Malware in Contagious Interview Campaign</a><span class="article-summary">North Korean threat actors behind the ongoing Contagious Interview campaign have been observed dropping a new JavaScript malware called OtterCookie. Contagious Interview (aka DeceptiveDevelopment) refers to a persistent attack campaign that employs social engineering lures, with …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="texas awards $170m contract to saic for it, cybersecurity services | statescoop" data-date="2024-12-27"><span class="headline-date">27 Dec</span><span class="headline-body"><a class="headline-title" href="https://sh.itjust.works/post/30159001" target="_blank" rel="noopener">Texas awards $170M contract to SAIC for IT, cybersecurity services | StateScoop</a><span class="article-summary">submitted by Amoxtli to cybersecurity -1 points | 1 comments https://statescoop.com/texas-awards-170m-contract-to-saic-for-it-cybersecurity-services/</span></span><span class="headline-source">SH.ITJUST.WORKS</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cybersecurity trends in 2025 | kaspersky official blog" data-date="2024-12-27"><span class="headline-date">27 Dec</span><span class="headline-body"><a class="headline-title" href="https://www.kaspersky.com/blog/cybersecurity-resolutions-2025/52820/" target="_blank" rel="noopener">Cybersecurity trends in 2025 | Kaspersky official blog</a><span class="article-summary">How to guard against new threats in 2025: seven resolutions to boost cybersecurity</span></span><span class="headline-source">KASPERSKY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="phishing for banking information, (fri, dec 27th)" data-date="2024-12-27"><span class="headline-date">27 Dec</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/31548" target="_blank" rel="noopener">Phishing for Banking Information, (Fri, Dec 27th)</a><span class="article-summary">It is again the time of the year when scammers are asking to verify banking information, whether it is credit cards, bank card, package shipping information, winning money, etc. Last night I received a text message to verify a credit card, it is case a Bank of Montreal (BMO) cred…</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="cyber firm’s chrome extension hijacked to steal user passwords" data-date="2024-12-27"><span class="headline-date">27 Dec</span><span class="headline-body"><a class="headline-title" href="https://techcrunch.com/2024/12/27/cyberhaven-says-it-was-hacked-to-publish-a-malicious-update-to-its-chrome-extension/" target="_blank" rel="noopener">Cyber firm’s Chrome extension hijacked to steal user passwords</a><span class="article-summary">The data-loss startup says it was targeted as part of a "wider campaign to target Chrome extension developers." © 2024 TechCrunch. All rights reserved. For personal use only.</span></span><span class="headline-source">TECHCRUNCH.COM</span></div>
+  </div>
+</div>
 
-<script>
-  const _activeCats = new Set();
-  let _activeHours = null;
-
-  function applyFilters() {
-    const now = Date.now();
-    document.querySelectorAll('.article-row').forEach(row => {
-      const catOk  = _activeCats.size === 0 || _activeCats.has(row.dataset.cat);
-      let   timeOk = true;
-      if (_activeHours) {
-        const d = row.dataset.date;
-        if (d) timeOk = new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000;
-      }
-      row.style.display = (catOk && timeOk) ? 'flex' : 'none';
-    });
-  }
-
-  function filterCat(cat, btn) {
-    const allBtn = document.querySelector('.filter-btn[data-cat="all"]');
-    if (cat === 'all') {
-      _activeCats.clear();
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      allBtn.classList.add('active');
-    } else {
-      if (_activeCats.has(cat)) { _activeCats.delete(cat); btn.classList.remove('active'); }
-      else                      { _activeCats.add(cat);    btn.classList.add('active'); }
-      allBtn.classList.remove('active');
-      if (_activeCats.size === 0) allBtn.classList.add('active');
-    }
-    applyFilters();
-  }
-
-  function filterTime(hours, btn) {
-    _activeHours = hours;
-    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  }
-</script>
 </main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 94 sources // generated 2026-04-25 15:24<span class="blink"></span>
+  threat intelligence // 94 sources // generated 2026-05-22 14:12<span class="blink"></span>
 </footer>
 </body>
 </html>
