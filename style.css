@@ -893,6 +893,121 @@ nav.subnav button.time-filter-btn.active {
 .day-card:hover .day-date,
 .day-card:hover .day-count { color: #ffffff; }
 
+/* Collapsible category sections (cybersecnews)
+   ========================================================================== */
+
+.cat-section { margin-bottom: 6px; }
+
+.cat-section-header {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0 !important;
+    cursor: pointer;
+    user-select: none;
+}
+
+.cat-section-header:hover { opacity: 0.88; }
+
+.section-toggle {
+    margin-left: auto;
+    font-size: 10px;
+    font-style: normal;
+    opacity: 0.8;
+    flex-shrink: 0;
+}
+
+.cat-section.collapsed .cat-section-body { display: none; }
+.cat-section-body { margin-bottom: 2px; }
+
+/* Headline body: stacks title + summary in the middle column */
+.headline-body {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.headline-body .article-summary {
+    padding-left: 0;
+    border-left: none;
+    font-size: 11px;
+}
+
+/* Search bar */
+.search-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    padding: 6px 10px;
+    background: var(--bg2);
+    border: 2px solid;
+    border-top-color: var(--border-light);
+    border-left-color: var(--border-light);
+    border-right-color: var(--border-dark);
+    border-bottom-color: var(--border-dark);
+    flex-wrap: wrap;
+}
+
+.search-wrap label {
+    color: var(--dim);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    font-style: italic;
+}
+
+.search-input {
+    flex: 1;
+    min-width: 200px;
+    background: var(--content-bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 3px 8px;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 12px;
+    outline: none;
+}
+
+.search-input:focus {
+    border-color: var(--header-bg);
+    box-shadow: 0 0 0 1px var(--header-bg);
+}
+
+.search-input::placeholder { color: var(--faint); font-style: italic; }
+
+/* Jump-to-top button */
+.jump-top-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--header-bg);
+    color: #ffffff;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border: 2px solid;
+    border-top-color: var(--border-light);
+    border-left-color: var(--border-light);
+    border-right-color: var(--border-dark);
+    border-bottom-color: var(--border-dark);
+    cursor: pointer;
+    display: none;
+    z-index: 200;
+}
+
+.jump-top-btn:hover {
+    background: #0000cc;
+    border-top-color: var(--border-dark);
+    border-left-color: var(--border-dark);
+    border-right-color: var(--border-light);
+    border-bottom-color: var(--border-light);
+}
+
 /* Responsive
    ========================================================================== */
 
