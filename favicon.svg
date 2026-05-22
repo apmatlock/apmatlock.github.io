@@ -2,42 +2,39 @@
   <!-- Navy background -->
   <rect width="16" height="16" fill="#000080"/>
 
-  <!-- Horns (diagonal, top-left and top-right) -->
-  <rect x="0"  y="0" width="1" height="1" fill="#c0c0c0"/>
-  <rect x="15" y="0" width="1" height="1" fill="#c0c0c0"/>
-  <rect x="0"  y="1" width="2" height="1" fill="#c0c0c0"/>
-  <rect x="14" y="1" width="2" height="1" fill="#c0c0c0"/>
-  <rect x="1"  y="2" width="2" height="1" fill="#c0c0c0"/>
-  <rect x="13" y="2" width="2" height="1" fill="#c0c0c0"/>
-  <rect x="2"  y="3" width="2" height="1" fill="#c0c0c0"/>
-  <rect x="12" y="3" width="2" height="1" fill="#c0c0c0"/>
-  <rect x="3"  y="4" width="2" height="1" fill="#c0c0c0"/>
-  <rect x="11" y="4" width="2" height="1" fill="#c0c0c0"/>
+  <!-- Cranium -->
+  <rect x="4" y="0" width="8"  height="1" fill="#c0c0c0"/>
+  <rect x="2" y="1" width="12" height="1" fill="#c0c0c0"/>
+  <rect x="1" y="2" width="14" height="2" fill="#c0c0c0"/>
 
-  <!-- Forehead -->
-  <rect x="3" y="5" width="10" height="1" fill="#c0c0c0"/>
-  <rect x="2" y="6" width="12" height="1" fill="#c0c0c0"/>
+  <!-- Eye socket tops/bottoms (rows 4 and 7): holes at x=3-5 and x=10-12 -->
+  <rect x="1"  y="4" width="2" height="1" fill="#c0c0c0"/>
+  <rect x="6"  y="4" width="4" height="1" fill="#c0c0c0"/>
+  <rect x="13" y="4" width="2" height="1" fill="#c0c0c0"/>
 
-  <!-- Eye row: silver either side, red eyes at x=4 and x=11 -->
-  <rect x="2"  y="7" width="2"  height="1" fill="#c0c0c0"/>
-  <rect x="4"  y="7" width="1"  height="1" fill="#800000"/>
-  <rect x="5"  y="7" width="6"  height="1" fill="#c0c0c0"/>
-  <rect x="11" y="7" width="1"  height="1" fill="#800000"/>
-  <rect x="12" y="7" width="2"  height="1" fill="#c0c0c0"/>
+  <!-- Eye sockets wide (rows 5-6): holes at x=2-6 and x=9-13 -->
+  <rect x="1"  y="5" width="1" height="2" fill="#c0c0c0"/>
+  <rect x="7"  y="5" width="2" height="2" fill="#c0c0c0"/>
+  <rect x="14" y="5" width="1" height="2" fill="#c0c0c0"/>
 
-  <!-- Cheeks / lower face -->
-  <rect x="3" y="8"  width="10" height="1" fill="#c0c0c0"/>
-  <rect x="3" y="9"  width="10" height="1" fill="#c0c0c0"/>
+  <rect x="1"  y="7" width="2" height="1" fill="#c0c0c0"/>
+  <rect x="6"  y="7" width="4" height="1" fill="#c0c0c0"/>
+  <rect x="13" y="7" width="2" height="1" fill="#c0c0c0"/>
 
-  <!-- Nostrils row (gaps at x=5 and x=10) -->
-  <rect x="4"  y="10" width="1" height="1" fill="#c0c0c0"/>
-  <rect x="6"  y="10" width="4" height="1" fill="#c0c0c0"/>
-  <rect x="11" y="10" width="1" height="1" fill="#c0c0c0"/>
+  <!-- Cheekbones with nose cavity (x=6-9 open) -->
+  <rect x="2"  y="8" width="4" height="1" fill="#c0c0c0"/>
+  <rect x="10" y="8" width="4" height="1" fill="#c0c0c0"/>
+  <rect x="3"  y="9" width="3" height="1" fill="#c0c0c0"/>
+  <rect x="10" y="9" width="3" height="1" fill="#c0c0c0"/>
 
-  <!-- Snout narrowing to point -->
-  <rect x="4" y="11" width="8" height="1" fill="#c0c0c0"/>
-  <rect x="5" y="12" width="6" height="1" fill="#c0c0c0"/>
-  <rect x="5" y="13" width="6" height="1" fill="#c0c0c0"/>
-  <rect x="6" y="14" width="4" height="1" fill="#c0c0c0"/>
-  <rect x="7" y="15" width="2" height="1" fill="#c0c0c0"/>
+  <!-- Jaw -->
+  <rect x="2" y="10" width="12" height="1" fill="#c0c0c0"/>
+
+  <!-- Teeth (6 teeth, 2px tall, gaps between) -->
+  <rect x="2"  y="11" width="1" height="2" fill="#c0c0c0"/>
+  <rect x="4"  y="11" width="1" height="2" fill="#c0c0c0"/>
+  <rect x="6"  y="11" width="1" height="2" fill="#c0c0c0"/>
+  <rect x="8"  y="11" width="1" height="2" fill="#c0c0c0"/>
+  <rect x="10" y="11" width="1" height="2" fill="#c0c0c0"/>
+  <rect x="12" y="11" width="1" height="2" fill="#c0c0c0"/>
 </svg>
