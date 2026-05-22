@@ -1,48 +1,43 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <defs>
-    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="0.7" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-    <filter id="rglow" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="1.2" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
+  <!-- Navy background -->
+  <rect width="16" height="16" fill="#000080"/>
 
-  <!-- Background -->
-  <rect width="32" height="32" fill="#080012"/>
+  <!-- Horns (diagonal, top-left and top-right) -->
+  <rect x="0"  y="0" width="1" height="1" fill="#c0c0c0"/>
+  <rect x="15" y="0" width="1" height="1" fill="#c0c0c0"/>
+  <rect x="0"  y="1" width="2" height="1" fill="#c0c0c0"/>
+  <rect x="14" y="1" width="2" height="1" fill="#c0c0c0"/>
+  <rect x="1"  y="2" width="2" height="1" fill="#c0c0c0"/>
+  <rect x="13" y="2" width="2" height="1" fill="#c0c0c0"/>
+  <rect x="2"  y="3" width="2" height="1" fill="#c0c0c0"/>
+  <rect x="12" y="3" width="2" height="1" fill="#c0c0c0"/>
+  <rect x="3"  y="4" width="2" height="1" fill="#c0c0c0"/>
+  <rect x="11" y="4" width="2" height="1" fill="#c0c0c0"/>
 
-  <!-- Outer circuit ring -->
-  <circle cx="16" cy="16" r="14.5" fill="none" stroke="#00ffcc" stroke-width="0.4" opacity="0.4"/>
+  <!-- Forehead -->
+  <rect x="3" y="5" width="10" height="1" fill="#c0c0c0"/>
+  <rect x="2" y="6" width="12" height="1" fill="#c0c0c0"/>
 
-  <!-- Inverted pentagram (bottom point down) -->
-  <!-- P0(bot)=16,30 P1(lo-l)=2.69,20.33 P2(up-l)=7.77,4.67 P3(up-r)=24.23,4.67 P4(lo-r)=29.31,20.33 -->
-  <!-- Draw: P0→P2→P4→P1→P3→close -->
-  <path d="M16,30 L7.77,4.67 L29.31,20.33 L2.69,20.33 L24.23,4.67 Z"
-        fill="rgba(0,255,204,0.06)" stroke="#00ffcc" stroke-width="1.1"
-        stroke-linejoin="miter" filter="url(#glow)"/>
+  <!-- Eye row: silver either side, red eyes at x=4 and x=11 -->
+  <rect x="2"  y="7" width="2"  height="1" fill="#c0c0c0"/>
+  <rect x="4"  y="7" width="1"  height="1" fill="#800000"/>
+  <rect x="5"  y="7" width="6"  height="1" fill="#c0c0c0"/>
+  <rect x="11" y="7" width="1"  height="1" fill="#800000"/>
+  <rect x="12" y="7" width="2"  height="1" fill="#c0c0c0"/>
 
-  <!-- Horns curving outward from upper two points -->
-  <path d="M7.77,4.67 Q3.5,0.5 1.5,3.5" fill="none" stroke="#00ffcc"
-        stroke-width="1" stroke-linecap="round" filter="url(#glow)"/>
-  <path d="M24.23,4.67 Q28.5,0.5 30.5,3.5" fill="none" stroke="#00ffcc"
-        stroke-width="1" stroke-linecap="round" filter="url(#glow)"/>
+  <!-- Cheeks / lower face -->
+  <rect x="3" y="8"  width="10" height="1" fill="#c0c0c0"/>
+  <rect x="3" y="9"  width="10" height="1" fill="#c0c0c0"/>
 
-  <!-- Circuit nodes at each pentagram point -->
-  <circle cx="16"    cy="30"    r="1.3" fill="#00ffcc"/>
-  <circle cx="2.69"  cy="20.33" r="1.3" fill="#00ffcc"/>
-  <circle cx="7.77"  cy="4.67"  r="1.3" fill="#00ffcc"/>
-  <circle cx="24.23" cy="4.67"  r="1.3" fill="#00ffcc"/>
-  <circle cx="29.31" cy="20.33" r="1.3" fill="#00ffcc"/>
+  <!-- Nostrils row (gaps at x=5 and x=10) -->
+  <rect x="4"  y="10" width="1" height="1" fill="#c0c0c0"/>
+  <rect x="6"  y="10" width="4" height="1" fill="#c0c0c0"/>
+  <rect x="11" y="10" width="1" height="1" fill="#c0c0c0"/>
 
-  <!-- Glowing red eyes -->
-  <circle cx="12.5" cy="13" r="1.3" fill="#ff0044" filter="url(#rglow)"/>
-  <circle cx="19.5" cy="13" r="1.3" fill="#ff0044" filter="url(#rglow)"/>
+  <!-- Snout narrowing to point -->
+  <rect x="4" y="11" width="8" height="1" fill="#c0c0c0"/>
+  <rect x="5" y="12" width="6" height="1" fill="#c0c0c0"/>
+  <rect x="5" y="13" width="6" height="1" fill="#c0c0c0"/>
+  <rect x="6" y="14" width="4" height="1" fill="#c0c0c0"/>
+  <rect x="7" y="15" width="2" height="1" fill="#c0c0c0"/>
 </svg>
