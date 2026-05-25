@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 73 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 25 May 2026 07:01:10 -0300</lastBuildDate>
+    <lastBuildDate>Mon, 25 May 2026 08:01:08 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>AI Vulnerability Explosion, Kim Wolf Botnet Arrest, Ghost CMS Hack, Iran Cyber Espionage</title>
@@ -88,6 +88,14 @@
     <description>From fake F1 streams to counterfeit merch, fraudsters are exploiting fans online and the Bitdefender Cybersecurity Grand Prix Fan Threat Index details how</description>
   </item>
   <item>
+    <title>The AI Era Is Creating a Bug Hunting Arms Race</title>
+    <link>https://www.wired.com/story/the-ai-era-is-creating-a-bug-hunting-arms-race/</link>
+    <guid isPermaLink="true">https://www.wired.com/story/the-ai-era-is-creating-a-bug-hunting-arms-race/</guid>
+    <pubDate>Mon, 25 May 2026 10:30:00 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>As attackers ramp up their AI exploit development, the search for software vulnerabilities is changing rapidly.</description>
+  </item>
+  <item>
     <title>Lessons for organizations from the Verizon 2026 Data Breach Investigations Report</title>
     <link>https://www.helpnetsecurity.com/2026/05/25/lessons-from-verizon-dbir-2026-findings/</link>
     <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/05/25/lessons-from-verizon-dbir-2026-findings/</guid>
@@ -104,6 +112,14 @@
     <description>Hackers accessed names, addresses, Social Security numbers, financial information, and medical data from third-party partner repositories. The post DocketWise Data Breach Impacts 143,000 appeared first on SecurityWeek .</description>
   </item>
   <item>
+    <title>Laravel-Lang Packages Poisoned for Malware Delivery</title>
+    <link>https://www.securityweek.com/laravel-lang-packages-poisoned-for-malware-delivery/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/laravel-lang-packages-poisoned-for-malware-delivery/</guid>
+    <pubDate>Mon, 25 May 2026 10:41:07 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>Published within a 15-minute window, the malicious tags introduced backdoors to exfiltrate CI secrets. The post Laravel-Lang Packages Poisoned for Malware Delivery appeared first on SecurityWeek .</description>
+  </item>
+  <item>
     <title>Boards want cyber risk in dollars, not CVE counts</title>
     <link>https://www.helpnetsecurity.com/2026/05/25/translating-cyber-risk-video/</link>
     <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/05/25/translating-cyber-risk-video/</guid>
@@ -118,6 +134,22 @@
     <pubDate>Mon, 25 May 2026 07:40:55 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Fake automated commits injected GitHub Actions workflows containing payloads to steal credentials, CI secrets, keys, and tokens. The post Over 5,500 GitHub Repositories Infected in &amp;#8216;Megalodon&amp;#8217; Supply Chain Attack appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>Lazarus Deploys RemotePE Memory-Only RAT Against Financial and Crypto Firms</title>
+    <link>https://thehackernews.com/2026/05/lazarus-deploys-remotepe-memory-only.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/05/lazarus-deploys-remotepe-memory-only.html</guid>
+    <pubDate>Mon, 25 May 2026 15:02:54 +0530</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Cybersecurity researchers have shed light on a cross-platform malware called RemotePE that has been put to use by the North Korea-linked Lazarus Group in attacks targeting financial and cryptocurrency organizations. RemotePE, per NCC Group subsidiary Fox-IT, is part of a multi-st…</description>
+  </item>
+  <item>
+    <title>Anthropic: Mythos Detected 23,000 Potential Vulnerabilities Across 1,000 OSS Projects</title>
+    <link>https://www.securityweek.com/anthropic-mythos-detected-23000-potential-vulnerabilities-across-1000-oss-projects/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/anthropic-mythos-detected-23000-potential-vulnerabilities-across-1000-oss-projects/</guid>
+    <pubDate>Mon, 25 May 2026 10:58:07 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Many findings have been confirmed to be critical or high-severity vulnerabilities and the number will continue to increase. The post Anthropic: Mythos Detected 23,000 Potential Vulnerabilities Across 1,000 OSS Projects appeared first on SecurityWeek .</description>
   </item>
   <item>
     <title>The Code of Honor: Paul J. Maurer and Ed Skoudis explore ethics in cybersecurity with Ben Yelin.</title>
@@ -1574,38 +1606,6 @@
     <pubDate>Thu, 21 May 2026 07:10:25 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>A newly disclosed Linux kernel vulnerability, tracked as CVE-2026-46333, poses a serious risk to SSH private keys and other sensitive credentials. The flaw, present in the kernel since 2016, allows a local attacker to escalate from a basic shell account to full root access on man…</description>
-  </item>
-  <item>
-    <title>9-Year-Old Linux Kernel Flaw Enables Root Command Execution on Major Distros</title>
-    <link>https://thehackernews.com/2026/05/9-year-old-linux-kernel-flaw-enables.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/05/9-year-old-linux-kernel-flaw-enables.html</guid>
-    <pubDate>Thu, 21 May 2026 13:05:53 +0530</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Cybersecurity researchers have disclosed details of a vulnerability in the Linux kernel that remained undetected for nine years. The vulnerability, tracked as CVE-2026-46333 (CVSS score: 5.5), is a case of improper privilege management that could permit an unprivileged local user…</description>
-  </item>
-  <item>
-    <title>Critical Vulnerability in Cisco Secure Workload Threatens Enterprise API Security</title>
-    <link>https://gbhackers.com/critical-vulnerability-in-cisco-secure-workload/</link>
-    <guid isPermaLink="true">https://gbhackers.com/critical-vulnerability-in-cisco-secure-workload/</guid>
-    <pubDate>Thu, 21 May 2026 09:13:21 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Cisco has disclosed a critical security vulnerability in its Secure Workload platform that could allow unauthenticated attackers to gain high-level administrative access to sensitive enterprise environments. The flaw, tracked as CVE-2026-20223, carries a maximum CVSS score of 10.…</description>
-  </item>
-  <item>
-    <title>Microsoft Warns of Two Actively Exploited Defender Vulnerabilities</title>
-    <link>https://thehackernews.com/2026/05/microsoft-warns-of-two-actively.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/05/microsoft-warns-of-two-actively.html</guid>
-    <pubDate>Thu, 21 May 2026 16:25:57 +0530</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Microsoft has disclosed that a privilege escalation and a denial-of-service flaw in Defender has come under active exploitation in the wild. The former, tracked as CVE-2026-41091, is rated 7.8 on the CVSS scoring system. Successful exploitation of the flaw could allow an attacker…</description>
-  </item>
-  <item>
-    <title>Microsoft Defender Zero-Day Vulnerabilities Actively Exploited in the Wild</title>
-    <link>https://gbhackers.com/microsoft-defender-zero-day-vulnerabilities/</link>
-    <guid isPermaLink="true">https://gbhackers.com/microsoft-defender-zero-day-vulnerabilities/</guid>
-    <pubDate>Thu, 21 May 2026 11:32:23 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Microsoft has disclosed two new zero-day vulnerabilities in Microsoft Defender that are actively being exploited in the wild, raising concerns among security professionals and enterprise users. The vulnerabilities, tracked as CVE-2026-41091 and CVE-2026-45498, were officially rel…</description>
   </item>
   </channel>
 </rss>
