@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 73 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 25 May 2026 02:00:59 -0300</lastBuildDate>
+    <lastBuildDate>Mon, 25 May 2026 03:01:04 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>AI Vulnerability Explosion, Kim Wolf Botnet Arrest, Ghost CMS Hack, Iran Cyber Espionage</title>
@@ -16,12 +16,44 @@
     <description>Is AI about to trigger a cybersecurity vulnerability explosion? In this episode of Cybersecurity Today, David Shipley examines what some researchers are calling the early signs of a &quot;vulnerability apocalypse&quot; as Anthropic&#x27;s Claude-powered Project Glasswing identifies thousands of…</description>
   </item>
   <item>
+    <title>Exploitation of KnowledgeDeliver via ViewState Deserialization Vulnerability</title>
+    <link>https://cloud.google.com/blog/topics/threat-intelligence/knowledgedeliver-viewstate-deserialization-vulnerability/</link>
+    <guid isPermaLink="true">https://cloud.google.com/blog/topics/threat-intelligence/knowledgedeliver-viewstate-deserialization-vulnerability/</guid>
+    <pubDate>Mon, 25 May 2026 14:00:00 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Written by: Takahiro Sugiyama, Peter Revelant, Mathew Potaczek Introduction In late 2025, Mandiant responded to a security incident involving a compromised web server running KnowledgeDeliver . KnowledgeDeliver is a Learning Management System (LMS) developed by Digital Knowledge …</description>
+  </item>
+  <item>
     <title>Turns out the C-suite loves shadow AI</title>
     <link>https://www.helpnetsecurity.com/2026/05/25/trustedtech-workplace-shadow-ai-use-report/</link>
     <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/05/25/trustedtech-workplace-shadow-ai-use-report/</guid>
     <pubDate>Mon, 25 May 2026 04:00:27 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Senior decision-makers are the heaviest users of unapproved AI tools, and they continue using them despite being aware of the security and privacy risks linked to shadow AI, according to TrustedTech’s Shadow AI in the Workplace report. The study found that 65% of decision-makers …</description>
+  </item>
+  <item>
+    <title>2 PhaaS 2 Furious: The Evolution of Chinese-language Phishing Services</title>
+    <link>https://cloud.google.com/blog/topics/threat-intelligence/chinese-language-phishing-services/</link>
+    <guid isPermaLink="true">https://cloud.google.com/blog/topics/threat-intelligence/chinese-language-phishing-services/</guid>
+    <pubDate>Mon, 25 May 2026 14:00:00 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Written by: Jamie Collier While Russian-speaking threat actors have historically dominated the phishing-as-a-service (PhaaS) landscape, a rival ecosystem is rapidly growing within the Chinese-language underground. Google Threat Intelligence Group (GTIG) analyzed a dozen current P…</description>
+  </item>
+  <item>
+    <title>OpenHack: Open-source AI-powered vulnerability research</title>
+    <link>https://www.helpnetsecurity.com/2026/05/25/openhack-open-source-ai-powered-vulnerability-research/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/05/25/openhack-open-source-ai-powered-vulnerability-research/</guid>
+    <pubDate>Mon, 25 May 2026 05:00:30 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Source-guided vulnerability research increasingly leans on coding harnesses such as Claude Code, Codex, and Cursor to drive agent-based reviews of application code. A new MIT-licensed project from the Dutch security firm Hadrian, called OpenHack, packages that approach into a fil…</description>
+  </item>
+  <item>
+    <title>Lessons for organizations from the Verizon 2026 Data Breach Investigations Report</title>
+    <link>https://www.helpnetsecurity.com/2026/05/25/lessons-from-verizon-dbir-2026-findings/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/05/25/lessons-from-verizon-dbir-2026-findings/</guid>
+    <pubDate>Mon, 25 May 2026 05:30:54 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>This is my favourite time of the year, not just because spring is here and the promise of summer is on the way. But also, because one of my must reads each year gets published. There are a few must read reports that I have on my reading list for each year and the Verizon Data Bre…</description>
   </item>
   <item>
     <title>Boards want cyber risk in dollars, not CVE counts</title>
@@ -1574,38 +1606,6 @@
     <pubDate>Thu, 21 May 2026 05:32:58 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>A public proof-of-concept (PoC) exploit called “PinTheft” has been released for a newly disclosed Linux kernel flaw that allows local attackers to escalate privileges to root on certain systems. PinTheft is a Linux local privilege escalation (LPE) exploit that targets a reference…</description>
-  </item>
-  <item>
-    <title>WantToCry Ransomware Exploits SMB to Encrypt Remote Files</title>
-    <link>https://gbhackers.com/wanttocry-ransomware-exploits-smb/</link>
-    <guid isPermaLink="true">https://gbhackers.com/wanttocry-ransomware-exploits-smb/</guid>
-    <pubDate>Thu, 21 May 2026 05:02:13 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>A new ransomware campaign named “WantToCry” that leverages exposed Server Message Block (SMB) services to gain access and encrypt victim data without deploying traditional malware on compromised systems. This approach significantly reduces the detection surface, making it harder …</description>
-  </item>
-  <item>
-    <title>Windows93 / Myspace93 - 46,105 breached accounts</title>
-    <link>https://haveibeenpwned.com/Breach/Windows93</link>
-    <guid isPermaLink="true">https://haveibeenpwned.com/Breach/Windows93</guid>
-    <pubDate>Thu, 21 May 2026 03:45:15 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>In January 2021, the parody site Windows93 suffered a data breach of the Myspace93 sub-site after a beta application was exploited to download server files. The compromised data was later leaked in June and included 46k Myspace93 accounts containing email and IP addresses, userna…</description>
-  </item>
-  <item>
-    <title>The friendly skies aren’t friendly.</title>
-    <link>https://thecyberwire.com/podcasts/hacking-humans/387/notes</link>
-    <guid isPermaLink="true">https://thecyberwire.com/podcasts/hacking-humans/387/notes</guid>
-    <pubDate>Thu, 21 May 2026 05:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>This week, hosts of N2K CyberWire ⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠Maria Varmazis⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠ and⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠ ⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠Dave Bittner⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠ alongside ⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠…</description>
-  </item>
-  <item>
-    <title>Why AI changed the threat model for travel technology</title>
-    <link>https://www.helpnetsecurity.com/2026/05/21/devon-bryan-booking-holdings-cso-leadership-travel/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/05/21/devon-bryan-booking-holdings-cso-leadership-travel/</guid>
-    <pubDate>Thu, 21 May 2026 06:00:03 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>In this Help Net Security interview, Devon Bryan, SVP, Global CSO at Booking Holdings, reflects on his path from Air Force network security engineer to global CSO across financial services, hospitality, and travel technology. He discusses why the travel industry&amp;#8217;s interconn…</description>
   </item>
   </channel>
 </rss>
