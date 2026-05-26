@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 73 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 26 May 2026 14:01:05 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 26 May 2026 15:01:07 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Weekly Threat Bulletin – May 27th, 2026</title>
@@ -304,6 +304,14 @@
     <description>Anthropic says Mythos has found over 23,000 flaws in open-source software. Dutch police arrest two alleged bulletproof hosting admins.</description>
   </item>
   <item>
+    <title>Well-architected best practices for software supply chain security</title>
+    <link>https://aws.amazon.com/blogs/security/well-architected-best-practices-for-software-supply-chain-security/</link>
+    <guid isPermaLink="true">https://aws.amazon.com/blogs/security/well-architected-best-practices-for-software-supply-chain-security/</guid>
+    <pubDate>Tue, 26 May 2026 17:03:30 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>There have been multiple notable supply chain attacks using the npm Registry since September: Shai-Hulud, Chalk/Debug, one abusing tea.xyz tokens, and recently axios. Thanks to community efforts involving the Amazon Inspector team, the Open Source Security Foundation, and others,…</description>
+  </item>
+  <item>
     <title>Microsoft: Domain Controller lookup may fail on Windows Server 2016</title>
     <link>https://www.bleepingcomputer.com/news/microsoft/microsoft-domain-controller-lookup-may-fail-on-windows-server-2016/</link>
     <guid isPermaLink="true">https://www.bleepingcomputer.com/news/microsoft/microsoft-domain-controller-lookup-may-fail-on-windows-server-2016/</guid>
@@ -318,6 +326,14 @@
     <pubDate>Tue, 26 May 2026 10:01:11 -0400</pubDate>
     <category>Security Advisories</category>
     <description>AI governance requires visibility into how AI tools interact with enterprise data. Varonis explains how its Atlas platform uses Claude Compliance API data to help monitor usage, investigate risk, and support compliance. [...]</description>
+  </item>
+  <item>
+    <title>FBI warns of Kali365 phishing kit targeting Microsoft 365 accounts</title>
+    <link>https://cyberinsider.com/fbi-warns-of-kali365-phishing-kit-targeting-microsoft-365-accounts/</link>
+    <guid isPermaLink="true">https://cyberinsider.com/fbi-warns-of-kali365-phishing-kit-targeting-microsoft-365-accounts/</guid>
+    <pubDate>Tue, 26 May 2026 17:06:03 +0000</pubDate>
+    <category>Security Advisories</category>
+    <description>The FBI has issued a warning about a phishing-as-a-service (PhaaS) platform known as “Kali365” that is being used to compromise Microsoft 365 accounts through sophisticated phishing and adversary-in-the-middle (AiTM) attacks. According to a public advisory published by the FBI’s …</description>
   </item>
   <item>
     <title>Product showcase: F-Secure Internet Security blocks phishing sites, fake stores, and SMS scams</title>
@@ -630,6 +646,14 @@
     <pubDate>Tue, 26 May 2026 16:24:02 +0000</pubDate>
     <category>Infosec News</category>
     <description>So, you&#x27;ve enabled multi-factor authentication. You&#x27;ve taught your staff never to type their passwords into dodgy-looking login pages. Surely your Microsoft 365 accounts are safe now? Well, think again. Read more in my article on the Hot for Security blog.</description>
+  </item>
+  <item>
+    <title>Internet Starts to Return in Iran After 3-Month Blackout</title>
+    <link>https://www.wired.com/story/internet-in-iran-starts-to-return-after-3-month-blackout/</link>
+    <guid isPermaLink="true">https://www.wired.com/story/internet-in-iran-starts-to-return-after-3-month-blackout/</guid>
+    <pubDate>Tue, 26 May 2026 17:31:25 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>Some internet connectivity is returning in Iran after nearly 90 days offline, web monitoring groups say. But it isn’t clear if the reconnection is permanent.</description>
   </item>
   <item>
     <title>AI Vulnerability Explosion, Kim Wolf Botnet Arrest, Ghost CMS Hack, Iran Cyber Espionage</title>
@@ -1582,30 +1606,6 @@
     <pubDate>Fri, 22 May 2026 11:01:36 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Hackers compromised the popular art-template npm package to inject a stealthy backdoor that redirected users’ browsers to a malicious watering‑hole site delivering a Coruna‑class iOS exploit framework. The campaign turned a widely used JavaScript templating library into a deliver…</description>
-  </item>
-  <item>
-    <title>We hardened zizmor&#x27;s GitHub Actions static analyzer</title>
-    <link>https://blog.trailofbits.com/2026/05/22/we-hardened-zizmors-github-actions-static-analyzer/</link>
-    <guid isPermaLink="true">https://blog.trailofbits.com/2026/05/22/we-hardened-zizmors-github-actions-static-analyzer/</guid>
-    <pubDate>Fri, 22 May 2026 07:00:00 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>In March 2026, attackers exploited a pull_request_target misconfiguration in the aquasecurity/trivy-action GitHub Action to exfiltrate organization and repository secrets, then used those credentials to backdoor LiteLLM on PyPI (see Trivy&amp;rsquo;s post-mortem for the full timeline…</description>
-  </item>
-  <item>
-    <title>Kore.ai unveils AI-native platform for enterprise multiagent systems</title>
-    <link>https://www.helpnetsecurity.com/2026/05/22/kore-ai-unveils-ai-native-platform-for-enterprise-multiagent-systems/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/05/22/kore-ai-unveils-ai-native-platform-for-enterprise-multiagent-systems/</guid>
-    <pubDate>Fri, 22 May 2026 10:59:07 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Kore.ai has launched the new-generation Kore.ai Agent Platform Artemis edition, the AI-programmable, AI-native foundation that builds, governs, and optimizes the agents, systems, and workflows running across the enterprise. The platform launches initially on Microsoft Azure, with…</description>
-  </item>
-  <item>
-    <title>Megalodon GitHub Attack Targets 5,561 Repos with Malicious CI/CD Workflows</title>
-    <link>https://thehackernews.com/2026/05/megalodon-github-attack-targets-5561.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/05/megalodon-github-attack-targets-5561.html</guid>
-    <pubDate>Fri, 22 May 2026 17:25:24 +0530</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Cybersecurity researchers have disclosed details of a new automated campaign called Megalodon that has pushed 5,718 malicious commits to 5,561 GitHub repositories within a six-hour window. &quot;Using throwaway accounts and forged author identities (build-bot, auto-ci, ci-bot, pipelin…</description>
   </item>
   </channel>
 </rss>
