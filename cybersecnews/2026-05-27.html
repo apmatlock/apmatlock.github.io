@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>matlock.ca // THREAT INTELLIGENCE — 2026-05-27</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/">MATLOCK<span class="dot">.</span>CA</a>
+  <nav class="primary">
+    <a href="/">Home</a>
+    <a href="/claudeblog/">Walkthroughs</a>
+    <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
+    <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="/cybersecnews/feed.xml">RSS</a>
+  </nav>
+</header>
+
+<nav class="subnav">
+  <span class="nav-label">// JUMP</span>
+<a href="archive.html">Archive</a>
+<a href="index.html" class="active">Today</a>
+<a href="2026-05-26.html">Yesterday</a>
+<a href="2026-05-25.html">25 May</a>
+<a href="2026-05-24.html">24 May</a>
+<a href="2026-05-23.html">23 May</a>
+<a href="2026-05-22.html">22 May</a>
+<a href="2026-05-21.html">21 May</a>
+
+</nav>
+<main class="container wide">
+
+    <div class="stats-bar">
+      <div class="stat"><span class="stat-value">3</span><span class="stat-label">Articles</span></div>
+      <div class="stat"><span class="stat-value">3</span><span class="stat-label">Categories</span></div>
+      <div class="stat"><span class="stat-value">2026-05-27</span><span class="stat-label">Date</span></div>
+    </div>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
+    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="microsoft previews automatic device isolation in defender for endpoint" data-date="2026-05-27"><span class="headline-date">27 May</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4177345/microsoft-previews-automatic-device-isolation-in-defender-for-endpoint.html" target="_blank" rel="noopener">Microsoft previews automatic device isolation in Defender for Endpoint</a><span class="article-summary">Microsoft is previewing a new automatic device isolation capability in Defender for Endpoint’s auto attack disruption tool to help security pros contain cyber attacks in progress on their IT networks. The company announced the capability earlier this month in a column about new f…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="isc stormcast for wednesday, may 27th, 2026 https://isc.sans.edu/podcastdetail/9946, (wed, may 27th)" data-date="2026-05-27"><span class="headline-date">27 May</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/33022" target="_blank" rel="noopener">ISC Stormcast For Wednesday, May 27th, 2026 https://isc.sans.edu/podcastdetail/9946, (Wed, May 27th)</a><span class="article-summary">(c) SANS Internet Storm Center. https://isc.sans.edu Creative Commons Attribution-Noncommercial 3.0 United States License.</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="weekly threat bulletin – may 27th, 2026" data-date="2026-05-27"><span class="headline-date">27 May</span><span class="headline-body"><a class="headline-title" href="https://www.f5.com/labs/articles/weekly-threat-bulletin-may-27th-2026" target="_blank" rel="noopener">Weekly Threat Bulletin – May 27th, 2026</a><span class="article-summary">These are the top threats you should know about this week.</span></span><span class="headline-source">F5.COM</span></div>
+  </div>
+</div>
+
+</main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
+<footer class="site-footer">
+  threat intelligence // 73 sources // generated 2026-05-27 00:01<span class="blink"></span>
+</footer>
+</body>
+</html>
