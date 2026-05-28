@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>matlock.ca // THREAT INTELLIGENCE — 2026-05-28</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/">MATLOCK<span class="dot">.</span>CA</a>
+  <nav class="primary">
+    <a href="/">Home</a>
+    <a href="/claudeblog/">Walkthroughs</a>
+    <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
+    <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="/cybersecnews/feed.xml">RSS</a>
+  </nav>
+</header>
+
+<nav class="subnav">
+  <span class="nav-label">// JUMP</span>
+<a href="archive.html">Archive</a>
+<a href="index.html" class="active">Today</a>
+<a href="2026-05-27.html">Yesterday</a>
+<a href="2026-05-26.html">26 May</a>
+<a href="2026-05-25.html">25 May</a>
+<a href="2026-05-24.html">24 May</a>
+<a href="2026-05-23.html">23 May</a>
+<a href="2026-05-22.html">22 May</a>
+
+</nav>
+<main class="container wide">
+
+    <div class="stats-bar">
+      <div class="stat"><span class="stat-value">2</span><span class="stat-label">Articles</span></div>
+      <div class="stat"><span class="stat-value">2</span><span class="stat-label">Categories</span></div>
+      <div class="stat"><span class="stat-value">2026-05-28</span><span class="stat-label">Date</span></div>
+    </div>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
+    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="employees are unknowingly inviting tech support impersonators into firms, says fbi" data-date="2026-05-28"><span class="headline-date">28 May</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4177864/employees-are-unknowingly-inviting-tech-support-impersonators-into-firms-says-fbi.html" target="_blank" rel="noopener">Employees are unknowingly inviting tech support impersonators into firms, says FBI</a><span class="article-summary">Online or telephone IT support scams have been tricking employees into downloading or clicking on malware for years. But according to the FBI, one group that targets US-based law firms has recently found success in person, by convincing firms to allow a supposed IT support person…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="isc stormcast for thursday, may 28th, 2026 https://isc.sans.edu/podcastdetail/9948, (thu, may 28th)" data-date="2026-05-28"><span class="headline-date">28 May</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/33028" target="_blank" rel="noopener">ISC Stormcast For Thursday, May 28th, 2026 https://isc.sans.edu/podcastdetail/9948, (Thu, May 28th)</a><span class="article-summary">(c) SANS Internet Storm Center. https://isc.sans.edu Creative Commons Attribution-Noncommercial 3.0 United States License.</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+  </div>
+</div>
+
+</main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
+<footer class="site-footer">
+  threat intelligence // 73 sources // generated 2026-05-28 00:00<span class="blink"></span>
+</footer>
+</body>
+</html>
