@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 73 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 28 May 2026 13:01:01 -0300</lastBuildDate>
+    <lastBuildDate>Thu, 28 May 2026 14:00:57 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>CVE-2026-46050 md/raid10: fix deadlock with check operation and nowait requests</title>
@@ -1096,6 +1096,14 @@
     <description>Overview Rapid7 Labs discovered a critical argument injection ( CWE-88 ) vulnerability in Gogs , a popular open-source self-hosted Git service. Rapid7 Labs scores this vulnerability as CVSSv4 9.4 (Critical). The vulnerability allows any authenticated user to achieve remote code e…</description>
   </item>
   <item>
+    <title>VU#780781: Casdoor contains multiple authentication bypass and access management vulnerabilities</title>
+    <link>https://kb.cert.org/vuls/id/780781</link>
+    <guid isPermaLink="true">https://kb.cert.org/vuls/id/780781</guid>
+    <pubDate>Thu, 28 May 2026 16:13:02 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Overview Casdoor versions 2.362.0 and earlier contain several identity and access management vulnerabilities that enable broad authentication bypass and privilege escalation. These flaws relate to Casdoor’s Security Assertion Markup Language (SAML) processing, account binding, an…</description>
+  </item>
+  <item>
     <title>Employees are unknowingly inviting tech support impersonators into firms, says FBI</title>
     <link>https://www.csoonline.com/article/4177864/employees-are-unknowingly-inviting-tech-support-impersonators-into-firms-says-fbi.html</link>
     <guid isPermaLink="true">https://www.csoonline.com/article/4177864/employees-are-unknowingly-inviting-tech-support-impersonators-into-firms-says-fbi.html</guid>
@@ -1336,6 +1344,14 @@
     <description>Most malicious open source packages now mimic real code rather than rely on typosquatting</description>
   </item>
   <item>
+    <title>Threat Actors Exploit Critical FortiClient EMS Flaw to Deploy Credential Stealer</title>
+    <link>https://thehackernews.com/2026/05/threat-actors-exploit-critical.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/05/threat-actors-exploit-critical.html</guid>
+    <pubDate>Thu, 28 May 2026 20:56:04 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Threat actors are continuing to exploit a critical, now-patched security flaw impacting FortiClient Endpoint Management Server (EMS) deployments to deliver credential-stealing malware. &quot;The campaign abused trusted endpoint management infrastructure to deliver malware across manag…</description>
+  </item>
+  <item>
     <title>Sextortionist sentenced to 33 years for targeting 145 children</title>
     <link>https://www.bleepingcomputer.com/news/security/sextortionist-sentenced-to-33-years-for-targeting-145-children/</link>
     <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/sextortionist-sentenced-to-33-years-for-targeting-145-children/</guid>
@@ -1496,6 +1512,14 @@
     <description>Carnival Corporation, one of the world’s largest cruise operators, confirmed a data breach weeks after the ShinyHunters hacking group claimed it had stolen millions of customer records. Carnival acknowledged a phishing incident involving a single employee account and stated that …</description>
   </item>
   <item>
+    <title>The Gentlemen ransomware: Dissecting a self-propagating Go encryptor</title>
+    <link>https://www.microsoft.com/en-us/security/blog/2026/05/28/the-gentlemen-ransomware-dissecting-a-self-propagating-go-encryptor/</link>
+    <guid isPermaLink="true">https://www.microsoft.com/en-us/security/blog/2026/05/28/the-gentlemen-ransomware-dissecting-a-self-propagating-go-encryptor/</guid>
+    <pubDate>Thu, 28 May 2026 15:00:00 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>Microsoft Threat Intelligence presents a comprehensive analysis of The Gentlemen, a Go-based ransomware deployed by affiliates of Storm-2697 that combines per-file ephemeral key encryption with an aggressive self-propagation module to deploy itself across an entire network using …</description>
+  </item>
+  <item>
     <title>ISC Stormcast For Thursday, May 28th, 2026 https://isc.sans.edu/podcastdetail/9948, (Thu, May 28th)</title>
     <link>https://isc.sans.edu/diary/rss/33028</link>
     <guid isPermaLink="true">https://isc.sans.edu/diary/rss/33028</guid>
@@ -1582,30 +1606,6 @@
     <pubDate>Thu, 28 May 2026 12:12:13 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Digimarc has announced new provenance and verification infrastructure designed to secure autonomous and AI-enabled workflows. As enterprises increasingly adopt AI systems capable of generating content, orchestrating workflows, and taking action with minimal human intervention, es…</description>
-  </item>
-  <item>
-    <title>Zapier fixes bug chain that researchers say risked widespread account takeover</title>
-    <link>https://cyberscoop.com/zapier-bug-chain-account-takeover-patched/</link>
-    <guid isPermaLink="true">https://cyberscoop.com/zapier-bug-chain-account-takeover-patched/</guid>
-    <pubDate>Thu, 28 May 2026 13:00:00 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>A five-step flaw chain in the popular automation service, now patched, could have let a single attacker act as any signed-in user across thousands of connected apps. The post Zapier fixes bug chain that researchers say risked widespread account takeover appeared first on CyberSco…</description>
-  </item>
-  <item>
-    <title>Microsoft’s Copilot trust test: zero findings, more models, wider oversight</title>
-    <link>https://www.helpnetsecurity.com/2026/05/28/microsoft-365-copilot-iso-42001-certification/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/05/28/microsoft-365-copilot-iso-42001-certification/</guid>
-    <pubDate>Thu, 28 May 2026 13:53:20 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Microsoft 365 Copilot and Copilot Chat (Copilot) have been recertified under ISO/IEC 42001:2023 by an independent auditor for the second consecutive year. Copilot first received ISO 42001 certification in March 2025. This year’s recertification recorded zero non-conformities and …</description>
-  </item>
-  <item>
-    <title>AWS Doesn’t Secure Everything</title>
-    <link>https://www.youtube.com/shorts/PhaWojCTvcw</link>
-    <guid isPermaLink="true">https://www.youtube.com/shorts/PhaWojCTvcw</guid>
-    <pubDate>Thu, 28 May 2026 14:00:12 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Many organizations move infrastructure into AWS or managed environments believing most security responsibilities transfer with it. In reality, customers still control major parts of configuration, identity management, permissions, and operational security. That misunderstanding c…</description>
   </item>
   </channel>
 </rss>
