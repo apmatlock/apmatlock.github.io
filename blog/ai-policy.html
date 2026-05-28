@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Paul Matlock's personal AI usage policy — data classification, hard limits, and disclosure standards.">
+  <title>AI Usage Policy // matlock.ca</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/">MATLOCK<span class="dot">.</span>CA</a>
+  <nav class="primary">
+    <a href="/">Home</a>
+    <a href="/claudeblog/">Walkthroughs</a>
+    <a href="/cybersecnews/index.html">Threat Intel</a>
+    <a href="/blog/" class="current">Blog</a>
+    <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="/cybersecnews/feed.xml">RSS</a>
+  </nav>
+</header>
+
+<main class="container">
+  <div class="section">
+    <div class="section-label">// AI USAGE POLICY</div>
+    <h2 class="section-title">Personal AI Usage Policy</h2>
+    <div class="report-body">
+<p><strong>Version:</strong> 1.1-public
+<strong>Author:</strong> Paul Matlock
+<strong>Effective Date:</strong> 2026-05-09</p>
+<hr />
+<h2>Purpose</h2>
+<p>This policy governs my personal use of AI tools. It exists to protect client data and my own operational security while enabling effective AI use across my work. Publishing it is an act of transparency — if I expect accountability from systems and organizations I work with, I should hold myself to the same standard.</p>
+<hr />
+<h2>Framework: The 4Ds</h2>
+<p>All AI use is evaluated against four questions:</p>
+<table>
+<thead>
+<tr>
+<th>D</th>
+<th>Question</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Delegation</strong></td>
+<td>Is this task appropriate to delegate to AI? What is lost by doing so?</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Is my prompt precise? Have I provided the right context without oversharing?</td>
+</tr>
+<tr>
+<td><strong>Discernment</strong></td>
+<td>Am I evaluating the output critically, or accepting it uncritically?</td>
+</tr>
+<tr>
+<td><strong>Diligence</strong></td>
+<td>Have I verified accuracy, especially for factual claims, code, and security-relevant output?</td>
+</tr>
+</tbody>
+</table>
+<p>AI amplifies my capabilities. It does not replace judgment or professional responsibility.</p>
+<hr />
+<h2>Data Classification</h2>
+<p>I apply a four-tier classification to everything before deciding which AI tools, if any, are appropriate:</p>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Label</th>
+<th>Examples</th>
+<th>Permitted Tools</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Public</strong></td>
+<td>Blog posts, published reports, matlock.ca content</td>
+<td>Any</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Personal-Internal</strong></td>
+<td>Personal notes, study material, home lab configs</td>
+<td>Cloud AI OK</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Confidential</strong></td>
+<td>Client engagement data, sensitive findings</td>
+<td>Local AI only</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Restricted</strong></td>
+<td>Employer data, regulated data, credentials, PII</td>
+<td>No AI tools</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The rule is simple:</strong> if it belongs to someone else or could harm them if exposed, it doesn't go into an AI tool.</p>
+<hr />
+<h2>Hard Prohibitions</h2>
+<p>These apply regardless of tool, context, or convenience:</p>
+<ol>
+<li>No client or employer data in cloud-based AI</li>
+<li>No plaintext credentials in any AI tool</li>
+<li>No authentication material (passwords, keys, tokens)</li>
+<li>No third-party PII without consent</li>
+<li>No active exploitation via AI — I run all active tools; AI preps and analyzes only</li>
+<li>No AI-generated content presented as factual without independent verification</li>
+</ol>
+<hr />
+<h2>AI Disclosure</h2>
+<p>I disclose AI involvement <strong>proactively</strong>, even for drafts. This means:</p>
+<ul>
+<li>Deliverables I share with others note AI assistance</li>
+<li>Content published here on matlock.ca is subject to the same standard</li>
+<li>The disclosure doesn't mean lower quality — it's an accurate account of my process</li>
+</ul>
+<hr />
+<h2>Tools I Use</h2>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Role</th>
+<th>Data Ceiling</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Claude (Anthropic)</td>
+<td>Primary reasoning and writing</td>
+<td>Tier 2</td>
+</tr>
+<tr>
+<td>Groq</td>
+<td>Fast iteration, report augmentation</td>
+<td>Tier 2</td>
+</tr>
+<tr>
+<td>Ollama (local)</td>
+<td>Confidential-tier work, no data egress</td>
+<td>Tier 3</td>
+</tr>
+<tr>
+<td>GitHub Copilot</td>
+<td>Code suggestions</td>
+<td>Tier 2</td>
+</tr>
+</tbody>
+</table>
+<p>Local execution (Ollama) exists specifically for work that shouldn't leave my machine. Cloud tools are used only for Tier 1–2 data.</p>
+<hr />
+<h2>Review Cadence</h2>
+<p>This policy is reviewed when my toolset changes significantly, when relevant governance frameworks update, or annually — whichever comes first.</p>
+<hr />
+<p><em>v1.1-public — redacted for publication. Internal version maintained separately.</em></p>
+    </div>
+    <div style="margin-top:48px;padding-top:24px;border-top:1px solid var(--faint)">
+      <a href="/blog/" style="color:var(--accent);text-decoration:none;font-size:11px;letter-spacing:2px;text-transform:uppercase">&larr; Back to blog</a>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div>matlock.ca // blog<span class="blink"></span></div>
+</footer>
+</body>
+</html>
