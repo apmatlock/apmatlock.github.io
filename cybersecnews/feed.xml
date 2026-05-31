@@ -5,8 +5,179 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 73 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Sun, 31 May 2026 02:00:54 -0300</lastBuildDate>
+    <lastBuildDate>Sun, 31 May 2026 07:01:14 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>CVE-2025-15504 lief-project LIEF ELF Binary Parser.tcc parse_binary null pointer dereference</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-15504</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-15504</guid>
+    <pubDate>Sun, 31 May 2026 01:03:56 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2024-36137 A vulnerability has been identified in Node.js, affecting users of the experimental permission model when the --allow-fs-write flag is used.
+
+Node.js Permission Model do not operate on file descriptors, however, operations such as fs.fchown or fs.fchmod can use a &quot;read-only&quot; file descriptor to change the owner and permissions of a file.</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-36137</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-36137</guid>
+    <pubDate>Sun, 31 May 2026 01:40:05 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2024-22018 A vulnerability has been identified in Node.js, affecting users of the experimental permission model when the --allow-fs-read flag is used.
+This flaw arises from an inadequate permission model that fails to restrict file stats through the fs.lstat API. As a result, malicious actors can retrieve stats from files that they do not have explicit read access to.
+This vulnerability affects all users using the experimental permission model in Node.js 20 and Node.js 21.
+Please note that at the time this CVE was issued, the permission model is an experimental feature of Node.js.</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-22018</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-22018</guid>
+    <pubDate>Sun, 31 May 2026 01:39:56 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2025-23167 A flaw in Node.js 20&#x27;s HTTP parser allows improper termination of HTTP/1 headers using `\r\n\rX` instead of the required `\r\n\r\n`.
+This inconsistency enables request smuggling, allowing attackers to bypass proxy-based access controls and submit unauthorized requests.
+
+The issue was resolved by upgrading `llhttp` to version 9, which enforces correct header termination.
+
+Impact:
+* This vulnerability affects only Node.js 20.x users prior to the `llhttp` v9 upgrade.</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-23167</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-23167</guid>
+    <pubDate>Sun, 31 May 2026 01:40:30 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-46242 eventpoll: fix ep_remove struct eventpoll / struct file UAF</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46242</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46242</guid>
+    <pubDate>Sun, 31 May 2026 01:01:32 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-42790 nameConstraints DNS bypass via subject CommonName fallback in public_key hostname verification</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-42790</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-42790</guid>
+    <pubDate>Sun, 31 May 2026 01:01:59 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-42012 Gnutls: gnutls: certificate validation bypass due to improper handling of uri and srv sans</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-42012</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-42012</guid>
+    <pubDate>Sun, 31 May 2026 01:02:22 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-9804 Kubevirt: kubevirt: vmexport directory symlink escape enables exporter pod file read</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-9804</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-9804</guid>
+    <pubDate>Sun, 31 May 2026 01:02:34 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-48864 Libsolv: heap buffer overflow in libsolv repopagestore via unchecked decompression of malicious .solv page data</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-48864</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-48864</guid>
+    <pubDate>Sun, 31 May 2026 01:02:40 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-48962 IO::Compress versions before 2.220 for Perl can execute arbitrary code in File::GlobMapper via an attacker-controlled output glob</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-48962</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-48962</guid>
+    <pubDate>Sun, 31 May 2026 01:04:34 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-40034 gitoxide - Command Injection via Partial .gitmodules Override in gix-submodule</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-40034</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-40034</guid>
+    <pubDate>Sun, 31 May 2026 01:04:52 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-40528 OpenSC &lt; 0.27.0 Buffer Overrun in do_key_value() via profile.c</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-40528</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-40528</guid>
+    <pubDate>Sun, 31 May 2026 01:01:21 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-40510 OpenSC &lt; 0.27.0-rc1 Stack Buffer Overflow via piv_process_history() in card-piv.c</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-40510</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-40510</guid>
+    <pubDate>Sun, 31 May 2026 01:01:27 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-42789 Non-CA certificate accepted as intermediate issuer in public_key path validation</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-42789</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-42789</guid>
+    <pubDate>Sun, 31 May 2026 01:01:54 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-42013 Gnutls: gnutls: certificate validation bypass due to oversized subject alternative name</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-42013</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-42013</guid>
+    <pubDate>Sun, 31 May 2026 01:02:05 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-42015 Gnutls: gnutls: memory corruption due to off-by-one error in pkcs#12 bag handling</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-42015</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-42015</guid>
+    <pubDate>Sun, 31 May 2026 01:02:11 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-5260 Gnutls: gnutls: information disclosure via heap overread in rsa key exchange</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-5260</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-5260</guid>
+    <pubDate>Sun, 31 May 2026 01:02:16 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-7374 Kubevirt: kubevirt virt-handler: privilege escalation and node compromise via symlink following vulnerability</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-7374</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-7374</guid>
+    <pubDate>Sun, 31 May 2026 01:02:29 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2025-15649 IO::Uncompress::Unzip versions before 2.215 for Perl propagate uncaught exception when parsing zip header with malformed DOS date</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-15649</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-15649</guid>
+    <pubDate>Sun, 31 May 2026 01:04:39 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-44839 RabbitMQ: Unsanitized vhost names allow for XSS in management UI</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-44839</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-44839</guid>
+    <pubDate>Sun, 31 May 2026 01:04:44 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
   <item>
     <title>CyberWire Daily at 10: The evolution of ransomware.</title>
     <link>https://thecyberwire.com/podcasts/special-edition/98/notes</link>
@@ -1446,166 +1617,6 @@
     <pubDate>Fri, 29 May 2026 16:10:29 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>As AI agents become more numerous and more communicative, keeping track of where to find them is becoming increasingly important. Numerous proprietary agent registries are on the market, but the Linux Foundation suggests we simply extend the distributed, open Domain Name System (…</description>
-  </item>
-  <item>
-    <title>Signal users targeted by attackers seeking backup recovery keys</title>
-    <link>https://cyberinsider.com/signal-users-targeted-by-attackers-seeking-backup-recovery-keys/</link>
-    <guid isPermaLink="true">https://cyberinsider.com/signal-users-targeted-by-attackers-seeking-backup-recovery-keys/</guid>
-    <pubDate>Fri, 29 May 2026 16:53:01 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Signal users are being targeted in a new phishing campaign that attempts to steal recovery keys used to access the platform&#x27;s encrypted cloud backups. Attackers who obtain these keys could gain access to entire message archives, including older conversations, photos, and document…</description>
-  </item>
-  <item>
-    <title>Microsoft is named a Leader in the 2026 Gartner® Magic Quadrant™ for Endpoint Protection</title>
-    <link>https://www.microsoft.com/en-us/security/blog/2026/05/29/microsoft-is-named-a-leader-in-the-2026-gartner-magic-quadrant-for-endpoint-protection/</link>
-    <guid isPermaLink="true">https://www.microsoft.com/en-us/security/blog/2026/05/29/microsoft-is-named-a-leader-in-the-2026-gartner-magic-quadrant-for-endpoint-protection/</guid>
-    <pubDate>Fri, 29 May 2026 16:00:00 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Microsoft is named a Leader in the 2026 Gartner® Magic Quadrant™ for Endpoint Protection. The post Microsoft is named a Leader in the 2026 Gartner® Magic Quadrant™ for Endpoint Protection appeared first on Microsoft Security Blog .</description>
-  </item>
-  <item>
-    <title>ChatGPT share links abused to host fake outage pages to deliver malware</title>
-    <link>https://www.bleepingcomputer.com/news/security/chatgpt-share-links-abused-to-host-fake-outage-pages-to-deliver-malware/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/chatgpt-share-links-abused-to-host-fake-outage-pages-to-deliver-malware/</guid>
-    <pubDate>Fri, 29 May 2026 14:21:36 -0400</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Threat actors are abusing ChatGPT&#x27;s content-sharing feature to display fake OpenAI outage pages that direct users to download malware disguised as the ChatGPT desktop application. [...]</description>
-  </item>
-  <item>
-    <title>Name That Toon: Mark of (Cybersecurity) Progress</title>
-    <link>https://www.darkreading.com/cloud-security/name-that-toon-mark-of-cybersecurity-progress</link>
-    <guid isPermaLink="true">https://www.darkreading.com/cloud-security/name-that-toon-mark-of-cybersecurity-progress</guid>
-    <pubDate>Fri, 29 May 2026 20:22:04 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>As part of Dark Reading&#x27;s 20th anniversary package, we asked readers for a cybersecurity-related caption that captures their thoughts about the industry&#x27;s last two decades.</description>
-  </item>
-  <item>
-    <title>Friday Squid Blogging: Another Squid</title>
-    <link>https://www.schneier.com/blog/archives/2026/05/friday-squid-blogging-another-squid.html</link>
-    <guid isPermaLink="true">https://www.schneier.com/blog/archives/2026/05/friday-squid-blogging-another-squid.html</guid>
-    <pubDate>Fri, 29 May 2026 21:05:33 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Someone named &amp;#8220;Squid&amp;#8221; seems to be a &amp;#8220; West Country legend .&amp;#8221; As usual, you can also use this squid post to talk about the security stories in the news that I haven&amp;#8217;t covered. Blog moderation policy.</description>
-  </item>
-  <item>
-    <title>Sidhe, GreyVibe, Claude, Lightwell, Eclipse, Kimsuky, Obscure Beliefs, Josh Marpet - SWN #585</title>
-    <link>https://www.youtube.com/watch?v=vi10JBkOdx8</link>
-    <guid isPermaLink="true">https://www.youtube.com/watch?v=vi10JBkOdx8</guid>
-    <pubDate>Fri, 29 May 2026 21:00:09 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Sidhe, GreyVibe, Claude, Lightwell, Eclipse, Kimsuky, Obscure Belief Systems, Josh Marpet, and More on this episode of the Security Weekly News. Visit https://www.securityweekly.com/swn for all the latest episodes! Show Notes: https://securityweekly.com/swn-585</description>
-  </item>
-  <item>
-    <title>What’s in the container? Analyzing vulnerabilities, risks and protection with Kaspersky Container Security and the KIRA AI assistant</title>
-    <link>https://securelist.com/container-security-typical-issues/119974/</link>
-    <guid isPermaLink="true">https://securelist.com/container-security-typical-issues/119974/</guid>
-    <pubDate>Fri, 29 May 2026 07:00:51 +0000</pubDate>
-    <category>Cyber Threat Landscape</category>
-    <description>What are the main risks for container environments: vulnerabilities, supply chain attacks, configuration errors; how to improve container security and how Kaspersky Container Security with the KIRA AI assistant can help.</description>
-  </item>
-  <item>
-    <title>AI-Generated npm Malware Leaks Its Own GitHub Token</title>
-    <link>https://www.infosecurity-magazine.com/news/ai-npm-malware-leaks-github-token/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/ai-npm-malware-leaks-github-token/</guid>
-    <pubDate>Fri, 29 May 2026 08:10:00 +0000</pubDate>
-    <category>Cyber Threat Landscape</category>
-    <description>Sloppy AI-generated npm infostealer leaked its own GitHub token, exposing the operator</description>
-  </item>
-  <item>
-    <title>From $5 Attacks to Botnet-Powered Platforms: Inside the DDoS-as-a- Service Market</title>
-    <link>https://www.bleepingcomputer.com/news/security/from-5-attacks-to-botnet-powered-platforms-inside-the-ddos-as-a-service-market/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/from-5-attacks-to-botnet-powered-platforms-inside-the-ddos-as-a-service-market/</guid>
-    <pubDate>Fri, 29 May 2026 10:32:02 -0400</pubDate>
-    <category>Cyber Threat Landscape</category>
-    <description>DDoS attacks are increasingly being sold like subscription services, complete with pricing tiers, support, and reseller programs. Flare explores how the DDoS-as-a-Service market has evolved from scattered tools into polished attack platforms. [...]</description>
-  </item>
-  <item>
-    <title>Dutch govt disrupts malware botnet with 17 million infected devices</title>
-    <link>https://www.bleepingcomputer.com/news/security/dutch-govt-disrupts-malware-botnet-with-17-million-infected-devices/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/dutch-govt-disrupts-malware-botnet-with-17-million-infected-devices/</guid>
-    <pubDate>Fri, 29 May 2026 10:26:36 -0400</pubDate>
-    <category>Cyber Threat Landscape</category>
-    <description>Dutch authorities have taken offline a massive botnet of 17 million devices and seized more than 200 servers at a local provider that supported the operation. [...]</description>
-  </item>
-  <item>
-    <title>Researchers blame Iranian government for LA transit authority hack.</title>
-    <link>https://thecyberwire.com/newsletters/daily-briefing/15/102</link>
-    <guid isPermaLink="true">https://thecyberwire.com/newsletters/daily-briefing/15/102</guid>
-    <pubDate>Fri, 29 May 2026 16:00:00 +0000</pubDate>
-    <category>Cyber Threat Landscape</category>
-    <description>Thousands of domains are impersonating FIFA ahead of the World Cup. Dutch police dismantle a botnet.</description>
-  </item>
-  <item>
-    <title>Police arrest man following hack of Ajax football club</title>
-    <link>https://www.bitdefender.com/en-us/blog/hotforsecurity/police-arrest-hack-ajax-football</link>
-    <guid isPermaLink="true">https://www.bitdefender.com/en-us/blog/hotforsecurity/police-arrest-hack-ajax-football</guid>
-    <pubDate>Fri, 29 May 2026 08:04:39 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>Dutch police have arrested a 35-year-old man suspected of hacking into the computer systems of Amsterdam football giant Ajax, after the personal data of hundreds of thousands of supporters was put at risk. Read more in my article on the Hot for Security blog.</description>
-  </item>
-  <item>
-    <title>Infosecurity Europe: CyCOS Project Expands to Support UK SMEs as CIISec Takes Over</title>
-    <link>https://www.infosecurity-magazine.com/news/cycos-expands-uk-smes-ciisec/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/cycos-expands-uk-smes-ciisec/</guid>
-    <pubDate>Fri, 29 May 2026 10:00:00 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>From a research-driven pilot, the Cybersecurity Communities of Support (CyCOS) is about to be handed over to CIISec</description>
-  </item>
-  <item>
-    <title>US charges Google security engineer with Polymarket insider trading</title>
-    <link>https://www.bleepingcomputer.com/news/security/us-charges-google-security-engineer-with-polymarket-insider-trading/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/us-charges-google-security-engineer-with-polymarket-insider-trading/</guid>
-    <pubDate>Fri, 29 May 2026 06:11:44 -0400</pubDate>
-    <category>Infosec News</category>
-    <description>A Google security engineer was charged with insider trading after winning $1.2 million using confidential company data to place bets on the cryptocurrency-based Polymarket decentralized prediction market. [...]</description>
-  </item>
-  <item>
-    <title>What 2,000 Exposed Vibe-Coded Apps Reveal About the Limits of Most Security Stacks</title>
-    <link>https://thehackernews.com/2026/05/what-2000-exposed-vibe-coded-apps.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/05/what-2000-exposed-vibe-coded-apps.html</guid>
-    <pubDate>Fri, 29 May 2026 16:00:00 +0530</pubDate>
-    <category>Infosec News</category>
-    <description>Shadow AI used to mean employees pasting things they shouldn&#x27;t into ChatGPT. It now means something bigger: employees building full applications with AI, wiring them into production systems, and publishing them on the open internet. Without Security or IT in the loop. The artifac…</description>
-  </item>
-  <item>
-    <title>Man sent to prison for selling data of 7 millions elderly Americans</title>
-    <link>https://www.bleepingcomputer.com/news/security/man-sent-to-prison-for-selling-data-of-7-millions-elderly-americans/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/man-sent-to-prison-for-selling-data-of-7-millions-elderly-americans/</guid>
-    <pubDate>Fri, 29 May 2026 07:07:07 -0400</pubDate>
-    <category>Infosec News</category>
-    <description>A North Carolina man was sentenced to more than 10 years in prison for selling the personal information of over 7 million elderly Americans to Jamaican scammers. [...]</description>
-  </item>
-  <item>
-    <title>Signal users targeted in backup-stealing phishing attacks</title>
-    <link>https://www.malwarebytes.com/blog/news/2026/05/signal-users-targeted-in-backup-stealing-phishing-attacks</link>
-    <guid isPermaLink="true">https://www.malwarebytes.com/blog/news/2026/05/signal-users-targeted-in-backup-stealing-phishing-attacks</guid>
-    <pubDate>Fri, 29 May 2026 12:07:24 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>Cybercriminals are impersonating Signal Support to steal backup recovery keys, giving them access to victims&#x27; entire message archives.</description>
-  </item>
-  <item>
-    <title>Google Chrome adds session cookie theft protection for all users</title>
-    <link>https://www.bleepingcomputer.com/news/security/google-chrome-adds-session-cookie-theft-protection-for-all-users/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/google-chrome-adds-session-cookie-theft-protection-for-all-users/</guid>
-    <pubDate>Fri, 29 May 2026 08:08:08 -0400</pubDate>
-    <category>Infosec News</category>
-    <description>Google says the Chrome Device Bound Session Credentials (DBSC) security feature is now generally available and is rolling out to all users to prevent account takeovers. [...]</description>
-  </item>
-  <item>
-    <title>Final 24 hours to save up to $410 on your TechCrunch Disrupt 2026 ticket</title>
-    <link>https://techcrunch.com/2026/05/29/final-24-hours-to-save-up-to-410-on-your-techcrunch-disrupt-2026-ticket/</link>
-    <guid isPermaLink="true">https://techcrunch.com/2026/05/29/final-24-hours-to-save-up-to-410-on-your-techcrunch-disrupt-2026-ticket/</guid>
-    <pubDate>Fri, 29 May 2026 14:00:00 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>You now have until tonight at 11:59 p.m. PT to lock in Early Bird savings of up to $410 for TechCrunch Disrupt 2026 before prices increase. Join 10,000+ tech leaders in October for one of the most anticipated tech events of the year. Register now.</description>
-  </item>
-  <item>
-    <title>Asia&#x27;s Cyber Insurance Market Shows Signs of Life</title>
-    <link>https://www.darkreading.com/cybersecurity-operations/asias-cyber-insurance-market-signs-of-life</link>
-    <guid isPermaLink="true">https://www.darkreading.com/cybersecurity-operations/asias-cyber-insurance-market-signs-of-life</guid>
-    <pubDate>Fri, 29 May 2026 14:35:33 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>The cyber insurance industry has made relatively weak inroads into Asia due to a a variety of factors, but that could be changing.</description>
   </item>
   </channel>
 </rss>
