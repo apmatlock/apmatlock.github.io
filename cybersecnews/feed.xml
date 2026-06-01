@@ -5,8 +5,16 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 73 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 01 Jun 2026 12:02:54 -0300</lastBuildDate>
+    <lastBuildDate>Mon, 01 Jun 2026 13:02:53 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>CISA adds critical Palo Alto Networks firewall flaw to KEV as company, researchers warn of exploitation</title>
+    <link>https://www.cybersecuritydive.com/news/palo-alto-networks-firewall-flaw-exploitation-cisa-kev/821598/</link>
+    <guid isPermaLink="true">https://www.cybersecuritydive.com/news/palo-alto-networks-firewall-flaw-exploitation-cisa-kev/821598/</guid>
+    <pubDate>Mon, 01 Jun 2026 10:45:33 -0400</pubDate>
+    <category>CISA KEV</category>
+    <description>The vulnerability in a vital defensive technology creates serious risks for federal networks, CISA said.</description>
+  </item>
   <item>
     <title>Microsoft Threatens Security Researcher | Palo Alto VPN Exploited | Google Insider Trading Case</title>
     <link>https://cybersecuritytoday.libsyn.com/microsoft-threatens-security-researcher-palo-alto-vpn-exploited-google-insider-trading-case</link>
@@ -296,6 +304,22 @@
     <description>Security teams are revisiting anomaly detection using architectures inspired by modern large language models. Instead of relying on static signatures or isolated events, these “log LLMs” analyze large behavioral sequences across high-volume telemetry sources such as DNS, WAF logs…</description>
   </item>
   <item>
+    <title>Patch Now: Another Palo Alto Auth Bypass Bug Under Active Exploit</title>
+    <link>https://www.darkreading.com/threat-intelligence/patch-palo-alto-auth-bypass-bug-exploit</link>
+    <guid isPermaLink="true">https://www.darkreading.com/threat-intelligence/patch-palo-alto-auth-bypass-bug-exploit</guid>
+    <pubDate>Mon, 01 Jun 2026 14:35:51 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Exploiting the PAN-OS GlobalProtect VPN vulnerability requires certain conditions, but adversaries have done so in two attack waves that started in mid-May.</description>
+  </item>
+  <item>
+    <title>Eliminate Critical API Attack Paths with Wiz API SPM</title>
+    <link>https://www.wiz.io/blog/introducing-wiz-api-spm</link>
+    <guid isPermaLink="true">https://www.wiz.io/blog/introducing-wiz-api-spm</guid>
+    <pubDate>Mon, 01 Jun 2026 15:02:08 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Wiz API SPM is now GA, enabling customers to discover APIs, assess APIs for exploitability, and prioritize remediation to mitigate the risk of an API-related breach.</description>
+  </item>
+  <item>
     <title>Microsoft fixes KB5089549 Windows security update install issues</title>
     <link>https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-kb5089549-windows-security-update-install-issues/</link>
     <guid isPermaLink="true">https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-kb5089549-windows-security-update-install-issues/</guid>
@@ -494,6 +518,22 @@
     <pubDate>Mon, 01 Jun 2026 17:24:24 +0530</pubDate>
     <category>Threat Intelligence</category>
     <description>A new cyber espionage campaign codenamed Operation Dragon Weave has been observed targeting officials and citizens in the Czech Republic and Taiwan to deliver an AdaptixC2 agent. According to Seqrite Labs, targets of the campaign include government, research, academic, technology…</description>
+  </item>
+  <item>
+    <title>Without strong governance, companies put credit ratings at risk in AI era</title>
+    <link>https://www.cybersecuritydive.com/news/ai-cyberattacks-credit-ratings-sp-analysis/821599/</link>
+    <guid isPermaLink="true">https://www.cybersecuritydive.com/news/ai-cyberattacks-credit-ratings-sp-analysis/821599/</guid>
+    <pubDate>Mon, 01 Jun 2026 10:45:33 -0400</pubDate>
+    <category>Threat Intelligence</category>
+    <description>A new report from S&amp;amp;P Global provides a blueprint for how companies can adapt to the changing threat environment.</description>
+  </item>
+  <item>
+    <title>NetQuest expands NetworkLens to detect threats hidden in network management traffic</title>
+    <link>https://www.helpnetsecurity.com/2026/06/01/netquest-networklens-dataset-portfolio/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/01/netquest-networklens-dataset-portfolio/</guid>
+    <pubDate>Mon, 01 Jun 2026 15:01:29 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>NetQuest announced an expansion of its NetworkLens enriched dataset portfolio. The new network telemetry datasets deliver detailed traffic characteristics of network management transactions, giving security teams the granular, AI-ready intelligence needed to detect threats hidden…</description>
   </item>
   <item>
     <title>A week in security (May 25 &amp;#8211; May 31)</title>
@@ -1575,46 +1615,6 @@ Impact:
     <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46180</link>
     <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46180</guid>
     <pubDate>Fri, 29 May 2026 01:04:16 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46115 block: add pgmap check to biovec_phys_mergeable</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46115</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46115</guid>
-    <pubDate>Fri, 29 May 2026 01:04:19 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46185 smb/client: fix out-of-bounds read in symlink_data()</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46185</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46185</guid>
-    <pubDate>Fri, 29 May 2026 01:04:30 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46161 md/raid10: fix divide-by-zero in setup_geo() with zero far_copies</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46161</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46161</guid>
-    <pubDate>Fri, 29 May 2026 01:04:38 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46212 batman-adv: bla: prevent use-after-free when deleting claims</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46212</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46212</guid>
-    <pubDate>Fri, 29 May 2026 01:04:45 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46205 staging: media: atomisp: Disallow all private IOCTLs</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46205</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46205</guid>
-    <pubDate>Fri, 29 May 2026 01:05:04 -0700</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Information published.</description>
   </item>
