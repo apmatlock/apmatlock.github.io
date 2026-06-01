@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 73 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 01 Jun 2026 07:03:22 -0300</lastBuildDate>
+    <lastBuildDate>Mon, 01 Jun 2026 08:02:58 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Microsoft Threatens Security Researcher | Palo Alto VPN Exploited | Google Insider Trading Case</title>
@@ -22,6 +22,14 @@
     <pubDate>Mon, 01 Jun 2026 09:40:54 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Authentication bypass vulnerabilities (CVE-2026-0257) in Palo Alto Networks&amp;#8217; firewalls that the company disclosed on May 13 have been targeted in &amp;#8220;limited exploit attempts&amp;#8221;. &amp;#8220;Across multiple customers, Rapid7 observed successful exploitation via authentica…</description>
+  </item>
+  <item>
+    <title>Recent Palo Alto Networks Vulnerability Exploited for Weeks</title>
+    <link>https://www.securityweek.com/recent-palo-alto-networks-vulnerability-exploited-for-weeks/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/recent-palo-alto-networks-vulnerability-exploited-for-weeks/</guid>
+    <pubDate>Mon, 01 Jun 2026 10:00:00 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Hackers began exploiting CVE-2026-0257, an authentication bypass in Palo Alto Networks PAN-OS, four days after public disclosure. The post Recent Palo Alto Networks Vulnerability Exploited for Weeks appeared first on SecurityWeek .</description>
   </item>
   <item>
     <title>Press Release: CSO30 ASEAN &amp; Hong Kong Awards 2026 open for nominations</title>
@@ -120,6 +128,14 @@
     <description>Dashlane has confirmed that a brute-force attack over the weekend triggered a wave of account suspension emails, unusual login notifications, and authentication issues. The password manager says the incident was caused by attacks against individual accounts rather than a breach o…</description>
   </item>
   <item>
+    <title>Microsoft fixes KB5089549 Windows security update install issues</title>
+    <link>https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-kb5089549-windows-security-update-install-issues/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-kb5089549-windows-security-update-install-issues/</guid>
+    <pubDate>Mon, 01 Jun 2026 06:59:43 -0400</pubDate>
+    <category>Security Bulletins</category>
+    <description>Microsoft has resolved a known issue causing installation failures and 0x800f0922 errors when deploying the May 2026 Windows 11 security update (KB5089549). [...]</description>
+  </item>
+  <item>
     <title>EU organizations buckle under rising compliance pressure</title>
     <link>https://www.helpnetsecurity.com/2026/06/01/antonija-vojnovic-span-cybersecurity-governance-challenges/</link>
     <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/01/antonija-vojnovic-span-cybersecurity-governance-challenges/</guid>
@@ -190,6 +206,14 @@
     <pubDate>Mon, 01 Jun 2026 09:30:00 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Push Security says threat actors are delivering malware hosted on chatgpt.com/s/ domain</description>
+  </item>
+  <item>
+    <title>Dragos acquires Phosphorus to secure extended operational technology</title>
+    <link>https://www.helpnetsecurity.com/2026/06/01/dragos-phosphorus-acquisition/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/01/dragos-phosphorus-acquisition/</guid>
+    <pubDate>Mon, 01 Jun 2026 10:00:31 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Dragos has acquired Phosphorus, extending the Dragos Platform to protect billions of connected devices embedded across critical infrastructure and other operational networks. Operational environments have outgrown traditional OT boundaries. Power grids, pipelines, manufacturing f…</description>
   </item>
   <item>
     <title>A week in security (May 25 &amp;#8211; May 31)</title>
@@ -278,6 +302,22 @@
     <pubDate>Mon, 01 Jun 2026 09:30:00 +0000</pubDate>
     <category>Infosec News</category>
     <description>Thanks to the newly detailed FROST technique, telltale SSD activity can be measured in the browser using simple JavaScript.</description>
+  </item>
+  <item>
+    <title>The Romance Scammer Who Made a Small Fortune Posing as a WWE Superstar</title>
+    <link>https://www.wired.com/story/wired-book-club-excerpt-the-yahoo-boys-carlos-barragan/</link>
+    <guid isPermaLink="true">https://www.wired.com/story/wired-book-club-excerpt-the-yahoo-boys-carlos-barragan/</guid>
+    <pubDate>Mon, 01 Jun 2026 10:30:00 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>In this excerpt from WIRED Book Club pick The Yahoo Boys, journalist Carlos Barragán traces one scammer’s journey from flop to fortune.</description>
+  </item>
+  <item>
+    <title>FSB Group Gamaredon Hides Worm in Windows Data Streams</title>
+    <link>https://www.infosecurity-magazine.com/news/gamaredon-worm-ntfs-data-streams/</link>
+    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/gamaredon-worm-ntfs-data-streams/</guid>
+    <pubDate>Mon, 01 Jun 2026 11:00:00 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>FSB-linked Gamaredon concealed a fileless worm in NTFS data streams to spy on Ukraine targets</description>
   </item>
   <item>
     <title>CVE-2025-15504 lief-project LIEF ELF Binary Parser.tcc parse_binary null pointer dereference</title>
@@ -1577,46 +1617,6 @@ Impact:
     <pubDate>Fri, 29 May 2026 09:00:05 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Ransomware operators have spent years refining the art of locking files. Now, some are working harder to get those lockers to every reachable system first. Microsoft’s recent warning of the Gentlemen ransomware revealed its operators using a self-propagating Go-based encryptor ca…</description>
-  </item>
-  <item>
-    <title>Chinese Hackers Exploit Iran War to Target Maritime and Energy Companies</title>
-    <link>https://www.infosecurity-magazine.com/news/chinese-hackers-exploit-iran-war/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/chinese-hackers-exploit-iran-war/</guid>
-    <pubDate>Fri, 29 May 2026 09:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>ESET’s 2026 APT Activity Report suggests China-backed APTs are using instability in the region to target victims, as well as continuing activity against organizations around the globe</description>
-  </item>
-  <item>
-    <title>Cybersecurity trends in SEC filings</title>
-    <link>https://www.csoonline.com/article/4177700/cybersecurity-trends-in-sec-filings.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4177700/cybersecurity-trends-in-sec-filings.html</guid>
-    <pubDate>Fri, 29 May 2026 09:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>In 2023, the Securities and Exchange Commission (SEC) required public companies to include a new section in their 10-K annual filings that is devoted to cybersecurity. This section is meant to address “cybersecurity risk management, strategy, governance and incidents.” I got curi…</description>
-  </item>
-  <item>
-    <title>Chrome security update addresses 22 critical severity flaws</title>
-    <link>https://cyberinsider.com/chrome-security-update-addresses-22-critical-severity-flaws/</link>
-    <guid isPermaLink="true">https://cyberinsider.com/chrome-security-update-addresses-22-critical-severity-flaws/</guid>
-    <pubDate>Fri, 29 May 2026 09:16:47 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Google has released a major Chrome security update that fixes 151 vulnerabilities in the browser, including 22 critical-severity flaws. While no actively exploited zero-days were disclosed, the unusually large number of vulnerabilities and the predominance of internally discovere…</description>
-  </item>
-  <item>
-    <title>Chrome 148 Update Patches 151 Vulnerabilities</title>
-    <link>https://www.securityweek.com/chrome-148-update-patches-151-vulnerabilities/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/chrome-148-update-patches-151-vulnerabilities/</guid>
-    <pubDate>Fri, 29 May 2026 10:17:23 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The browser update resolves critical-severity security defects that could potentially lead to remote code execution. The post Chrome 148 Update Patches 151 Vulnerabilities appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>LinkedIn-themed phishing abuses Adobe’s A/B testing platform</title>
-    <link>https://www.helpnetsecurity.com/2026/05/29/linkedin-themed-phishing-adobe-a-b-testing-platform/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/05/29/linkedin-themed-phishing-adobe-a-b-testing-platform/</guid>
-    <pubDate>Fri, 29 May 2026 10:04:50 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>A newly documented phishing campaign is targeting professionals with fake LinkedIn business emails and abusing a trusted service operated by Adobe. The attack from the victim&amp;#8217;s perspective The attack starts with an email that looks, at first glance, like a routine business …</description>
   </item>
   </channel>
 </rss>
