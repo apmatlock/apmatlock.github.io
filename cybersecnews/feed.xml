@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 73 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 01 Jun 2026 10:02:54 -0300</lastBuildDate>
+    <lastBuildDate>Mon, 01 Jun 2026 11:02:54 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Microsoft Threatens Security Researcher | Palo Alto VPN Exploited | Google Insider Trading Case</title>
@@ -46,6 +46,22 @@
     <pubDate>Mon, 01 Jun 2026 11:42:55 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>A US federal watchdog has outlined how the National Institute of Standards and Technology (NIST) failed to effectively manage the growing backlog of unprocessed cybersecurity vulnerabilities in the National Vulnerability Database (NVD). How the NVD crisis unfolded The NVD was est…</description>
+  </item>
+  <item>
+    <title>CVE-2026-0826: How an Old Bug Can Feed AI-Powered Impersonation</title>
+    <link>https://www.rapid7.com/blog/post/ve-cve-2026-0826-how-an-old-bug-can-feed-ai-powered-impersonation</link>
+    <guid isPermaLink="true">https://www.rapid7.com/blog/post/ve-cve-2026-0826-how-an-old-bug-can-feed-ai-powered-impersonation</guid>
+    <pubDate>Mon, 01 Jun 2026 13:00:00 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>One of the more persistent myths in security is that old bug classes become old problems. They don’t. They just show up in different places, under different conditions, and usually at the exact moment we’ve convinced ourselves not to pay attention to them. That’s part of what mak…</description>
+  </item>
+  <item>
+    <title>CVE-2026-0826: Critical unauthenticated stack buffer overflow in HP Poly VVX and Trio VoIP Phones (FIXED)</title>
+    <link>https://www.rapid7.com/blog/post/ve-cve-2026-0826-critical-unauthenticated-stack-buffer-overflow-hp-poly-vvx-trio-voip-phones-fixed</link>
+    <guid isPermaLink="true">https://www.rapid7.com/blog/post/ve-cve-2026-0826-critical-unauthenticated-stack-buffer-overflow-hp-poly-vvx-trio-voip-phones-fixed</guid>
+    <pubDate>Mon, 01 Jun 2026 13:00:00 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Overview Rapid7 Labs conducted a zero-day research project against an HP Poly VVX 450 Voice over Internet Protocol (VoIP) phone. This research resulted in the discovery of a critical unauthenticated stack-based buffer overflow vulnerability, CVE-2026-0826. A remote attacker can l…</description>
   </item>
   <item>
     <title>Press Release: CSO30 ASEAN &amp; Hong Kong Awards 2026 open for nominations</title>
@@ -200,6 +216,54 @@
     <description>Detect and mitigate malicious npm packages linked to the latest npm supply chain attack, based on the open sourced Mini Shai-Hulud malware.</description>
   </item>
   <item>
+    <title>Critical Flowise Flaw Gives Attackers Full Server Control</title>
+    <link>https://www.infosecurity-magazine.com/news/flowise-mcp-rce-poc/</link>
+    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/flowise-mcp-rce-poc/</guid>
+    <pubDate>Mon, 01 Jun 2026 14:00:00 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Obsidian publishes PoC for a 1-click Flowise RCE that can fully compromise self-hosted servers</description>
+  </item>
+  <item>
+    <title>Race Against Time: Why Faster Vulnerability Alerts Matter</title>
+    <link>https://www.bleepingcomputer.com/news/security/race-against-time-why-faster-vulnerability-alerts-matter/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/race-against-time-why-faster-vulnerability-alerts-matter/</guid>
+    <pubDate>Mon, 01 Jun 2026 10:00:10 -0400</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Attackers are exploiting vulnerabilities faster than many organizations can identify and patch them. SecAlerts explains why faster vulnerability alerts can help reduce exposure and improve response times. [...]</description>
+  </item>
+  <item>
+    <title>Brute-force attack triggers Dashlane account lockouts</title>
+    <link>https://www.helpnetsecurity.com/2026/06/01/dashlane-brute-force-attack-user-accounts/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/01/dashlane-brute-force-attack-user-accounts/</guid>
+    <pubDate>Mon, 01 Jun 2026 13:49:34 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Password manager Dashlane has confirmed that a brute-force attack targeting user accounts triggered temporary account suspensions and authentication issues. The company first acknowledged the incident on May 31 after users reported receiving account suspension emails and experien…</description>
+  </item>
+  <item>
+    <title>Insight bundles exposure management, patch operations, and XDR into one service</title>
+    <link>https://www.helpnetsecurity.com/2026/06/01/insight-managed-exposure-defense/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/01/insight-managed-exposure-defense/</guid>
+    <pubDate>Mon, 01 Jun 2026 13:42:21 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Insight has launched Insight Managed Exposure Defense, a managed security service designed to help organizations identify and address vulnerabilities. The service aims to help organizations reduce exposure and implement protections without lengthy procurement processes or relianc…</description>
+  </item>
+  <item>
+    <title>depthfirst adds pre-install protection against malicious dependencies</title>
+    <link>https://www.helpnetsecurity.com/2026/06/01/depthfirst-dependency-firewall/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/01/depthfirst-dependency-firewall/</guid>
+    <pubDate>Mon, 01 Jun 2026 13:33:49 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>depthfirst has introduced Dependency Firewall, a product that reviews every open-source package being downloaded anywhere in a company and blocks the malicious ones before they reach the person or system that requested them. Developers, AI agents, and any employee using Claude, C…</description>
+  </item>
+  <item>
+    <title>Cato cuts vulnerability protection time to 45 minutes with agentic threat research</title>
+    <link>https://www.helpnetsecurity.com/2026/06/01/cato-networks-agentic-threat-research/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/01/cato-networks-agentic-threat-research/</guid>
+    <pubDate>Mon, 01 Jun 2026 13:14:32 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Cato Networks announced a new capability that reduces time-to-protect for newly disclosed vulnerabilities to 45 minutes. The company attributes this reduction to the use of agentic threat research designed to accelerate protection against emerging exploits. Traditional appliance-…</description>
+  </item>
+  <item>
     <title>Microsoft fixes KB5089549 Windows security update install issues</title>
     <link>https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-kb5089549-windows-security-update-install-issues/</link>
     <guid isPermaLink="true">https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-kb5089549-windows-security-update-install-issues/</guid>
@@ -344,6 +408,30 @@
     <description>Dragos said customers will soon gain expanded asset visibility and integrated device intelligence, with automated remediation workflows and a unified platform experience to follow. The post Dragos Acquires xIoT Security Firm Phosphorus appeared first on SecurityWeek .</description>
   </item>
   <item>
+    <title>Secure Code Warrior connects developer training to AI usage and code risks</title>
+    <link>https://www.helpnetsecurity.com/2026/06/01/secure-code-warrior-adaptive-learning-capability/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/01/secure-code-warrior-adaptive-learning-capability/</guid>
+    <pubDate>Mon, 01 Jun 2026 13:54:29 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Secure Code Warrior has introduced Adaptive Learning, a capability designed to help organizations support AI software governance through targeted training based on identified risks. The feature delivers contextual microlearning and tracks outcomes at the code commit level. Softwa…</description>
+  </item>
+  <item>
+    <title>PathSolutions brings on-premises AI troubleshooting to NetOps teams</title>
+    <link>https://www.helpnetsecurity.com/2026/06/01/pathsolutions-totalview-ai/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/01/pathsolutions-totalview-ai/</guid>
+    <pubDate>Mon, 01 Jun 2026 13:25:50 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>PathSolutions has announced the launch of TotalView AI, a new capability within its TotalView platform that provides AI-driven troubleshooting for NetOps teams using network data analyzed on-premises. As enterprise networks become more distributed and complex, NetOps teams face i…</description>
+  </item>
+  <item>
+    <title>Hyland platform innovations focus on AI governance, context, and agent oversight</title>
+    <link>https://www.helpnetsecurity.com/2026/06/01/hyland-platform-innovations/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/01/hyland-platform-innovations/</guid>
+    <pubDate>Mon, 01 Jun 2026 13:00:35 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Hyland has unveiled platform innovations designed to move AI from experimentation to enterprise-wide adoption. Powered by the Content Innovation Cloud, these advancements transform governed enterprise content into trusted, actionable intelligence that accelerates business outcome…</description>
+  </item>
+  <item>
     <title>A week in security (May 25 &amp;#8211; May 31)</title>
     <link>https://www.malwarebytes.com/blog/news/2026/06/a-week-in-security-may-25-may-31</link>
     <guid isPermaLink="true">https://www.malwarebytes.com/blog/news/2026/06/a-week-in-security-may-25-may-31</guid>
@@ -454,6 +542,14 @@
     <pubDate>Mon, 01 Jun 2026 11:45:00 +0000</pubDate>
     <category>Infosec News</category>
     <description>Top cybersecurity vendors said AI won&#x27;t replace entry-level – only routine ticket-taking and triage</description>
+  </item>
+  <item>
+    <title>Investigating suspicious AI workflows in Microsoft Entra Agent ID: Agent’s user account</title>
+    <link>https://redcanary.com/blog/threat-detection/entra-id-ai-workflows-teams/</link>
+    <guid isPermaLink="true">https://redcanary.com/blog/threat-detection/entra-id-ai-workflows-teams/</guid>
+    <pubDate>Mon, 01 Jun 2026 13:04:01 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>Entra ID agent users can send malicious content to human users via Microsoft Teams. Here’s what to look out for.</description>
   </item>
   <item>
     <title>CVE-2025-15504 lief-project LIEF ELF Binary Parser.tcc parse_binary null pointer dereference</title>
@@ -1519,102 +1615,6 @@ Impact:
     <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46218</link>
     <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46218</guid>
     <pubDate>Fri, 29 May 2026 01:06:51 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46204 drm/amdgpu/vcn4: Prevent OOB reads when parsing IB</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46204</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46204</guid>
-    <pubDate>Fri, 29 May 2026 01:07:12 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46233 batman-adv: bla: only purge non-released claims</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46233</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46233</guid>
-    <pubDate>Fri, 29 May 2026 01:07:22 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46156 LoongArch: Fix potential ADE in loongson_gpu_fixup_dma_hang()</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46156</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46156</guid>
-    <pubDate>Fri, 29 May 2026 01:07:36 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46138 Bluetooth: hci_event: Fix OOB read and infinite loop in hci_le_create_big_complete_evt</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46138</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46138</guid>
-    <pubDate>Fri, 29 May 2026 01:07:55 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46187 wifi: rsi: fix kthread lifetime race between self-exit and external-stop</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46187</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46187</guid>
-    <pubDate>Fri, 29 May 2026 01:07:46 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46167 usb: usblp: fix uninitialized heap leak via LPGETSTATUS ioctl</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46167</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46167</guid>
-    <pubDate>Fri, 29 May 2026 01:07:59 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46113 KVM: x86: Fix shadow paging use-after-free due to unexpected GFN</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46113</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46113</guid>
-    <pubDate>Fri, 29 May 2026 01:08:10 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46206 batman-adv: reject new tp_meter sessions during teardown</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46206</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46206</guid>
-    <pubDate>Fri, 29 May 2026 01:08:33 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46130 dm-verity-fec: fix reading parity bytes split across blocks (take 3)</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46130</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46130</guid>
-    <pubDate>Fri, 29 May 2026 01:08:44 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46119 libceph: Fix slab-out-of-bounds access in auth message processing</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46119</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46119</guid>
-    <pubDate>Fri, 29 May 2026 01:08:16 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46169 hfsplus: fix uninit-value by validating catalog record size</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46169</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46169</guid>
-    <pubDate>Fri, 29 May 2026 01:08:39 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46142 net: libwx: fix VF illegal register access</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46142</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46142</guid>
-    <pubDate>Fri, 29 May 2026 01:09:01 -0700</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Information published.</description>
   </item>
