@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 73 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 02 Jun 2026 13:02:53 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 02 Jun 2026 14:02:54 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Weekly Threat Bulletin – June 3rd, 2026</title>
@@ -328,6 +328,22 @@
     <description>Software as a service (SaaS) providers building AI-powered applications on Amazon Bedrock AgentCore often need to serve multiple tenants with distinct security requirements from a shared infrastructure. Some tenants require cross-account access from their own Amazon Web Services …</description>
   </item>
   <item>
+    <title>Unpatched NTLM Coercion in Windows search: URI Handler, Same Bug, No CVE, No Fix</title>
+    <link>https://www.huntress.com/blog/unpatched-ntlm-coercion-windows-search-uri-handler</link>
+    <guid isPermaLink="true">https://www.huntress.com/blog/unpatched-ntlm-coercion-windows-search-uri-handler</guid>
+    <pubDate>Tue, 02 Jun 2026 14:00:00 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>The same NTLM coercion primitive that got patched in the Snipping Tool exists in Windows Explorer&#x27;s search: handler. No CVE. No fix. If your patching relies on CVE coverage, you have a blind spot.</description>
+  </item>
+  <item>
+    <title>Two New Reports Offer Competing Explanations for Cybersecurity’s Growing Crisis</title>
+    <link>https://www.securityweek.com/two-new-reports-offer-competing-explanations-for-cybersecuritys-growing-crisis/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/two-new-reports-offer-competing-explanations-for-cybersecuritys-growing-crisis/</guid>
+    <pubDate>Tue, 02 Jun 2026 16:35:38 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>As AI shortens the path from vulnerability disclosure to exploitation, researchers disagree on whether the problem is inadequate security tools or inadequate operational control. The post Two New Reports Offer Competing Explanations for Cybersecurity&amp;#8217;s Growing Crisis appear…</description>
+  </item>
+  <item>
     <title>Sensitive government personnel data posted online, Spanish police arrest suspect</title>
     <link>https://www.helpnetsecurity.com/2026/06/02/spain-government-data-leak-arrest/</link>
     <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/02/spain-government-data-leak-arrest/</guid>
@@ -342,6 +358,14 @@
     <pubDate>Tue, 02 Jun 2026 15:30:00 +0000</pubDate>
     <category>Security Advisories</category>
     <description>NCSC director of operations, Paul Chichester, says it’s time to future-proof cybersecurity today</description>
+  </item>
+  <item>
+    <title>Trump administration releases scaled-back AI executive order</title>
+    <link>https://cyberscoop.com/donald-trump-white-house-ai-executive-order-scaled-back/</link>
+    <guid isPermaLink="true">https://cyberscoop.com/donald-trump-white-house-ai-executive-order-scaled-back/</guid>
+    <pubDate>Tue, 02 Jun 2026 16:53:46 +0000</pubDate>
+    <category>Security Advisories</category>
+    <description>The order – which Trump refrained from signing at the last minute, appears to make significant concessions to industry compared to earlier drafts. The post Trump administration releases scaled-back AI executive order appeared first on CyberScoop .</description>
   </item>
   <item>
     <title>The Intersection of Encryption and AI</title>
@@ -374,6 +398,14 @@
     <pubDate>Tue, 02 Jun 2026 13:00:21 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>Atlas Menu, a cheat service for Grand Theft Auto V and Counter-Strike 2, has been added to the Have I Been Pwned database following a data breach that exposed tens of thousands of user records. The incident exposed approximately 64,000 accounts, including email addresses, usernam…</description>
+  </item>
+  <item>
+    <title>Russia claims foreign spy agencies hacked officials&#x27; phones</title>
+    <link>https://therecord.media/russia-claims-foreign-spy-agencies-hacked-gov-officials</link>
+    <guid isPermaLink="true">https://therecord.media/russia-claims-foreign-spy-agencies-hacked-gov-officials</guid>
+    <pubDate>Tue, 02 Jun 2026 16:10:00 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>In a statement, Russia&#x27;s Federal Security Service (FSB) said it had uncovered what it described as a &quot;large-scale operation&quot; involving malicious software installed on the mobile devices of senior Russian officials.</description>
   </item>
   <item>
     <title>From API key to live threat detections in minutes: how Elastic Security ingests Google Threat Intelligence</title>
@@ -686,6 +718,14 @@
     <pubDate>Tue, 02 Jun 2026 10:30:40 -0400</pubDate>
     <category>Infosec News</category>
     <description>AI-powered attacks and shadow AI adoption are creating new security risks inside the browser. Push Security explains why browser visibility is becoming critical for both threat detection and AI governance. [...]</description>
+  </item>
+  <item>
+    <title>Microsoft Exchange Online outage causes email delays, failures</title>
+    <link>https://www.bleepingcomputer.com/news/microsoft/microsoft-exchange-online-outage-causes-email-delays-failures/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/microsoft/microsoft-exchange-online-outage-causes-email-delays-failures/</guid>
+    <pubDate>Tue, 02 Jun 2026 13:02:40 -0400</pubDate>
+    <category>Infosec News</category>
+    <description>Microsoft is working to address a widespread service issue affecting the mail flow pipeline for Exchange Online customers across North America and Germany. [...]</description>
   </item>
   <item>
     <title>CISA adds critical Palo Alto Networks firewall flaw to KEV as company, researchers warn of exploitation</title>
@@ -1566,51 +1606,6 @@
     <pubDate>Mon, 01 Jun 2026 16:07:48 +0000</pubDate>
     <category>Infosec News</category>
     <description>Amazon Web Services (AWS) is pleased to announce that the Spring 2026 System and Organization Controls (SOC) 1, 2, and 3 reports are now available. The reports cover 188 services over the 12-month period from April 1, 2025–March 31, 2026, giving customers a full year of assurance…</description>
-  </item>
-  <item>
-    <title>NSA selects new leads for key cybersecurity posts</title>
-    <link>https://therecord.media/nsa-selects-new-leads-for-cyber-posts</link>
-    <guid isPermaLink="true">https://therecord.media/nsa-selects-new-leads-for-cyber-posts</guid>
-    <pubDate>Mon, 01 Jun 2026 18:30:00 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>David Imbordino, an NSA senior executive who most recently led its cybersecurity directorate in an acting capacity, has been named as its new chief. Bruce Jones, a career NSA technical and operational leader, as the new head of its Cybersecurity Collaboration Center.</description>
-  </item>
-  <item>
-    <title>Spain arrests doxer leaking sensitive data of govt employees</title>
-    <link>https://www.bleepingcomputer.com/news/security/spain-arrests-doxer-leaking-sensitive-data-of-govt-employees/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/spain-arrests-doxer-leaking-sensitive-data-of-govt-employees/</guid>
-    <pubDate>Mon, 01 Jun 2026 17:28:41 -0400</pubDate>
-    <category>Infosec News</category>
-    <description>The Spanish National Police has arrested an individual for leaking sensitive information related to members of various key state organizations, including the National Cybersecurity Institute (INCIBE). [...]</description>
-  </item>
-  <item>
-    <title>CVE-2025-15504 lief-project LIEF ELF Binary Parser.tcc parse_binary null pointer dereference</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-15504</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-15504</guid>
-    <pubDate>Sun, 31 May 2026 01:03:56 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2024-36137 A vulnerability has been identified in Node.js, affecting users of the experimental permission model when the --allow-fs-write flag is used.
-
-Node.js Permission Model do not operate on file descriptors, however, operations such as fs.fchown or fs.fchmod can use a &quot;read-only&quot; file descriptor to change the owner and permissions of a file.</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-36137</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-36137</guid>
-    <pubDate>Sun, 31 May 2026 01:40:05 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2024-22018 A vulnerability has been identified in Node.js, affecting users of the experimental permission model when the --allow-fs-read flag is used.
-This flaw arises from an inadequate permission model that fails to restrict file stats through the fs.lstat API. As a result, malicious actors can retrieve stats from files that they do not have explicit read access to.
-This vulnerability affects all users using the experimental permission model in Node.js 20 and Node.js 21.
-Please note that at the time this CVE was issued, the permission model is an experimental feature of Node.js.</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-22018</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-22018</guid>
-    <pubDate>Sun, 31 May 2026 01:39:56 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
   </item>
   </channel>
 </rss>
