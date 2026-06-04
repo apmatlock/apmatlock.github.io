@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>matlock.ca // THREAT INTELLIGENCE — 2026-06-04</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/">MATLOCK<span class="dot">.</span>CA</a>
+  <nav class="primary">
+    <a href="/">Home</a>
+    <a href="/claudeblog/">Walkthroughs</a>
+    <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
+    <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="/cybersecnews/feed.xml">RSS</a>
+  </nav>
+</header>
+
+<nav class="subnav">
+  <span class="nav-label">// JUMP</span>
+<a href="archive.html">Archive</a>
+<a href="index.html" class="active">Today</a>
+<a href="2026-06-03.html">Yesterday</a>
+<a href="2026-06-02.html">2 Jun</a>
+<a href="2026-06-01.html">1 Jun</a>
+<a href="2026-05-31.html">31 May</a>
+<a href="2026-05-30.html">30 May</a>
+<a href="2026-05-29.html">29 May</a>
+
+</nav>
+<main class="container wide">
+
+    <div class="stats-bar">
+      <div class="stat"><span class="stat-value">23</span><span class="stat-label">Articles</span></div>
+      <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
+      <div class="stat"><span class="stat-value">2026-06-04</span><span class="stat-label">Date</span></div>
+    </div>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
+    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa adds exploited magento rce flaw cve-2026-45247 to kev catalog" data-date="2026-06-04"><span class="headline-date">4 Jun <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/06/cisa-adds-exploited-magento-rce-flaw.html" target="_blank" rel="noopener">CISA Adds Exploited Magento RCE Flaw CVE-2026-45247 to KEV Catalog</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) on Wednesday added a critical flaw impacting Mirasvit Cache Warmer, a popular Magento full-page cache extension, to its Known Exploited Vulnerabilities (KEV) catalog, following reports of active exploitation in the …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="beware the ‘son of mythos,’ security experts warn" data-date="2026-06-04"><span class="headline-date">4 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4180920/beware-the-son-of-mythos-security-experts-warn.html" target="_blank" rel="noopener">Beware the ‘son of Mythos,’ security experts warn</a><span class="article-summary">LONDON — Enterprise security teams were urged by security experts at Infosecurity Europe to brace for impact as both Anthrophic and OpenAI expand access to their frontier AI models for vulnerability discovery. Anthropic, in particular, is significantly expanding Project Glasswing…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="hole in github’s browser-based vscode editor could lead to stolen token" data-date="2026-06-04"><span class="headline-date">4 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4180997/hole-in-githubs-browser-based-vscode-editor-could-lead-to-stolen-token-2.html" target="_blank" rel="noopener">Hole in GitHub’s browser-based VSCode editor could lead to stolen token</a><span class="article-summary">A vulnerability in GitHub’s browser-based VSCode editor could lead to the theft of a developer’s token under certain circumstances, says a researcher. The issue, revealed this week in a blog by Ammar Askar , has apparently been already addressed by GitHub owner Microsoft. But it …</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="hearing is no longer believing." data-date="2026-06-04"><span class="headline-date">4 Jun</span><span class="headline-body"><a class="headline-title" href="https://thecyberwire.com/podcasts/hacking-humans/389/notes" target="_blank" rel="noopener">Hearing Is no longer believing.</a><span class="article-summary">This week, hosts of N2K CyberWire ⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠Maria Varmazis⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠ and⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠ ⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠Dave Bittner⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠ alongside ⁠⁠…</span></span><span class="headline-source">THECYBERWIRE.COM</span></div>
+<div class="headline" data-title="cisa directive for ai executive order to be released this week, andersen says" data-date="2026-06-04"><span class="headline-date">4 Jun</span><span class="headline-body"><a class="headline-title" href="https://therecord.media/cisa-directive-for-ai-exec-order-release" target="_blank" rel="noopener">CISA directive for AI executive order to be released this week, Andersen says</a><span class="article-summary">The binding operational directive will focus in part on “vulnerability alleviation and vulnerability management,” Andersen said in remarks delivered at the TechNet Cyber conference in Baltimore.</span></span><span class="headline-source">THERECORD.MEDIA</span></div>
+<div class="headline" data-title="cisco warns of available poc for critical unified cm vulnerability" data-date="2026-06-04"><span class="headline-date">4 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/cisco-warns-of-available-poc-for-critical-unified-cm-vulnerability/" target="_blank" rel="noopener">Cisco Warns of Available PoC for Critical Unified CM Vulnerability</a><span class="article-summary">The high-severity flaw can be exploited remotely, without authentication, in server-side request forgery (SSRF) attacks. The post Cisco Warns of Available PoC for Critical Unified CM Vulnerability appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="vs code vulnerability allows one-click github token theft" data-date="2026-06-04"><span class="headline-date">4 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/vs-code-vulnerability-allows-one-click-github-token-theft/" target="_blank" rel="noopener">VS Code Vulnerability Allows One-Click GitHub Token Theft</a><span class="article-summary">A researcher has disclosed the full details of the vulnerability and released a PoC without notifying Microsoft in advance. The post VS Code Vulnerability Allows One-Click GitHub Token Theft appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="from critical to controlled: cutting vulnerabilities in a live manufacturing environment" data-date="2026-06-04"><span class="headline-date">4 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/04/ot-vulnerability-management-process/" target="_blank" rel="noopener">From critical to controlled: Cutting vulnerabilities in a live manufacturing environment</a><span class="article-summary">A vulnerability scanner flags a critical CVSS 10 vulnerability on an industrial asset. The report lands in the boss’ inbox and now he wants to know why we’re sitting on a critical vulnerability. In a normal IT environment, you patch it then close the ticket and call it a day. If,…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="infosecurity europe: ukraine’s experience highlights the need for preparation and resilience in cybersecurity" data-date="2026-06-04"><span class="headline-date">4 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.infosecurity-magazine.com/news/resilience-perseverance-ukraine/" target="_blank" rel="noopener">Infosecurity Europe: Ukraine’s Experience Highlights the Need for Preparation and Resilience in Cybersecurity</a><span class="article-summary">Former Ukrainian foreign minister, Dmytro Kuleba, urges Infosecurity Europe attendees to fight the good fight</span></span><span class="headline-source">INFOSECURITY-MAGAZINE.COM</span></div>
+<div class="headline" data-title="pakistan spies on afghan finance ministry with xeno rat" data-date="2026-06-04"><span class="headline-date">4 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.darkreading.com/cyberattacks-data-breaches/pakistan-spies-afghan-finance-ministry-xeno-rat" target="_blank" rel="noopener">Pakistan Spies on Afghan Finance Ministry With Xeno RAT</a><span class="article-summary">Despite broadly connected digital infrastructure, standard fare TTPs are enough to cause trouble for Afghanistan's porous cybersecurity.</span></span><span class="headline-source">DARKREADING.COM</span></div>
+<div class="headline" data-title="spotless compliance evidence can still hide a broken control" data-date="2026-06-04"><span class="headline-date">4 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/04/marc-rubbinaccio-secureframe-cmmc-compliance-readiness/" target="_blank" rel="noopener">Spotless compliance evidence can still hide a broken control</a><span class="article-summary">In this interview with Help Net Security, Marc Rubbinaccio, Head of Cybersecurity and Compliance at Secureframe, explains where security teams go wrong when preparing for CMMC and FedRAMP 20x. The conversation covers how organizations check the 110 requirements but miss the 320 a…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="isc stormcast for thursday, june 4th, 2026 https://isc.sans.edu/podcastdetail/9958, (thu, jun 4th)" data-date="2026-06-04"><span class="headline-date">4 Jun</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/33046" target="_blank" rel="noopener">ISC Stormcast For Thursday, June 4th, 2026 https://isc.sans.edu/podcastdetail/9958, (Thu, Jun 4th)</a><span class="article-summary">(c) SANS Internet Storm Center. https://isc.sans.edu Creative Commons Attribution-Noncommercial 3.0 United States License.</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="the modern-day business can learn a lot about risk from this year’s mega events" data-date="2026-06-04"><span class="headline-date">4 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/04/mega-events-cyber-risk/" target="_blank" rel="noopener">The modern-day business can learn a lot about risk from this year’s mega events</a><span class="article-summary">Every year brings its share of global events, but 2026 is proving to be a banner year for mega-scale entertainment. The year got off to a roaring start with the Winter Olympics, and now anticipation is building for the fast-approaching FIFA World Cup. But amid the buzz, have you …</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="attackers already know the secrets are on your developers’ machines. do you?" data-date="2026-06-04"><span class="headline-date">4 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/04/attackers-secrets-developers-machines/" target="_blank" rel="noopener">Attackers already know the secrets are on your developers’ machines. Do you?</a><span class="article-summary">In a recent GitGuardian analysis, an average of 150 secrets were found on a sample of developer endpoints. Private keys accounted for 38% of unique secrets, while cloud, identity provider, and secret management credentials (AWS IAM, Hashicorp vault) added another 22%. Those figur…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="product showcase: trend micro mobile security detects scams in messages, qr codes, and websites" data-date="2026-06-04"><span class="headline-date">4 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/04/product-showcase-trend-micro-mobile-security-for-ios/" target="_blank" rel="noopener">Product showcase: Trend Micro Mobile Security detects scams in messages, QR codes, and websites</a><span class="article-summary">Trend Micro Mobile Security for iOS protects devices from potentially harmful websites while browsing, blocks ads and personal information trackers, helps users avoid unsafe Wi-Fi networks, and monitors data usage. The app is available for both iOS and Android devices. Getting St…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="etsi sets security requirements for ai data centers and cloud platforms" data-date="2026-06-04"><span class="headline-date">4 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/04/etsi-securing-ai-computing-platforms-standard/" target="_blank" rel="noopener">ETSI sets security requirements for AI data centers and cloud platforms</a><span class="article-summary">ETSI has published TS 104 033, a technical specification that defines security requirements for AI computing platforms. The specification establishes a security framework for platforms used to host AI applications in data center and edge computing environments, covering security …</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-podcasts">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(85,170,204,0.5);" onclick="toggleSection(this)">🎙️ PODCASTS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="is your enterprise ai strategy delivering roi yet?" data-date="2026-06-04"><span class="headline-date">4 Jun</span><span class="headline-body"><a class="headline-title" href="https://thecyberwire.com/podcasts/ai-security-brief/4/notes" target="_blank" rel="noopener">Is Your Enterprise AI Strategy Delivering ROI Yet?</a><span class="article-summary">Your enterprise AI strategy isn’t as far along as you think. The reality for most organizations today is that AI is disrupting existing processes more than it’s delivering outcomes… so far. And according to Dr. Grace Trinidad, Research Director at IDC, that’s how it should be. In…</span></span><span class="headline-source">THECYBERWIRE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="doj disrupts southeast asia crypto fraud networks, freezes $3.8 million in assets" data-date="2026-06-04"><span class="headline-date">4 Jun</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/06/doj-disrupts-southeast-asia-crypto.html" target="_blank" rel="noopener">DoJ Disrupts Southeast Asia Crypto Fraud Networks, Freezes $3.8 Million in Assets</a><span class="article-summary">The U.S. Department of Justice (DoJ) on Wednesday announced the results of a sweeping action undertaken by government authorities and private sector companies to combat cyber-enabled and cryptocurrency fraud targeting Americans. The "Disruption Week" operation began May 18, 2026,…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="whatsapp, slack notifications could hijack google gemini on android" data-date="2026-06-04"><span class="headline-date">4 Jun</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/06/whatsapp-slack-notifications-could.html" target="_blank" rel="noopener">WhatsApp, Slack Notifications Could Hijack Google Gemini on Android</a><span class="article-summary">A single poisoned notification from WhatsApp, Slack, SMS, Signal, Instagram, or Messenger could have hijacked Google Gemini's voice assistant on Android and made it open a victim's connected windows, fake a message from their boss, push the phone into a Zoom call, or quietly pois…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="microsoft's coreutils for windows, (thu, jun 4th)" data-date="2026-06-04"><span class="headline-date">4 Jun</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/33048" target="_blank" rel="noopener">Microsoft's Coreutils for Windows, (Thu, Jun 4th)</a><span class="article-summary">I&&#x23&#x3b;x26&#x3b;&#x23&#x3b;39&#x3b;ve been using the GnuWin32 CoreUtils for Windows for many years now (it gives you many &#x2a;nix core commands on Windows). &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="enterprise spotlight: rethinking cloud strategy in the age of ai" data-date="2026-06-04"><span class="headline-date">4 Jun</span><span class="headline-body"><a class="headline-title" href="https://us.resources.csoonline.com/resources/enterprise-spotlight-rethinking-cloud-strategy-in-the-age-of-ai/" target="_blank" rel="noopener">Enterprise Spotlight: Rethinking cloud strategy in the age of AI</a><span class="article-summary">Cloud computing has reached a crossroads. The high cost and data sensitivity of AI workloads are raising the appeal of private clouds, even as neoclouds and sovereign clouds shake up the cloud provider landscape. New cyberthreats, shifting compute requirements, and management com…</span></span><span class="headline-source">US.RESOURCES.CSOONLINE.COM</span></div>
+<div class="headline" data-title="florida vs openai." data-date="2026-06-04"><span class="headline-date">4 Jun</span><span class="headline-body"><a class="headline-title" href="https://thecyberwire.com/podcasts/caveat/311/notes" target="_blank" rel="noopener">Florida vs OpenAI.</a><span class="article-summary">This week, Dave and Ben sit down to Florida's recent lawsuit against OpenAI and Sam Altman. In the suit, Florida alleges that the company placed profits over safety needs. Additionally, the two cover a story on an ad-based surveillance network.</span></span><span class="headline-source">THECYBERWIRE.COM</span></div>
+<div class="headline" data-title="infosecurity europe: raise security concerns with procurement now, because quantum can’t wait" data-date="2026-06-04"><span class="headline-date">4 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.infosecurity-magazine.com/news/raise-security-procurement-quantum/" target="_blank" rel="noopener">Infosecurity Europe: Raise Security Concerns with Procurement Now, Because Quantum Can’t Wait</a><span class="article-summary">Forescout VP of security intelligence, Rik Ferguson, warns that Q-day is fast approaching</span></span><span class="headline-source">INFOSECURITY-MAGAZINE.COM</span></div>
+  </div>
+</div>
+
+</main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
+<footer class="site-footer">
+  threat intelligence // 73 sources // generated 2026-06-04 06:02<span class="blink"></span>
+</footer>
+</body>
+</html>
