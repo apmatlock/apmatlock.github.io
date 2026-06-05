@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>matlock.ca // THREAT INTELLIGENCE — 2026-06-05</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/">MATLOCK<span class="dot">.</span>CA</a>
+  <nav class="primary">
+    <a href="/">Home</a>
+    <a href="/claudeblog/">Walkthroughs</a>
+    <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
+    <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="/cybersecnews/feed.xml">RSS</a>
+  </nav>
+</header>
+
+<nav class="subnav">
+  <span class="nav-label">// JUMP</span>
+<a href="archive.html">Archive</a>
+<a href="index.html" class="active">Today</a>
+<a href="2026-06-04.html">Yesterday</a>
+<a href="2026-06-03.html">3 Jun</a>
+<a href="2026-06-02.html">2 Jun</a>
+<a href="2026-06-01.html">1 Jun</a>
+<a href="2026-05-31.html">31 May</a>
+<a href="2026-05-30.html">30 May</a>
+
+</nav>
+<main class="container wide">
+
+    <div class="stats-bar">
+      <div class="stat"><span class="stat-value">25</span><span class="stat-label">Articles</span></div>
+      <div class="stat"><span class="stat-value">8</span><span class="stat-label">Categories</span></div>
+      <div class="stat"><span class="stat-value">2026-06-05</span><span class="stat-label">Date</span></div>
+    </div>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
+    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="hackers exploit critical everest forms pro wordpress plugin flaw to take over sites" data-date="2026-06-05"><span class="headline-date">5 Jun</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/06/hackers-exploit-critical-everest-forms.html" target="_blank" rel="noopener">Hackers Exploit Critical Everest Forms Pro WordPress Plugin Flaw to Take Over Sites</a><span class="article-summary">Threat actors are actively exploiting a critical security flaw in Everest Forms Pro, a WordPress plugin with about 4,000 active installations, to execute arbitrary code, leading to a complete site compromise. The vulnerability in question is CVE-2026-3300 (CVSS score: 9.8), a rem…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="us government report slams nist for nvd backlog" data-date="2026-06-05"><span class="headline-date">5 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4181438/us-government-report-slams-nist-for-nvd-backlog.html" target="_blank" rel="noopener">US government report slams NIST for NVD backlog</a><span class="article-summary">A report from the US Commerce department’s inspector general blames the National Institute of Standards and Technology (NIST) for the ever-growing backlog of vulnerabilities for inclusion in the National Vulnerability Database (NVD). But cybersecurity practitioners say that the b…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="cisco warns of unpatched sd-wan zero-day exploited in attacks" data-date="2026-06-05"><span class="headline-date">5 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/new-cisco-sd-wan-flaw-exploited-in-zero-day-attacks-to-gain-root/" target="_blank" rel="noopener">Cisco warns of unpatched SD-WAN zero-day exploited in attacks</a><span class="article-summary">On Thursday, Cisco warned of a high-severity, unpatched zero-day in the Cisco Catalyst SD-WAN Manager (tracked as CVE-2026-20245) actively exploited in attacks enabling root privilege escalation. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="cisco warns of 7th sd-wan zero-day exploited in 2026" data-date="2026-06-05"><span class="headline-date">5 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/cisco-warns-of-7th-sd-wan-zero-day-exploited-in-2026/" target="_blank" rel="noopener">Cisco Warns of 7th SD-WAN Zero-Day Exploited in 2026</a><span class="article-summary">The vulnerability is tracked as CVE-2026-20245 and it can allow arbitrary command execution as root, but no patch yet. The post Cisco Warns of 7th SD-WAN Zero-Day Exploited in 2026 appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="cisco sd-wan 0-day exploited, no patch available (cve-2026-20245)" data-date="2026-06-05"><span class="headline-date">5 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/05/cisco-sd-wan-cve-2026-20245-0-day-exploited/" target="_blank" rel="noopener">Cisco SD-WAN 0-day exploited, no patch available (CVE-2026-20245)</a><span class="article-summary">A 0-day privilege escalation vulnerability (CVE-2026-20245) in Cisco Catalyst SD-WAN Manager that has yet to be patched by Cisco is being leveraged by attackers. &#8220;To exploit this vulnerability, an attacker must have netadmin privileges on an affected system. This would requ…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="new http/2 bomb attack, trump's ai security reviews, android zero-day  &amp; the patching crisis" data-date="2026-06-05"><span class="headline-date">5 Jun</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/new-http2-bomb-attack-trumps-ai-security-reviews-android-zero-day-the-patching-crisis" target="_blank" rel="noopener">New HTTP/2 Bomb Attack, Trump's AI Security Reviews, Android Zero-Day  &amp; The Patching Crisis</a><span class="article-summary">A newly disclosed attack called HTTP/2 Bomb can crash major web servers in seconds using a single computer and a modest internet connection. Researchers say the attack combines two known techniques into a powerful memory-exhaustion exploit affecting widely used platforms includin…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="ai tools becoming hot commodities on ransomware marketplaces" data-date="2026-06-05"><span class="headline-date">5 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4181514/ai-tools-becoming-hot-commodities-on-ransomware-marketplaces.html" target="_blank" rel="noopener">AI tools becoming hot commodities on ransomware marketplaces</a><span class="article-summary">Sales of AI-based tools is accelerating within underground ransomware marketplaces, lowering the barrier to entry for new actors in the process. An analysis of Telegram channels, 20 dark web forums, and five underground markets by anti-ransomware platform vendor Halcyon found tha…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="agentgg: open-source agentic sast scanner" data-date="2026-06-05"><span class="headline-date">5 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/05/agentgg-open-source-agentic-sast-scanner/" target="_blank" rel="noopener">AgentGG: Open-source agentic SAST scanner</a><span class="article-summary">Static analysis tools have spent years matching source code against known-bad patterns and handing engineers long lists of candidate issues to triage by hand. AgentGG approaches the same job with AI agents that read the code, follow imports, walk the call graph, and confirm a fin…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="thieves can pull off keyless car theft in under a minute and here’s how to stop them" data-date="2026-06-05"><span class="headline-date">5 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/05/keyless-car-theft-protection/" target="_blank" rel="noopener">Thieves can pull off keyless car theft in under a minute and here’s how to stop them</a><span class="article-summary">A keyless car can be stolen in under a minute. Two people, a pair of cheap radio amplifiers, and a fob sitting on a hallway table inside the house. That is enough. No broken glass. No alarm. No sound. Most keyless cars remain vulnerable The vulnerability runs across the global ma…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="new infosec products of the week: june 5, 2026" data-date="2026-06-05"><span class="headline-date">5 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/05/new-infosec-products-of-the-week-june-5-2026/" target="_blank" rel="noopener">New infosec products of the week: June 5, 2026</a><span class="article-summary">Here’s a look at the most interesting products from the past week, featuring releases from Asimily, depthfirst, Diligent, Hyland, MazeBolt, and Noma. Asimily turns device risk into automated network policy Asimily has launched Segmentation Orchestration, enabling connected-device…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-bulletins">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,170,0,0.5);" onclick="toggleSection(this)">📋 SECURITY BULLETINS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="june 2026 patch tuesday forecast: where are the cves?" data-date="2026-06-05"><span class="headline-date">5 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/05/june-2026-patch-tuesday-forecast/" target="_blank" rel="noopener">June 2026 Patch Tuesday forecast: Where are the CVEs?</a><span class="article-summary">My forecast from last month was only partly right. After the Anthropic Mythos announcements and the deluge of newly discovered vulnerabilities from vendors like Mozilla, Microsoft’s updates were standard fare, 65 CVEs reported in Windows 11 and 58 in Windows 10. The Microsoft Off…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="pcpjack hijacks 230 aws, google cloud, and azure servers for covert smtp relay network" data-date="2026-06-05"><span class="headline-date">5 Jun</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/06/pcpjack-hijacks-230-aws-google-cloud.html" target="_blank" rel="noopener">PCPJack Hijacks 230 AWS, Google Cloud, and Azure Servers for Covert SMTP Relay Network</a><span class="article-summary">The threat actor known as PCPJack has hijacked cloud servers associated with Amazon Web Services (AWS), Google Cloud, and Microsoft Azure to create a covert SMTP email relay network. "Compromised business servers across the U.S., Europe, and Asia were quietly converted into SMTP …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="bcd travel - 396,313 breached accounts" data-date="2026-06-05"><span class="headline-date">5 Jun</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/Breach/BCDTravel" target="_blank" rel="noopener">BCD Travel - 396,313 breached accounts</a><span class="article-summary">In May 2026, the corporate travel management company BCD Travel was claimed as a victim of the ShinyHunters "pay or leak" extortion campaign . Data allegedly obtained from BCD was subsequently published publicly in early June and contained 396k unique email addresses. Other expos…</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+<div class="headline" data-title="nightclub giant rci says data breach affects 40,000 individuals" data-date="2026-06-05"><span class="headline-date">5 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/nightclub-giant-rci-says-data-breach-affects-40000-individuals/" target="_blank" rel="noopener">Nightclub Giant RCI Says Data Breach Affects 40,000 Individuals</a><span class="article-summary">The company detected a network intrusion in March and an investigation showed that some files were stolen during the attack. The post Nightclub Giant RCI Says Data Breach Affects 40,000 Individuals appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="ai is helping low-skill hackers pull off advanced cyberattacks" data-date="2026-06-05"><span class="headline-date">5 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/05/anthropic-ai-cyber-activity-analysis/" target="_blank" rel="noopener">AI is helping low-skill hackers pull off advanced cyberattacks</a><span class="article-summary">Anthropic has published an analysis of cyber-related misuse of its AI systems, examining 832 accounts that were banned for malicious cyber activity between March 2025 and March 2026. The company mapped the observed behavior to the MITRE ATT&#038;CK framework, which documents tact…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">6</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the evil msi background is back&amp;#x21;, (fri, jun 5th)" data-date="2026-06-05"><span class="headline-date">5 Jun</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/33054" target="_blank" rel="noopener">The Evil MSI Background is Back&amp;#x21;, (Fri, Jun 5th)</a><span class="article-summary">A few months ago, I wrote a diary about a payload that was embedded into a JPEG picture. It was a MSI-branded background&#x5b; 1 &#x5d;. Yesterday, I spotted another one&#x21; It seems that the technic is getting more and more popular. This time, it started with a mail containing…</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="isc stormcast for friday, june 5th, 2026 https://isc.sans.edu/podcastdetail/9960, (fri, jun 5th)" data-date="2026-06-05"><span class="headline-date">5 Jun</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/33050" target="_blank" rel="noopener">ISC Stormcast For Friday, June 5th, 2026 https://isc.sans.edu/podcastdetail/9960, (Fri, Jun 5th)</a><span class="article-summary">(c) SANS Internet Storm Center. https://isc.sans.edu Creative Commons Attribution-Noncommercial 3.0 United States License.</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="five eyes: chinese spies target government, military staff with fake job opportunities" data-date="2026-06-05"><span class="headline-date">5 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/five-eyes-chinese-spies-target-government-military-staff-with-fake-job-opportunities/" target="_blank" rel="noopener">Five Eyes: Chinese Spies Target Government, Military Staff With Fake Job Opportunities</a><span class="article-summary">Posing as recruiters on online platforms, Chinese intelligence officers target personnel with access to classified or privileged information. The post Five Eyes: Chinese Spies Target Government, Military Staff With Fake Job Opportunities appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="photos: infosecurity europe 2026" data-date="2026-06-05"><span class="headline-date">5 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/05/photos-infosecurity-europe-2026/" target="_blank" rel="noopener">Photos: Infosecurity Europe 2026</a><span class="article-summary">Infosecurity Europe 2026 is a cybersecurity event that took place from June 2 to 4 in London. Help Net Security was on-site and here&#8217;s a closer look at the conference. The featured vendors are: Microsoft, JupiterOne, Menlo Security, Cato Networks, Falkin, Vivida, Pen Test P…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="ai agent governance gets harder when agents outnumber your people" data-date="2026-06-05"><span class="headline-date">5 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/05/ai-agent-governance-video/" target="_blank" rel="noopener">AI agent governance gets harder when agents outnumber your people</a><span class="article-summary">In this Help Net Security video, Amit Gautam, CTO at Abluva, explains the security risks that autonomous AI agents bring into enterprise environments. He opens with a real case: a reconciliation agent at a financial services firm had legitimate access to a customer database. A po…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="most pros have seen ai hallucinations in it operations" data-date="2026-06-05"><span class="headline-date">5 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/05/ai-hallucinations-it-operations-research/" target="_blank" rel="noopener">Most pros have seen AI hallucinations in IT operations</a><span class="article-summary">Autonomous AI is taking action inside enterprise IT environments. Software is restarting services, isolating risky devices, and applying patches without waiting for a human to approve the step. The capability is spreading at the same time IT professionals are reporting frequent e…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="fifa world cup 2026 scams are already live: fake sites, banking malware, and stolen logins" data-date="2026-06-05"><span class="headline-date">5 Jun</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/06/fifa-world-cup-2026-scams-are-already.html" target="_blank" rel="noopener">FIFA World Cup 2026 Scams Are Already Live: Fake Sites, Banking Malware, and Stolen Logins</a><span class="article-summary">Security researchers and the FBI are warning that a wave of FIFA-themed fraud is already hitting World Cup 2026 fans, days before the June 11 kickoff. Recent reports describe thousands of lookalike FIFA domains, banking malware hidden inside pirate streaming apps, and at least on…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-podcasts">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(85,170,204,0.5);" onclick="toggleSection(this)">🎙️ PODCASTS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="soap box: detection and response in the ai age" data-date="2026-06-05"><span class="headline-date">5 Jun</span><span class="headline-body"><a class="headline-title" href="https://risky.biz/SOAPBOX108/" target="_blank" rel="noopener">Soap Box: Detection and response in the AI age</a><span class="article-summary">In this sponsored Soap Box edition of the Risky Business podcast Patrick Gray chats with Edward Wu, founder of Dropzone, about what AI is doing to detection, response and the SOC more generally. Dropzone makes AI agents that conduct alert investigations in your SOC, but will the …</span></span><span class="headline-source">RISKY.BIZ</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="infosecurity europe: ai coding tools need built-in security for agentic development era" data-date="2026-06-05"><span class="headline-date">5 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.infosecurity-magazine.com/news/ai-coding-tools-security-agentic/" target="_blank" rel="noopener">Infosecurity Europe: AI Coding Tools Need Built-In Security for Agentic Development Era</a><span class="article-summary">Ox Security field CTO, Boaz Barzel, makes the case for vibe security to tackle AI agent coding risks</span></span><span class="headline-source">INFOSECURITY-MAGAZINE.COM</span></div>
+<div class="headline" data-title="infosecurity europe: reactive security is failing healthcare organizations, experts warn" data-date="2026-06-05"><span class="headline-date">5 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.infosecurity-magazine.com/news/reactive-security-failing/" target="_blank" rel="noopener">Infosecurity Europe: Reactive Security Is Failing Healthcare Organizations, Experts Warn</a><span class="article-summary">A perfect storm of legacy devices, hyper connectivity and human fatigue is bad news for the healthcare sector, warns Cyber Salus</span></span><span class="headline-source">INFOSECURITY-MAGAZINE.COM</span></div>
+  </div>
+</div>
+
+</main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
+<footer class="site-footer">
+  threat intelligence // 73 sources // generated 2026-06-05 06:03<span class="blink"></span>
+</footer>
+</body>
+</html>
