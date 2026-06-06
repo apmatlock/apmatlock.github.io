@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 73 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Sat, 06 Jun 2026 11:02:56 -0300</lastBuildDate>
+    <lastBuildDate>Sat, 06 Jun 2026 12:02:53 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>CISA Adds Actively Exploited SolarWinds Serv-U DoS Flaw to KEV Catalog</title>
@@ -22,6 +22,14 @@
     <pubDate>Sat, 06 Jun 2026 09:49:28 +0530</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Cisco has warned that a high-severity security flaw impacting Catalyst SD-WAN Manager has come under active exploitation. The vulnerability, tracked as CVE-2026-20245, carries a CVSS score of 7.8 out of a maximum of 10.0. It affects the following deployment types - On-Prem Deploy…</description>
+  </item>
+  <item>
+    <title>Critical Everest Forms Pro flaw exploited to take over WordPress sites</title>
+    <link>https://www.bleepingcomputer.com/news/security/critical-everest-forms-pro-flaw-exploited-to-take-over-wordpress-sites/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/critical-everest-forms-pro-flaw-exploited-to-take-over-wordpress-sites/</guid>
+    <pubDate>Sat, 06 Jun 2026 10:09:26 -0400</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Hackers are actively exploiting a critical vulnerability (CVE-2026-3300) in the Everest Forms Pro plugin, which lets them take complete control of a WordPress website. [...]</description>
   </item>
   <item>
     <title>Cybersecurity Today Month in Review: Microsoft Zero-Days, AI Deregulation</title>
@@ -56,6 +64,14 @@
     <description>Anthropic is reportedly helping the NSA deploy Mythos. Acer warns of two maximum-severity zero-days.</description>
   </item>
   <item>
+    <title>New ChatGPT Lockdown Mode Limits Tools That Could Enable Data Exfiltration</title>
+    <link>https://thehackernews.com/2026/06/new-chatgpt-lockdown-mode-limits-tools.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/06/new-chatgpt-lockdown-mode-limits-tools.html</guid>
+    <pubDate>Sat, 06 Jun 2026 19:06:57 +0530</pubDate>
+    <category>Incident Reporting</category>
+    <description>OpenAI has begun rolling out a new Lockdown Mode to ChatGPT for eligible personal accounts to reduce the risk of data exfiltration arising from prompt injection attacks. The feature is primarily designed for people and organizations that handle sensitive data and require stricter…</description>
+  </item>
+  <item>
     <title>You&#x27;ve been muted...permanently.</title>
     <link>https://thecyberwire.com/podcasts/research-saturday/428/notes</link>
     <guid isPermaLink="true">https://thecyberwire.com/podcasts/research-saturday/428/notes</guid>
@@ -70,6 +86,14 @@
     <pubDate>Sat, 06 Jun 2026 10:15:00 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Raising $59 million to date, Opal also announced five senior leadership appointments. The post Opal Security Raises $23 Million for AI-Native Identity Governance appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>Banks Want Blockchain Without Crypto</title>
+    <link>https://www.youtube.com/shorts/6IQvmeGSbDU</link>
+    <guid isPermaLink="true">https://www.youtube.com/shorts/6IQvmeGSbDU</guid>
+    <pubDate>Sat, 06 Jun 2026 14:00:04 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Large banks are exploring “tokenized deposits” as a way to modernize banking infrastructure without converting customer funds into cryptocurrency. Instead of placing money directly on-chain, the blockchain can act as a record layer that references deposits still held inside the c…</description>
   </item>
   <item>
     <title>Free Apps Are Quietly Turning Smart TVs Into Web-Scraping Proxies for AI</title>
@@ -1582,30 +1606,6 @@
     <pubDate>Wed, 03 Jun 2026 01:39:48 -0700</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2025-1150 GNU Binutils ld libbfd.c bfd_malloc memory leak</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-1150</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-1150</guid>
-    <pubDate>Wed, 03 Jun 2026 01:40:55 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2025-1180 GNU Binutils ld elf-eh-frame.c _bfd_elf_write_section_eh_frame memory corruption</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-1180</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-1180</guid>
-    <pubDate>Wed, 03 Jun 2026 01:41:06 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>Unpatched Windows Search URI Vulnerability Lets Attackers Steal NTLMv2 Hashes</title>
-    <link>https://thehackernews.com/2026/06/unpatched-windows-search-uri.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/06/unpatched-windows-search-uri.html</guid>
-    <pubDate>Wed, 03 Jun 2026 15:48:52 +0530</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Cybersecurity researchers have disclosed details of an unpatched issue that could be exploited to disclose a user&#x27;s NTLMv2 hash to the attacker. Like in the case of CVE-2026-33829, which impacted the Windows Snipping Tool&#x27;s ms-screensketch: URI handler, the newly flagged issue re…</description>
   </item>
   </channel>
 </rss>
