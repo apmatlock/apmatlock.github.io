@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>matlock.ca // THREAT INTELLIGENCE — 2026-06-06</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/">MATLOCK<span class="dot">.</span>CA</a>
+  <nav class="primary">
+    <a href="/">Home</a>
+    <a href="/claudeblog/">Walkthroughs</a>
+    <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
+    <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="/cybersecnews/feed.xml">RSS</a>
+  </nav>
+</header>
+
+<nav class="subnav">
+  <span class="nav-label">// JUMP</span>
+<a href="archive.html">Archive</a>
+<a href="index.html" class="active">Today</a>
+<a href="2026-06-05.html">Yesterday</a>
+<a href="2026-06-04.html">4 Jun</a>
+<a href="2026-06-03.html">3 Jun</a>
+<a href="2026-06-02.html">2 Jun</a>
+<a href="2026-06-01.html">1 Jun</a>
+<a href="2026-05-31.html">31 May</a>
+
+</nav>
+<main class="container wide">
+
+    <div class="stats-bar">
+      <div class="stat"><span class="stat-value">8</span><span class="stat-label">Articles</span></div>
+      <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
+      <div class="stat"><span class="stat-value">2026-06-06</span><span class="stat-label">Date</span></div>
+    </div>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
+    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisa adds actively exploited solarwinds serv-u dos flaw to kev catalog" data-date="2026-06-06"><span class="headline-date">6 Jun <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/06/cisa-adds-actively-exploited-solarwinds.html" target="_blank" rel="noopener">CISA Adds Actively Exploited SolarWinds Serv-U DoS Flaw to KEV Catalog</a><span class="article-summary">The U.S. Cybersecurity and Infrastructure Security Agency (CISA) has added a high-severity security flaw impacting SolarWinds Serv-U multi-protocol file server software to its Known Exploited Vulnerabilities (KEV) catalog, citing evidence of active exploitation. The vulnerability…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cisco catalyst sd-wan manager cve-2026-20245 flaw actively exploited – no patch available" data-date="2026-06-06"><span class="headline-date">6 Jun <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/06/cisco-catalyst-sd-wan-manager-cve-2026.html" target="_blank" rel="noopener">Cisco Catalyst SD-WAN Manager CVE-2026-20245 Flaw Actively Exploited – No Patch Available</a><span class="article-summary">Cisco has warned that a high-severity security flaw impacting Catalyst SD-WAN Manager has come under active exploitation. The vulnerability, tracked as CVE-2026-20245, carries a CVSS score of 7.8 out of a maximum of 10.0. It affects the following deployment types - On-Prem Deploy…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cybersecurity today month in review: microsoft zero-days, ai deregulation" data-date="2026-06-06"><span class="headline-date">6 Jun</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/cybersecurity-today-month-in-review-microsoft-zero-days-ai-deregulation" target="_blank" rel="noopener">Cybersecurity Today Month in Review: Microsoft Zero-Days, AI Deregulation</a><span class="article-summary">Host Jim Love and panelists David Shipley, Laura Payne, and Jeff Williams discuss a researcher ("Chaotic/Nightmare Eclipse") publicly disclosing multiple Windows zero-days affecting components including Defender and BitLocker, frustration with Microsoft's vulnerability disclosure…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="ai agent uncovers 21 zero-days in ffmpeg; chrome patches record 429 bugs" data-date="2026-06-06"><span class="headline-date">6 Jun</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/06/ai-agent-uncovers-21-zero-days-in.html" target="_blank" rel="noopener">AI Agent Uncovers 21 Zero-Days in FFmpeg; Chrome Patches Record 429 Bugs</a><span class="article-summary">Two things landed within days of each other this week. A security startup reported 21 previously unknown vulnerabilities in FFmpeg, the media library inside almost everything that touches video, all of them found by an autonomous AI agent. The same week, Google shipped Chrome 149…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="miasma worm hits 73 microsoft github repositories in major supply chain attack" data-date="2026-06-06"><span class="headline-date">6 Jun</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/06/miasma-worm-hits-73-microsoft-github.html" target="_blank" rel="noopener">Miasma Worm Hits 73 Microsoft GitHub Repositories in Major Supply Chain Attack</a><span class="article-summary">Microsoft's GitHub repositories have become the latest to fall victim to the ongoing Miasma self-replicating supply chain attack campaign. The incident impacted 73 Microsoft repositories across four of its GitHub organizations, including Azure, Azure-Samples, Microsoft, and Micro…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="president trump signs an executive order on ai oversight." data-date="2026-06-06"><span class="headline-date">6 Jun</span><span class="headline-body"><a class="headline-title" href="https://thecyberwire.com/newsletters/week-that-was/10/22" target="_blank" rel="noopener">President Trump signs an executive order on AI oversight.</a><span class="article-summary">Anthropic is reportedly helping the NSA deploy Mythos. Acer warns of two maximum-severity zero-days.</span></span><span class="headline-source">THECYBERWIRE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="you've been muted...permanently." data-date="2026-06-06"><span class="headline-date">6 Jun</span><span class="headline-body"><a class="headline-title" href="https://thecyberwire.com/podcasts/research-saturday/428/notes" target="_blank" rel="noopener">You've been muted...permanently.</a><span class="article-summary">⁠Ismael Valenzuela⁠, ⁠Arctic Wolf⁠’s VP of Labs, Threat Research and Intelligence, discusses their work on "BlueNoroff Uses ClickFix, Fileless PowerShell, and AI-Generated Fake Zoom Meetings to Target Web3 Sector." Arctic Wolf researchers uncovered a sophisticated campaign by Nor…</span></span><span class="headline-source">THECYBERWIRE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="free apps are quietly turning smart tvs into web-scraping proxies for ai" data-date="2026-06-06"><span class="headline-date">6 Jun</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/06/free-apps-are-quietly-turning-smart-tvs.html" target="_blank" rel="noopener">Free Apps Are Quietly Turning Smart TVs Into Web-Scraping Proxies for AI</a><span class="article-summary">A researcher has reverse-engineered the iOS SDK that Bright Data embeds in consumer apps and documented how it turns devices, including always-on smart TVs, into exit nodes that relay web-scraping traffic for a data business Bright Data markets heavily to the AI industry. The com…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+
+</main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
+<footer class="site-footer">
+  threat intelligence // 73 sources // generated 2026-06-06 07:03<span class="blink"></span>
+</footer>
+</body>
+</html>
