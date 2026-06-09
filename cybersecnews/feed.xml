@@ -5,8 +5,16 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 73 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 09 Jun 2026 06:02:56 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 09 Jun 2026 07:02:57 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>AI worm prototype shows attackers don’t need Mythos to take over your network</title>
+    <link>https://www.csoonline.com/article/4181924/ai-worm-prototype-shows-attackers-dont-need-mythos-to-take-over-your-network.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4181924/ai-worm-prototype-shows-attackers-dont-need-mythos-to-take-over-your-network.html</guid>
+    <pubDate>Tue, 09 Jun 2026 09:00:00 +0000</pubDate>
+    <category>CISA KEV</category>
+    <description>Researchers from the University of Toronto developed a computer worm prototype powered by an AI agent that successfully self-replicated to different systems within a simulated computer network. The worm used a free large language model (LLM) running on local hardware and exploite…</description>
+  </item>
   <item>
     <title>One-Character Linux Kernel Flaw Enables Local Root Access, Exploits Now Public</title>
     <link>https://thehackernews.com/2026/06/one-character-linux-kernel-flaw-enables.html</link>
@@ -248,6 +256,30 @@
     <description>CISA has ordered U.S. government agencies to secure their Check Point Remote Access VPN and Mobile Access deployments against a critical vulnerability exploited in zero-day attacks by Qilin ransomware affiliates. [...]</description>
   </item>
   <item>
+    <title>Check Point Warns Critical Auth Bypass Bug Exploited in the Wild</title>
+    <link>https://www.infosecurity-magazine.com/news/check-point-critical-auth-bypass/</link>
+    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/check-point-critical-auth-bypass/</guid>
+    <pubDate>Tue, 09 Jun 2026 09:30:00 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Check Point says a critical vulnerability in its Remote Access VPN and Mobile Access solutions has been exploited by Qilin</description>
+  </item>
+  <item>
+    <title>Check Point VPN Zero-Day Exploited in Qilin Ransomware Attacks</title>
+    <link>https://www.securityweek.com/check-point-vpn-zero-day-exploited-in-qilin-ransomware-attacks/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/check-point-vpn-zero-day-exploited-in-qilin-ransomware-attacks/</guid>
+    <pubDate>Tue, 09 Jun 2026 09:47:10 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>The authentication bypass vulnerability allows attackers to establish VPN connections without a valid password. The post Check Point VPN Zero-Day Exploited in Qilin Ransomware Attacks appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>Mythos Preview can weaponize N-day vulnerabilities in hours</title>
+    <link>https://www.helpnetsecurity.com/2026/06/09/anthropic-mythos-preview-n-day-exploits-firefox-windows/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/09/anthropic-mythos-preview-n-day-exploits-firefox-windows/</guid>
+    <pubDate>Tue, 09 Jun 2026 09:19:53 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Mythos Preview can develop working exploits from newly disclosed software vulnerabilities in hours, cutting down a process that has historically taken days or weeks, according to Anthropic. Anthropic&amp;#8217;s recent cybersecurity research has largely focused on zero-days, vulnerab…</description>
+  </item>
+  <item>
     <title>OpenAI’s Lockdown Mode is trying to solve the problem that it created</title>
     <link>https://www.csoonline.com/article/4182650/openais-lockdown-mode-is-trying-to-solve-the-problem-that-it-created.html</link>
     <guid isPermaLink="true">https://www.csoonline.com/article/4182650/openais-lockdown-mode-is-trying-to-solve-the-problem-that-it-created.html</guid>
@@ -278,6 +310,14 @@
     <pubDate>Tue, 09 Jun 2026 04:30:46 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Software developers across the United States are using AI models built in China to write, debug, and review code, drawn by prices below those of American alternatives. These models carry risks for the security of American software, according to a report from Booz Allen Hamilton, …</description>
+  </item>
+  <item>
+    <title>Apple expands what parents can block, approve, and limit</title>
+    <link>https://www.helpnetsecurity.com/2026/06/09/apple-child-safety-features-and-parental-controls-update/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/09/apple-child-safety-features-and-parental-controls-update/</guid>
+    <pubDate>Tue, 09 Jun 2026 09:55:59 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Apple has previewed a set of new child safety features coming to iPhone, iPad, and the Mac later this year, expanding parental controls with tools that help families manage app access, web browsing, communication, and screen time. The features will arrive with updates to iOS 27, …</description>
   </item>
   <item>
     <title>WhatsApp Discovers NSO Group-Linked Spearphishing Attempts</title>
@@ -1566,46 +1606,6 @@
     <pubDate>Fri, 05 Jun 2026 16:35:02 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>CVE Lite CLI is a free, open-source command line tool that scans your projects in seconds and tells you exactly which included packages contain a vulnerability. The post OWASP Incubator Project Helps Developers Find and Fix Vulnerable Dependencies in Seconds appeared first on Sec…</description>
-  </item>
-  <item>
-    <title>Patching fast and slow: Ruby devs delay to defend against supply chain attack</title>
-    <link>https://www.csoonline.com/article/4181839/patching-fast-and-slow-ruby-devs-delay-to-defend-against-supply-chain-attack-2.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4181839/patching-fast-and-slow-ruby-devs-delay-to-defend-against-supply-chain-attack-2.html</guid>
-    <pubDate>Fri, 05 Jun 2026 17:07:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The team behind RubyGems, a package hosting site for Ruby developers, has added a new feature to bundler, a tool for managing Ruby packages (or ‘gems’) to protect developers against the recent wave of software supply chain attacks : A cooling-off period before recently updated pa…</description>
-  </item>
-  <item>
-    <title>Building secure B2C applications with fine-grained access control using Amazon Cognito and Amazon Verified Permissions</title>
-    <link>https://aws.amazon.com/blogs/security/building-secure-b2c-applications-with-fine-grained-access-control-using-amazon-cognito-and-amazon-verified-permissions/</link>
-    <guid isPermaLink="true">https://aws.amazon.com/blogs/security/building-secure-b2c-applications-with-fine-grained-access-control-using-amazon-cognito-and-amazon-verified-permissions/</guid>
-    <pubDate>Fri, 05 Jun 2026 17:07:06 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Modern web applications require robust security controls to protect user data and application resources. Authentication and authorization are two fundamental pillars of application security that answer critical questions: Who are you? and What are you allowed to do? Implementing …</description>
-  </item>
-  <item>
-    <title>CISA: Hackers now exploit SolarWinds Serv-U flaw to crash servers</title>
-    <link>https://www.bleepingcomputer.com/news/security/cisa-hackers-now-exploit-solarwinds-serv-u-flaw-to-crash-servers/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/cisa-hackers-now-exploit-solarwinds-serv-u-flaw-to-crash-servers/</guid>
-    <pubDate>Fri, 05 Jun 2026 15:15:30 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>CISA warned today that hackers are now actively exploiting a recently patched high-severity SolarWinds Serv-U flaw to crash servers. [...]</description>
-  </item>
-  <item>
-    <title>Seven Cisco Zero-Days Already</title>
-    <link>https://www.youtube.com/shorts/fCJXjGY1vOc</link>
-    <guid isPermaLink="true">https://www.youtube.com/shorts/fCJXjGY1vOc</guid>
-    <pubDate>Fri, 05 Jun 2026 22:00:19 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>This discussion covers another actively exploited Cisco SD-WAN vulnerability affecting Cisco Catalyst SD-WAN Manager. According to the clip, this marks the seventh SD-WAN zero-day reported in 2026. Successful exploitation can allow authenticated attackers to execute commands as r…</description>
-  </item>
-  <item>
-    <title>Local AI, Salesforce, Fluttershell, Aspose, http/2, Cisco, Used Tech, Josh Marpet - SWN #587</title>
-    <link>https://www.youtube.com/watch?v=j0ev0cUO5ng</link>
-    <guid isPermaLink="true">https://www.youtube.com/watch?v=j0ev0cUO5ng</guid>
-    <pubDate>Fri, 05 Jun 2026 21:00:28 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Local AI, Salesforce, Fluttershell, Aspose, http/2 bomb, Passwords, Cisco, Used Tech, Josh Marpet, and More on this episode of the Security Weekly News Visit https://www.securityweekly.com/swn for all the latest episodes! Show Notes: https://securityweekly.com/swn-587</description>
   </item>
   </channel>
 </rss>
