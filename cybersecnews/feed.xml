@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 73 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 09 Jun 2026 02:02:52 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 09 Jun 2026 03:02:59 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>One-Character Linux Kernel Flaw Enables Local Root Access, Exploits Now Public</title>
@@ -14,6 +14,46 @@
     <pubDate>Tue, 09 Jun 2026 01:47:39 +0530</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Security researchers have published a detailed, working exploit for a Linux kernel use-after-free that lets an unprivileged local user escalate to root and break out of a container. The flaw, CVE-2026-23111, sits in the kernel&#x27;s nf_tables packet-filtering code and was patched ups…</description>
+  </item>
+  <item>
+    <title>Google Patches 5th Chrome Zero-Day Exploited in 2026</title>
+    <link>https://www.securityweek.com/google-patches-5th-chrome-zero-day-exploited-in-2026/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/google-patches-5th-chrome-zero-day-exploited-in-2026/</guid>
+    <pubDate>Tue, 09 Jun 2026 05:57:40 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>The vulnerability is tracked as CVE-2026-11645 and it was reported in late April by an anonymous researcher. The post Google Patches 5th Chrome Zero-Day Exploited in 2026 appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>Meet Hades: The malware that lies to AI security agents</title>
+    <link>https://www.csoonline.com/article/4182707/meet-hades-the-malware-that-lies-to-ai-security-agents-2.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4182707/meet-hades-the-malware-that-lies-to-ai-security-agents-2.html</guid>
+    <pubDate>Tue, 09 Jun 2026 05:10:14 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Threat actors are continuing their onslaught against software supply chains, now with malware named after death itself. The newly-discovered Hades Campaign is a “highly sophisticated” supply chain compromise that targets Python developer environments and runs as soon as infected …</description>
+  </item>
+  <item>
+    <title>The architecture of subtraction: Why it’s time to erase the roads, not just map the traffic</title>
+    <link>https://www.helpnetsecurity.com/2026/06/09/subtractive-security-attack-path-erasure/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/09/subtractive-security-attack-path-erasure/</guid>
+    <pubDate>Tue, 09 Jun 2026 06:00:23 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>The advent of AI-assisted vulnerability discovery and autonomous exploit development has brought about a new age in cybersecurity—one in which we can no longer rely on patching as a primary defense mechanism. Patching is, by definition, a reactive approach to security. It cannot …</description>
+  </item>
+  <item>
+    <title>Treating AI agents like service accounts for federated query security</title>
+    <link>https://www.helpnetsecurity.com/2026/06/09/paras-malhotra-starburst-federated-query-security/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/09/paras-malhotra-starburst-federated-query-security/</guid>
+    <pubDate>Tue, 09 Jun 2026 05:30:14 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>In this interview with Help Net Security, Paras Malhotra, CISO at Starburst, explains how the company handles data governance across federated query environments. Topics include layering Starburst&amp;#8217;s access controls above native source permissions, tiering vendor risk across…</description>
+  </item>
+  <item>
+    <title>Malware ships with bugs that defenders could use against it</title>
+    <link>https://www.helpnetsecurity.com/2026/06/09/malware-source-code-bugs-research/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/09/malware-source-code-bugs-research/</guid>
+    <pubDate>Tue, 09 Jun 2026 05:00:48 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Static analysis tools have spent years scanning legitimate software for security bugs before it goes out the door. The same scanners work on malware, and malware carries a steady supply of its own bugs. Researchers ran four of these tools across 658 leaked malware projects and fo…</description>
   </item>
   <item>
     <title>OpenAI’s Lockdown Mode is trying to solve the problem that it created</title>
@@ -1566,46 +1606,6 @@
     <pubDate>Fri, 05 Jun 2026 10:45:17 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Let’s Encrypt plans to pursue a post-quantum-safe Web PKI through Merkle Tree Certificates (MTCs), a new approach that adds post-quantum authentication to the web without sacrificing the speed and reliability that have made TLS universal. The project is targeting late 2026 for a …</description>
-  </item>
-  <item>
-    <title>AI Worm</title>
-    <link>https://www.schneier.com/blog/archives/2026/06/ai-worm.html</link>
-    <guid isPermaLink="true">https://www.schneier.com/blog/archives/2026/06/ai-worm.html</guid>
-    <pubDate>Fri, 05 Jun 2026 13:21:23 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Researchers have prototyped an AI-powered internet worm . The coolest thing about the prototype is that it carries its own LLM with it, and runs it on computers that have been broken into. This is the closest to John Brunner&amp;#8217;s original 1975 conception of a computer worm tha…</description>
-  </item>
-  <item>
-    <title>New Threat Cluster OP-512 Targets Microsoft IIS Servers with Custom Web Shell Framework</title>
-    <link>https://thehackernews.com/2026/06/new-threat-cluster-op-512-targets.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/06/new-threat-cluster-op-512-targets.html</guid>
-    <pubDate>Fri, 05 Jun 2026 18:03:38 +0530</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Cybersecurity researchers have discovered a previously unreported threat cluster dubbed OP-512 that has been observed targeting Microsoft Internet Information Services (IIS) servers to deploy a bespoke web shell framework. ReliaQuest has assessed with moderate to high confidence …</description>
-  </item>
-  <item>
-    <title>Adaptive, Agentic AI Worms Loom as Next Enterprise Threat</title>
-    <link>https://www.darkreading.com/cyber-risk/adaptive-agentic-ai-worms-enterprise-cyber-threat</link>
-    <guid isPermaLink="true">https://www.darkreading.com/cyber-risk/adaptive-agentic-ai-worms-enterprise-cyber-threat</guid>
-    <pubDate>Fri, 05 Jun 2026 14:40:11 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>AI worms, or &amp;quot;viruses with wings and brains,&amp;quot; adapt to new environments, seek out vulnerabilities, and will likely strike within a year, researchers say.</description>
-  </item>
-  <item>
-    <title>Securing CI/CD in an agentic world: Claude Code Github action case</title>
-    <link>https://www.microsoft.com/en-us/security/blog/2026/06/05/securing-ci-cd-in-agentic-world-claude-code-github-action-case/</link>
-    <guid isPermaLink="true">https://www.microsoft.com/en-us/security/blog/2026/06/05/securing-ci-cd-in-agentic-world-claude-code-github-action-case/</guid>
-    <pubDate>Fri, 05 Jun 2026 16:46:47 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Microsoft Threat Intelligence identified a prompt injection pathway in Claude Code GitHub Action that allowed access to workflow secrets under specific conditions. This research examines the attack chain, responsible disclosure process, Anthropic&#x27;s mitigation, and guidance for se…</description>
-  </item>
-  <item>
-    <title>IronWorm and New Miasma Worm Variant Hit npm in Supply Chain Attacks</title>
-    <link>https://thehackernews.com/2026/06/ironworm-and-new-miasma-worm-variant.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/06/ironworm-and-new-miasma-worm-variant.html</guid>
-    <pubDate>Fri, 05 Jun 2026 23:35:30 +0530</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Multiple software supply chain attacks have hit the npm ecosystem, with threat actors using both malicious and poisoned versions of over 50 legitimate packages to distribute a Rust-based information stealer and a self-spreading worm, respectively. According to JFrog, the informat…</description>
   </item>
   </channel>
 </rss>
