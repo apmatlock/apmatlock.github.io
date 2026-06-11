@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 73 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 11 Jun 2026 11:02:55 -0300</lastBuildDate>
+    <lastBuildDate>Thu, 11 Jun 2026 12:03:10 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>CISA Directs Federal Agencies to Prioritize Security Patches Based on Risk</title>
@@ -174,6 +174,14 @@
     <pubDate>Thu, 11 Jun 2026 13:57:54 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Oracle has released a patch for CVE-2026-35273, but it has not said whether it’s a zero-day exploited in ShinyHunters attacks. The post Oracle Addresses PeopleSoft Vulnerability Amid Reports of Zero-Day Attacks appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>VU#862559: crypton-x509-validation Haskell libraries do not enforce X.509 NameConstraints</title>
+    <link>https://kb.cert.org/vuls/id/862559</link>
+    <guid isPermaLink="true">https://kb.cert.org/vuls/id/862559</guid>
+    <pubDate>Thu, 11 Jun 2026 14:30:20 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Overview A vulnerability has been discovered in the Haskell TLS software stack, commonly used by applications built in the Haskell programming language to securely connect to servers over the internet. Specifically, the libraries &quot;crypton-x509-validation&quot; fail to enforce a key se…</description>
   </item>
   <item>
     <title>GitHub finally pulls the plug on automatic install script execution for npm</title>
@@ -352,6 +360,14 @@
     <description>This week, Dave and Ben sit down with N2K&#x27;s lead analyst Ethan Cook to examine President Trump&#x27;s recent Executive Order centered on AI. With this order, the Trump administration is looking to increase its oversight of new AI models to better account for potential security vulnera…</description>
   </item>
   <item>
+    <title>CISA Orders Agencies to Patch by Risk, Not Severity</title>
+    <link>https://www.infosecurity-magazine.com/news/cisa-orders-agencies-to-patch-by/</link>
+    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/cisa-orders-agencies-to-patch-by/</guid>
+    <pubDate>Thu, 11 Jun 2026 15:00:00 +0000</pubDate>
+    <category>Security Advisories</category>
+    <description>New CISA directive tells federal agencies to patch by real-world risk, not CVSS severity scores</description>
+  </item>
+  <item>
     <title>Prompt injection still drives most agentic AI security failures in production</title>
     <link>https://www.helpnetsecurity.com/2026/06/11/owasp-prompt-injection-ai-security-failures/</link>
     <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/11/owasp-prompt-injection-ai-security-failures/</guid>
@@ -406,6 +422,14 @@
     <pubDate>Thu, 11 Jun 2026 13:53:00 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>According to the university’s statement, it is still working to understand what data has been accessed and said it had already directly contacted affected students and alumni, potentially including those in its foreign campuses in Malaysia and China as well as in Nottingham.</description>
+  </item>
+  <item>
+    <title>AI Is Upgrading Hackers Fast</title>
+    <link>https://www.youtube.com/shorts/L6vMSreqBbE</link>
+    <guid isPermaLink="true">https://www.youtube.com/shorts/L6vMSreqBbE</guid>
+    <pubDate>Thu, 11 Jun 2026 14:00:08 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>AI is rapidly increasing the effectiveness of cyber attackers at every level. Tasks that once required deeper expertise can now be automated, accelerated, or simplified with AI-assisted tooling. That shift compresses the gap between inexperienced, mid-tier, and highly advanced th…</description>
   </item>
   <item>
     <title>Chinese, N. Korean Threat Groups Build on Asia-Pacific Success</title>
@@ -534,6 +558,14 @@
     <pubDate>Thu, 11 Jun 2026 13:51:25 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Cybercriminals are using TikTok and Instagram Reels videos to spread Vidar, an infostealer malware, through fake downloads for popular paid software, according to ReversingLabs. The researchers uncovered two campaigns behind the activity, each using a different approach to draw i…</description>
+  </item>
+  <item>
+    <title>Proxmox releases Mail Gateway 9.1 with quarantine and backup encryption changes</title>
+    <link>https://www.helpnetsecurity.com/2026/06/11/proxmox-mail-gateway-9-1-released/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/11/proxmox-mail-gateway-9-1-released/</guid>
+    <pubDate>Thu, 11 Jun 2026 14:51:41 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Proxmox Mail Gateway 9.1 adds updated system components, changes to the spam quarantine interface, and encryption for backups. It works as a mail proxy positioned between the firewall and internal mail servers, screening incoming and outgoing traffic for spam, viruses, Trojans, a…</description>
   </item>
   <item>
     <title>GitHub to Disable npm Install Scripts by Default to Stop Supply Chain Attacks</title>
@@ -1574,38 +1606,6 @@
     <pubDate>Wed, 10 Jun 2026 11:00:00 -0400</pubDate>
     <category>Threat Intelligence</category>
     <description>The JDY botnet, a malware network previously associated with Chinese threat actors like Volt Typhoon, has significantly expanded its targeting scope and reconnaissance efforts. [...]</description>
-  </item>
-  <item>
-    <title>China-Linked JDY Botnet Expands to 1,500+ Devices for Cyber Reconnaissance</title>
-    <link>https://thehackernews.com/2026/06/china-linked-jdy-botnet-expands-to-1500.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/06/china-linked-jdy-botnet-expands-to-1500.html</guid>
-    <pubDate>Wed, 10 Jun 2026 21:38:42 +0530</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Cybersecurity researchers have warned of a &quot;resurgence and expansion&quot; of JDY, a covert network associated with China-nexus state-sponsored threat actors. &quot;The JDY botnet comprises over 1,500 SOHO [small office and home office] and IoT devices and operates as a centrally controlle…</description>
-  </item>
-  <item>
-    <title>North Koreans behind nearly half of US tech industry hacks, says CrowdStrike</title>
-    <link>https://techcrunch.com/2026/06/10/north-koreans-behind-nearly-half-of-us-tech-industry-hacks-says-crowdstrike/</link>
-    <guid isPermaLink="true">https://techcrunch.com/2026/06/10/north-koreans-behind-nearly-half-of-us-tech-industry-hacks-says-crowdstrike/</guid>
-    <pubDate>Wed, 10 Jun 2026 19:57:04 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>North Koreans hackers posing as remote IT workers and recruiters remain a major threat to U.S., European, and Asian companies, accounting for about half of all attacks over the past 12 months.</description>
-  </item>
-  <item>
-    <title>OpenAI: ‘Likely’ Chinese influence operation tried to use ChatGPT to stir debate on data centers</title>
-    <link>https://cyberscoop.com/openai-china-influence-campaign-chatgpt/</link>
-    <guid isPermaLink="true">https://cyberscoop.com/openai-china-influence-campaign-chatgpt/</guid>
-    <pubDate>Wed, 10 Jun 2026 20:20:25 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The company says there’s little evidence it influenced any real policy discussion. The post OpenAI: ‘Likely’ Chinese influence operation tried to use ChatGPT to stir debate on data centers appeared first on CyberScoop .</description>
-  </item>
-  <item>
-    <title>Making the Business Case for Your CTI Budget</title>
-    <link>https://www.intel471.com/blog/making-the-business-case-for-your-cti-budget</link>
-    <guid isPermaLink="true">https://www.intel471.com/blog/making-the-business-case-for-your-cti-budget</guid>
-    <pubDate>Wed, 10 Jun 2026 17:34:02 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The 2026 SANS Cyber Threat Intelligence Survey confirms that CTI is considered essential at the executive level. Can your CISO see how the CTI program is shaping decisions and measurably reducing risk?</description>
   </item>
   </channel>
 </rss>
