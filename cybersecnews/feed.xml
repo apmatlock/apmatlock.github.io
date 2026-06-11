@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 73 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 11 Jun 2026 05:02:57 -0300</lastBuildDate>
+    <lastBuildDate>Thu, 11 Jun 2026 06:02:57 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Microsoft Patches Exploited Exchange Server Vulnerability</title>
@@ -176,6 +176,14 @@
     <description>Attackers are now targeting a recently patched maximum-severity flaw in Ivanti Sentry, enabling them to execute code with root privileges on Internet-exposed secure mobile gateways. [...]</description>
   </item>
   <item>
+    <title>Microsoft fixes BitLocker recovery bug on Windows Server 2025</title>
+    <link>https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-bitlocker-recovery-bug-on-windows-server-2025/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-bitlocker-recovery-bug-on-windows-server-2025/</guid>
+    <pubDate>Thu, 11 Jun 2026 04:44:22 -0400</pubDate>
+    <category>Security Bulletins</category>
+    <description>Microsoft has resolved a known issue causing some Windows Server 2025 devices to boot into BitLocker recovery after installing the April 2026 security update. [...]</description>
+  </item>
+  <item>
     <title>Trump’s AI pivot.</title>
     <link>https://thecyberwire.com/podcasts/caveat/312/notes</link>
     <guid isPermaLink="true">https://thecyberwire.com/podcasts/caveat/312/notes</guid>
@@ -198,6 +206,14 @@
     <pubDate>Thu, 11 Jun 2026 03:27:53 -0400</pubDate>
     <category>Incident Reporting</category>
     <description>The University of Nottingham confirmed on Wednesday that a hacking group gained access to its student records system in a breach affecting both current students and alums. [...]</description>
+  </item>
+  <item>
+    <title>University of Nottingham Confirms Breach After Hackers Leak Data</title>
+    <link>https://www.securityweek.com/university-of-nottingham-confirms-breach-after-hackers-leak-data/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/university-of-nottingham-confirms-breach-after-hackers-leak-data/</guid>
+    <pubDate>Thu, 11 Jun 2026 08:30:02 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>The ShinyHunters hacker group has taken credit for the attack, leaking more than 450,000 email addresses and other information. The post University of Nottingham Confirms Breach After Hackers Leak Data appeared first on SecurityWeek .</description>
   </item>
   <item>
     <title>Chinese, N. Korean Threat Groups Build on Asia-Pacific Success</title>
@@ -238,6 +254,22 @@
     <pubDate>Thu, 11 Jun 2026 05:30:12 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Making companies that store personal data in cloud key-value databases handle deletion requests by running the operation and confirming the job is complete. The people making those requests and the regulators overseeing them have had limited means to confirm the data is gone or t…</description>
+  </item>
+  <item>
+    <title>Check Point expands MSP platform with with AI governance and unified security bundles</title>
+    <link>https://www.helpnetsecurity.com/2026/06/11/check-point-msp-platform-expansion/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/11/check-point-msp-platform-expansion/</guid>
+    <pubDate>Thu, 11 Jun 2026 08:31:49 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Check Point has announced a major expansion of its Managed Service Provider (MSP) platform, designed to help MSPs secure AI adoption, streamline operations and simplify managed security delivery. The announcement brings together three strategic innovations under a single MSP visi…</description>
+  </item>
+  <item>
+    <title>IDnow launches Trust Platform to help regulated firms move from KYC to continuous trust</title>
+    <link>https://www.helpnetsecurity.com/2026/06/11/idnow-launches-trust-platform-to-help-regulated-firms-move-from-kyc-to-continuous-trust/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/11/idnow-launches-trust-platform-to-help-regulated-firms-move-from-kyc-to-continuous-trust/</guid>
+    <pubDate>Thu, 11 Jun 2026 08:15:51 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>IDnow has announced the launch of the IDnow Trust Platform, designed to help regulated organisations orchestrate identity verification, fraud prevention, biometric authentication, and qualified digital trust services throughout the customer lifecycle. &amp;#8220;The identity industry…</description>
   </item>
   <item>
     <title>GitHub to Disable npm Install Scripts by Default to Stop Supply Chain Attacks</title>
@@ -1572,38 +1604,6 @@
     <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-50031</link>
     <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-50031</guid>
     <pubDate>Tue, 09 Jun 2026 01:44:54 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46272 coresight: tmc-etr: Fix race condition between sysfs and perf mode</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46272</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46272</guid>
-    <pubDate>Tue, 09 Jun 2026 01:45:04 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-50292 In libinput before 1.30.4 and 1.31.x before 1.31.3, libinput-device-group unescaped phys output can inject udev properties leading to arbitrary root code execution</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-50292</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-50292</guid>
-    <pubDate>Tue, 09 Jun 2026 01:45:39 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-50265 Rejected reason: This CVE ID was assigned as a duplicate of CVE-2026-50292</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-50265</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-50265</guid>
-    <pubDate>Tue, 09 Jun 2026 01:01:36 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-50261 Xorg-x11-server: xorg-x11-server-xwayland: xorg-x11-server: use-after-free in syncchangecounter()</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-50261</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-50261</guid>
-    <pubDate>Tue, 09 Jun 2026 01:01:59 -0700</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Information published.</description>
   </item>
