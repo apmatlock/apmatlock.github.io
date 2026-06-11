@@ -5,8 +5,16 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 73 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 11 Jun 2026 03:02:52 -0300</lastBuildDate>
+    <lastBuildDate>Thu, 11 Jun 2026 04:02:59 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Microsoft Patches Exploited Exchange Server Vulnerability</title>
+    <link>https://www.securityweek.com/microsoft-patches-exploited-exchange-server-vulnerability/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/microsoft-patches-exploited-exchange-server-vulnerability/</guid>
+    <pubDate>Thu, 11 Jun 2026 06:52:21 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>The company warned about zero-day attacks exploiting the Exchange Server vulnerability CVE-2026-42897 on May 14. The post Microsoft Patches Exploited Exchange Server Vulnerability appeared first on SecurityWeek .</description>
+  </item>
   <item>
     <title>GitHub finally pulls the plug on automatic install script execution for npm</title>
     <link>https://www.csoonline.com/article/4183859/github-finally-pulls-the-plug-on-automatic-install-script-execution-for-npm-2.html</link>
@@ -30,6 +38,14 @@
     <pubDate>Thu, 11 Jun 2026 04:30:10 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Companies building robots for physical work spend large amounts of time and money operating machines by hand to gather training examples. Each session with a physical robot produces a small number of demonstrations per day, which slows the growth of datasets used to train embodie…</description>
+  </item>
+  <item>
+    <title>Max severity Ivanti Sentry vulnerability now exploited in attacks</title>
+    <link>https://www.bleepingcomputer.com/news/security/max-severity-ivanti-sentry-vulnerability-now-exploited-in-attacks/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/max-severity-ivanti-sentry-vulnerability-now-exploited-in-attacks/</guid>
+    <pubDate>Thu, 11 Jun 2026 02:20:22 -0400</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Attackers are now targeting a recently patched maximum-severity flaw in Ivanti Sentry, enabling them to execute code with root privileges on Internet-exposed secure mobile gateways. [...]</description>
   </item>
   <item>
     <title>Trump’s AI pivot.</title>
@@ -86,6 +102,14 @@
     <pubDate>Thu, 11 Jun 2026 05:30:12 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Making companies that store personal data in cloud key-value databases handle deletion requests by running the operation and confirming the job is complete. The people making those requests and the regulators overseeing them have had limited means to confirm the data is gone or t…</description>
+  </item>
+  <item>
+    <title>GitHub to Disable npm Install Scripts by Default to Stop Supply Chain Attacks</title>
+    <link>https://thehackernews.com/2026/06/github-to-disable-npm-install-scripts.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/06/github-to-disable-npm-install-scripts.html</guid>
+    <pubDate>Thu, 11 Jun 2026 11:53:03 +0530</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>GitHub has announced what it said are &quot;breaking changes&quot; coming to npm version 12, one of which turns off install scripts by default to combat software supply chain threats. The changes aim to combat attack techniques that abuse the &quot;npm install&quot; command to trigger the execution …</description>
   </item>
   <item>
     <title>CVE-2026-10520, CVE-2026-10523 - Multiple critical vulnerabilities affecting Ivanti Sentry</title>
@@ -1582,30 +1606,6 @@
     <pubDate>Tue, 09 Jun 2026 09:00:00 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Speaking at Infosecurity Europe, Ashish Shrestha, former CISO at Jaguar Land Rover revealed why he wanted over 30,000 employees to change their passwords in the immediate aftermath of the incident</description>
-  </item>
-  <item>
-    <title>Google Chrome emergency update fixes actively exploited flaw in V8</title>
-    <link>https://cyberinsider.com/google-chrome-emergency-update-fixes-actively-exploited-flaw-in-v8/</link>
-    <guid isPermaLink="true">https://cyberinsider.com/google-chrome-emergency-update-fixes-actively-exploited-flaw-in-v8/</guid>
-    <pubDate>Tue, 09 Jun 2026 08:51:54 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Google has released Chrome 149.0.7827.102/.103 for Windows and macOS, as well as Chrome 149.0.7827.102 for Linux, addressing 74 security vulnerabilities, including a high-severity zero-day flaw in the V8 JavaScript engine that the company says has been exploited in the wild. The …</description>
-  </item>
-  <item>
-    <title>CISA gives feds 3 days to patch Check Point VPN bug exploited as zero-day</title>
-    <link>https://www.bleepingcomputer.com/news/security/cisa-orders-feds-to-patch-check-point-flaw-exploited-by-ransomware-gangs/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/cisa-orders-feds-to-patch-check-point-flaw-exploited-by-ransomware-gangs/</guid>
-    <pubDate>Tue, 09 Jun 2026 04:18:39 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>CISA has ordered U.S. government agencies to secure their Check Point Remote Access VPN and Mobile Access deployments against a critical vulnerability exploited in zero-day attacks by Qilin ransomware affiliates. [...]</description>
-  </item>
-  <item>
-    <title>Check Point Warns Critical Auth Bypass Bug Exploited in the Wild</title>
-    <link>https://www.infosecurity-magazine.com/news/check-point-critical-auth-bypass/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/check-point-critical-auth-bypass/</guid>
-    <pubDate>Tue, 09 Jun 2026 09:30:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Check Point says a critical vulnerability in its Remote Access VPN and Mobile Access solutions has been exploited by Qilin</description>
   </item>
   </channel>
 </rss>
