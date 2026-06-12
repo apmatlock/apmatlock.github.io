@@ -5,8 +5,24 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 73 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Fri, 12 Jun 2026 16:03:00 -0300</lastBuildDate>
+    <lastBuildDate>Fri, 12 Jun 2026 17:03:07 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>400+ Arch Linux AUR Packages Hijacked to Install Rust Credential Stealer</title>
+    <link>https://thehackernews.com/2026/06/400-arch-linux-aur-packages-hijacked-to.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/06/400-arch-linux-aur-packages-hijacked-to.html</guid>
+    <pubDate>Sat, 13 Jun 2026 00:54:50 +0530</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>Attackers took over more than 400 packages in the Arch User Repository (AUR) this week and rewrote their build scripts to install a credential stealer on any machine that built them. The malware is a Rust binary built to harvest developer secrets. When it lands with root, it can …</description>
+  </item>
+  <item>
+    <title>Google Sues Chinese Smishing Network Accused of Using Gemini AI in Phishing</title>
+    <link>https://thehackernews.com/2026/06/google-sues-chinese-smishing-network.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/06/google-sues-chinese-smishing-network.html</guid>
+    <pubDate>Sat, 13 Jun 2026 00:29:32 +0530</pubDate>
+    <category>Infosec News</category>
+    <description>Google on Friday said it&#x27;s pursuing legal action against a Chinese cybercrime network, accusing it of using its Gemini artificial intelligence (AI) agent to send phishing text messages targeting Americans. The network is said to be behind the development and management of a phish…</description>
+  </item>
   <item>
     <title>ShinyHunters Exploits Oracle PeopleSoft Zero-Day (CVE-2026-35273) to Breach Universities</title>
     <link>https://thehackernews.com/2026/06/shinyhunters-exploits-oracle-peoplesoft.html</link>
@@ -328,6 +344,14 @@
     <description>More than 400 packages in the Arch User Repository (AUR) are distributing a Linux rootkit and infostealer malware targeting credentials and access tokens. [...]</description>
   </item>
   <item>
+    <title>Maine disables data breach notification portal after fake disclosures</title>
+    <link>https://www.bleepingcomputer.com/news/security/maine-disables-data-breach-notification-portal-after-fake-disclosures/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/maine-disables-data-breach-notification-portal-after-fake-disclosures/</guid>
+    <pubDate>Fri, 12 Jun 2026 15:33:32 -0400</pubDate>
+    <category>Incident Reporting</category>
+    <description>Maine has taken its public data breach reporting portal offline after fraudulent breach disclosures were published on the state&#x27;s website, prompting a review of procedures to prevent abuse in the future. [...]</description>
+  </item>
+  <item>
     <title>New infosec products of the week: June 12, 2026</title>
     <link>https://www.helpnetsecurity.com/2026/06/12/new-infosec-products-of-the-week-june-12-2026/</link>
     <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/12/new-infosec-products-of-the-week-june-12-2026/</guid>
@@ -486,6 +510,14 @@
     <pubDate>Fri, 12 Jun 2026 18:40:02 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Tor hidden services are designed to conceal a website&#x27;s real location and IP address, allowing operators to remain anonymous while serving content through the Tor network. However, a new report from SOS Intelligence researcher Amir Hadzipasic shows that simple configuration mista…</description>
+  </item>
+  <item>
+    <title>China-Linked Hackers Backdoored Linux Login Software to Hide for Nearly a Decade</title>
+    <link>https://thehackernews.com/2026/06/china-linked-hackers-backdoored-linux.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/06/china-linked-hackers-backdoored-linux.html</guid>
+    <pubDate>Fri, 12 Jun 2026 23:47:55 +0530</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Instead of hiding on the laptops and servers defenders watch most closely, a China-nexus group spent close to a decade hidden inside the Linux login system itself. Sygnia, which tracks the group as Velvet Ant, says it backdoored the PAM and OpenSSH components that decide who is a…</description>
   </item>
   <item>
     <title>GitHub to Update npm to Thwart Software Supply Chain Attacks</title>
@@ -1572,38 +1604,6 @@
     <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46312</link>
     <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46312</guid>
     <pubDate>Wed, 10 Jun 2026 01:04:19 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46301 spi: topcliff-pch: fix use-after-free on unbind</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46301</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46301</guid>
-    <pubDate>Wed, 10 Jun 2026 01:04:24 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46302 selinux: allow multiple opens of /sys/fs/selinux/policy</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46302</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46302</guid>
-    <pubDate>Wed, 10 Jun 2026 01:04:35 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46314 drm/v3d: Reject empty multisync extension to prevent infinite loop</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46314</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46314</guid>
-    <pubDate>Wed, 10 Jun 2026 01:04:40 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2025-71315 drm/vkms: Convert to DRM&#x27;s vblank timer</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-71315</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-71315</guid>
-    <pubDate>Wed, 10 Jun 2026 01:04:46 -0700</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Information published.</description>
   </item>
