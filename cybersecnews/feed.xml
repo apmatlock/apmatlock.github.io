@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 73 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Fri, 12 Jun 2026 15:03:04 -0300</lastBuildDate>
+    <lastBuildDate>Fri, 12 Jun 2026 16:03:00 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>ShinyHunters Exploits Oracle PeopleSoft Zero-Day (CVE-2026-35273) to Breach Universities</title>
@@ -206,6 +206,14 @@
     <pubDate>Fri, 12 Jun 2026 16:12:34 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Oracle still hasn&#x27;t patched the vulnerability the group has been using in its attacks since late May. The post ShinyHunters is actively extorting universities after exploiting an unpatched Oracle flaw appeared first on CyberScoop .</description>
+  </item>
+  <item>
+    <title>phpBB forum fixes auth bypass bug lurking for a decade</title>
+    <link>https://www.bleepingcomputer.com/news/security/phpbb-forum-fixes-auth-bypass-bug-lurking-for-a-decade/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/phpbb-forum-fixes-auth-bypass-bug-lurking-for-a-decade/</guid>
+    <pubDate>Fri, 12 Jun 2026 14:19:34 -0400</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>A 10-year-old authentication bypass vulnerability discovered in the phpBB forum software allows an attacker to log in as any user, including administrators. [...]</description>
   </item>
   <item>
     <title>How to use NIST and ISO frameworks to govern AI agents</title>
@@ -464,6 +472,22 @@
     <description>Security researcher Arvin Shivram has revealed how a custom AI-powered testing system uncovered dozens of vulnerabilities across Google&#x27;s vast API ecosystem, earning more than $500,000 in bug bounty rewards. The findings included access control failures affecting Google Voice, Wi…</description>
   </item>
   <item>
+    <title>US, France, and Italian authorities shut down massive deepfake porn site</title>
+    <link>https://cyberscoop.com/us-international-authorities-shutdown-deepfake-porn-site/</link>
+    <guid isPermaLink="true">https://cyberscoop.com/us-international-authorities-shutdown-deepfake-porn-site/</guid>
+    <pubDate>Fri, 12 Jun 2026 18:21:05 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>The website specialized in non-consensual sexual images of famous women, including politicians, first ladies, royalty, journalists, television presenters, athletes, and entertainers, and others. The post US, France, and Italian authorities shut down massive deepfake porn site app…</description>
+  </item>
+  <item>
+    <title>Misconfigured Tor hidden services leak IP addresses and server data</title>
+    <link>https://cyberinsider.com/misconfigured-tor-hidden-services-leak-ip-addresses-and-server-data/</link>
+    <guid isPermaLink="true">https://cyberinsider.com/misconfigured-tor-hidden-services-leak-ip-addresses-and-server-data/</guid>
+    <pubDate>Fri, 12 Jun 2026 18:40:02 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Tor hidden services are designed to conceal a website&#x27;s real location and IP address, allowing operators to remain anonymous while serving content through the Tor network. However, a new report from SOS Intelligence researcher Amir Hadzipasic shows that simple configuration mista…</description>
+  </item>
+  <item>
     <title>GitHub to Update npm to Thwart Software Supply Chain Attacks</title>
     <link>https://www.infosecurity-magazine.com/news/github-update-npm-supply-chain/</link>
     <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/github-update-npm-supply-chain/</guid>
@@ -550,6 +574,14 @@
     <pubDate>Fri, 12 Jun 2026 17:08:00 +0000</pubDate>
     <category>Infosec News</category>
     <description>It is the first lapse of the spy program, known as Section 702 of the Foreign Intelligence Surveillance Act (FISA), since it was passed into law in 2008.</description>
+  </item>
+  <item>
+    <title>Privacy own-goal: World Cup blunder leaks Lionel Messi’s passport details</title>
+    <link>https://www.bitdefender.com/en-us/blog/hotforsecurity/privacy-own-goal-world-cup-blunder-leaks-lionel-messis-passport-details</link>
+    <guid isPermaLink="true">https://www.bitdefender.com/en-us/blog/hotforsecurity/privacy-own-goal-world-cup-blunder-leaks-lionel-messis-passport-details</guid>
+    <pubDate>Fri, 12 Jun 2026 18:48:06 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>Argentina&#x27;s World Cup squad had their passport numbers leaked before a ball was kicked - not by hackers, but by someone who failed to redact a document properly. document. It&#x27;s a mistake that has been made many times in the past... Read more in my article on the Hot for Security …</description>
   </item>
   <item>
     <title>CISA Directs Federal Agencies to Prioritize Security Patches Based on Risk</title>
@@ -1572,38 +1604,6 @@
     <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-71315</link>
     <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-71315</guid>
     <pubDate>Wed, 10 Jun 2026 01:04:46 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46296 spi: s3c64xx: fix NULL-deref on driver unbind</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46296</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46296</guid>
-    <pubDate>Wed, 10 Jun 2026 01:04:57 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46287 net: txgbe: fix RTNL assertion warning when remove module</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46287</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46287</guid>
-    <pubDate>Wed, 10 Jun 2026 01:05:08 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46299 hfsplus: fix held lock freed on hfsplus_fill_super()</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46299</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46299</guid>
-    <pubDate>Wed, 10 Jun 2026 01:05:18 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46321 tun: free page on short-frame rejection in tun_xdp_one()</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46321</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46321</guid>
-    <pubDate>Wed, 10 Jun 2026 01:05:47 -0700</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Information published.</description>
   </item>
