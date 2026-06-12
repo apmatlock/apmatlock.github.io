@@ -5,13 +5,21 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 73 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Fri, 12 Jun 2026 17:03:07 -0300</lastBuildDate>
+    <lastBuildDate>Fri, 12 Jun 2026 18:03:13 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>400+ Arch Linux AUR Packages Hijacked to Install Rust Credential Stealer</title>
     <link>https://thehackernews.com/2026/06/400-arch-linux-aur-packages-hijacked-to.html</link>
     <guid isPermaLink="true">https://thehackernews.com/2026/06/400-arch-linux-aur-packages-hijacked-to.html</guid>
     <pubDate>Sat, 13 Jun 2026 00:54:50 +0530</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>Attackers took over more than 400 packages in the Arch User Repository (AUR) this week and rewrote their build scripts to install a credential stealer on any machine that built them. The malware is a Rust binary built to harvest developer secrets. When it lands with root, it can …</description>
+  </item>
+  <item>
+    <title>Over 400 Arch Linux AUR Packages Hijacked to Deploy Infostealer and eBPF Rootkit</title>
+    <link>https://thehackernews.com/2026/06/over-400-arch-linux-aur-packages.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/06/over-400-arch-linux-aur-packages.html</guid>
+    <pubDate>Sat, 13 Jun 2026 01:03:25 +0530</pubDate>
     <category>Cyber Threat Landscape</category>
     <description>Attackers took over more than 400 packages in the Arch User Repository (AUR) this week and rewrote their build scripts to install a credential stealer on any machine that built them. The malware is a Rust binary built to harvest developer secrets. When it lands with root, it can …</description>
   </item>
@@ -230,6 +238,22 @@
     <pubDate>Fri, 12 Jun 2026 14:19:34 -0400</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>A 10-year-old authentication bypass vulnerability discovered in the phpBB forum software allows an attacker to log in as any user, including administrators. [...]</description>
+  </item>
+  <item>
+    <title>Deadline-driven defense.</title>
+    <link>https://thecyberwire.com/podcasts/daily-podcast/2572/notes</link>
+    <guid isPermaLink="true">https://thecyberwire.com/podcasts/daily-podcast/2572/notes</guid>
+    <pubDate>Fri, 12 Jun 2026 20:30:00 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>CISA directs agencies to “patch smarter, not harder.” The House fails to extend FISA. Europol pulls over AudiA6. GitHub announces npm security updates. Anthropic rejects Fable 5 jailbreak claims. CISA gives feds three days to patch a critical Ivanti Sentry vulnerability. Google c…</description>
+  </item>
+  <item>
+    <title>ShinyHunters Uses Oracle Zero-Day to Rampage Higher Ed</title>
+    <link>https://www.darkreading.com/vulnerabilities-threats/shinyhunters-oracle-zero-day-higher-ed</link>
+    <guid isPermaLink="true">https://www.darkreading.com/vulnerabilities-threats/shinyhunters-oracle-zero-day-higher-ed</guid>
+    <pubDate>Fri, 12 Jun 2026 20:26:32 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>A major bug in Oracle&#x27;s ERP software disproportionately affected American universities, and hackers have capitalized by stealing gobs of data.</description>
   </item>
   <item>
     <title>How to use NIST and ISO frameworks to govern AI agents</title>
@@ -1580,30 +1604,6 @@
     <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46285</link>
     <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46285</guid>
     <pubDate>Wed, 10 Jun 2026 01:03:57 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46280 lib: test_hmm: evict device pages on file close to avoid use-after-free</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46280</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46280</guid>
-    <pubDate>Wed, 10 Jun 2026 01:04:02 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46282 iio: frequency: admv1013: fix NULL pointer dereference on str</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46282</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46282</guid>
-    <pubDate>Wed, 10 Jun 2026 01:04:13 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46312 media: videobuf2: Set vma_flags in vb2_dma_sg_mmap</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46312</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46312</guid>
-    <pubDate>Wed, 10 Jun 2026 01:04:19 -0700</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Information published.</description>
   </item>
