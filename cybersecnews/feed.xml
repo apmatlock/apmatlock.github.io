@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 73 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 16 Jun 2026 04:02:53 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 16 Jun 2026 05:02:51 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Cisco Releases Security Updates for Actively Exploited SD-WAN Manager Flaw</title>
@@ -30,6 +30,14 @@
     <pubDate>Tue, 16 Jun 2026 06:20:18 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Cisco recently became aware of the exploitation of CVE-2026-20262, a Catalyst SD-WAN Manager zero-day that allows arbitrary file write. The post Cisco Patches Another SD-WAN Zero-Day Exploited in Attacks appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>CVE-2026-54411 Linux-PAM through 1.7.2 contains an observable timing discrepancy (CWE-208) in the pam_userdb module&#x27;s plaintext-password comparison path in modules/pam_userdb/pam_userdb.c that allows a local or network-adjacent attacker able to repeatedly drive authentication through a calling service to recover the plaintext password of a target account by measuring response-timing differences. The comparison uses strncmp() (or strncasecmp() when PAM_ICASE_ARG is set) preceded by a length-equality check, so the time to reject a candidate depends on the index of the first differing byte and on whether the candidate&#x27;s length matches the stored password, leaking the password length and individual prefix bytes. The vulnerable path is reached when the administrator configures pam_userdb with crypt=none, with an unrecognized crypt method, or without a crypt= argument, causing the module to store and compare credentials in plaintext.</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-54411</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-54411</guid>
+    <pubDate>Tue, 16 Jun 2026 01:01:29 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
   </item>
   <item>
     <title>Cybersecurity jobs available right now: June 16, 2026</title>
@@ -110,6 +118,14 @@
     <pubDate>Tue, 16 Jun 2026 06:55:01 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Developers coordinate code across README files, issue threads, and pull request discussions. Much of that exchange happens in English, and a large share happens in other languages. GitHub has released a dataset built to help researchers and developers locate public repositories t…</description>
+  </item>
+  <item>
+    <title>From a VHDX File to a Remcos RAT, (Tue, Jun 16th)</title>
+    <link>https://isc.sans.edu/diary/rss/33080</link>
+    <guid isPermaLink="true">https://isc.sans.edu/diary/rss/33080</guid>
+    <pubDate>Tue, 16 Jun 2026 07:09:13 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Yesterday, a reader reported to us a malicious ZIP archive (SHA256: a0104921a2d37ab87482ac9a9f5c3713479c118846c3e999178e75b81620c094&amp;#x5b; 1 &amp;#x5d;). Once unzipped, it contains a VHDX file that discloses a malicious JavaScript after being mounted (which is automatic on modern Win…</description>
   </item>
   <item>
     <title>UK to ban social media access for children under 16</title>
@@ -1590,22 +1606,6 @@
     <pubDate>Sun, 14 Jun 2026 08:00:50 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Here’s an overview of some of last week’s most interesting news, articles, interviews and videos: DockSec: Open-source AI-powered Docker security scanner DockSec is an OWASP Incubator Project that combines three container security scanners with a language-model layer for explanat…</description>
-  </item>
-  <item>
-    <title>Upcoming Speaking Engagements</title>
-    <link>https://www.schneier.com/blog/archives/2026/06/upcoming-speaking-engagements-57.html</link>
-    <guid isPermaLink="true">https://www.schneier.com/blog/archives/2026/06/upcoming-speaking-engagements-57.html</guid>
-    <pubDate>Sun, 14 Jun 2026 16:07:31 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>This is a current list of where and when I am scheduled to speak: I’m giving a keynote at Cybernation 2026 in Berlin, Germany, on June 24, 2026. I’m speaking at the Potsdam Conference on National Cybersecurity at the Hasso Plattner Institut in Potsdam, Germany. The event runs Jun…</description>
-  </item>
-  <item>
-    <title>Securing satellites already in space, with journalist Shaun Waterman.</title>
-    <link>https://thecyberwire.com/podcasts/tminus-space-cyber-briefing/711/notes</link>
-    <guid isPermaLink="true">https://thecyberwire.com/podcasts/tminus-space-cyber-briefing/711/notes</guid>
-    <pubDate>Sun, 14 Jun 2026 05:00:00 +0000</pubDate>
-    <category>Cyber Threat Landscape</category>
-    <description>For years, space cybersecurity has been a long sought after goal, but due to operational constraints, it was largely unfeasible. In this week’s episode, host Maria Varmazis sits down with journalist Shaun Waterman to discuss his recent article “The Newest Space Race is Cyber.” As…</description>
   </item>
   </channel>
 </rss>
