@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 73 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 16 Jun 2026 14:03:05 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 16 Jun 2026 15:02:55 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Weekly Threat Bulletin – June 17th, 2026</title>
@@ -254,6 +254,14 @@
     <pubDate>Tue, 16 Jun 2026 15:28:23 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Session, the decentralized encrypted messaging platform that warned earlier this year it could shut down due to a funding crisis, will continue operating after receiving financial support from thousands of users. The community-funded effort has provided enough resources to keep d…</description>
+  </item>
+  <item>
+    <title>Threat tactic spotlight: Subdomain takeover</title>
+    <link>https://aws.amazon.com/blogs/security/threat-tactic-spotlight-subdomain-takeover/</link>
+    <guid isPermaLink="true">https://aws.amazon.com/blogs/security/threat-tactic-spotlight-subdomain-takeover/</guid>
+    <pubDate>Tue, 16 Jun 2026 17:53:20 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>In this blog post you’ll learn how to detect and prevent subdomain takeover – a tactic where threat actors exploit dangling DNS records to redirect traffic to attacker-controlled resources. We’ll explain the issue, how the situation arises, and how you can use various AWS feature…</description>
   </item>
   <item>
     <title>EU Cybersecurity Act 2.0: When good regulation goes bad</title>
@@ -608,6 +616,14 @@
     <description>GhostTree uses recursive NTFS junctions to generate vast numbers of valid Windows file paths. Varonis explains how the technique could cause Microsoft Defender folder scans to never complete, leaving malware undetected. [...]</description>
   </item>
   <item>
+    <title>Rokarolla Android Trojan Levels Up to Full Device Control, Persistence</title>
+    <link>https://www.darkreading.com/endpoint-security/rokarolla-android-trojan</link>
+    <guid isPermaLink="true">https://www.darkreading.com/endpoint-security/rokarolla-android-trojan</guid>
+    <pubDate>Tue, 16 Jun 2026 17:32:32 +0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>The emerging malware, spread via fake TikTok and Chrome downloads, demonstrates an evolution by combining banking fraud with extensive device surveillance and remote control.</description>
+  </item>
+  <item>
     <title>UK to ban social media access for children under 16</title>
     <link>https://therecord.media/uk-to-ban-social-media-access-for-children-under-16</link>
     <guid isPermaLink="true">https://therecord.media/uk-to-ban-social-media-access-for-children-under-16</guid>
@@ -670,6 +686,14 @@
     <pubDate>Tue, 16 Jun 2026 09:42:19 -0400</pubDate>
     <category>Infosec News</category>
     <description>The U.S. Federal Trade Commission (FTC) warned that Americans lost $3.5 billion to imposter scams in 2025, with reported losses nearly tripling since 2020. [...]</description>
+  </item>
+  <item>
+    <title>‘Dangerous’ AI Models Are Coming No Matter What</title>
+    <link>https://www.wired.com/story/dangerous-ai-models-are-coming-no-matter-what/</link>
+    <guid isPermaLink="true">https://www.wired.com/story/dangerous-ai-models-are-coming-no-matter-what/</guid>
+    <pubDate>Tue, 16 Jun 2026 17:50:52 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>The US government crackdown on Anthropic’s Claude Fable 5 and Mythos 5 hides a glaring truth: AI models with advanced hacking capabilities will soon be the norm.</description>
   </item>
   <item>
     <title>CISA Adds Two Known Exploited Vulnerabilities to Catalog</title>
@@ -1582,30 +1606,6 @@
     <pubDate>Mon, 15 Jun 2026 08:38:55 -0400</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>The ShinyHunters extortion gang stole personal information from more than 137,000 school staff accounts in a Salesforce data theft attack that targeted the widely used Infinite Campus K-12 student information system in March. [...]</description>
-  </item>
-  <item>
-    <title>Chinese hackers breached North American research institutions via REDCap servers</title>
-    <link>https://www.helpnetsecurity.com/2026/06/15/chinese-hackers-redcap-medical-research-institutions-breach/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/15/chinese-hackers-redcap-medical-research-institutions-breach/</guid>
-    <pubDate>Mon, 15 Jun 2026 18:41:53 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>A China-linked cyber espionage operation targeted North American medical research institutions through compromised REDCap servers, using custom malware to gain persistent access and collect sensitive information, Google&amp;#8217;s Threat Intelligence Group (GTIG) researchers found. …</description>
-  </item>
-  <item>
-    <title>1Password Credential Broker reduces secret sprawl through identity-based credential delivery</title>
-    <link>https://www.helpnetsecurity.com/2026/06/15/1password-credential-broker-reduces-secret-sprawl-through-identity-based-credential-delivery/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/15/1password-credential-broker-reduces-secret-sprawl-through-identity-based-credential-delivery/</guid>
-    <pubDate>Mon, 15 Jun 2026 13:16:25 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>1Password has announced 1Password Credential Broker, a new product that securely brokers credentials, tokens, and federated access from 1Password to trusted requesters. The 1Password Credential Broker is available in private beta today, with support for GitHub Actions and a roadm…</description>
-  </item>
-  <item>
-    <title>PhishLumos: Exposing phishing campaigns that evade detection by hiding content</title>
-    <link>https://www.helpnetsecurity.com/2026/06/15/phishlumos-phishing-campaign-detection/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/15/phishlumos-phishing-campaign-detection/</guid>
-    <pubDate>Mon, 15 Jun 2026 10:52:31 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Phishing remains one of the most stubbornly persistent threats in cybersecurity: humans are tired, distracted, trusting, and susceptible to urgency and authority in ways that no amount of awareness training can completely overcome. The security community has largely accepted this…</description>
   </item>
   </channel>
 </rss>
