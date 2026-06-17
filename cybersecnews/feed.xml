@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 73 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 17 Jun 2026 08:02:54 -0300</lastBuildDate>
+    <lastBuildDate>Wed, 17 Jun 2026 09:02:53 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>What 22,000 breaches teach us about incident preparedness</title>
@@ -30,6 +30,14 @@
     <pubDate>Wed, 17 Jun 2026 11:20:46 +0530</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>The U.S. Cybersecurity and Infrastructure Security Agency (CISA) on Tuesday added a maximum-severity security flaw impacting Widget Factory Joomla Content Editor (JCE) to its Known Exploited Vulnerabilities (KEV) catalog, citing evidence of active exploitation. The vulnerability,…</description>
+  </item>
+  <item>
+    <title>Microsoft working on patch for RoguePlanet Defender zero-day (CVE-2026-50656)</title>
+    <link>https://www.helpnetsecurity.com/2026/06/17/rogueplanet-zero-day-cve-2026-50656/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/17/rogueplanet-zero-day-cve-2026-50656/</guid>
+    <pubDate>Wed, 17 Jun 2026 11:26:50 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Microsoft has acknowledged the local elevation of privilege issue in Microsoft Defender that can be triggered via the &amp;#8220;RoguePlanet&amp;#8221; exploit, and is &amp;#8220;working to provide a high quality security update that addresses this vulnerability.&amp;#8221; The vulnerability, wh…</description>
   </item>
   <item>
     <title>Google Vertex AI SDK Flaw Let Attackers Hijack Model Uploads via Bucket Squatting</title>
@@ -144,6 +152,30 @@
     <description>The attackers deployed a new Go-based backdoor that uses Microsoft Teams servers for command-and-control. The post Microsoft Teams Relay Servers Abused in DragonForce Ransomware Attack appeared first on SecurityWeek .</description>
   </item>
   <item>
+    <title>AI Use by the US Government</title>
+    <link>https://www.schneier.com/blog/archives/2026/06/ai-use-by-the-us-government.html</link>
+    <guid isPermaLink="true">https://www.schneier.com/blog/archives/2026/06/ai-use-by-the-us-government.html</guid>
+    <pubDate>Wed, 17 Jun 2026 11:04:04 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>On 14 April, the Trump administration quietly acknowledged the widespread use of AI to automate government processes. The office of management and budget (OMB) disclosed a staggering 3,611 active or planned use cases for AI across the federal government. The list has ballooned by…</description>
+  </item>
+  <item>
+    <title>Google’s Vertex AI SDK could allow RCE through bucket squatting</title>
+    <link>https://www.csoonline.com/article/4186193/googles-vertex-ai-sdk-could-allow-rce-through-bucket-squatting.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4186193/googles-vertex-ai-sdk-could-allow-rce-through-bucket-squatting.html</guid>
+    <pubDate>Wed, 17 Jun 2026 11:49:05 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>A design flaw in the Vertex AI software development kit (SDK) for Python, Google Cloud’s managed platform for building, training, and deploying AI agents, could allow hijacking and poisoning of models outside of a developer’s own Google Cloud project. According to Unit 42 researc…</description>
+  </item>
+  <item>
+    <title>Malware à la Mode: Tracking Dropping Elephant Tradecraft Through a China-Themed Loader Chain</title>
+    <link>https://www.rapid7.com/blog/post/tr-malware-tracking-dropping-elephant-tradecraft-china-themed-loader-chain</link>
+    <guid isPermaLink="true">https://www.rapid7.com/blog/post/tr-malware-tracking-dropping-elephant-tradecraft-china-themed-loader-chain</guid>
+    <pubDate>Wed, 17 Jun 2026 11:20:10 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Executive summary Rapid7 researchers have identified a sophisticated malware campaign attributed to the threat actor &quot;Dropping Elephant,&quot; characterized by the use of a China-themed decoy document to deliver a heavily reworked, in-memory remote access trojan (RAT). This campaign d…</description>
+  </item>
+  <item>
     <title>Oracle’s Second Monthly Security Updates Deliver 245 Patches</title>
     <link>https://www.securityweek.com/oracles-second-monthly-security-updates-deliver-245-patches/</link>
     <guid isPermaLink="true">https://www.securityweek.com/oracles-second-monthly-security-updates-deliver-245-patches/</guid>
@@ -216,6 +248,14 @@
     <description>Ukraine has been added to the EU Cybersecurity Reserve, which provides incident response services against large-scale incidents</description>
   </item>
   <item>
+    <title>VelocityEHS uses QR codes to speed up incident reporting and risk response</title>
+    <link>https://www.helpnetsecurity.com/2026/06/17/velocityehs-qr-codes-for-incident-management/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/17/velocityehs-qr-codes-for-incident-management/</guid>
+    <pubDate>Wed, 17 Jun 2026 11:51:05 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>VelocityEHS has announced the launch of QR Codes for Incident Management, a new feature designed to eliminate friction in safety reporting and help organizations surface incidents and near misses, identify risks, and take action. By enabling instant, mobile access to reporting to…</description>
+  </item>
+  <item>
     <title>ISC Stormcast For Wednesday, June 17th, 2026 https://isc.sans.edu/podcastdetail/9976, (Wed, Jun 17th)</title>
     <link>https://isc.sans.edu/diary/rss/33082</link>
     <guid isPermaLink="true">https://isc.sans.edu/diary/rss/33082</guid>
@@ -272,6 +312,14 @@
     <description>The Android 17 rollout has started for supported Pixel devices, delivering new security and privacy capabilities before expanding to other devices later this year. Security and privacy updates Google has improved location privacy features so users can choose to share their approx…</description>
   </item>
   <item>
+    <title>Rockwell Automation Patches Vulnerabilities in ICS Controllers and Software</title>
+    <link>https://www.securityweek.com/rockwell-automation-patches-vulnerabilities-in-ics-controllers-and-software/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/rockwell-automation-patches-vulnerabilities-in-ics-controllers-and-software/</guid>
+    <pubDate>Wed, 17 Jun 2026 11:32:44 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>The industrial automation giant has fixed security holes in Logix, CompactLogix, Flex, RSLinx, and FactoryTalk products. The post Rockwell Automation Patches Vulnerabilities in ICS Controllers and Software appeared first on SecurityWeek .</description>
+  </item>
+  <item>
     <title>Risky Business #842 -- Anthropic needs an adult in the C suite</title>
     <link>https://risky.biz/RB842/</link>
     <guid isPermaLink="true">https://risky.biz/RB842/</guid>
@@ -326,6 +374,22 @@
     <pubDate>Wed, 17 Jun 2026 09:10:00 +0000</pubDate>
     <category>Infosec News</category>
     <description>Aikido Security has discovered at least 15 IDE plugins on the JetBrains Marketplace</description>
+  </item>
+  <item>
+    <title>24 billion stolen records found in giant data dump. Check if you&amp;#8217;re affected</title>
+    <link>https://www.malwarebytes.com/blog/news/2026/06/24-billion-stolen-records-found-in-giant-data-dump-check-if-youre-affected</link>
+    <guid isPermaLink="true">https://www.malwarebytes.com/blog/news/2026/06/24-billion-stolen-records-found-in-giant-data-dump-check-if-youre-affected</guid>
+    <pubDate>Wed, 17 Jun 2026 10:56:18 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>Researchers found an exposed collection of 24 billion stolen records, including usernames, passwords, and other sensitive account data.</description>
+  </item>
+  <item>
+    <title>Microsoft confirms Office apps launch issues after June updates</title>
+    <link>https://www.bleepingcomputer.com/news/microsoft/microsoft-confirms-office-apps-launch-issues-after-june-updates/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/microsoft/microsoft-confirms-office-apps-launch-issues-after-june-updates/</guid>
+    <pubDate>Wed, 17 Jun 2026 07:54:21 -0400</pubDate>
+    <category>Infosec News</category>
+    <description>Microsoft is investigating a new issue preventing third-party applications from launching Microsoft Office applications or opening documents on up-to-date Windows systems. [...]</description>
   </item>
   <item>
     <title>Cisco Releases Security Updates for Actively Exploited SD-WAN Manager Flaw</title>
@@ -1540,70 +1604,6 @@
     <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11667</link>
     <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11667</guid>
     <pubDate>Mon, 15 Jun 2026 19:14:23 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2025) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium: CVE-2026-11668 Uninitialized Use in Codecs</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11669</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11669</guid>
-    <pubDate>Mon, 15 Jun 2026 19:14:26 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2025) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium: CVE-2026-11669 Integer overflow in Media</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11670</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11670</guid>
-    <pubDate>Mon, 15 Jun 2026 19:14:27 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2025) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium: CVE-2026-11667 Out of bounds read in WebRTC</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11668</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11668</guid>
-    <pubDate>Mon, 15 Jun 2026 19:14:24 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2025) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium: CVE-2026-11670 Use after free in PDF</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11671</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11671</guid>
-    <pubDate>Mon, 15 Jun 2026 19:14:28 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2025) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium: CVE-2026-11671 Use after free in Navigation</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11672</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11672</guid>
-    <pubDate>Mon, 15 Jun 2026 19:14:30 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2025) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium: CVE-2026-11672 Out of bounds write in GPU</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11673</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11673</guid>
-    <pubDate>Mon, 15 Jun 2026 19:14:31 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2025) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium: CVE-2026-11673 Use after free in InterestGroups</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11674</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11674</guid>
-    <pubDate>Mon, 15 Jun 2026 19:14:32 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2025) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium: CVE-2026-11675 Insufficient validation of untrusted input in Skia</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11676</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11676</guid>
-    <pubDate>Mon, 15 Jun 2026 19:14:35 -0700</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2025) for more information.</description>
   </item>
