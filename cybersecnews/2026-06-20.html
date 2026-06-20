@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>matlock.ca // THREAT INTELLIGENCE — 2026-06-20</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/">MATLOCK<span class="dot">.</span>CA</a>
+  <nav class="primary">
+    <a href="/">Home</a>
+    <a href="/claudeblog/">Walkthroughs</a>
+    <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
+    <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="/cybersecnews/feed.xml">RSS</a>
+  </nav>
+</header>
+
+<nav class="subnav">
+  <span class="nav-label">// JUMP</span>
+<a href="archive.html">Archive</a>
+<a href="index.html" class="active">Today</a>
+<a href="2026-06-19.html">Yesterday</a>
+<a href="2026-06-18.html">18 Jun</a>
+<a href="2026-06-17.html">17 Jun</a>
+<a href="2026-06-16.html">16 Jun</a>
+<a href="2026-06-15.html">15 Jun</a>
+<a href="2026-06-14.html">14 Jun</a>
+
+</nav>
+<main class="container wide">
+
+    <div class="stats-bar">
+      <div class="stat"><span class="stat-value">14</span><span class="stat-label">Articles</span></div>
+      <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
+      <div class="stat"><span class="stat-value">2026-06-20</span><span class="stat-label">Date</span></div>
+    </div>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
+    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="hackers exploit gravity smtp wordpress plugin bug to expose api keys" data-date="2026-06-20"><span class="headline-date">20 Jun</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/06/hackers-exploit-gravity-smtp-wordpress.html" target="_blank" rel="noopener">Hackers Exploit Gravity SMTP WordPress Plugin Bug to Expose API Keys</a><span class="article-summary">Threat actors are exploiting a recently patched security flaw impacting Gravity SMTP, a WordPress plugin that's installed on about 100,000 sites. The vulnerability, tracked as CVE-2026-4020 (CVSS score: 5.3), is a medium-severity information disclosure flaw that can allow unauthe…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="cve-2026-44967 opentelemetry-cpp: otlp http exporters read unbounded http response" data-date="2026-06-20"><span class="headline-date">20 Jun</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-44967" target="_blank" rel="noopener">CVE-2026-44967 opentelemetry-cpp: OTLP HTTP exporters read unbounded HTTP response</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-46331 net/sched: fix pedit partial cow leading to page cache corruption" data-date="2026-06-20"><span class="headline-date">20 Jun</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46331" target="_blank" rel="noopener">CVE-2026-46331 net/sched: fix pedit partial COW leading to page cache corruption</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="5 people you meet in cybersecurity - david shipley interviews amy lee" data-date="2026-06-20"><span class="headline-date">20 Jun</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/5-people-you-meet-in-cybersecurity-david-shipley-interviews-amy-lee" target="_blank" rel="noopener">5 People You Meet In Cybersecurity - David Shipley Interviews Amy Lee</a><span class="article-summary">In this special Cybersecurity Today weekend interview, host David Shipley speaks with Amy Yee about leadership, resilience, and the human side of cybersecurity. Amy shares her remarkable journey from electrical engineering and venture capital to becoming the inaugural Chief Digit…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="unpatchable 'usbliter8' exploit breaks apple a12 and a13 securerom boot chain" data-date="2026-06-20"><span class="headline-date">20 Jun</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/06/unpatchable-usbliter8-exploit-breaks.html" target="_blank" rel="noopener">Unpatchable 'usbliter8' Exploit Breaks Apple A12 and A13 SecureROM Boot Chain</a><span class="article-summary">Security researchers at&nbsp;Paradigm Shift&nbsp;have published a working exploit, dubbed&nbsp;usbliter8, that achieves arbitrary code execution inside the SecureROM of Apple's A12 and A13 chips. That code is burned into the silicon at manufacture. No software update can reach it…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="jcpenney - 368,418 breached accounts" data-date="2026-06-20"><span class="headline-date">20 Jun</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/Breach/JCPenney" target="_blank" rel="noopener">JCPenney - 368,418 breached accounts</a><span class="article-summary">In June 2026, retailer JCPenney and associated brands were targeted in a ShinyHunters "pay or leak" extortion campaign . Data allegedly obtained from JCPenney through the exploitation of a critical zero-day vulnerability in Oracle PeopleSoft was later published publicly. The expo…</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+<div class="headline" data-title="peeling back banana rat." data-date="2026-06-20"><span class="headline-date">20 Jun</span><span class="headline-body"><a class="headline-title" href="https://thecyberwire.com/podcasts/research-saturday/430/notes" target="_blank" rel="noopener">Peeling back Banana RAT.</a><span class="article-summary">This week, we are joined by Tom Kellermann, Trend Micro's VP of AI Security and Threat Research, discussing their work on "Inside SHADOW-WATER-063’s Banana RAT: From Build Server to Banking Fraud." Researchers from Trend Micro's MDR team uncovered the full operation behind Banana…</span></span><span class="headline-source">THECYBERWIRE.COM</span></div>
+<div class="headline" data-title="anthropic suspends fable over us national security concerns." data-date="2026-06-20"><span class="headline-date">20 Jun</span><span class="headline-body"><a class="headline-title" href="https://thecyberwire.com/newsletters/week-that-was/10/24" target="_blank" rel="noopener">Anthropic suspends Fable over US national security concerns.</a><span class="article-summary">ShinyHunters leaks data allegedly stolen from Madison Square Garden. Law enforcement cleans up 15,000 malware-infected websites.</span></span><span class="headline-source">THECYBERWIRE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="french president urges us to share cutting-edge ai and democracies to cooperate on regulation" data-date="2026-06-20"><span class="headline-date">20 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/french-president-urges-us-to-share-cutting-edge-ai-and-democracies-to-cooperate-on-regulation/" target="_blank" rel="noopener">French President Urges US to Share Cutting-Edge AI and Democracies to Cooperate on Regulation</a><span class="article-summary">French President Emmanuel Macron urged the world’s wealthy democracies to work together on regulating advanced AI systems. The post French President Urges US to Share Cutting-Edge AI and Democracies to Cooperate on Regulation appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the gentlemen raas uses gentlekiller edr framework targeting 400 security processes" data-date="2026-06-20"><span class="headline-date">20 Jun</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/06/the-gentlemen-raas-uses-gentlekiller.html" target="_blank" rel="noopener">The Gentlemen RaaS Uses GentleKiller EDR Framework Targeting 400 Security Processes</a><span class="article-summary">The Gentlemen ransomware-as-a-service (RaaS) operation is actively developing and maintaining a suite of endpoint detection and response (EDR) killers that it hands out to affiliates for impairing system defenses before deploying the encryptor. This mature portfolio of EDR-termin…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="you don’t need perfect security" data-date="2026-06-20"><span class="headline-date">20 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.youtube.com/shorts/LktpkTITxuo" target="_blank" rel="noopener">You Don’t Need Perfect Security</a><span class="article-summary">This clip compares cybersecurity deterrence to choosing between two identical Ferraris — except one has a rabid pit bull in the back seat. The point is simple: attackers often look for the easiest target, not necessarily a perfect target. The conversation also references the clas…</span></span><span class="headline-source">YOUTUBE.COM</span></div>
+<div class="headline" data-title="microsoft links mastra ai supply chain attack to north korean hackers" data-date="2026-06-20"><span class="headline-date">20 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/microsoft-links-mastra-ai-supply-chain-attack-to-north-korean-hackers/" target="_blank" rel="noopener">Microsoft links Mastra AI supply chain attack to North Korean hackers</a><span class="article-summary">Microsoft has attributed a recent Mastra AI supply chain attack that compromised more than 140 npm packages to the North Korean hacking group Sapphire Sleet, also known as BlueNoroff. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="threat brief: mitigating large-scale credential attacks" data-date="2026-06-20"><span class="headline-date">20 Jun</span><span class="headline-body"><a class="headline-title" href="https://unit42.paloaltonetworks.com/large-scale-credential-attacks/" target="_blank" rel="noopener">Threat Brief: Mitigating Large-Scale Credential Attacks</a><span class="article-summary">We provide guidance for preparing for and mitigating large-scale credential attacks, focusing on recent campaigns targeting security vendors' devices. The post Threat Brief: Mitigating Large-Scale Credential Attacks appeared first on Unit 42 .</span></span><span class="headline-source">UNIT42.PALOALTONETWORKS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="hackers claim to leak stolen madison square garden data" data-date="2026-06-20"><span class="headline-date">20 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.wired.com/story/security-news-this-week-hackers-claim-to-leak-stolen-madison-square-garden-data/" target="_blank" rel="noopener">Hackers Claim to Leak Stolen Madison Square Garden Data</a><span class="article-summary">Plus: Gay bars in San Francisco using face scanners, France quits Palantir, Apple plans to change its private email and more.</span></span><span class="headline-source">WIRED.COM</span></div>
+  </div>
+</div>
+
+</main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
+<footer class="site-footer">
+  threat intelligence // 73 sources // generated 2026-06-20 12:03<span class="blink"></span>
+</footer>
+</body>
+</html>
