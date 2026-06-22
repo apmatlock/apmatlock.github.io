@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 73 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 22 Jun 2026 15:02:49 -0300</lastBuildDate>
+    <lastBuildDate>Mon, 22 Jun 2026 16:02:51 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>VU#226679: Microsoft WinRE allows for bypass of UEFI/BIOS password enforcement</title>
@@ -22,6 +22,14 @@
     <pubDate>Mon, 22 Jun 2026 17:30:57 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>A critical vulnerability in FFmpeg, the widely used open-source multimedia framework, can be exploited through a specially crafted video file to achieve remote code execution (RCE). Tracked as CVE-2026-8461 and dubbed “PixelSmash,” the flaw affects FFmpeg&#x27;s MagicYUV decoder. The …</description>
+  </item>
+  <item>
+    <title>VU#936962: Multiple file parsing vulnerabilities in FastStone Image Viewer 8.3.0.0</title>
+    <link>https://kb.cert.org/vuls/id/936962</link>
+    <guid isPermaLink="true">https://kb.cert.org/vuls/id/936962</guid>
+    <pubDate>Mon, 22 Jun 2026 18:41:47 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Overview Two vulnerabilities have been identified in FastStone Image Viewer 8.3 that may allow remote code execution or control-flow corruption when processing specially crafted image files. The affected components include the JPEG 2000 (JP2) parser and the PSD file parser. An at…</description>
   </item>
   <item>
     <title>Stolen OAuth Tokens Hit Security Firms, AryStinger Router Botnet Emerges, AI Deepfake Cyberstalking</title>
@@ -200,6 +208,14 @@
     <description>A vulnerability chain dubbed AutoJack in Microsoft&#x27;s AutoGen Studio interface for prototyping AI agents could let attackers manipulate an agent into executing arbitrary commands on its host system simply by visiting a malicious webpage. [...]</description>
   </item>
   <item>
+    <title>A new unpatchable flaw in Apple chips opens the door to an iPhone jailbreak</title>
+    <link>https://techcrunch.com/2026/06/22/a-new-unpatchable-flaw-in-apple-chips-opens-the-door-to-an-iphone-jailbreak/</link>
+    <guid isPermaLink="true">https://techcrunch.com/2026/06/22/a-new-unpatchable-flaw-in-apple-chips-opens-the-door-to-an-iphone-jailbreak/</guid>
+    <pubDate>Mon, 22 Jun 2026 18:50:24 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>European offensive cybersecurity company Paradigm Shift released details of a flaw and a technique to exploit it that opens the door for hackers to unlock and break into older iPhones.</description>
+  </item>
+  <item>
     <title>Thousands of D-Link routers under control of AryStinger botnet</title>
     <link>https://www.malwarebytes.com/blog/news/2026/06/thousands-of-d-link-routers-under-control-of-arystinger-botnet</link>
     <guid isPermaLink="true">https://www.malwarebytes.com/blog/news/2026/06/thousands-of-d-link-routers-under-control-of-arystinger-botnet</guid>
@@ -318,6 +334,14 @@
     <pubDate>Mon, 22 Jun 2026 16:00:00 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>Ransomware case reveals two parallel threat actors, blending tactics and evasion—showing why isolated signals can often miss modern, overlapping cyberattacks. The post One intrusion, two cyberattackers: Uncovering parallel threat activity appeared first on Microsoft Security Blog…</description>
+  </item>
+  <item>
+    <title>ShapedPlugin WordPress Pro Plugins Backdoored in Supply Chain Attack</title>
+    <link>https://thehackernews.com/2026/06/shapedplugin-wordpress-pro-plugins.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/06/shapedplugin-wordpress-pro-plugins.html</guid>
+    <pubDate>Mon, 22 Jun 2026 23:30:48 +0530</pubDate>
+    <category>Incident Reporting</category>
+    <description>Multiple WordPress plugins from ShapedPlugin were compromised in a supply chain attack after unknown threat actors managed to tamper with the official release channels and push backdoor code. &quot;Attackers compromised the vendor&#x27;s build and distribution pipeline, injecting backdoor …</description>
   </item>
   <item>
     <title>ISC Stormcast For Monday, June 22nd, 2026 https://isc.sans.edu/podcastdetail/9980, (Mon, Jun 22nd)</title>
@@ -550,6 +574,14 @@
     <pubDate>Mon, 22 Jun 2026 13:41:31 -0400</pubDate>
     <category>Infosec News</category>
     <description>Microsoft has confirmed that Windows 11 version 26H2 will be the next feature update and that devices running Windows 11 24H2 and 25H2 will be able to upgrade using a small enablement package. [...]</description>
+  </item>
+  <item>
+    <title>Anthropic says Claude may want to see your ID</title>
+    <link>https://techcrunch.com/2026/06/22/anthropic-says-claude-may-want-to-see-your-id/</link>
+    <guid isPermaLink="true">https://techcrunch.com/2026/06/22/anthropic-says-claude-may-want-to-see-your-id/</guid>
+    <pubDate>Mon, 22 Jun 2026 18:05:13 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>Claude&#x27;s chatbot may ask to verify your age and identity &quot;in certain circumstances,&quot; such as with a passport or driver&#x27;s license, according to a privacy policy change.</description>
   </item>
   <item>
     <title>Vulnerability response: Built for humans, outpaced by machines.</title>
@@ -1574,38 +1606,6 @@
     <pubDate>Fri, 19 Jun 2026 10:15:00 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>SocGholish malware has been removed from 15,000 sites associated with Evil Corp hackers</description>
-  </item>
-  <item>
-    <title>Webinar: How attackers bypass MFA and how defenders can respond</title>
-    <link>https://www.bleepingcomputer.com/news/security/webinar-how-attackers-bypass-mfa-and-how-defenders-can-respond/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/webinar-how-attackers-bypass-mfa-and-how-defenders-can-respond/</guid>
-    <pubDate>Fri, 19 Jun 2026 08:12:20 -0400</pubDate>
-    <category>Incident Reporting</category>
-    <description>Modern phishing attacks, including Device Code phishing, can undermine MFA protections and grant attackers access to corporate accounts without stealing passwords. This webinar explores how behavioral AI can help security teams detect compromised accounts faster and automate resp…</description>
-  </item>
-  <item>
-    <title>FortiBleed: 86,000 Fortinet Device Credentials Compromised</title>
-    <link>https://www.securityweek.com/fortibleed-86000-fortinet-device-credentials-compromised/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/fortibleed-86000-fortinet-device-credentials-compromised/</guid>
-    <pubDate>Fri, 19 Jun 2026 10:48:08 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>The large-scale credential theft campaign hit roughly half of the internet-accessible Fortinet firewalls and VPNs. The post FortiBleed: 86,000 Fortinet Device Credentials Compromised appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Anthropic’s Fable and the State of AI</title>
-    <link>https://www.schneier.com/blog/archives/2026/06/anthropics-fable-and-the-state-of-ai.html</link>
-    <guid isPermaLink="true">https://www.schneier.com/blog/archives/2026/06/anthropics-fable-and-the-state-of-ai.html</guid>
-    <pubDate>Fri, 19 Jun 2026 11:03:30 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>On June 9th, Anthropic released its Fable generative AI model. Three days later, the US government classified it as a dangerous munition, and used its export-control authority to prohibit any foreign nationals from accessing it. Unable to differentiate between Americans and forei…</description>
-  </item>
-  <item>
-    <title>AI Phishing Looks Too Real</title>
-    <link>https://www.youtube.com/shorts/wUIOu4PZ9gQ</link>
-    <guid isPermaLink="true">https://www.youtube.com/shorts/wUIOu4PZ9gQ</guid>
-    <pubDate>Fri, 19 Jun 2026 22:00:05 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>AI-assisted phishing campaigns can now incorporate publicly available information such as conference schedules, speaker lists, and organizational roles. In this case, a message referencing Zero Trust World used a SharePoint link and appeared to come from an event organizer. Recip…</description>
   </item>
   </channel>
 </rss>
