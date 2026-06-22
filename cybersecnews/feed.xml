@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 73 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 22 Jun 2026 14:02:51 -0300</lastBuildDate>
+    <lastBuildDate>Mon, 22 Jun 2026 15:02:49 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>VU#226679: Microsoft WinRE allows for bypass of UEFI/BIOS password enforcement</title>
@@ -14,6 +14,14 @@
     <pubDate>Mon, 22 Jun 2026 16:16:08 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Overview Microsoft Windows Recovery Environment (WinRE) provides a mechanism for recovering and repairing Windows systems using an alternate boot environment. Under certain platform implementations, access to WinRE may allow an attacker to bypass firmware security controls, inclu…</description>
+  </item>
+  <item>
+    <title>FFmpeg ‘PixelSmash’ bug triggers code execution on media file open</title>
+    <link>https://cyberinsider.com/ffmpeg-pixelsmash-bug-triggers-code-execution-on-media-file-open/</link>
+    <guid isPermaLink="true">https://cyberinsider.com/ffmpeg-pixelsmash-bug-triggers-code-execution-on-media-file-open/</guid>
+    <pubDate>Mon, 22 Jun 2026 17:30:57 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>A critical vulnerability in FFmpeg, the widely used open-source multimedia framework, can be exploited through a specially crafted video file to achieve remote code execution (RCE). Tracked as CVE-2026-8461 and dubbed “PixelSmash,” the flaw affects FFmpeg&#x27;s MagicYUV decoder. The …</description>
   </item>
   <item>
     <title>Stolen OAuth Tokens Hit Security Firms, AryStinger Router Botnet Emerges, AI Deepfake Cyberstalking</title>
@@ -174,6 +182,22 @@
     <pubDate>Mon, 22 Jun 2026 12:50:00 -0400</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>What happens when you clear dozens of Trail of Bits engineers’ schedules, pair them with every open-source maintainer they can contact, and unleash the latest frontier models like GPT-5.5-Cyber on critical open-source targets? Thanks to our partnership with OpenAI and its Daybrea…</description>
+  </item>
+  <item>
+    <title>OpenAI Launches Full-Scale Effort to Patch Open-Source Bugs as It Takes on Anthropic’s Mythos</title>
+    <link>https://www.wired.com/story/openai-launches-full-scale-effort-to-patch-open-source-bugs-as-it-takes-on-anthropics-mythos/</link>
+    <guid isPermaLink="true">https://www.wired.com/story/openai-launches-full-scale-effort-to-patch-open-source-bugs-as-it-takes-on-anthropics-mythos/</guid>
+    <pubDate>Mon, 22 Jun 2026 17:00:00 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Amid concerns about AI models’ cybersecurity capabilities, OpenAI revealed an improved version of GPT-5.5-Cyber and its “Patch the Planet” initiative to fix open-source software bugs.</description>
+  </item>
+  <item>
+    <title>Microsoft fixes AutoGen Studio flaw that enabled code execution</title>
+    <link>https://www.bleepingcomputer.com/news/security/microsoft-fixes-autogen-studio-flaw-that-enabled-code-execution/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/microsoft-fixes-autogen-studio-flaw-that-enabled-code-execution/</guid>
+    <pubDate>Mon, 22 Jun 2026 13:28:57 -0400</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>A vulnerability chain dubbed AutoJack in Microsoft&#x27;s AutoGen Studio interface for prototyping AI agents could let attackers manipulate an agent into executing arbitrary commands on its host system simply by visiting a malicious webpage. [...]</description>
   </item>
   <item>
     <title>Thousands of D-Link routers under control of AryStinger botnet</title>
@@ -518,6 +542,14 @@
     <pubDate>Mon, 22 Jun 2026 16:10:10 +0000</pubDate>
     <category>Infosec News</category>
     <description>Attackers are using multiple online channels — including GitHub, YouTube, and VirusTotal — to build an illusion of trust to spread a cross-platform clipboard hijacker.</description>
+  </item>
+  <item>
+    <title>Microsoft says Windows 11 26H2 is coming soon, details upgrade process</title>
+    <link>https://www.bleepingcomputer.com/news/microsoft/microsoft-says-windows-11-26h2-is-coming-soon-details-upgrade-process/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/microsoft/microsoft-says-windows-11-26h2-is-coming-soon-details-upgrade-process/</guid>
+    <pubDate>Mon, 22 Jun 2026 13:41:31 -0400</pubDate>
+    <category>Infosec News</category>
+    <description>Microsoft has confirmed that Windows 11 version 26H2 will be the next feature update and that devices running Windows 11 24H2 and 25H2 will be able to upgrade using a small enablement package. [...]</description>
   </item>
   <item>
     <title>Vulnerability response: Built for humans, outpaced by machines.</title>
@@ -1574,38 +1606,6 @@
     <pubDate>Fri, 19 Jun 2026 22:00:05 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>AI-assisted phishing campaigns can now incorporate publicly available information such as conference schedules, speaker lists, and organizational roles. In this case, a message referencing Zero Trust World used a SharePoint link and appeared to come from an event organizer. Recip…</description>
-  </item>
-  <item>
-    <title>Proton VPN passes no-logs audit that found no user activity retention</title>
-    <link>https://cyberinsider.com/proton-vpn-passes-no-logs-audit-that-found-no-user-activity-retention/</link>
-    <guid isPermaLink="true">https://cyberinsider.com/proton-vpn-passes-no-logs-audit-that-found-no-user-activity-retention/</guid>
-    <pubDate>Fri, 19 Jun 2026 10:07:00 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Proton VPN has passed the fifth consecutive independent audit of its no-logs policy, with European security firm Securitum concluding that the VPN provider&#x27;s infrastructure does not retain browsing activity, DNS queries, connection metadata, or records that could link users to sp…</description>
-  </item>
-  <item>
-    <title>Cisco to Acquire WideField Security to Boost Splunk’s Agentic SOC</title>
-    <link>https://www.securityweek.com/cisco-to-acquire-widefield-security-to-boost-splunks-agentic-soc/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/cisco-to-acquire-widefield-security-to-boost-splunks-agentic-soc/</guid>
-    <pubDate>Fri, 19 Jun 2026 07:22:22 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>WideField will accelerate Agentic SOC capabilities by expanding the lens on threat investigation to include identity, credentials, sessions, and blast radius. The post Cisco to Acquire WideField Security to Boost Splunk&amp;#8217;s Agentic SOC appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Cybercriminals abused GitHub, YouTube and VirusTotal to push crypto-stealing malware</title>
-    <link>https://www.helpnetsecurity.com/2026/06/19/fake-github-stars-crypto-stealing-malware/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/19/fake-github-stars-crypto-stealing-malware/</guid>
-    <pubDate>Fri, 19 Jun 2026 12:11:44 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>A cryptocurrency-stealing malware campaign used inflated GitHub activity, software reviews, YouTube tutorials and favorable VirusTotal comments to make malicious trading and gambling tools appear trustworthy, Check Point researchers found. According to the researchers, the attack…</description>
-  </item>
-  <item>
-    <title>Forget traffic lights, Google’s reCAPTCHA may ask for hand gestures</title>
-    <link>https://www.helpnetsecurity.com/2026/06/19/google-recaptcha-hand-gesture-verification/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/19/google-recaptcha-hand-gesture-verification/</guid>
-    <pubDate>Fri, 19 Jun 2026 10:46:43 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Google has introduced hand gesture verification for reCAPTCHA, a new method for verifying that a user is human. Google&amp;#8217;s reCAPTCHA is part of Google Cloud Fraud Defense, a fraud and abuse prevention platform for bot, account, and transaction protection. It uses risk analysi…</description>
   </item>
   </channel>
 </rss>
