@@ -5,8 +5,16 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 73 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 24 Jun 2026 08:02:50 -0300</lastBuildDate>
+    <lastBuildDate>Wed, 24 Jun 2026 09:02:52 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Attackers exploit Cisco Unified CM flaw weeks after patch release</title>
+    <link>https://www.csoonline.com/article/4188867/attackers-exploit-cisco-unified-cm-flaw-weeks-after-patch-release.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4188867/attackers-exploit-cisco-unified-cm-flaw-weeks-after-patch-release.html</guid>
+    <pubDate>Wed, 24 Jun 2026 11:32:22 +0000</pubDate>
+    <category>CISA KEV</category>
+    <description>A critical Cisco Unified CM vulnerability is now under active exploitation, weeks after the company issued patches warning it could allow attackers to gain root access. Threat intelligence firm Defused reported the exploitation on June 23. The company said it observed the activit…</description>
+  </item>
   <item>
     <title>Hole in widely-used FFmpeg codec could crash media servers or enable RCE</title>
     <link>https://www.csoonline.com/article/4188531/hole-in-widely-used-ffmpeg-codec-could-crash-media-servers-or-enable-rce.html</link>
@@ -30,6 +38,14 @@
     <pubDate>Wed, 24 Jun 2026 12:20:38 +0530</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Threat actors have begun to exploit a recently disclosed critical security flaw impacting Cisco Unified Communications Manager (Unified CM) and Unified Communications Manager Session Management Edition (Unified CM SME). The vulnerability, tracked as CVE-2026-20230 (CVSS score: 8.…</description>
+  </item>
+  <item>
+    <title>Cisco Unified CM flaw actively exploited to drop webshells (CVE-2026-20230)</title>
+    <link>https://www.helpnetsecurity.com/2026/06/24/cisco-unified-cm-flaw-exploited-to-drop-webshells-cve-2026-20230/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/24/cisco-unified-cm-flaw-exploited-to-drop-webshells-cve-2026-20230/</guid>
+    <pubDate>Wed, 24 Jun 2026 11:36:30 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>CVE-2026-20230, a server-side request forgery (SSRF) vulnerability affecting Cisco&amp;#8217;s Unified Communications Manager (Unified CM), is being exploited to drop webshells and achieve remote code execution capability on the underlying server. &amp;#8220;Our honeypots are seeing auto…</description>
   </item>
   <item>
     <title>Meta pauses employee monitoring program after data protections fail</title>
@@ -144,6 +160,14 @@
     <description>Over a dozen Klue customers have confirmed that hackers stole data from their Salesforce instances. The post BeyondTrust, LastPass Impacted by Klue-Salesforce Incident appeared first on SecurityWeek .</description>
   </item>
   <item>
+    <title>Apple&#x27;s MacOS Gap Lets Users Disable Security Tools</title>
+    <link>https://www.darkreading.com/application-security/apple-macos-security-gap-users-disable-security-tools</link>
+    <guid isPermaLink="true">https://www.darkreading.com/application-security/apple-macos-security-gap-users-disable-security-tools</guid>
+    <pubDate>Wed, 24 Jun 2026 12:00:00 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Attackers can exploit the issue to disable security and integrated browser tools without needing administrator privileges or kernel exploits.</description>
+  </item>
+  <item>
     <title>Where IT meets OT and railway cybersecurity gets harder</title>
     <link>https://www.helpnetsecurity.com/2026/06/24/jorge-aldegunde-dnv-railway-cybersecurity/</link>
     <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/24/jorge-aldegunde-dnv-railway-cybersecurity/</guid>
@@ -182,6 +206,22 @@
     <pubDate>Wed, 24 Jun 2026 06:41:51 -0400</pubDate>
     <category>Incident Reporting</category>
     <description>A new backdoor dubbed Mistic has been observed in financially motivated attacks targeting organizations in the insurance, education, IT, and professional services sectors. [...]</description>
+  </item>
+  <item>
+    <title>Iran-Linked MuddyWater Poses as Ransomware Gang to Mask Cyber Espionage</title>
+    <link>https://www.infosecurity-magazine.com/news/iranlinked-muddywater-poses-as/</link>
+    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/iranlinked-muddywater-poses-as/</guid>
+    <pubDate>Wed, 24 Jun 2026 12:00:00 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>An NCC Group report warns state-backed hackers are attempting to hide activity by posing as ransomware groups and deploying commercially available malware</description>
+  </item>
+  <item>
+    <title>New ‘Mistic’ RAT Opens Door to Several Ransomware Families</title>
+    <link>https://www.securityweek.com/new-mistic-rat-opens-door-to-several-ransomware-families/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/new-mistic-rat-opens-door-to-several-ransomware-families/</guid>
+    <pubDate>Wed, 24 Jun 2026 11:42:38 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>Mistic is used by Woodgnat, an initial access broker working with Qilin, Interlock, Rhysida, Akira, 8Base, and Black Basta. The post New &amp;#8216;Mistic&amp;#8217; RAT Opens Door to Several Ransomware Families appeared first on SecurityWeek .</description>
   </item>
   <item>
     <title>ISC Stormcast For Wednesday, June 24th, 2026 https://isc.sans.edu/podcastdetail/9984, (Wed, Jun 24th)</title>
@@ -248,12 +288,36 @@
     <description>DigiCert has announced it is bringing independent trust validation to confidential computing environments, in collaboration with Google Cloud. By applying the proven principles of Public Key Infrastructure (PKI) to cloud infrastructure, DigiCert will provide cryptographic verific…</description>
   </item>
   <item>
+    <title>Embedding Forbidden Text in Spyware to Discourage AI Analysis</title>
+    <link>https://www.schneier.com/blog/archives/2026/06/embedding-forbidden-text-in-spyware-to-discourage-ai-analysis-2.html</link>
+    <guid isPermaLink="true">https://www.schneier.com/blog/archives/2026/06/embedding-forbidden-text-in-spyware-to-discourage-ai-analysis-2.html</guid>
+    <pubDate>Wed, 24 Jun 2026 11:03:10 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>At least one malware developer is adding text about nuclear and biological weapons to their spyware, in an effort to stop automatic AI analysis. Details : The _index.js payload begins with a large JavaScript block comment containing fake system instructions and policy-triggering …</description>
+  </item>
+  <item>
+    <title>Agentic AI Security: Wrong Context, Wrong Decisions at Machine Speed</title>
+    <link>https://www.securityweek.com/agentic-ai-security-wrong-context-wrong-decisions-at-machine-speed/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/agentic-ai-security-wrong-context-wrong-decisions-at-machine-speed/</guid>
+    <pubDate>Wed, 24 Jun 2026 12:00:00 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Context is the central plank of AI in general, and agentic AI in particular. If an AI system doesn’t have the correct context, it cannot make the correct decisions. The post Agentic AI Security: Wrong Context, Wrong Decisions at Machine Speed appeared first on SecurityWeek .</description>
+  </item>
+  <item>
     <title>StrikeShark: investigating a new campaign delivering Cobalt Strike through SharkLoader</title>
     <link>https://securelist.com/strikeshark-campaign/120326/</link>
     <guid isPermaLink="true">https://securelist.com/strikeshark-campaign/120326/</guid>
     <pubDate>Wed, 24 Jun 2026 10:00:03 +0000</pubDate>
     <category>Cyber Threat Landscape</category>
     <description>Kaspersky researchers analyze a new global campaign dubbed StrikeShark that delivers Cobalt Strike Beacon via custom SharkLoader malware.</description>
+  </item>
+  <item>
+    <title>&amp;#8220;Total access to all your devices.&amp;#8221; Sextortion scammers strike again</title>
+    <link>https://www.malwarebytes.com/blog/scams/2026/06/total-access-to-all-your-devices-sextortion-scammers-strike-again</link>
+    <guid isPermaLink="true">https://www.malwarebytes.com/blog/scams/2026/06/total-access-to-all-your-devices-sextortion-scammers-strike-again</guid>
+    <pubDate>Wed, 24 Jun 2026 10:48:20 +0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>They say they have videos, malware, and total control of your devices. Here&#x27;s how to read a sextortion email like a security researcher instead of a victim.</description>
   </item>
   <item>
     <title>How to Run a Content Syndication Program That Works with Steve Piper of CyberEdge Group</title>
@@ -1542,70 +1606,6 @@
     <pubDate>Mon, 22 Jun 2026 04:30:55 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Avira Mobile Security for iOS combines security, privacy, and device optimization tools in a single application. The app is also available for Android, macOS, and Windows devices. After downloading the application from the App Store users are guided through a short onboarding pro…</description>
-  </item>
-  <item>
-    <title>Who pays when you gate cyber-capable AI models?</title>
-    <link>https://www.helpnetsecurity.com/2026/06/22/jaya-baloo-aisle-gating-cyber-capable-ai-models/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/22/jaya-baloo-aisle-gating-cyber-capable-ai-models/</guid>
-    <pubDate>Mon, 22 Jun 2026 06:00:22 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>In this interview with Help Net Security, Jaya Baloo, COO &amp;#038; CISO at Aisle, examines the debate over restricting access to cyber-capable AI models. She lays out the strongest argument for gating these tools, then explains where it breaks down for security teams who depend on …</description>
-  </item>
-  <item>
-    <title>Encrypted DNS still tells an eavesdropper where to look</title>
-    <link>https://www.helpnetsecurity.com/2026/06/22/research-encrypted-dns-privacy/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/22/research-encrypted-dns-privacy/</guid>
-    <pubDate>Mon, 22 Jun 2026 05:00:44 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Encrypted DNS runs across much of the Internet. DNS over TLS, HTTPS, and QUIC keep the contents of a query away from anyone watching a network link. The encryption covers the message inside each packet. The packet still carries plaintext headers, and those values mark a flow as D…</description>
-  </item>
-  <item>
-    <title>23 ClawHub plugins squatting official scopes expose AI registry security gaps</title>
-    <link>https://www.helpnetsecurity.com/2026/06/22/clawhub-code-executing-plugins-video/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/22/clawhub-code-executing-plugins-video/</guid>
-    <pubDate>Mon, 22 Jun 2026 08:00:11 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Plugin registries for AI agents use npm-style scopes like @openclaw/ and @clawhub/ to signal who published a package. But on ClawHub, a registry whose plugins run with Claude, OpenClaw, and other agents, those official scopes weren&amp;#8217;t reserved to their owners for every packa…</description>
-  </item>
-  <item>
-    <title>Fortinet Responds to FortiBleed Campaign</title>
-    <link>https://www.securityweek.com/fortinet-responds-to-fortibleed-campaign/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/fortinet-responds-to-fortibleed-campaign/</guid>
-    <pubDate>Mon, 22 Jun 2026 09:34:59 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>A database of over 86,000 confirmed working credentials was created during the credential-harvesting campaign. The post Fortinet Responds to FortiBleed Campaign appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>More Cybersecurity Firms Disclose Impact From Klue Hack</title>
-    <link>https://www.securityweek.com/more-cybersecurity-firms-disclose-impact-from-klue-hack/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/more-cybersecurity-firms-disclose-impact-from-klue-hack/</guid>
-    <pubDate>Mon, 22 Jun 2026 09:03:08 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>HackerOne, Huntress, Jamf, OneTrust, Recorded Future, Snyk, and Tanium are among the affected Klue customers. The post More Cybersecurity Firms Disclose Impact From Klue Hack appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Anthropic to introduce age and ID checks for Claude users on July 8</title>
-    <link>https://cyberinsider.com/anthropic-to-introduce-age-and-id-checks-for-claude-users-on-july-8/</link>
-    <guid isPermaLink="true">https://cyberinsider.com/anthropic-to-introduce-age-and-id-checks-for-claude-users-on-july-8/</guid>
-    <pubDate>Mon, 22 Jun 2026 10:22:01 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Anthropic has updated its privacy policy to disclose that Claude users may be asked to verify their age or identity beginning July 8, a change that could require submitting government-issued identification documents and biometric data. The updated policy states that, in certain c…</description>
-  </item>
-  <item>
-    <title>Professional Athletes and Wearables</title>
-    <link>https://www.schneier.com/blog/archives/2026/06/professional-athletes-and-wearables.html</link>
-    <guid isPermaLink="true">https://www.schneier.com/blog/archives/2026/06/professional-athletes-and-wearables.html</guid>
-    <pubDate>Mon, 22 Jun 2026 11:02:55 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>I haven&amp;#8217;t thought about the privacy issues surrounding professional athletes and wearables. Wearables present serious privacy issues for &amp;#8220;Average Joe&amp;#8221; consumers, who are entrusting tech companies to safely store and protect their biometric data. Imagine the stak…</description>
-  </item>
-  <item>
-    <title>Microsoft Attributes Mastra AI Supply Chain Attack to North Korea</title>
-    <link>https://www.infosecurity-magazine.com/news/mastra-ai-supply-chain-attack/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/mastra-ai-supply-chain-attack/</guid>
-    <pubDate>Mon, 22 Jun 2026 11:30:00 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>North Korean threat actor Sapphire Sleet has been linked to a supply chain attack targeting Mastra, according to Microsoft security researchers</description>
   </item>
   </channel>
 </rss>
