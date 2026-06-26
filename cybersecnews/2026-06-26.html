@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>matlock.ca // THREAT INTELLIGENCE — 2026-06-26</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/">MATLOCK<span class="dot">.</span>CA</a>
+  <nav class="primary">
+    <a href="/">Home</a>
+    <a href="/claudeblog/">Walkthroughs</a>
+    <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
+    <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="/cybersecnews/feed.xml">RSS</a>
+  </nav>
+</header>
+
+<nav class="subnav">
+  <span class="nav-label">// JUMP</span>
+<a href="archive.html">Archive</a>
+<a href="index.html" class="active">Today</a>
+<a href="2026-06-25.html">Yesterday</a>
+<a href="2026-06-24.html">24 Jun</a>
+<a href="2026-06-23.html">23 Jun</a>
+<a href="2026-06-22.html">22 Jun</a>
+<a href="2026-06-21.html">21 Jun</a>
+<a href="2026-06-20.html">20 Jun</a>
+
+</nav>
+<main class="container wide">
+
+    <div class="stats-bar">
+      <div class="stat"><span class="stat-value">19</span><span class="stat-label">Articles</span></div>
+      <div class="stat"><span class="stat-value">7</span><span class="stat-label">Categories</span></div>
+      <div class="stat"><span class="stat-value">2026-06-26</span><span class="stat-label">Date</span></div>
+    </div>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
+    </div>
+<div class="cat-section" id="cat-cisa-kev">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,51,0,0.7);" onclick="toggleSection(this)">🚨 CISA KEV <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="first-ever exploitation of ptc windchill vulnerability discovered in the wild" data-date="2026-06-26"><span class="headline-date">26 Jun <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/first-ever-exploitation-of-ptc-windchill-vulnerability-discovered-in-the-wild/" target="_blank" rel="noopener">First-Ever Exploitation of PTC Windchill Vulnerability Discovered in the Wild</a><span class="article-summary">CISA has added the remote code execution flaw CVE-2026-12569 to its Known Exploited Vulnerabilities catalog. The post First-Ever Exploitation of PTC Windchill Vulnerability Discovered in the Wild appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cve-2026-4367 libxpm: libxpm: denial of service via out-of-bounds read in xpm file parsing" data-date="2026-06-26"><span class="headline-date">26 Jun</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-4367" target="_blank" rel="noopener">CVE-2026-4367 Libxpm: libxpm: denial of service via out-of-bounds read in xpm file parsing</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="malware gaslights ai" data-date="2026-06-26"><span class="headline-date">26 Jun</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/malware-gaslights-ai" target="_blank" rel="noopener">Malware gaslights AI</a><span class="article-summary">Mac Malware Gaslights AI, Major Info-Stealer Takedown, OpenAI's Patch the Planet, and FortiBleed Fallout Mac malware called "Gaslight," attributed to North Korea-aligned actors, plants fake system messages designed to derail AI-based analysis while stealing data and exfiltrating …</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="gdpr at 10: landmark data protections, increasing business burden" data-date="2026-06-26"><span class="headline-date">26 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4180915/10-years-of-the-gdpr-a-summary.html" target="_blank" rel="noopener">GDPR at 10: Landmark data protections, increasing business burden</a><span class="article-summary">Ten years have passed since the General Data Protection Regulation (GDPR) came into force, and the results are mixed. While data protection has become more firmly established in European companies — and beyond — than ever before, the business world remains critical of the regulat…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="modelplane: open-source control plane for ai inference" data-date="2026-06-26"><span class="headline-date">26 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/26/modelplane-open-source-control-plane-ai-inference/" target="_blank" rel="noopener">Modelplane: Open-source control plane for AI inference</a><span class="article-summary">Organizations that run open-weight models on hardware they own operate GPU fleets spread across clouds, neoclouds, and on-premise data centers. Each fleet handles model placement, replica scaling, infrastructure provisioning, weight distribution, and traffic routing. Teams have b…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="new infosec products of the month: june 2026" data-date="2026-06-26"><span class="headline-date">26 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/26/new-infosec-products-of-the-month-june-2026/" target="_blank" rel="noopener">New infosec products of the month: June 2026</a><span class="article-summary">Here’s a look at the most interesting products from the past month, featuring releases from AISLE, Asimily, Blue Planet, depthfirst, Diligent, Drata, Elastic, Filigran, Flip, Hyland, IDnow, Legit Security, MazeBolt, Noma, Qodo, Ridge Security, Tigera, and WitnessAI. Asimily turns…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-bulletins">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,170,0,0.5);" onclick="toggleSection(this)">📋 SECURITY BULLETINS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="microsoft gives windows 10 users an unexpected extra year of free security updates" data-date="2026-06-26"><span class="headline-date">26 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/26/microsoft-windows-10-free-security-updates-esu-program/" target="_blank" rel="noopener">Microsoft gives Windows 10 users an unexpected extra year of free security updates</a><span class="article-summary">Microsoft has given Windows 10 users another year of free security updates, extending its consumer Extended Security Updates (ESU) program until October 12, 2027. “Windows 10 support has ended. You can enroll in ESU any time until the program ends on October 12, 2027. If you’re a…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="zerotier quantum rc2 brings post-quantum security closer to general availability" data-date="2026-06-26"><span class="headline-date">26 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/26/zerotier-quantum-rc2/" target="_blank" rel="noopener">ZeroTier Quantum RC2 brings post-quantum security closer to general availability</a><span class="article-summary">ZeroTier has announced the release candidate 2 (RC2) for ZeroTier Quantum, its end-to-end quantum-secure networking platform. This milestone marks the final testing phase, positioning the platform one step away from general availability (GA). ZeroTier Quantum addresses the loomin…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="american tower - 216,601 breached accounts" data-date="2026-06-26"><span class="headline-date">26 Jun</span><span class="headline-body"><a class="headline-title" href="https://haveibeenpwned.com/Breach/AmericanTower" target="_blank" rel="noopener">American Tower - 216,601 breached accounts</a><span class="article-summary">In June 2026, telecommunications tower infrastructure company American Tower was the target of a ShinyHunters "pay or leak" extortion campaign . The group subsequently published data allegedly taken from the company containing more than 200k unique email addresses belonging to em…</span></span><span class="headline-source">HAVEIBEENPWNED.COM</span></div>
+<div class="headline" data-title="cmc releases analysis and guidance for education sector after canvas data breach" data-date="2026-06-26"><span class="headline-date">26 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.infosecurity-magazine.com/news/cmc-analysis-education-canvas-data/" target="_blank" rel="noopener">CMC Releases Analysis and Guidance for Education Sector After Canvas Data Breach</a><span class="article-summary">The UK Cyber Monitoring Centre reviews the Canvas breach affecting 160 UK universities, highlighting data theft risks and financial impacts of cyber incidents</span></span><span class="headline-source">INFOSECURITY-MAGAZINE.COM</span></div>
+<div class="headline" data-title="sim-swapping gang busted in international police operation" data-date="2026-06-26"><span class="headline-date">26 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/26/poland-sim-swap-gang-arrests-cryptocurrency-theft/" target="_blank" rel="noopener">SIM-swapping gang busted in international police operation</a><span class="article-summary">Officers from Poland&#8217;s Central Bureau for Combating Cybercrime (CBZC) arrested four suspected members of an organized cybercrime group accused of SIM swap attacks, cryptocurrency theft, and money laundering. The operation involved agents from the U.S. Federal Bureau of Inve…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="healthcare leaders see a fatal cyber incident as inevitable" data-date="2026-06-26"><span class="headline-date">26 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/26/cyber-incident-healthcare-vendor-risk/" target="_blank" rel="noopener">Healthcare leaders see a fatal cyber incident as inevitable</a><span class="article-summary">Healthcare practices run on a chain of outside vendors. An EMR system holds clinical records, a billing platform processes claims, a telehealth tool supports remote visits, and a cloud provider stores data. Every one of those connections gives an outside company a path into the p…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="google details turla's new stockstay backdoor used in ukraine espionage attacks" data-date="2026-06-26"><span class="headline-date">26 Jun</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/06/google-details-turlas-new-stockstay.html" target="_blank" rel="noopener">Google Details Turla's New STOCKSTAY Backdoor Used in Ukraine Espionage Attacks</a><span class="article-summary">The Russian state-sponsored threat actor known as Turla has been attributed to a previously undocumented .NET backdoor called STOCKSTAY that has been deployed against government and military organizations in Ukraine, and entities that have an interest in Italian foreign policy. D…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="russian apt deploys ‘stockstay’ backdoor against ukrainian targets" data-date="2026-06-26"><span class="headline-date">26 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/russian-apt-deploys-stockstay-backdoor-against-ukrainian-targets/" target="_blank" rel="noopener">Russian APT Deploys ‘StockStay’ Backdoor Against Ukrainian Targets</a><span class="article-summary">Turla has been using the backdoor against government and military organizations in Ukraine for espionage. The post Russian APT Deploys &#8216;StockStay&#8217; Backdoor Against Ukrainian Targets appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="new enterprise-ready mcp specification brings new security challenges" data-date="2026-06-26"><span class="headline-date">26 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/new-enterprise-ready-mcp-specification-brings-new-security-challenges/" target="_blank" rel="noopener">New Enterprise-Ready MCP Specification Brings New Security Challenges</a><span class="article-summary">A major overhaul of the Model Context Protocol shifts critical security responsibilities from the protocol itself to developers and platform operators. The post New Enterprise-Ready MCP Specification Brings New Security Challenges appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="philip martin joins uber as chief information security officer" data-date="2026-06-26"><span class="headline-date">26 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/philip-martin-joins-uber-as-chief-information-security-officer/" target="_blank" rel="noopener">Philip Martin Joins Uber as Chief Information Security Officer</a><span class="article-summary">Martin brings experience from Coinbase, Palantir, Amazon, and the U.S. Army to lead Uber's cybersecurity and enterprise security organization. The post Philip Martin Joins Uber as Chief Information Security Officer appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="threatmodeler introduces nexus to automate threat modeling with ai governance" data-date="2026-06-26"><span class="headline-date">26 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/26/threatmodeler-introduces-nexus-to-automate-threat-modeling-with-ai-governance/" target="_blank" rel="noopener">ThreatModeler introduces Nexus to automate threat modeling with AI governance</a><span class="article-summary">ThreatModeler has announced the general availability of ThreatModeler Nexus, an agentic threat modeling platform that brings governed, architecture-aware security to the way modern software is actually built. As AI writes a growing share of production code, the question is no lon…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="a privacy-first take on local malware analysis" data-date="2026-06-26"><span class="headline-date">26 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/26/burnyard-local-malware-analysis/" target="_blank" rel="noopener">A privacy-first take on local malware analysis</a><span class="article-summary">Submitting a suspicious file to VirusTotal or MalwareBazaar places a copy of that file on a platform other people can search. Analysts across the industry rely on these services to get a quick verdict on whether a binary is dangerous. The convenience carries a condition many over…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="two ceos on why security and ai readiness belong together" data-date="2026-06-26"><span class="headline-date">26 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/26/superops-guardz-ceo-partnership/" target="_blank" rel="noopener">Two CEOs on why security and AI readiness belong together</a><span class="article-summary">SuperOps and Guardz are bundling PSA, RMM, MDM, and agentic SecOps into one offering for MSPs. In this Help Net Security Q&#038;A, SuperOps CEO Arvind Parthiban and Guardz CEO Dor Eisner explain how a connected stack cuts the time and context lost to tool-switching, lowers costs …</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+  </div>
+</div>
+
+</main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
+<footer class="site-footer">
+  threat intelligence // 73 sources // generated 2026-06-26 06:02<span class="blink"></span>
+</footer>
+</body>
+</html>
