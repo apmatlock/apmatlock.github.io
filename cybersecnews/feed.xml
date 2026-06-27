@@ -3,10 +3,74 @@
   <channel>
     <title>THREAT INTELLIGENCE</title>
     <link>https://matlock.ca/cybersecnews/</link>
-    <description>Cybersecurity news aggregated from 73 sources</description>
+    <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Sat, 27 Jun 2026 08:03:04 -0300</lastBuildDate>
+    <lastBuildDate>Sat, 27 Jun 2026 08:24:41 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Bypassing Windows authentication reflection mitigations for SYSTEM shells - Part ②</title>
+    <link>https://www.synacktiv.com/en/publications/bypassing-windows-authentication-reflection-mitigations-for-system-shells-part.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/bypassing-windows-authentication-reflection-mitigations-for-system-shells-part.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:06 -0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>In part 1 of this blogpost series, we proved our initial theory that the patch for CVE-2025-33073 was insufficient, by disclosing a trivial NTLM reflection vulnerability leading to LPE. In this second part, we turn to Kerberos and explain how we achieved a full-blown RCE primitiv…</description>
+  </item>
+  <item>
+    <title>Bypassing Windows authentication reflection mitigations for SYSTEM shells - Part 1</title>
+    <link>https://www.synacktiv.com/en/publications/bypassing-windows-authentication-reflection-mitigations-for-system-shells-part-1.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/bypassing-windows-authentication-reflection-mitigations-for-system-shells-part-1.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:06 -0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>A year ago, authentication reflection vulnerabilities resurfaced as a powerful attack vector through the discovery of CVE-2025-33073 by several security researchers, including us. This logical vulnerability allowed taking over almost any Windows machine without any user interacti…</description>
+  </item>
+  <item>
+    <title>Paint it blue: Attacking the bluetooth stack</title>
+    <link>https://www.synacktiv.com/en/publications/paint-it-blue-attacking-the-bluetooth-stack.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/paint-it-blue-attacking-the-bluetooth-stack.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:06 -0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Bluetooth has always been an attractive target to attackers since it is present almost everywhere (TV, automotive charger, connected fridge, etc.). This is especially true on mobile devices, as it runs as a privileged process with a potential access to microphone, address book, e…</description>
+  </item>
+  <item>
+    <title>Sniffing Authentication References on macOS</title>
+    <link>https://objective-see.org/blog/blog_0x55.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x55.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>CVE-2017-7170 was a local priv-esc vulnerability that affected OSX/macOS for over a decade! Here (for the first time!), we dive into the technical details of finding the bug, the core flaw, and exploitation.</description>
+  </item>
+  <item>
+    <title>Rootpipe Reborn (Part II)</title>
+    <link>https://objective-see.org/blog/blog_0x41.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x41.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>@CodeColorist continues writing about bugs, such as CVE-2019-8521 and CVE-2019-8565 that provide a mechanism to elevate privileges to root on macOS.</description>
+  </item>
+  <item>
+    <title>From the Top to the Bottom; Tracking down CVE-2017-7149</title>
+    <link>https://objective-see.org/blog/blog_0x23.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x23.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>High Sierra suffered from a nasty bug (CVE-2017-7149) that afforded local attackers access to the contents of encrypted APFS volumes.</description>
+  </item>
+  <item>
+    <title>CVE-2015-3673: Goodbye Rootpipe...(for now?)</title>
+    <link>https://objective-see.org/blog.html#blogEntry5</link>
+    <guid isPermaLink="true">https://objective-see.org/blog.html#blogEntry5</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Details on bypassing Apple&#x27;s original rootpipe patch</description>
+  </item>
+  <item>
+    <title>DirtyClone: Fourth Linux Kernel Flaw in Six Weeks Escalates to Root</title>
+    <link>https://securityaffairs.com/194338/uncategorized/dirtyclone-fourth-linux-kernel-flaw-in-six-weeks-escalates-to-root.html</link>
+    <guid isPermaLink="true">https://securityaffairs.com/194338/uncategorized/dirtyclone-fourth-linux-kernel-flaw-in-six-weeks-escalates-to-root.html</guid>
+    <pubDate>Sat, 27 Jun 2026 09:12:26 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>DirtyClone: a Linux kernel privilege escalation that silently rewrites executables in memory, leaving no disk trace. Patch now. JFrog Security Research published a working exploit walkthrough on June 25 for CVE-2026-43503 (CVSS score of 8.8), a Linux kernel privilege escalation t…</description>
+  </item>
   <item>
     <title>Why Car Dealerships Are Prime Cyber Targets: Fraud, Resilience, and Security Leadership with Jennifer Hutton</title>
     <link>https://cybersecuritytoday.libsyn.com/why-car-dealerships-are-prime-cyber-targets-fraud-resilience-and-security-leadership-with-jennifer-hutton</link>
@@ -24,12 +88,340 @@
     <description>Tata Electronics and Bajaj Auto continue recovery from cyberattacks. CISA warns of actively exploited PTC and Cisco vulnerabilities.</description>
   </item>
   <item>
+    <title>Surviving the surge of new Linux LPE :  Defense in Depth not dead</title>
+    <link>https://www.synacktiv.com/en/publications/surviving-the-surge-of-new-linux-lpe-defense-in-depth-not-dead.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/surviving-the-surge-of-new-linux-lpe-defense-in-depth-not-dead.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:06 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Thanks to AI-assisted vulnerability research and kernel patch diffing that breaks &quot;responsible disclosure&quot; embargos, it&#x27;s quite the overwhelming time for defenders. There&#x27;s been a weekly reveal of new Linux critical vulnerabilities, with full exploit scripts made public days befo…</description>
+  </item>
+  <item>
+    <title>Exploiting the Tesla Wall Connector from its charge port connector - Part 2: bypassing the anti-downgrade</title>
+    <link>https://www.synacktiv.com/en/publications/exploiting-the-tesla-wall-connector-from-its-charge-port-connector-part-2-bypassing.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/exploiting-the-tesla-wall-connector-from-its-charge-port-connector-part-2-bypassing.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:06 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>In a previous article, we presented an attack against the Tesla Wall Connector Gen 3 used during Pwn2Own Automotive 2025. The exploit chain relied on a simple fact: there was no anti-downgrade mechanism. Once we could speak UDS over the charging cable, we could just write an old,…</description>
+  </item>
+  <item>
+    <title>Make it Blink: Over-the-Air Exploitation of the Philips Hue Bridge</title>
+    <link>https://www.synacktiv.com/en/publications/make-it-blink-over-the-air-exploitation-of-the-philips-hue-bridge.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/make-it-blink-over-the-air-exploitation-of-the-philips-hue-bridge.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:06 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>The year-end edition of Pwn2Own took place in Cork, Ireland. For the first time, this event featured smart home devices, including the Amazon Smart Plug, Home Assistant Green, and the Philips Hue Bridge. The attack scenario defined by the ZDI involved an adversary with access to …</description>
+  </item>
+  <item>
+    <title>Exploring cross-domain &amp; cross-forest RBCD</title>
+    <link>https://www.synacktiv.com/en/publications/exploring-cross-domain-cross-forest-rbcd.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/exploring-cross-domain-cross-forest-rbcd.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:06 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>The Resource-based Constrained Delegation (RBCD) attack is well-known from pentesters and attackers: by editing the msDS-AllowedToActOnBehalfOfOtherIdentity attribute of a machine account, an attacker can impersonate users on said machine. Even though this attack mechanism has be…</description>
+  </item>
+  <item>
+    <title>mitmproxy for fun and profit: Interception and Analysis of Application Traffic</title>
+    <link>https://www.synacktiv.com/en/publications/mitmproxy-for-fun-and-profit-interception-and-analysis-of-application-traffic.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/mitmproxy-for-fun-and-profit-interception-and-analysis-of-application-traffic.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:06 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>A solid understanding of the protocols used by applications is a necessary prerequisite when assessing application security. In recent projects, we have had to intercept various types of network traffic across different platforms, including Linux, Android, and iOS. The purpose of…</description>
+  </item>
+  <item>
+    <title>Beyond ACLs: Mapping Windows Privilege Escalation Paths with BloodHound</title>
+    <link>https://www.synacktiv.com/en/publications/beyond-acls-mapping-windows-privilege-escalation-paths-with-bloodhound.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/beyond-acls-mapping-windows-privilege-escalation-paths-with-bloodhound.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:06 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Windows privileges are special rights that grant processes the ability to perform sensitive operations. Some privileges allow bypassing standard Access Control List (ACL) checks, which can lead to significant security implications. While privileges like SeDebugPrivilege, SeImpers…</description>
+  </item>
+  <item>
+    <title>On the clock: Escaping VMware Workstation at Pwn2Own Berlin 2025</title>
+    <link>https://www.synacktiv.com/en/publications/on-the-clock-escaping-vmware-workstation-at-pwn2own-berlin-2025.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/on-the-clock-escaping-vmware-workstation-at-pwn2own-berlin-2025.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:06 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>At Pwn2Own Berlin 2025, we exploited VMware Workstation by abusing a Heap-Overflow in its PVSCSI controller implementation. The vulnerable allocation landed in the LFH allocator of Windows 11, whose exploit mitigations posed a major challenge. We overcame this through a complex i…</description>
+  </item>
+  <item>
+    <title>Livewire: remote command execution through unmarshaling</title>
+    <link>https://www.synacktiv.com/en/publications/livewire-remote-command-execution-through-unmarshaling.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/livewire-remote-command-execution-through-unmarshaling.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:06 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Livewire revolutionizes Laravel development by enabling real-time, interactive web interfaces using only PHP and Blade, removing the need of heavy JavaScript frameworks. Its innovative hydration system seamlessly instantiate and restores component states, supporting complex data …</description>
+  </item>
+  <item>
+    <title>Exploiting Anno 1404</title>
+    <link>https://www.synacktiv.com/en/publications/exploiting-anno-1404.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/exploiting-anno-1404.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:06 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Anno 1404 is a strategy game developed by Related Designs and published by Ubisoft. It is a real-time strategy game that focuses on city management and construction. The Anno 1404: Venice expansion, released in 2010, includes an online and local area network multiplayer mode. Dur…</description>
+  </item>
+  <item>
+    <title>2025 Winter Challenge: Quinindrome</title>
+    <link>https://www.synacktiv.com/en/publications/2025-winter-challenge-quinindrome.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/2025-winter-challenge-quinindrome.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:06 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>A few months have passed and the first snowflakes have fallen since the end of the Synacktiv Summer Challenge. This event was a success, with one of the participants even finding a zero-day vulnerability while working on his solution! Although it hasn&#x27;t been made public yet, it w…</description>
+  </item>
+  <item>
+    <title>Breaking the BeeStation: Inside Our Pwn2Own 2025 Exploit Journey</title>
+    <link>https://www.synacktiv.com/en/publications/breaking-the-beestation-inside-our-pwn2own-2025-exploit-journey.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/breaking-the-beestation-inside-our-pwn2own-2025-exploit-journey.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:06 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>This article documents our successful exploitation at Pwn2Own Ireland 2025 against the BeeStation Plus. We walk through the full vulnerability research process, including attack surface enumeration, code auditing, exploit development, and ultimately obtaining a root shell on the …</description>
+  </item>
+  <item>
+    <title>Site Unseen: Enumerating and Attacking Active Directory Sites</title>
+    <link>https://www.synacktiv.com/en/publications/site-unseen-enumerating-and-attacking-active-directory-sites.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/site-unseen-enumerating-and-attacking-active-directory-sites.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:06 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Active Directory Sites are a feature allowing to optimize network performance and bandwidth usage in AD internal environments. They are commonly implemented by large, geographically dispersed organizations spanning across multiple countries or continents. Sites did not receive mu…</description>
+  </item>
+  <item>
+    <title>appledb_rs, a research support tool for Apple platforms</title>
+    <link>https://www.synacktiv.com/en/publications/appledbrs-a-research-support-tool-for-apple-platforms.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/appledbrs-a-research-support-tool-for-apple-platforms.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:07 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Over the years, research on Apple platforms has become significantly more complex, largely due to the numerous countermeasures deployed by the Cupertino company. To address this challenge during our missions on these platforms, we developed appledb_rs: an open-source tool (https:…</description>
+  </item>
+  <item>
+    <title>The &#x27;S&#x27; in Zoom, Stands for Security</title>
+    <link>https://objective-see.org/blog/blog_0x56.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x56.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Today we uncover two (local) security flaws in Zoom&#x27;s latest macOS client. First, a privilege escalation vulnerability, and second, a method to surreptitiously access a user&#x27;s webcam and microphone (via Zoom).</description>
+  </item>
+  <item>
+    <title>[0day] Abusing XLM Macros in SYLK Files</title>
+    <link>https://objective-see.org/blog/blog_0x50.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x50.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>A 0day logic flaw in Microsoft Excel leads to &#x27;remote&#x27; code execution on macOS, via malicious macros.</description>
+  </item>
+  <item>
+    <title>Burned by Fire(fox) (Part III)</title>
+    <link>https://objective-see.org/blog/blog_0x45.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x45.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Recently, an attacker targeted (Mac) users via a Firefox 0day. In this third post, we analyze a second backdoor used in the attack, detailing its persistence, capabilities, and ultimate identify it a new variant of the cross-platform Mokes malware!</description>
+  </item>
+  <item>
+    <title>Burned by Fire(fox) (Part II)</title>
+    <link>https://objective-see.org/blog/blog_0x44.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x44.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Recently, an attacker targeted (Mac) users via a Firefox 0day. In this second post, we fully reverse OSX.NetWire.A, revealing (for the first time!), its inner workings and complex capabilities.</description>
+  </item>
+  <item>
+    <title>Burned by Fire(fox) (Part I)</title>
+    <link>https://objective-see.org/blog/blog_0x43.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x43.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Recently, an attacker targeted (Mac) users via a Firefox 0day. In this first post, we triage and identify the malware (OSX.NetWire.A) utilized in this attack, identifying its methods of persistence, and more!</description>
+  </item>
+  <item>
+    <title>[0day] Mojave&#x27;s Sandbox is Leaky</title>
+    <link>https://objective-see.org/blog/blog_0x39.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x39.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>The macOS sandbox is seeks to prevent malicious applications from surreptitiously spy on unsuspecting users. Turns out, it&#x27;s trivial to sidestep some of these protections, resulting in significant privacy implications!</description>
+  </item>
+  <item>
+    <title>Remote Mac Exploitation Via Custom URL Schemes</title>
+    <link>https://objective-see.org/blog/blog_0x38.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x38.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>The WINDSHIFT APT group is successfully infecting Macs with a novel infection mechanism. By abusing custom URL scheme handlers and minimal user interaction, Macs can be remotely compromised!</description>
+  </item>
+  <item>
+    <title>[0day] Synthetic Reality</title>
+    <link>https://objective-see.org/blog/blog_0x36.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x36.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>If you can programmatically generate synthetic mouse clicks, you can break macOS! Approving kernel extensions, dismissing privacy alerts, and much more more...</description>
+  </item>
+  <item>
+    <title>Escaping the Microsoft Office Sandbox</title>
+    <link>https://objective-see.org/blog/blog_0x35.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x35.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Imagine you&#x27;ve gained remote code execution on a Mac via a malicious Word document. Turns out, you&#x27;re still stuck in a sandbox. However, via a faulty regex, you can escape and persist!</description>
+  </item>
+  <item>
+    <title>[0day] Bypassing SIP via Sandboxing</title>
+    <link>https://objective-see.org/blog/blog_0x33.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x33.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>In this guest blog post @CodeColorist writes about a neat macOS vulnerability. Ironically, by abusing security mechanisms such as sandboxing, macOS can be coerced to load an untrusted library, into a SIP-entitled process!</description>
+  </item>
+  <item>
+    <title>An Unpatched Kernel Bug</title>
+    <link>https://objective-see.org/blog/blog_0x27.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x27.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>On my flight to ShmooCon, I managed to panic my fully-patched MacBook. Here we analyze the kernel panic report, finding that Apple&#x27;s AMDRadeonX4150 kext is responsible for the crash.</description>
+  </item>
+  <item>
+    <title>Two Bugs, One Func(), part three</title>
+    <link>https://objective-see.org/blog/blog_0x1C.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x1C.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Analyzing code within the macOS kernel audit subsystem uncovered an exploitable heap overflow.</description>
+  </item>
+  <item>
+    <title>New Attack, Old Tricks</title>
+    <link>https://objective-see.org/blog/blog_0x17.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x17.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>A Word document targets Mac users with malicious macros and an open-source payload.</description>
+  </item>
+  <item>
+    <title>[0day] Bypassing Apple&#x27;s System Integrity Protection</title>
+    <link>https://objective-see.org/blog/blog_0x14.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x14.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Read how an attacker can bypass Apple&#x27;s SIP, via the local OS upgrade process</description>
+  </item>
+  <item>
+    <title>Phoenix: RootPipe lives! ...even on OS X 10.10.3</title>
+    <link>https://objective-see.org/blog.html#blogEntry3</link>
+    <guid isPermaLink="true">https://objective-see.org/blog.html#blogEntry3</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Exploiting RootPipe on OS X 10.10.3</description>
+  </item>
+  <item>
     <title>FBI Warns Russian Intelligence Hackers Target Signal Backup Recovery Keys</title>
     <link>https://thehackernews.com/2026/06/fbi-warns-russian-intelligence-hackers.html</link>
     <guid isPermaLink="true">https://thehackernews.com/2026/06/fbi-warns-russian-intelligence-hackers.html</guid>
     <pubDate>Sat, 27 Jun 2026 01:08:29 +0530</pubDate>
     <category>Security Advisories</category>
     <description>The FBI and CISA have updated&amp;nbsp;their March warning&amp;nbsp;about Russian intelligence phishing Signal accounts, and the operators have added a step: they now coax targets into handing over their Signal Backup Recovery Key. Hand it over once, and the attacker can restore the acco…</description>
+  </item>
+  <item>
+    <title>AWS Forensics : What you need to know</title>
+    <link>https://www.synacktiv.com/en/publications/aws-forensics-what-you-need-to-know.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/aws-forensics-what-you-need-to-know.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:06 -0000</pubDate>
+    <category>Security Advisories</category>
+    <description>Nowadays, it is rare to find a company whose IT system does not rely, at least in part, on cloud technologies. These solutions offer numerous benefits, particularly in terms of the rapid deployment of services and infrastructure. However, those technologies require specific skill…</description>
+  </item>
+  <item>
+    <title>ActivID administrator account takeover : the story behind HID-PSA-2025-002</title>
+    <link>https://www.synacktiv.com/en/publications/activid-administrator-account-takeover-the-story-behind-hid-psa-2025-002.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/activid-administrator-account-takeover-the-story-behind-hid-psa-2025-002.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:06 -0000</pubDate>
+    <category>Security Advisories</category>
+    <description>In September 2025, we were asked by one of our clients to focus on a specific product: ActivID Appliance by HID. According to the vendor, this product is used worldwide to secure access to critical infrastructure and data. It supports a wide range of authentication methods includ…</description>
+  </item>
+  <item>
+    <title>Kubernetes forensics 1/3: what the container ?</title>
+    <link>https://www.synacktiv.com/en/publications/kubernetes-forensics-13-what-the-container.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/kubernetes-forensics-13-what-the-container.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:06 -0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>In 2025, Synacktiv CSIRT observed a significant rise in attacks and compromises targeting Kubernetes environments. The consensus is that these attacks are bound to keep expanding as much as the technology itself. To better understand how a Kubernetes cluster works and how to inve…</description>
+  </item>
+  <item>
+    <title>OSX/MacRansom; analyzing the latest ransomware to target macs</title>
+    <link>https://objective-see.org/blog/blog_0x1E.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x1E.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>Looks like somebody on the &#x27;dark web&#x27; is offering &#x27;Ransomware as a Service&#x27;...that&#x27;s designed to infect Macs!</description>
+  </item>
+  <item>
+    <title>HandBrake Hacked! OSX/Proton (re)Appears</title>
+    <link>https://objective-see.org/blog/blog_0x1D.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x1D.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>The website of a popular application was hacked, and the application trojaned with a new variant of osx/proton.</description>
+  </item>
+  <item>
+    <title>Towards Generic Ransomware Detection</title>
+    <link>https://objective-see.org/blog/blog_0x0F.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x0F.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>By monitoring file I/O events and detecting the rapid creation of encrypted files by untrusted processes, can ransomware be generically detected?</description>
+  </item>
+  <item>
+    <title>The Dacls RAT ...now on macOS!</title>
+    <link>https://objective-see.org/blog/blog_0x57.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x57.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>A sophisticated Lazarus Group implant has arrived on macOS. In this post, we deconstruct the Mac variant of a OSX.Dacls, detailing its install logic, persistence, and capabilities.</description>
+  </item>
+  <item>
+    <title>Weaponizing a Lazarus Group Implant</title>
+    <link>https://objective-see.org/blog/blog_0x54.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x54.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>The Lazarus group&#x27;s latest implant/loader supports in-memory loading of 2nd-stage payloads. In this post we describe exactly how to repurposing this 1st-stage loader to execute *our* custom &#x27;fileless&#x27; payloads!</description>
+  </item>
+  <item>
+    <title>Lazarus Group Goes &#x27;Fileless&#x27;</title>
+    <link>https://objective-see.org/blog/blog_0x51.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x51.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>The rather infamous APT group, &quot;Lazarus&quot;, continues to evolve their macOS capabilities. Today, we tear apart their latest 1st-stage implant that supports remote download &amp; in-memory execution of secondary payloads!</description>
+  </item>
+  <item>
+    <title>Pass the AppleJeus</title>
+    <link>https://objective-see.org/blog/blog_0x49.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x49.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>A new macOS backdoor written by the infamous Lazarus APT group needs analyzing. Here, we examine it&#x27;s infection vector, method of persistence, capabilities, and more!</description>
+  </item>
+  <item>
+    <title>Middle East Cyber-Espionage (part two)</title>
+    <link>https://objective-see.org/blog/blog_0x3D.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x3D.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>The APT group WindShift has been targeting Middle Eastern governments with Mac implants. Let&#x27;s (continue to) analyze their 1st-stage macOS implant: OSX.WindTail!</description>
+  </item>
+  <item>
+    <title>Middle East Cyber-Espionage</title>
+    <link>https://objective-see.org/blog/blog_0x3B.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x3B.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>The APT group WindShift has been targeting Middle Eastern governments with Mac implants. Let&#x27;s analyze their 1st-stage macOS implant: OSX.WindTail!</description>
+  </item>
+  <item>
+    <title>Who Moved My Pixels?!</title>
+    <link>https://objective-see.org/blog/blog_0x2C.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x2C.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>In this guest blog post my friend Mikhail Sosonkin reverses Apple&#x27;s screencapture utility, discusses Mac malware that captures desktop images, and suggests methods for screen-capture detection!</description>
   </item>
   <item>
     <title>More bark than byte.</title>
@@ -46,6 +438,510 @@
     <pubDate>Sat, 27 Jun 2026 10:30:00 +0000</pubDate>
     <category>Cyber Threat Landscape</category>
     <description>Plus: Former national security advisor John Bolton pleads guilty in classified-materials case, Microsoft helps take down major infostealer infrastructure, and more.</description>
+  </item>
+  <item>
+    <title>Say hi to Pike!</title>
+    <link>https://www.synacktiv.com/en/publications/say-hi-to-pike.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/say-hi-to-pike.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:06 -0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>In this article we will introduce Pike, an experimental LLM agent that generates and analyzes Linux program execution traces. We will show that with its simple architecture paired with a good LLM, Pike can quickly help debug a crash, identify malware, or give valuable high level …</description>
+  </item>
+  <item>
+    <title>Creating a &quot;Two-Face&quot; Rust binary on Linux</title>
+    <link>https://www.synacktiv.com/en/publications/creating-a-two-face-rust-binary-on-linux.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/creating-a-two-face-rust-binary-on-linux.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:06 -0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>In this article we will describe a technique to easily create a &quot;Two-Face&quot; Rust binary on Linux: an executable file that runs a harmless program most of the time, but will run a different, hidden code if deployed on a specific target host. This approach, which allows binding a bi…</description>
+  </item>
+  <item>
+    <title>Quantum readiness: Hybridizing key exchanges</title>
+    <link>https://www.synacktiv.com/en/publications/quantum-readiness-hybridizing-key-exchanges.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/quantum-readiness-hybridizing-key-exchanges.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:06 -0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>Following our previous article on signatures hybridization, this article covers the basics of hybridizing your key exchanges to ensure maximal security of your data.</description>
+  </item>
+  <item>
+    <title>LinkPro: eBPF rootkit analysis</title>
+    <link>https://www.synacktiv.com/en/publications/linkpro-ebpf-rootkit-analysis.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/linkpro-ebpf-rootkit-analysis.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:07 -0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>During a digital investigation related to the compromise of an AWS-hosted infrastructure, a stealthy backdoor targeting GNU/Linux systems was discovered. This backdoor features functionalities relying on the installation of two eBPF modules, on the one hand to conceal itself, and…</description>
+  </item>
+  <item>
+    <title>LLM Poisoning [1/3] - Reading the Transformer&#x27;s Thoughts</title>
+    <link>https://www.synacktiv.com/en/publications/llm-poisoning-13-reading-the-transformers-thoughts.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/llm-poisoning-13-reading-the-transformers-thoughts.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:07 -0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>Your local LLM can hack you. This three-part series reveals how tiny weights edits can implant stealthy backdoors that stay dormant in everyday use, then fire on specific inputs, turning a &quot;safe&quot; offline model into an attacker. This article shows how transformers encode concepts …</description>
+  </item>
+  <item>
+    <title>The Mac Malware of 2019</title>
+    <link>https://objective-see.org/blog/blog_0x53.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x53.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>Our annual report on all the Mac malware of the year - including samples for download, infection vectors, persistence mechanisms, payloads and more!</description>
+  </item>
+  <item>
+    <title>The Mac Malware of 2018</title>
+    <link>https://objective-see.org/blog/blog_0x3C.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x3C.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>Our annual report on all the Mac malware of the year - including samples for download, infection vectors, persistence mechanisms, payloads and more!</description>
+  </item>
+  <item>
+    <title>OSX.Dummy</title>
+    <link>https://objective-see.org/blog/blog_0x32.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x32.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>A new Mac malware targets the cryptocurrency community. In this post, we dive into the malware and illustrate how Objective-See&#x27;s tools can generically thwart this new threat at every step of the way.</description>
+  </item>
+  <item>
+    <title>Tearing Apart the Undetected (OSX)Coldroot RAT</title>
+    <link>https://objective-see.org/blog/blog_0x2A.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x2A.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>I uncovered a new cross-platform backdoor that provides remote attackers persistent access to infected systems</description>
+  </item>
+  <item>
+    <title>Ay MaMi - Analyzing a New macOS DNS Hijacker</title>
+    <link>https://objective-see.org/blog/blog_0x26.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x26.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>OSX/MaMi (the first Mac malware of 2018) hijacks infected users&#x27; DNS settings and installs a malicious certificate into the System keychain, in order to give remote attackers &#x27;access&#x27; to all network traffic</description>
+  </item>
+  <item>
+    <title>Mac Malware of 2017</title>
+    <link>https://objective-see.org/blog/blog_0x25.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x25.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>Let&#x27;s look at all the mac malware from 2017, for each - discussing their infection vector, persistence mechanism, features &amp; goals.</description>
+  </item>
+  <item>
+    <title>OSX/Proton.B; a brief analysis, 6 miles up</title>
+    <link>https://objective-see.org/blog/blog_0x1F.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x1F.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>Analysis of OSX/Proton.B reveals some interesting tricks plus a command file that can be decrypted to reveal the malware&#x27;s capabilities</description>
+  </item>
+  <item>
+    <title>Mac Malware of 2016</title>
+    <link>https://objective-see.org/blog/blog_0x16.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x16.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>Let&#x27;s analyse the malware that appeared in 2016, discussing the infection vector, persistence mechanism, feature, and disinfection for each.</description>
+  </item>
+  <item>
+    <title>HackingTeam Reborn; A Brief Analyis of the RCS Implant Installer</title>
+    <link>https://objective-see.org/blog/blog_0x0D.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x0D.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>HackingTeam using native OS X crypto to protect malware -neat! New blog w/ sample + decryptions/dumpings/detections</description>
+  </item>
+  <item>
+    <title>More on, &quot;Adware for OS X Distributes Trojans&quot;</title>
+    <link>https://objective-see.org/blog.html#blogEntry4</link>
+    <guid isPermaLink="true">https://objective-see.org/blog.html#blogEntry4</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>A deeper dive into &#x27;MacInstaller&#x27; and the adware it installs</description>
+  </item>
+  <item>
+    <title>Hooking Windows Named Pipes</title>
+    <link>https://www.synacktiv.com/en/publications/hooking-windows-named-pipes.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/hooking-windows-named-pipes.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:06 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>During security assessments, we often see desktop applications composed of several processes. Some of them run as SYSTEM, and others run in the user session context, meaning they are unprivileged. These processes need to communicate in some way, and often use Windows Named Pipes …</description>
+  </item>
+  <item>
+    <title>Deep-dive into the deployment of an on-premise low-privileged LLM server</title>
+    <link>https://www.synacktiv.com/en/publications/deep-dive-into-the-deployment-of-an-on-premise-low-privileged-llm-server.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/deep-dive-into-the-deployment-of-an-on-premise-low-privileged-llm-server.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:06 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>In 1826, children fantasized riding horses in the Wild West. In 1926, it was outrunning the law as a moonshiner. In 2026, managing distributed inference servers without leaking all the company data is surely a universal dream among the new generation. This article rewinds our jou…</description>
+  </item>
+  <item>
+    <title>2025 winter challenge writeup</title>
+    <link>https://www.synacktiv.com/en/publications/2025-winter-challenge-writeup.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/2025-winter-challenge-writeup.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:06 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Creating quines is a game that has always fascinated computer scientists. The journal Software: Practice and Experience dedicated an article to the subject in 1972—well before Intel released its first 32-bit x86 processor (1985). Even today, many enthusiasts continue to explore t…</description>
+  </item>
+  <item>
+    <title>Wireless-(in)Fidelity: Pentesting Wi-Fi in 2025</title>
+    <link>https://www.synacktiv.com/en/publications/wireless-infidelity-pentesting-wi-fi-in-2025.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/wireless-infidelity-pentesting-wi-fi-in-2025.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:06 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Despite the advancements that have been made in Wi-Fi security with the arrival of WPA3, some misconfigurations and legacy protocols still remain. In this blogpost, we share insights into Wi-Fi related findings encountered during penetration testing engagements. We will present c…</description>
+  </item>
+  <item>
+    <title>What could go wrong when MySQL strict SQL mode is off?</title>
+    <link>https://www.synacktiv.com/en/publications/what-could-go-wrong-when-mysql-strict-sql-mode-is-off.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/what-could-go-wrong-when-mysql-strict-sql-mode-is-off.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:07 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>This article shows some examples of attacks that can abuse MySQL behavior when the strict SQL mode is disabled, especially when string characters are invalid in the current encoding. This happens when the encoding of the application (e.g. UTF-8) is wider than that of the database…</description>
+  </item>
+  <item>
+    <title>Quantum readiness: Hybridizing signatures</title>
+    <link>https://www.synacktiv.com/en/publications/quantum-readiness-hybridizing-signatures.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/quantum-readiness-hybridizing-signatures.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:07 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>In light of new legal requirements being enacted in many countries for software providers to adopt hybrid post-quantum cryptography, Synacktiv has initiated research into these novel cryptographic algorithms. After having studied what makes post-quantum cryptography “post-quantum…</description>
+  </item>
+  <item>
+    <title>Mass Surveillance, is an (un)Complicated Business</title>
+    <link>https://objective-see.org/blog/blog_0x52.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x52.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>A massively popular iOS application turns out to be a government spy tool! Here, we analyze the app; decrypting its binary and studying its network traffic.</description>
+  </item>
+  <item>
+    <title>Writing a File Monitor with Apple&#x27;s Endpoint Security Framework</title>
+    <link>https://objective-see.org/blog/blog_0x48.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x48.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Learn how to leverage Apple&#x27;s new Endpoint Security Framework to create a comprehensive (user-mode) File Monitor for macOS 10.15!</description>
+  </item>
+  <item>
+    <title>Writing a Process Monitor with Apple&#x27;s Endpoint Security Framework</title>
+    <link>https://objective-see.org/blog/blog_0x47.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x47.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Learn how to leverage Apple&#x27;s new Endpoint Security Framework to create a comprehensive (user-mode) Process Monitor for macOS 10.15!</description>
+  </item>
+  <item>
+    <title>Getting Root with Benign AppStore Apps</title>
+    <link>https://objective-see.org/blog/blog_0x46.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x46.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>In this guest blog post, &quot;Objective by the Sea&quot; speaker, Csaba Fitzl writes about an interesting way to get root via Apps from the official Mac App Store!</description>
+  </item>
+  <item>
+    <title>&quot;Objective by the Sea&quot; v2.0</title>
+    <link>https://objective-see.org/blog/blog_0x42.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x42.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>After the success of #OBTS v1.0, we decided to go international and plan #OBTS v2.0 in Europe! In this blog post, we re-live the highlights (from Monaco!) of &quot;Objective by the Sea&quot; v2.0.</description>
+  </item>
+  <item>
+    <title>Rootpipe Reborn (Part I)</title>
+    <link>https://objective-see.org/blog/blog_0x40.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x40.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>In part one of a guest blog post, @CodeColorist writes about several neat macOS vulnerabilities.</description>
+  </item>
+  <item>
+    <title>Mac Adware, à la Python</title>
+    <link>https://objective-see.org/blog/blog_0x3F.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x3F.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Let&#x27;s tear apart a persistent piece of adware, decompiling, decoding, and decompressing it&#x27;s code to uncover its methods and capabilities.</description>
+  </item>
+  <item>
+    <title>Death by vmmap</title>
+    <link>https://objective-see.org/blog/blog_0x3E.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x3E.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>A core Mojave utility is rather disastrously broken - causing a full-system lockup. Let&#x27;s find out why!</description>
+  </item>
+  <item>
+    <title>Word to Your Mac</title>
+    <link>https://objective-see.org/blog/blog_0x3A.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x3A.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>A malicious Word document targeting macOS users, was recently uncovered. Let&#x27;s extract the embedded macros, decode an embedded downloader, and retrieve the 2nd-stage payload!</description>
+  </item>
+  <item>
+    <title>A Deceitful &#x27;Doctor&#x27; in the Mac App Store</title>
+    <link>https://objective-see.org/blog/blog_0x37.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x37.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>A massively popular app from the official Mac App Store, surreptitiously steals your browsing history! By fully reversing the application, we can fully expose its functionality and rather shady capabilities.</description>
+  </item>
+  <item>
+    <title>A Remote iOS Bug</title>
+    <link>https://objective-see.org/blog/blog_0x34.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x34.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Apple wrote code to appease the Chinese government ...it was buggy. In certain configurations, iOS devices were vulnerable a &quot;emoji-related&quot; flaw that could be triggered remotely!</description>
+  </item>
+  <item>
+    <title>Block Blocking Login Items</title>
+    <link>https://objective-see.org/blog/blog_0x31.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x31.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Apple recently updated the way login items are stored by the OS. In this post, we&#x27;ll illustrate how to parse the (new) login item files to detect persistence</description>
+  </item>
+  <item>
+    <title>Cache Me Outside</title>
+    <link>https://objective-see.org/blog/blog_0x30.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x30.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Are full paths and preview thumbnails for files even on encrypted containers and removable usb devices really persistently stored? ...yes :( Apple&#x27;s &#x27;QuickLook&#x27; cache is to blame.</description>
+  </item>
+  <item>
+    <title>Breaking macOS Mojave (Beta)</title>
+    <link>https://objective-see.org/blog/blog_0x2F.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x2F.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>In macOS Mojave apps, to have to obtain user permission before using the Mac camera &amp; microphone. We&#x27;ll illustrate how this is trivial to bypass (at least in the current beta).</description>
+  </item>
+  <item>
+    <title>When Disappearing Messages Don&#x27;t Disappear</title>
+    <link>https://objective-see.org/blog/blog_0x2E.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x2E.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Did you know on macOS, notifications are stored in a unencrypted database? Which means that even &#x27;disappearing&#x27; messages from apps such as Signal - may not really disappear. Yikes!</description>
+  </item>
+  <item>
+    <title>An Insecurity in Apple&#x27;s Security Framework?</title>
+    <link>https://objective-see.org/blog/blog_0x2D.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x2D.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:08 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Turns out that writing security tools is a great way to inadvertently uncover bugs in macOS. How about a crash in Apple&#x27;s &#x27;Security&#x27; framework ... that can&#x27;t be good!?</description>
+  </item>
+  <item>
+    <title>A Surreptitious Cryptocurrency Miner in the Mac App Store?</title>
+    <link>https://objective-see.org/blog/blog_0x2B.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x2B.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Turns out the innocuously named &quot;Calendar 2&quot; app, found on the official Mac App Store, was surreptitiously turning Mac into cryptocurrency miners!</description>
+  </item>
+  <item>
+    <title>Analyzing OSX/CreativeUpdater</title>
+    <link>https://objective-see.org/blog/blog_0x29.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x29.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Recently, the popular MacUpdate website was subverted to distribute a new macOS cryptominer; OSX/CreativeUpdater.</description>
+  </item>
+  <item>
+    <title>Analyzing CrossRAT</title>
+    <link>https://objective-see.org/blog/blog_0x28.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x28.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>The EFF/Lookout discovered a cross-platform implant, named CrossRat with ties to nationstate operators. Here, we tear it apart; analyzing its persistence mechanisms, features, and network communications.</description>
+  </item>
+  <item>
+    <title>All Your Docs Are Belong To Us</title>
+    <link>https://objective-see.org/blog/blog_0x22.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x22.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Here, we reverse, then &#x27;extend&#x27; a popular macOS anti-virus engine. With the creation of a new anti-virus signature, classified documents will be automatically detected!</description>
+  </item>
+  <item>
+    <title>Why _blank_ Gets You Root</title>
+    <link>https://objective-see.org/blog/blog_0x24.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x24.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Yet another a massive security flaw affects the latest version of macOS (High Sierra), allowing anybody to log into the root account with a blank, or password, of their choosing!</description>
+  </item>
+  <item>
+    <title>High Sierra&#x27;s &#x27;Secure Kernel Extension Loading&#x27; is Broken</title>
+    <link>https://objective-see.org/blog/blog_0x21.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x21.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>A new &#x27;security&#x27; feature in macOS 10.13, is trivial to bypass.</description>
+  </item>
+  <item>
+    <title>WTF is Mughthesec!? poking on a piece of undetected adware</title>
+    <link>https://objective-see.org/blog/blog_0x20.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x20.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Some undetected adware named &quot;Mughthesec&quot; is infecting Macs...let&#x27;s check it out!</description>
+  </item>
+  <item>
+    <title>Two Bugs, One Func(), part two</title>
+    <link>https://objective-see.org/blog/blog_0x1B.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x1B.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Apple&#x27;s &#x27;fix&#x27; for a macOS kernel panic, fixes nothing and worse, introduces a new bug.</description>
+  </item>
+  <item>
+    <title>Two Bugs, One Func(), part one</title>
+    <link>https://objective-see.org/blog/blog_0x1A.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x1A.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>The macOS kernel had an (intentional?) off-by-one bug that could trigger a kernel panic.</description>
+  </item>
+  <item>
+    <title>Happy Birthday to Objective-See</title>
+    <link>https://objective-see.org/blog/blog_0x19.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x19.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Today is our 2nd birthday! Let&#x27;s look at our past, present, and future.</description>
+  </item>
+  <item>
+    <title>From Italy With Love?</title>
+    <link>https://objective-see.org/blog/blog_0x18.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x18.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Reverse-engineering a &#x27;Russian&#x27; implant reveals HackingTeam&#x27;s code!?</description>
+  </item>
+  <item>
+    <title>&#x27;Untranslocating&#x27; an App</title>
+    <link>https://objective-see.org/blog/blog_0x15.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x15.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Apple&#x27;s App Translocation broke several of my tools, but we can locally undo it to restore broken functionality!</description>
+  </item>
+  <item>
+    <title>Forget the NSA, it&#x27;s Shazam that&#x27;s always listening!</title>
+    <link>https://objective-see.org/blog/blog_0x13.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x13.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Does Shazam&#x27;s Mac App keep recording even when you turn the app off? ...yes :/</description>
+  </item>
+  <item>
+    <title>Click File, App Opens</title>
+    <link>https://objective-see.org/blog/blog_0x12.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x12.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>The &#x27;Mac File Opener&#x27; adware is fairly normal, except for it how it persists via registered document handlers</description>
+  </item>
+  <item>
+    <title>Persisting via a Finder Sync</title>
+    <link>https://objective-see.org/blog/blog_0x11.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x11.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Learn how a Finder Sync can &#x27;extend&#x27; Finder.app and how this could be abused for persistence</description>
+  </item>
+  <item>
+    <title>Are you from the Mac App Store?</title>
+    <link>https://objective-see.org/blog/blog_0x10.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x10.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>How to verify that an application came from the official Mac App Store, via receipt validation</description>
+  </item>
+  <item>
+    <title>Analysis of an Intrusive Cross-Platform Adware; OSX/Pirrit</title>
+    <link>https://objective-see.org/blog/blog_0x0E.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x0E.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>In Objective-See&#x27;s first guest blog post, Amit Serper presents his detailed analysis of OSX/Pirrit</description>
+  </item>
+  <item>
+    <title>Analyzing the Anti-Analysis Logic of an Adware Installer</title>
+    <link>https://objective-see.org/blog/blog_0x0C.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x0C.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Dissecting string obfuscations, junk code insertions, and anti-debugging logic of InstallCore</description>
+  </item>
+  <item>
+    <title>Monitoring Process Creation via the Kernel (Part III)</title>
+    <link>https://objective-see.org/blog/blog_0x0B.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x0B.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Getting process creation notifcations from kernel-mode to user-mode, via the undocumented kev_msg_post function</description>
+  </item>
+  <item>
+    <title>Monitoring Process Creation via the Kernel (Part II)</title>
+    <link>https://objective-see.org/blog/blog_0x0A.html</link>
+    <guid isPermaLink="true">https://objective-see.org/blog/blog_0x0A.html</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Process monitoring via the KAuth Subsystem (and some limitations)</description>
+  </item>
+  <item>
+    <title>Monitoring Process Creation via the Kernel (Part I)</title>
+    <link>https://objective-see.org/blog.html#blogEntry9</link>
+    <guid isPermaLink="true">https://objective-see.org/blog.html#blogEntry9</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Why BlockBlock needs a kext (hint: process monitoring), and how the kext was created</description>
+  </item>
+  <item>
+    <title>Kernel Debugging a Virtualized OS X El Capitan Image</title>
+    <link>https://objective-see.org/blog.html#blogEntry8</link>
+    <guid isPermaLink="true">https://objective-see.org/blog.html#blogEntry8</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>How to remotely kernel-debug a OS X 10.11 VM</description>
+  </item>
+  <item>
+    <title>Reversing to Engineer: Learning to &#x27;Secure&#x27; XPC from a Patch</title>
+    <link>https://objective-see.org/blog.html#blogEntry7</link>
+    <guid isPermaLink="true">https://objective-see.org/blog.html#blogEntry7</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>How reversing Apple&#x27;s &#x27;RootPipe&#x27; patch provided the means to secure TaskExplorer&#x27;s XPC service</description>
+  </item>
+  <item>
+    <title>Building HackingTeam&#x27;s OS X Implant For Fun &amp; Profit</title>
+    <link>https://objective-see.org/blog.html#blogEntry6</link>
+    <guid isPermaLink="true">https://objective-see.org/blog.html#blogEntry6</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:09 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>How to build HackingTeam&#x27;s OS X implant in Xcode</description>
+  </item>
+  <item>
+    <title>Dylib Hijack Scanner Released</title>
+    <link>https://objective-see.org/blog.html#blogEntry2</link>
+    <guid isPermaLink="true">https://objective-see.org/blog.html#blogEntry2</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:10 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>Announcing the release of DHS; a tool to help detect (dylib) hijackers</description>
+  </item>
+  <item>
+    <title>Website Launch</title>
+    <link>https://objective-see.org/blog.html#blogEntry1</link>
+    <guid isPermaLink="true">https://objective-see.org/blog.html#blogEntry1</guid>
+    <pubDate>Sat, 27 Jun 2026 08:22:10 -0000</pubDate>
+    <category>Infosec News</category>
+    <description>NSLog(@&quot;Hello World&quot;); objective-see.org is alive!</description>
   </item>
   <item>
     <title>First-Ever Exploitation of PTC Windchill Vulnerability Discovered in the Wild</title>
@@ -424,12 +1320,44 @@
     <description>Microsoft has given Windows 10 users another year of free security updates, extending its consumer Extended Security Updates (ESU) program until October 12, 2027. “Windows 10 support has ended. You can enroll in ESU any time until the program ends on October 12, 2027. If you’re a…</description>
   </item>
   <item>
+    <title>HPE security advisory (AV26-633)</title>
+    <link>https://cyber.gc.ca/en/alerts-advisories/hpe-security-advisory-av26-633</link>
+    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/hpe-security-advisory-av26-633</guid>
+    <pubDate>Fri, 26 Jun 2026 06:02:05 -0000</pubDate>
+    <category>Security Advisories</category>
+    <description></description>
+  </item>
+  <item>
+    <title>HPE security advisory (AV26-632)</title>
+    <link>https://cyber.gc.ca/en/alerts-advisories/hpe-security-advisory-av26-632</link>
+    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/hpe-security-advisory-av26-632</guid>
+    <pubDate>Fri, 26 Jun 2026 06:02:05 -0000</pubDate>
+    <category>Security Advisories</category>
+    <description></description>
+  </item>
+  <item>
+    <title>Drupal security advisory (AV26-631)</title>
+    <link>https://cyber.gc.ca/en/alerts-advisories/drupal-security-advisory-av26-631</link>
+    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/drupal-security-advisory-av26-631</guid>
+    <pubDate>Fri, 26 Jun 2026 06:02:05 -0000</pubDate>
+    <category>Security Advisories</category>
+    <description></description>
+  </item>
+  <item>
     <title>ZeroTier Quantum RC2 brings post-quantum security closer to general availability</title>
     <link>https://www.helpnetsecurity.com/2026/06/26/zerotier-quantum-rc2/</link>
     <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/26/zerotier-quantum-rc2/</guid>
     <pubDate>Fri, 26 Jun 2026 07:34:57 +0000</pubDate>
     <category>Security Advisories</category>
     <description>ZeroTier has announced the release candidate 2 (RC2) for ZeroTier Quantum, its end-to-end quantum-secure networking platform. This milestone marks the final testing phase, positioning the platform one step away from general availability (GA). ZeroTier Quantum addresses the loomin…</description>
+  </item>
+  <item>
+    <title>Google Chrome security advisory (AV26-634)</title>
+    <link>https://cyber.gc.ca/en/alerts-advisories/google-chrome-security-advisory-av26-634</link>
+    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/google-chrome-security-advisory-av26-634</guid>
+    <pubDate>Fri, 26 Jun 2026 10:02:27 -0000</pubDate>
+    <category>Security Advisories</category>
+    <description></description>
   </item>
   <item>
     <title>FBI: Russian hackers now target Signal backup recovery keys</title>
@@ -678,934 +1606,6 @@
     <pubDate>Fri, 26 Jun 2026 16:40:56 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>We know that ICE wants to deploy eyeglasses with facial recognition that can identify people in real time. Turns out Meta is prototyping the feature with a Pentagon supplier. (Alternate news story.)</description>
-  </item>
-  <item>
-    <title>Russian hackers were behind $2.5 billion hack of Jaguar Land Rover: Report</title>
-    <link>https://techcrunch.com/2026/06/26/russian-hackers-were-behind-2-5-billion-hack-of-jaguar-land-rover-report/</link>
-    <guid isPermaLink="true">https://techcrunch.com/2026/06/26/russian-hackers-were-behind-2-5-billion-hack-of-jaguar-land-rover-report/</guid>
-    <pubDate>Fri, 26 Jun 2026 17:29:29 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The hack on car giant Jaguar Land Rover last year was one the most disrupting, damaging, and costly hacks of the last few years.</description>
-  </item>
-  <item>
-    <title>Cybersecurity firms targeted by fraudulent OpenAI organization invites</title>
-    <link>https://www.bleepingcomputer.com/news/security/cybersecurity-firms-targeted-by-fraudulent-openai-organization-invites/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/cybersecurity-firms-targeted-by-fraudulent-openai-organization-invites/</guid>
-    <pubDate>Fri, 26 Jun 2026 13:49:07 -0400</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Threat actors are creating OpenAI tenants that impersonate legitimate companies and inviting employees to join them, in what appears to be a ploy to trick targets into submitting sensitive company information in chats and projects. [...]</description>
-  </item>
-  <item>
-    <title>ATF cancels controversial commercial geolocation contract</title>
-    <link>https://cyberscoop.com/atf-cancels-penlink-ad-surveillance-contract/</link>
-    <guid isPermaLink="true">https://cyberscoop.com/atf-cancels-penlink-ad-surveillance-contract/</guid>
-    <pubDate>Fri, 26 Jun 2026 19:16:23 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The agency told CyberScoop the tool was a pilot that didn’t meet their needs. Members of Congress say it was accessed for hundreds of active cases. The post ATF cancels controversial commercial geolocation contract appeared first on CyberScoop .</description>
-  </item>
-  <item>
-    <title>AI Brain Harvest, Fortibleed, Win 10, Blacksite, Windchill, Cisco, BB-8, Josh Marpet - SWN #593</title>
-    <link>https://www.youtube.com/watch?v=0TVGOi-Xd6o</link>
-    <guid isPermaLink="true">https://www.youtube.com/watch?v=0TVGOi-Xd6o</guid>
-    <pubDate>Fri, 26 Jun 2026 21:00:13 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>AI Brain Harvest, Fortibleed, Win 10, Blacksite, Windchill, Cisco, BB-8 Sidewalk Bots, Josh Marpet, and More on this episode of the Security Weekly News. Visit https://www.securityweekly.com/swn for all the latest episodes! Show Notes: https://securityweekly.com/swn-593</description>
-  </item>
-  <item>
-    <title>MFA Won&#x27;t Stop This Phishing Kit</title>
-    <link>https://www.youtube.com/shorts/VEV5Jk9-Dpk</link>
-    <guid isPermaLink="true">https://www.youtube.com/shorts/VEV5Jk9-Dpk</guid>
-    <pubDate>Fri, 26 Jun 2026 22:00:38 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The Black Site phishing kit pairs with an evasion tool called Cloaked.gg to perform adversary-in-the-middle attacks. By acting as a reverse proxy between the victim and the legitimate website, it can capture credentials and authenticated session data during the login process. Thi…</description>
-  </item>
-  <item>
-    <title>China-Linked Hackers Strike Asian Critical Infrastructure with TinyRCT Backdoor</title>
-    <link>https://www.infosecurity-magazine.com/news/china-hackers-asian-cni-backdoor/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/china-hackers-asian-cni-backdoor/</guid>
-    <pubDate>Fri, 26 Jun 2026 10:30:00 +0000</pubDate>
-    <category>Cyber Threat Landscape</category>
-    <description>A China-linked threat group has been targeting critical infrastructure in Southeast Asia with a new custom backdoor called TinyRCT</description>
-  </item>
-  <item>
-    <title>Malware steals Chrome session cookies to take over your accounts</title>
-    <link>https://www.malwarebytes.com/blog/news/2026/06/malware-steals-chrome-session-cookies-to-take-over-your-accounts</link>
-    <guid isPermaLink="true">https://www.malwarebytes.com/blog/news/2026/06/malware-steals-chrome-session-cookies-to-take-over-your-accounts</guid>
-    <pubDate>Fri, 26 Jun 2026 12:44:01 +0000</pubDate>
-    <category>Cyber Threat Landscape</category>
-    <description>A phishing campaign installs a malicious Chrome extension to hijack browser sessions and compromise Windows devices.</description>
-  </item>
-  <item>
-    <title>Russia Used Cellebrite on Jailed Activist&#x27;s iPhone Months After Sales Cutoff</title>
-    <link>https://thehackernews.com/2026/06/russia-used-cellebrite-on-jailed.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/06/russia-used-cellebrite-on-jailed.html</guid>
-    <pubDate>Fri, 26 Jun 2026 14:19:35 +0530</pubDate>
-    <category>Infosec News</category>
-    <description>Russian authorities used Cellebrite&#x27;s UFED forensic tools to break into the iPhone of detained opposition activist Andrey Pivovarov in June 2021, three months after Cellebrite said it would stop selling its tools and services to Russia and Belarus. The finding, published&amp;nbsp;Jun…</description>
-  </item>
-  <item>
-    <title>Guardian Agents: The Next Layer of Identity Governance</title>
-    <link>https://thehackernews.com/2026/06/guardian-agents-next-layer-of-identity.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/06/guardian-agents-next-layer-of-identity.html</guid>
-    <pubDate>Fri, 26 Jun 2026 17:00:00 +0530</pubDate>
-    <category>Infosec News</category>
-    <description>AI agents are moving through enterprise environments, inheriting permissions, traversing systems, and executing decisions at machine speed with minimal oversight. The identity infrastructure built to govern human access wasn&#x27;t designed for autonomous actors, and the gap between w…</description>
-  </item>
-  <item>
-    <title>FCC votes to toughen rules in bid to better protect undersea cables</title>
-    <link>https://therecord.media/fcc-votes-to-toughen-rules-undersea-cables</link>
-    <guid isPermaLink="true">https://therecord.media/fcc-votes-to-toughen-rules-undersea-cables</guid>
-    <pubDate>Fri, 26 Jun 2026 12:10:00 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>In an unprecedented move, the FCC also said it plans to mandate that owners and operators of submarine line terminal equipment (SLTE) be licensed.</description>
-  </item>
-  <item>
-    <title>Thanks for Crushing the Submissions Inbox. We&#x27;re Trying to Keep Up</title>
-    <link>https://www.darkreading.com/cybersecurity-operations/submissions-guidelines-reminder</link>
-    <guid isPermaLink="true">https://www.darkreading.com/cybersecurity-operations/submissions-guidelines-reminder</guid>
-    <pubDate>Fri, 26 Jun 2026 13:00:00 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>It might be taking a bit longer than usual to respond to your submissions — here&#x27;s why.</description>
-  </item>
-  <item>
-    <title>MCP Auto-Execution: From Git Clone to Cloud Compromise in Amazon Q VS Code Extension</title>
-    <link>https://www.wiz.io/blog/amazon-q-vulnerability</link>
-    <guid isPermaLink="true">https://www.wiz.io/blog/amazon-q-vulnerability</guid>
-    <pubDate>Fri, 26 Jun 2026 12:00:01 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>By automatically loading MCP servers from workspace files, Amazon Q enabled attackers to execute code and access sensitive cloud environments.</description>
-  </item>
-  <item>
-    <title>Russia accuses Apple of ‘political censorship’ after VK apps removed from App Store</title>
-    <link>https://therecord.media/russia-accuses-apple-of-political-censorship-after-vk-removal</link>
-    <guid isPermaLink="true">https://therecord.media/russia-accuses-apple-of-political-censorship-after-vk-removal</guid>
-    <pubDate>Fri, 26 Jun 2026 13:42:00 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>Apple removed VK&#x27;s flagship social network VKontakte, often described as Russia&#x27;s equivalent of Facebook, along with VK Music, VK Messenger, VK Video, Odnoklassniki and Mail.ru services, including its email application.</description>
-  </item>
-  <item>
-    <title>Meeting Trump&#x27;s 2030 Quantum Deadline Will be Expensive, Complex</title>
-    <link>https://www.darkreading.com/cybersecurity-operations/meeting-2030-quantum-deadline-expensive-complex</link>
-    <guid isPermaLink="true">https://www.darkreading.com/cybersecurity-operations/meeting-2030-quantum-deadline-expensive-complex</guid>
-    <pubDate>Fri, 26 Jun 2026 13:30:00 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>Getting accurate visibility into IT and OT systems will be compounded by multivendor environments, misaligned update life cycles, and interoperability gaps.</description>
-  </item>
-  <item>
-    <title>Your First GRC Agent: A Red Teamer&#x27;s Walkthrough</title>
-    <link>https://www.bleepingcomputer.com/news/security/your-first-grc-agent-a-red-teamers-walkthrough/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/your-first-grc-agent-a-red-teamers-walkthrough/</guid>
-    <pubDate>Fri, 26 Jun 2026 10:01:11 -0400</pubDate>
-    <category>Infosec News</category>
-    <description>AI won&#x27;t replace GRC analysts, but it can eliminate much of the repetitive work they do. Anecdotes walks through building an agent that continuously monitors controls, identifies evidence gaps, and opens remediation tasks. [...]</description>
-  </item>
-  <item>
-    <title>The Pentagon Is Looking Into the Dialog Data Exposure for Unmasking National Security Officials</title>
-    <link>https://www.wired.com/story/the-pentagon-is-looking-into-the-dialog-data-exposure-for-unmasking-national-security-officials/</link>
-    <guid isPermaLink="true">https://www.wired.com/story/the-pentagon-is-looking-into-the-dialog-data-exposure-for-unmasking-national-security-officials/</guid>
-    <pubDate>Fri, 26 Jun 2026 16:30:33 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>Exposed records from the private group included the personal information of a senior White House intelligence official and an active-duty special operations officer.</description>
-  </item>
-  <item>
-    <title>AI Won&#x27;t Wipe-Out Entry-Level Cybersecurity Jobs</title>
-    <link>https://www.darkreading.com/cybersecurity-operations/ai-wont-wipe-out-entry-level-cybersecurity-jobs</link>
-    <guid isPermaLink="true">https://www.darkreading.com/cybersecurity-operations/ai-wont-wipe-out-entry-level-cybersecurity-jobs</guid>
-    <pubDate>Fri, 26 Jun 2026 16:00:00 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>Instead of eliminating jobs for early-career cyber pros, AI is creating new opportunities for candidates with strong human decision-making skills.</description>
-  </item>
-  <item>
-    <title>AI Decline? Confidence in Autonomous Penetration Testing Falls</title>
-    <link>https://www.darkreading.com/cybersecurity-operations/ai-decline-confidence-autonomous-penetration-testing</link>
-    <guid isPermaLink="true">https://www.darkreading.com/cybersecurity-operations/ai-decline-confidence-autonomous-penetration-testing</guid>
-    <pubDate>Fri, 26 Jun 2026 19:11:02 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>Companies are still experimenting with automated AI systems to find security weaknesses, but fewer are relying on the technology.</description>
-  </item>
-  <item>
-    <title>CISA Adds Two Known Exploited Vulnerabilities to Catalog</title>
-    <link>https://www.cisa.gov/news-events/alerts/2026/06/25/cisa-adds-two-known-exploited-vulnerabilities-catalog</link>
-    <guid isPermaLink="true">https://www.cisa.gov/news-events/alerts/2026/06/25/cisa-adds-two-known-exploited-vulnerabilities-catalog</guid>
-    <pubDate>Thu, 25 Jun 2026 12:00:00 +0000</pubDate>
-    <category>CISA KEV</category>
-    <description>CISA has added two new vulnerabilities to its Known Exploited Vulnerabilities (KEV) Catalog , based on evidence of active exploitation. &amp;nbsp; CVE-2026-12569 PTC Windchill and FlexPLM Improper Input Validation Vulnerability CVE-2026-20230 Cisco Unified Communications Manager Serv…</description>
-  </item>
-  <item>
-    <title>Cisco Catalyst SD-WAN Zero-Day CVE-2026-20245 Exploited to Gain Root Access</title>
-    <link>https://thehackernews.com/2026/06/cisco-catalyst-sd-wan-zero-day-cve-2026.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/06/cisco-catalyst-sd-wan-zero-day-cve-2026.html</guid>
-    <pubDate>Thu, 25 Jun 2026 11:16:54 +0530</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>An unknown threat actor exploited a recently disclosed high-severity security flaw impacting Cisco Catalyst SD-WAN as a zero-day at least two months before it was publicly disclosed, according to new findings from Google-owned Mandiant. The vulnerability, tracked as CVE-2026-2024…</description>
-  </item>
-  <item>
-    <title>CVE-2026-45637 Microsoft DWM Core Library Elevation of Privilege Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-45637</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-45637</guid>
-    <pubDate>Thu, 25 Jun 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Updated an acknowledgement. This is an informational change only.</description>
-  </item>
-  <item>
-    <title>CVE-2026-46140 Bluetooth: btmtk: validate WMT event SKB length before struct access</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46140</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-46140</guid>
-    <pubDate>Thu, 25 Jun 2026 01:03:39 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-11816 Path Traversal in keras-team/keras</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11816</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11816</guid>
-    <pubDate>Thu, 25 Jun 2026 01:03:45 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>Why patch directives only go so far</title>
-    <link>https://cyberscoop.com/why-security-patching-is-not-enough-cve-2026-50751-op-ed/</link>
-    <guid isPermaLink="true">https://cyberscoop.com/why-security-patching-is-not-enough-cve-2026-50751-op-ed/</guid>
-    <pubDate>Thu, 25 Jun 2026 09:00:00 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Six weeks of undetected access through a compromised VPN exposes why patching isn&#x27;t a solution for the organizations already breached. The post Why patch directives only go so far appeared first on CyberScoop .</description>
-  </item>
-  <item>
-    <title>Lantronix Serial-to-IP Converter Flaw Exploited in Attacks After OT Threat Warning</title>
-    <link>https://www.securityweek.com/lantronix-serial-to-ip-converter-flaw-exploited-in-attacks-after-ot-threat-warning/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/lantronix-serial-to-ip-converter-flaw-exploited-in-attacks-after-ot-threat-warning/</guid>
-    <pubDate>Thu, 25 Jun 2026 11:23:40 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>The exploited flaw, CVE-2025-67038, is one of the vulnerabilities disclosed in April as part of the BRIDGE:BREAK research project. The post Lantronix Serial-to-IP Converter Flaw Exploited in Attacks After OT Threat Warning appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Interesting Paper Exploring Prompt Injection</title>
-    <link>https://www.schneier.com/blog/archives/2026/06/interesting-paper-exploring-prompt-injection.html</link>
-    <guid isPermaLink="true">https://www.schneier.com/blog/archives/2026/06/interesting-paper-exploring-prompt-injection.html</guid>
-    <pubDate>Thu, 25 Jun 2026 11:23:58 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>This is a fascinating explotation of how LLMs fall for prompt injection attacks. It turns out that they learn to recognize the style of text in different role/instruction blocks, and not just the tags. Their conclusion: Role tags were a formatting trick that became the security a…</description>
-  </item>
-  <item>
-    <title>Rethinking the balance between AI oversight and innovation</title>
-    <link>https://www.csoonline.com/article/4188573/rethinking-the-balance-between-ai-oversight-and-innovation.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4188573/rethinking-the-balance-between-ai-oversight-and-innovation.html</guid>
-    <pubDate>Thu, 25 Jun 2026 10:02:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The new CIO mandate is clear: facilitate AI adoption across the enterprise at speed. According to CIO.com’s State of the CIO survey, CEOs’ to p priority for their IT executives is to capitalize on AI . From researching to evaluating AI products, CIOs are now the central figures i…</description>
-  </item>
-  <item>
-    <title>GRC is broken. FedRAMP 20x might fix it</title>
-    <link>https://www.csoonline.com/article/4188995/grc-is-broken-fedramp-20x-might-fix-it.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4188995/grc-is-broken-fedramp-20x-might-fix-it.html</guid>
-    <pubDate>Thu, 25 Jun 2026 09:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>We are auditing a curated version of history. I’ve worked in security long enough now to know something most of us don’t really say out loud. A lot of compliance is theatre. Not all of it, and not all auditors or frameworks, but enough of it that most experienced CISOs know exact…</description>
-  </item>
-  <item>
-    <title>The Policy Nobody Actually Enforced</title>
-    <link>https://www.youtube.com/shorts/r72UEFqv2Bo</link>
-    <guid isPermaLink="true">https://www.youtube.com/shorts/r72UEFqv2Bo</guid>
-    <pubDate>Thu, 25 Jun 2026 22:00:17 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Many organizations generate least-privilege IAM policies but never deploy them. That leaves existing permissions available for attackers to abuse after compromising workloads like CI/CD runners. Instead of depending on thousands of manually applied policies, Sandy Bird describes …</description>
-  </item>
-  <item>
-    <title>Cloud Visibility, Fortibleed, hacking things the easy way - Sandy Bird - PSW #932</title>
-    <link>https://www.youtube.com/watch?v=XRD9vUP9hSw</link>
-    <guid isPermaLink="true">https://www.youtube.com/watch?v=XRD9vUP9hSw</guid>
-    <pubDate>Thu, 25 Jun 2026 21:00:09 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>First up is Sandy Bird from Sonrai discussing how to protect our cloud infrastructure! This segment is sponsored by Sonrai Security. Visit https://securityweekly.com/sonrai to learn more about them! Next up in the security news: - Help, I am Fortibleeding - Cisco SD-WAN needs hel…</description>
-  </item>
-  <item>
-    <title>Your Small Business Is a Target</title>
-    <link>https://www.youtube.com/shorts/YwzwoP7gOwU</link>
-    <guid isPermaLink="true">https://www.youtube.com/shorts/YwzwoP7gOwU</guid>
-    <pubDate>Thu, 25 Jun 2026 14:00:32 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>More than 90% of the economy depends on small and medium-sized businesses. At the same time, critical infrastructure spans far beyond power grids or defense systems. It includes industries like healthcare, financial services, food and agriculture, IT, communications, water, and c…</description>
-  </item>
-  <item>
-    <title>Beyond IOCs: AI-enabled threat intelligence</title>
-    <link>https://blog.talosintelligence.com/beyond-iocs-ai-enabled-threat-intelligence/</link>
-    <guid isPermaLink="true">https://blog.talosintelligence.com/beyond-iocs-ai-enabled-threat-intelligence/</guid>
-    <pubDate>Thu, 25 Jun 2026 18:00:26 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>In this week’s newsletter, Martin considers how AI will help threat intelligence by creating an easily queryable data source of intelligence reports.</description>
-  </item>
-  <item>
-    <title>Beware of &amp;#8220;Parcel Expert&amp;#8221; job offers: They&amp;#8217;re parcel mule scams</title>
-    <link>https://www.malwarebytes.com/blog/scams/2026/06/beware-of-parcel-expert-job-offers-theyre-parcel-mule-scams</link>
-    <guid isPermaLink="true">https://www.malwarebytes.com/blog/scams/2026/06/beware-of-parcel-expert-job-offers-theyre-parcel-mule-scams</guid>
-    <pubDate>Thu, 25 Jun 2026 18:12:51 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Most parcel mule scams start with fake job offers that trick victims into handling stolen goods.</description>
-  </item>
-  <item>
-    <title>Fraud goes door-to-door.</title>
-    <link>https://thecyberwire.com/podcasts/hacking-humans/392/notes</link>
-    <guid isPermaLink="true">https://thecyberwire.com/podcasts/hacking-humans/392/notes</guid>
-    <pubDate>Thu, 25 Jun 2026 05:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>This week, hosts of N2K CyberWire ⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠Maria Varmazis⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠ and⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠ ⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠Dave Bittner⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠…</description>
-  </item>
-  <item>
-    <title>Cisco Vulnerability Exploited Months Before Disclosure, Google Warns</title>
-    <link>https://www.infosecurity-magazine.com/news/cisco-vulnerability-exploited/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/cisco-vulnerability-exploited/</guid>
-    <pubDate>Thu, 25 Jun 2026 14:15:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>A high-severity flaw in Cisco Catalyst SD-WAN Manager disclosed in early June was exploited as early as March</description>
-  </item>
-  <item>
-    <title>Trust in Automated AI Vulnerability Scanning Collapses to 9%, New Study Finds</title>
-    <link>https://www.infosecurity-magazine.com/news/trust-ai-vulnerability-scanning/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/trust-ai-vulnerability-scanning/</guid>
-    <pubDate>Thu, 25 Jun 2026 12:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Cobalt study finds 20-percentage-point drop in number of organizations relying solely on AI automation for testing</description>
-  </item>
-  <item>
-    <title>Shopify Shop app users are seeing fake orders in purchase histories</title>
-    <link>https://cyberinsider.com/shopify-shop-app-users-are-seeing-fake-orders-in-purchase-histories/</link>
-    <guid isPermaLink="true">https://cyberinsider.com/shopify-shop-app-users-are-seeing-fake-orders-in-purchase-histories/</guid>
-    <pubDate>Thu, 25 Jun 2026 13:37:29 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Scammers are placing fake purchase receipts inside Shopify&#x27;s Shop app, exploiting users&#x27; trust in order-tracking applications to lure them into calling fraudulent customer support numbers. The campaign moves the long-running fake invoice scam beyond email, placing fraudulent rece…</description>
-  </item>
-  <item>
-    <title>Japan’s army used USB drives with Chinese malware for a year</title>
-    <link>https://cyberinsider.com/japans-army-used-usb-drives-with-chinese-malware-for-a-year/</link>
-    <guid isPermaLink="true">https://cyberinsider.com/japans-army-used-usb-drives-with-chinese-malware-for-a-year/</guid>
-    <pubDate>Thu, 25 Jun 2026 11:36:01 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Japan&#x27;s Ground Self-Defense Force (JGSDF) reportedly used counterfeit USB flash drives infected with malware linked to previously identified Chinese threat activity on computers connected to sensitive military networks for nearly a year before the devices were discovered. Accordi…</description>
-  </item>
-  <item>
-    <title>Cal Water Says No OT Systems Breached in Iranian Handala Cyberattack</title>
-    <link>https://www.securityweek.com/cal-water-finds-no-evidence-of-ot-activity-after-hackers-claimed-they-could-disrupt-water-supply/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/cal-water-finds-no-evidence-of-ot-activity-after-hackers-claimed-they-could-disrupt-water-supply/</guid>
-    <pubDate>Thu, 25 Jun 2026 12:07:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Mandiant has helped the California water utility investigate the cyberattack launched by Iranian hacker group Handala. The post Cal Water Says No OT Systems Breached in Iranian Handala Cyberattack appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>25-Year-Old Vulnerability Patched in Curl</title>
-    <link>https://www.securityweek.com/25-year-old-vulnerability-patched-in-curl/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/25-year-old-vulnerability-patched-in-curl/</guid>
-    <pubDate>Thu, 25 Jun 2026 09:25:02 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The latest version of the open source data transfer tool resolves 18 medium and low-severity vulnerabilities. The post 25-Year-Old Vulnerability Patched in Curl appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Local Police Collusion Hampers Crackdown on Asian Scam Centers</title>
-    <link>https://www.darkreading.com/threat-intelligence/police-collusion-crackdown-asian-scam-centers</link>
-    <guid isPermaLink="true">https://www.darkreading.com/threat-intelligence/police-collusion-crackdown-asian-scam-centers</guid>
-    <pubDate>Thu, 25 Jun 2026 19:07:41 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>With tens of billions of dollars flowing into regional economies from cybercrime, scam centers continue to flourish, despite international and law-enforcement efforts.</description>
-  </item>
-  <item>
-    <title>Experts on Experts: Why AI and Compliance Are Forcing A New Security Operating Model</title>
-    <link>https://www.rapid7.com/blog/post/it-experts-video-series-ai-compliance-force-new-security-operating-models</link>
-    <guid isPermaLink="true">https://www.rapid7.com/blog/post/it-experts-video-series-ai-compliance-force-new-security-operating-models</guid>
-    <pubDate>Thu, 25 Jun 2026 13:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>This week on Experts on Experts, I sat down with Sabeen Malik , Rapid7’s VP of Global Government Affairs and Public Policy, to discuss a shift security leaders can’t afford to treat as separate threads: frontier AI, vulnerability discovery, cybersecurity compliance, and operation…</description>
-  </item>
-  <item>
-    <title>NVIDIA GEN3C: Unauthenticated RCE via Pickle Deserialization in the Inference API</title>
-    <link>https://www.vulncheck.com/blog/nvidia-gen3c-unauth-pickle-rce</link>
-    <guid isPermaLink="true">https://www.vulncheck.com/blog/nvidia-gen3c-unauth-pickle-rce</guid>
-    <pubDate>Thu, 25 Jun 2026 00:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>VulnCheck&#x27;s Initial Access Intelligence team details an unauthenticated remote code execution in NVIDIA&#x27;s GEN3C, where two FastAPI inference endpoints deserialize raw HTTP request bodies with pickle.loads() with no authentication.</description>
-  </item>
-  <item>
-    <title>Microsoft quietly extends free Windows 10 ESU support to October 2027</title>
-    <link>https://www.bleepingcomputer.com/news/microsoft/microsoft-quietly-extends-free-windows-10-esu-support-to-october-2027/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/microsoft/microsoft-quietly-extends-free-windows-10-esu-support-to-october-2027/</guid>
-    <pubDate>Thu, 25 Jun 2026 14:29:20 -0400</pubDate>
-    <category>Security Bulletins</category>
-    <description>Microsoft has quietly extended its free Windows 10 Extended Security Updates (ESU) program for consumers by an additional year, allowing enrolled devices to continue receiving security updates until October 12, 2027. [...]</description>
-  </item>
-  <item>
-    <title>DHS chief says president has met with potential CISA nominee; agency plans to hire 600</title>
-    <link>https://therecord.media/cisa-director-nominee-workforce-hires-mullin-house-hearing</link>
-    <guid isPermaLink="true">https://therecord.media/cisa-director-nominee-workforce-hires-mullin-house-hearing</guid>
-    <pubDate>Thu, 25 Jun 2026 18:47:51 +0000</pubDate>
-    <category>Security Advisories</category>
-    <description>Once a new CISA director is in place, the agency will ramp up hiring efforts, Homeland Security Secretary Markwayne Mullin told lawmakers. The White House has not yet announced a nominee.</description>
-  </item>
-  <item>
-    <title>FCC passes new cybersecurity rules for emergency systems, undersea cables</title>
-    <link>https://cyberscoop.com/fcc-undersea-cable-regulations-national-security/</link>
-    <guid isPermaLink="true">https://cyberscoop.com/fcc-undersea-cable-regulations-national-security/</guid>
-    <pubDate>Thu, 25 Jun 2026 19:55:16 +0000</pubDate>
-    <category>Security Advisories</category>
-    <description>The new rules would overhaul national emergency systems to protect against hijacking and update federal security review rules for undersea cables providers The post FCC passes new cybersecurity rules for emergency systems, undersea cables appeared first on CyberScoop .</description>
-  </item>
-  <item>
-    <title>Federal court rules Trump election-focused executive order illegal</title>
-    <link>https://cyberscoop.com/judge-strikes-down-trump-election-executive-order/</link>
-    <guid isPermaLink="true">https://cyberscoop.com/judge-strikes-down-trump-election-executive-order/</guid>
-    <pubDate>Thu, 25 Jun 2026 16:16:20 +0000</pubDate>
-    <category>Security Advisories</category>
-    <description>Provisions setting up federal voter lists for each state and restricting mail ballots through USPS were declared unconstitutional. The post Federal court rules Trump election-focused executive order illegal appeared first on CyberScoop .</description>
-  </item>
-  <item>
-    <title>NIST offers security guidance for water utilities using remote-access tools</title>
-    <link>https://www.cybersecuritydive.com/news/water-utilities-remote-access-nist-guidance/823776/</link>
-    <guid isPermaLink="true">https://www.cybersecuritydive.com/news/water-utilities-remote-access-nist-guidance/823776/</guid>
-    <pubDate>Thu, 25 Jun 2026 11:10:04 -0400</pubDate>
-    <category>Security Advisories</category>
-    <description>The technology is one of the water sector&amp;rsquo;s biggest cybersecurity weaknesses.</description>
-  </item>
-  <item>
-    <title>New CISA Guide Helps Agencies Adopt SASE For Zero Trust</title>
-    <link>https://www.infosecurity-magazine.com/news/cisa-sase-tic-3-0-zero-trust/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/cisa-sase-tic-3-0-zero-trust/</guid>
-    <pubDate>Thu, 25 Jun 2026 11:30:00 +0000</pubDate>
-    <category>Security Advisories</category>
-    <description>New CISA guidance shows federal agencies how to use SASE to move from legacy TIC 2.0 to zero trust</description>
-  </item>
-  <item>
-    <title>Surviving the Mythos Era: Richard Bejtlich on the Case for NDR</title>
-    <link>https://thehackernews.com/2026/06/surviving-mythos-era-richard-bejtlich.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/06/surviving-mythos-era-richard-bejtlich.html</guid>
-    <pubDate>Thu, 25 Jun 2026 16:47:31 +0530</pubDate>
-    <category>Incident Reporting</category>
-    <description>Despite the abundance of telemetry at analysts’ disposal, many security operations teams struggle to answer a few basic questions during incident investigation: What happened? What evidence do we have? How do we know we’re seeing it all, in context? Answering these questions requ…</description>
-  </item>
-  <item>
-    <title>Polymarket says hackers stole users’ funds</title>
-    <link>https://techcrunch.com/2026/06/25/polymarket-says-hackers-stole-users-funds/</link>
-    <guid isPermaLink="true">https://techcrunch.com/2026/06/25/polymarket-says-hackers-stole-users-funds/</guid>
-    <pubDate>Thu, 25 Jun 2026 19:58:46 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>The prediction market giant Polymarket said it&#x27;s refunding users who had funds stolen due to a third-party breach.</description>
-  </item>
-  <item>
-    <title>Hacked Klue says criminals are deleting stolen customer data, but now other hackers are making threats</title>
-    <link>https://techcrunch.com/2026/06/25/hacked-klue-says-criminals-are-deleting-stolen-customer-data-but-now-other-hackers-are-making-threats/</link>
-    <guid isPermaLink="true">https://techcrunch.com/2026/06/25/hacked-klue-says-criminals-are-deleting-stolen-customer-data-but-now-other-hackers-are-making-threats/</guid>
-    <pubDate>Thu, 25 Jun 2026 16:40:15 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>Market research company Klue told customers that it believes the hacking group that stole their data is now deleting it. The company, however, warned about a second group of hackers wanting ransom.</description>
-  </item>
-  <item>
-    <title>Cellebrite said it cut off Russia, but Russia used its tools anyway</title>
-    <link>https://techcrunch.com/2026/06/25/cellebrite-said-it-cut-off-russia-but-russia-used-is-tools-anyway/</link>
-    <guid isPermaLink="true">https://techcrunch.com/2026/06/25/cellebrite-said-it-cut-off-russia-but-russia-used-is-tools-anyway/</guid>
-    <pubDate>Thu, 25 Jun 2026 10:00:00 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>Security researchers found evidence that Russian authorities hacked the iPhone of a political opponent using a phone-unlocking device made by Cellebrite, even after the company said it would stop selling to Putin’s government.</description>
-  </item>
-  <item>
-    <title>Gamaredon in 2025: Leveraging tunnels, workers, dead drops, and new alliances</title>
-    <link>https://www.welivesecurity.com/en/eset-research/gamaredon-2025-leveraging-tunnels-workers-dead-drops-new-alliances/</link>
-    <guid isPermaLink="true">https://www.welivesecurity.com/en/eset-research/gamaredon-2025-leveraging-tunnels-workers-dead-drops-new-alliances/</guid>
-    <pubDate>Thu, 25 Jun 2026 08:45:00 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>ESET Research analyzes Gamaredon’s new toolset and the group’s growing reliance on legitimate online services to hide its C&amp;amp;C infrastructure and exfiltrate stolen data</description>
-  </item>
-  <item>
-    <title>Evaluating Mexico’s New Cybersecurity Plan</title>
-    <link>https://www.recordedfuture.com/research/mexico-new-cybersecurity-plan-evaluation</link>
-    <guid isPermaLink="true">https://www.recordedfuture.com/research/mexico-new-cybersecurity-plan-evaluation</guid>
-    <pubDate>Thu, 25 Jun 2026 00:00:00 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>Explore an analysis of Mexico’s 2025–2030 National Cybersecurity Plan. Discover how Mexico is addressing critical threats like ransomware, organized crime, and AI-driven attacks while preparing its digital infrastructure for the 2026 FIFA World Cup and beyond</description>
-  </item>
-  <item>
-    <title>Elite network says it was hacked after members&amp;#8217; personal data was left exposed</title>
-    <link>https://www.malwarebytes.com/blog/privacy/2026/06/elite-network-says-it-was-hacked-after-members-personal-data-was-left-exposed</link>
-    <guid isPermaLink="true">https://www.malwarebytes.com/blog/privacy/2026/06/elite-network-says-it-was-hacked-after-members-personal-data-was-left-exposed</guid>
-    <pubDate>Thu, 25 Jun 2026 09:08:05 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>Personal data belonging to politicians, military leaders, and executives was left publicly accessible in what looks like a security misconfiguration.</description>
-  </item>
-  <item>
-    <title>Gone with the command.</title>
-    <link>https://thecyberwire.com/podcasts/daily-podcast/2580/notes</link>
-    <guid isPermaLink="true">https://thecyberwire.com/podcasts/daily-podcast/2580/notes</guid>
-    <pubDate>Thu, 25 Jun 2026 20:30:00 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>International operation disrupts Amadey and StealC malware infrastructure. Australian spy chief warns nation-state hackers are prepositioning for future sabotage. Stealthy new backdoor may be tied to initial access broker. Researchers uncover &quot;Cordyceps&quot; supply chain flaw. Iran-l…</description>
-  </item>
-  <item>
-    <title>Another Russian dairy company reportedly disrupted by cyberattack</title>
-    <link>https://therecord.media/russia-dairy-producter-cyberattack-ufa</link>
-    <guid isPermaLink="true">https://therecord.media/russia-dairy-producter-cyberattack-ufa</guid>
-    <pubDate>Thu, 25 Jun 2026 14:45:00 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>A dairy products manufacturer in Russia&#x27;s republic of Bashkortostan is the latest such company to have its operations snarled by a cyberattack.</description>
-  </item>
-  <item>
-    <title>Ukraine&#x27;s state postal operator reports app disruption after cyberattack</title>
-    <link>https://therecord.media/ukraine-state-postal-operator-reports-disruption</link>
-    <guid isPermaLink="true">https://therecord.media/ukraine-state-postal-operator-reports-disruption</guid>
-    <pubDate>Thu, 25 Jun 2026 12:16:00 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>Ukraine&#x27;s state-owned postal operator said it was experiencing disruptions to some of its app services due to a suspected cyberattack, but did not say who was behind it.</description>
-  </item>
-  <item>
-    <title>Minnesota man known as ‘Snoopy’ sentenced in DraftKings hack</title>
-    <link>https://cyberscoop.com/draftkings-hack-sentencing-nathan-austad-snoopy/</link>
-    <guid isPermaLink="true">https://cyberscoop.com/draftkings-hack-sentencing-nathan-austad-snoopy/</guid>
-    <pubDate>Thu, 25 Jun 2026 14:19:23 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>Nathan Austad, who sold access to compromised accounts through a criminal storefront, is the third and final defendant sentenced in the 2022 breach The post Minnesota man known as ‘Snoopy’ sentenced in DraftKings hack appeared first on CyberScoop .</description>
-  </item>
-  <item>
-    <title>Major Increase in Ransomware Attacks Targeting Europe, Warns New Report</title>
-    <link>https://www.infosecurity-magazine.com/news/increase-ransomware-europe/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/increase-ransomware-europe/</guid>
-    <pubDate>Thu, 25 Jun 2026 10:45:00 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>Analysis of ransomware incidents by researchers at Black Kite found that attacks have risen by over 50% in the last year, with supply chain attacks increasing</description>
-  </item>
-  <item>
-    <title>Poland busts SIM-swapping gang tied to millions in crypto theft</title>
-    <link>https://www.bleepingcomputer.com/news/security/poland-busts-sim-swapping-gang-tied-to-millions-in-crypto-theft/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/poland-busts-sim-swapping-gang-tied-to-millions-in-crypto-theft/</guid>
-    <pubDate>Thu, 25 Jun 2026 18:37:42 -0400</pubDate>
-    <category>Incident Reporting</category>
-    <description>Authorities in Poland have arrested four members of an organized cybercrime group accused of breaching telecommunications partners and hijacking email accounts to carry out SIM-swapping attacks. [...]</description>
-  </item>
-  <item>
-    <title>Webinar: Why account takeovers remain one of the hardest threats to stop</title>
-    <link>https://www.bleepingcomputer.com/news/security/webinar-why-account-takeovers-remain-one-of-the-hardest-threats-to-stop/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/webinar-why-account-takeovers-remain-one-of-the-hardest-threats-to-stop/</guid>
-    <pubDate>Thu, 25 Jun 2026 08:12:20 -0400</pubDate>
-    <category>Incident Reporting</category>
-    <description>Account takeover attacks continue to challenge security teams because attackers often operate through legitimate accounts and trusted services. This webinar explores how behavioral AI can help organizations identify compromised accounts faster and automate response workflows. [..…</description>
-  </item>
-  <item>
-    <title>Europe Evolves Into Ransomware&#x27;s Favorite Region</title>
-    <link>https://www.darkreading.com/cybersecurity-analytics/europe-evolves-ransomware-favorite-region</link>
-    <guid isPermaLink="true">https://www.darkreading.com/cybersecurity-analytics/europe-evolves-ransomware-favorite-region</guid>
-    <pubDate>Thu, 25 Jun 2026 10:00:00 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>After a global lull, ransomware gangs are setting sights on a rich new arena: attacking EU organizations and their suppliers.</description>
-  </item>
-  <item>
-    <title>Stealthy new backdoor surfaces in attacks on multiple sectors</title>
-    <link>https://www.helpnetsecurity.com/2026/06/25/mistic-backdoor-woodgnat-attacks/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/25/mistic-backdoor-woodgnat-attacks/</guid>
-    <pubDate>Thu, 25 Jun 2026 14:07:46 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>A relatively new backdoor called Mistic has been deployed in multiple attacks since April 2026 targeting organizations in the insurance, education, IT, and professional services sectors, according to Symantec. The malware appears to be associated with Woodgnat, also known as Kong…</description>
-  </item>
-  <item>
-    <title>AI and Liability</title>
-    <link>https://www.schneier.com/blog/archives/2026/06/ai-and-liability.html</link>
-    <guid isPermaLink="true">https://www.schneier.com/blog/archives/2026/06/ai-and-liability.html</guid>
-    <pubDate>Thu, 25 Jun 2026 17:03:15 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Earlier this month, a German court ruled that Google is liable for its AI search summaries. Rejecting defenses like &amp;#8220;users can check for themselves,&amp;#8221; and that they generally know &amp;#8220;that information generated with AI should not be blindly trusted,&amp;#8221; the court…</description>
-  </item>
-  <item>
-    <title>What do Ports Hear When Nobody&#x27;s Listening&amp;#x3f; An Assessment of Automated Cybercrime &amp;#x5b;Guest Diary&amp;#x5d;, (Wed, Jun 24th)</title>
-    <link>https://isc.sans.edu/diary/rss/33104</link>
-    <guid isPermaLink="true">https://isc.sans.edu/diary/rss/33104</guid>
-    <pubDate>Thu, 25 Jun 2026 10:01:19 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>&amp;#x5b;This is a Guest Diary by Nicole Phillips, an ISC intern as part of the SANS.edu BACS program&amp;#x5d; &amp;#xd;</description>
-  </item>
-  <item>
-    <title>Introduction to COM usage by Windows threats</title>
-    <link>https://blog.talosintelligence.com/introduction-to-com-usage-by-windows-threats/</link>
-    <guid isPermaLink="true">https://blog.talosintelligence.com/introduction-to-com-usage-by-windows-threats/</guid>
-    <pubDate>Thu, 25 Jun 2026 10:00:26 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Component Object Model (COM) is a fundamental Windows technology used by legitimate applications for object activation, inter-process communication, automation and language-independent component reuse. Those same qualities make it useful to threat actors.</description>
-  </item>
-  <item>
-    <title>Where Expertise Meets Algorithm: The Insikt Group® Intelligence Edge</title>
-    <link>https://www.recordedfuture.com/blog/expertise-meets-algorithm-intelligence-edge</link>
-    <guid isPermaLink="true">https://www.recordedfuture.com/blog/expertise-meets-algorithm-intelligence-edge</guid>
-    <pubDate>Thu, 25 Jun 2026 00:00:00 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Discover how Recorded Future’s Insikt Group combines human expertise with automated analysis to turn raw data into actionable, industry-leading threat intelligence.</description>
-  </item>
-  <item>
-    <title>Russia uses Cellebrite to break into human rights activist’s phone, even after cancellation of contract</title>
-    <link>https://cyberscoop.com/russia-cellebrite-activist-phone-hacking/</link>
-    <guid isPermaLink="true">https://cyberscoop.com/russia-cellebrite-activist-phone-hacking/</guid>
-    <pubDate>Thu, 25 Jun 2026 14:52:06 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The phone-cracking firm broke off from its deal with Russia, but Citizen Lab said that didn’t stop authorities from surveilling Andrey Pivovarov. The post Russia uses Cellebrite to break into human rights activist’s phone, even after cancellation of contract appeared first on Cyb…</description>
-  </item>
-  <item>
-    <title>As cyber risk evolves, the insurance industry tightens guardrails</title>
-    <link>https://www.cybersecuritydive.com/news/cyber-risk-insurance-industry-guardrails/823762/</link>
-    <guid isPermaLink="true">https://www.cybersecuritydive.com/news/cyber-risk-insurance-industry-guardrails/823762/</guid>
-    <pubDate>Thu, 25 Jun 2026 10:21:44 -0400</pubDate>
-    <category>Threat Intelligence</category>
-    <description>C-suite executives are concerned about resilience, but claims are increasingly tied to strict underwriting standards.</description>
-  </item>
-  <item>
-    <title>CL-STA-1062 Targets Southeast Asian Governments and Critical Infrastructure</title>
-    <link>https://unit42.paloaltonetworks.com/cl-sta-1062-tinyrct-backdoor/</link>
-    <guid isPermaLink="true">https://unit42.paloaltonetworks.com/cl-sta-1062-tinyrct-backdoor/</guid>
-    <pubDate>Thu, 25 Jun 2026 22:00:52 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Government entities and critical infrastructure were targeted for espionage in SE Asia by attackers using a hybrid toolkit, including custom TinyRCT backdoor. The post CL-STA-1062 Targets Southeast Asian Governments and Critical Infrastructure appeared first on Unit 42 .</description>
-  </item>
-  <item>
-    <title>WhatsApp is now warning users attempting to message unknown numbers</title>
-    <link>https://cyberinsider.com/whatsapp-is-now-warns-users-attempting-to-message-unknown-numbers/</link>
-    <guid isPermaLink="true">https://cyberinsider.com/whatsapp-is-now-warns-users-attempting-to-message-unknown-numbers/</guid>
-    <pubDate>Thu, 25 Jun 2026 17:42:30 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>WhatsApp has introduced a new security feature designed to make users think twice before starting conversations with unfamiliar phone numbers. The new &amp;#8220;trust warning,&amp;#8221; first spotted by WABetaInfo, appears before a chat is opened and provides contextual information tha…</description>
-  </item>
-  <item>
-    <title>GrapheneOS cites Hyundai, KIA as it pressures Volkswagen over app block</title>
-    <link>https://cyberinsider.com/grapheneos-cites-hyundai-kia-as-it-pressures-volkswagen-over-app-block/</link>
-    <guid isPermaLink="true">https://cyberinsider.com/grapheneos-cites-hyundai-kia-as-it-pressures-volkswagen-over-app-block/</guid>
-    <pubDate>Thu, 25 Jun 2026 12:04:27 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>GrapheneOS is calling on Volkswagen customers to pressure the automaker into restoring compatibility with its mobile app after users reported last week that the app no longer works on the privacy-focused Android operating system. The project pointed to Hyundai and Kia, which it s…</description>
-  </item>
-  <item>
-    <title>Order-tracking app Shop abused to push callback phishing attacks</title>
-    <link>https://www.bleepingcomputer.com/news/security/order-tracking-app-shop-abused-to-push-callback-phishing-attacks/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/order-tracking-app-shop-abused-to-push-callback-phishing-attacks/</guid>
-    <pubDate>Thu, 25 Jun 2026 15:45:48 -0400</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Threat actors are increasingly abusing Shop, the order-tracking app from Shopify, by adding fake purchase receipts in users&#x27; order histories to trick them into providing sensitive data or installing remote access software. [...]</description>
-  </item>
-  <item>
-    <title>Runlayer Raises $30 Million in Series A Funding</title>
-    <link>https://www.securityweek.com/runlayer-raises-30-million-in-series-a-funding/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/runlayer-raises-30-million-in-series-a-funding/</guid>
-    <pubDate>Thu, 25 Jun 2026 12:39:50 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The startup’s platform functions as a secure control layer, aiming to secure AI tools across enterprises. The post Runlayer Raises $30 Million in Series A Funding appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>GitLab Patches Code Execution, Information Disclosure Vulnerabilities</title>
-    <link>https://www.securityweek.com/gitlab-patches-code-execution-information-disclosure-vulnerabilities/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/gitlab-patches-code-execution-information-disclosure-vulnerabilities/</guid>
-    <pubDate>Thu, 25 Jun 2026 11:10:04 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The latest GitLab CE/EE updates address 13 vulnerabilities, including three high-severity defects. The post GitLab Patches Code Execution, Information Disclosure Vulnerabilities appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>SecurityWeek ICS Cybersecurity Conference Heads to Nashville for Special 25-Year Anniversary Edition</title>
-    <link>https://www.securityweek.com/securityweek-ics-cybersecurity-conference-heads-to-nashville-for-special-25-year-anniversary-edition/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/securityweek-ics-cybersecurity-conference-heads-to-nashville-for-special-25-year-anniversary-edition/</guid>
-    <pubDate>Thu, 25 Jun 2026 09:00:00 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The 2026 Industrial Control Systems (ICS) Cybersecurity Conference takes place October 6-8, 2026, at the W Nashville. The post SecurityWeek ICS Cybersecurity Conference Heads to Nashville for Special 25-Year Anniversary Edition appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Russian APT &#x27;Gamaredon&#x27; Upgrades Its Arsenal, Requiring New Defenses</title>
-    <link>https://www.darkreading.com/threat-intelligence/russia-apt-gamaredon-arsenal-defense</link>
-    <guid isPermaLink="true">https://www.darkreading.com/threat-intelligence/russia-apt-gamaredon-arsenal-defense</guid>
-    <pubDate>Thu, 25 Jun 2026 21:12:01 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The FSB state-sponsored operation has gotten a lot better at loading its malware and hiding its servers.</description>
-  </item>
-  <item>
-    <title>Photo ZIP campaign targeting hospitality industry delivers Node.js implant for persistent access</title>
-    <link>https://www.microsoft.com/en-us/security/blog/2026/06/25/photo-zip-campaign-targeting-hospitality-industry-delivers-node-js-implant-persistent-access/</link>
-    <guid isPermaLink="true">https://www.microsoft.com/en-us/security/blog/2026/06/25/photo-zip-campaign-targeting-hospitality-industry-delivers-node-js-implant-persistent-access/</guid>
-    <pubDate>Thu, 25 Jun 2026 22:30:29 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Microsoft Threat Intelligence identified an active multi-stage intrusion campaign targeting hospitality organizations in Europe and Asia. The campaign uses photo-themed ZIP archives and fake image shortcut files to deliver a persistent Node.js implant and evade detection. The pos…</description>
-  </item>
-  <item>
-    <title>Microsoft a Leader in The Forrester Wave™ for Endpoint Management Platforms</title>
-    <link>https://www.microsoft.com/en-us/security/blog/2026/06/25/microsoft-a-leader-in-the-forrester-wave-for-endpoint-management-platforms/</link>
-    <guid isPermaLink="true">https://www.microsoft.com/en-us/security/blog/2026/06/25/microsoft-a-leader-in-the-forrester-wave-for-endpoint-management-platforms/</guid>
-    <pubDate>Thu, 25 Jun 2026 16:00:00 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Microsoft named a Leader in the Forrester Wave™: Endpoint Management Platforms, Q2 2026, with the highest scores in the current offering and strategy categories. The post Microsoft a Leader in The Forrester Wave™ for Endpoint Management Platforms appeared first on Microsoft Secur…</description>
-  </item>
-  <item>
-    <title>New Gaslight macOS Malware Uses Prompt Injection to Disrupt AI-Assisted Analysis</title>
-    <link>https://thehackernews.com/2026/06/new-gaslight-macos-malware-uses-prompt.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/06/new-gaslight-macos-malware-uses-prompt.html</guid>
-    <pubDate>Thu, 25 Jun 2026 14:53:03 +0530</pubDate>
-    <category>Cyber Threat Landscape</category>
-    <description>A previously undocumented Rust-based macOS implant and information stealer has been found to embed a prompt injection payload designed to trick a malware analyst&#x27;s artificial intelligence (AI) tools and trick it into aborting or refusing an analysis of the artifact. The malware h…</description>
-  </item>
-  <item>
-    <title>New Mistic Backdoor Linked to KongTuke in ClickFix and ModeloRAT Campaigns</title>
-    <link>https://thehackernews.com/2026/06/new-mistic-backdoor-linked-to-kongtuke.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/06/new-mistic-backdoor-linked-to-kongtuke.html</guid>
-    <pubDate>Thu, 25 Jun 2026 14:24:37 +0530</pubDate>
-    <category>Cyber Threat Landscape</category>
-    <description>A new, stealthy backdoor named Mistic has been deployed as part of suspected financially motivated attacks aimed at multiple organizations spanning insurance, education, IT, and professional services sectors since April 2026. According to Symantec and Carbon Black&#x27;s Threat Hunter…</description>
-  </item>
-  <item>
-    <title>Inside the 2026 SMB threat landscape: From phishing and scams to fake AI tools</title>
-    <link>https://securelist.com/smb-threat-report-2026/120357/</link>
-    <guid isPermaLink="true">https://securelist.com/smb-threat-report-2026/120357/</guid>
-    <pubDate>Thu, 25 Jun 2026 10:00:59 +0000</pubDate>
-    <category>Cyber Threat Landscape</category>
-    <description>Kaspersky researchers analyze the threat landscape for SMBs in 2026: the rise of attacks involving fake AI tools, phishing schemes, and data sold on the dark web.</description>
-  </item>
-  <item>
-    <title>International operation disrupts Amadey and StealC malware infrastructure.</title>
-    <link>https://thecyberwire.com/newsletters/daily-briefing/15/120</link>
-    <guid isPermaLink="true">https://thecyberwire.com/newsletters/daily-briefing/15/120</guid>
-    <pubDate>Thu, 25 Jun 2026 16:00:00 +0000</pubDate>
-    <category>Cyber Threat Landscape</category>
-    <description>Cal Water says Handala&#x27;s hacking claims were overstated. Stealthy new backdoor may be tied to initial access broker. DraftKings hacker is sentenced to eighteen months.</description>
-  </item>
-  <item>
-    <title>British Police Built a Sprawling Crime-Prediction Machine. Some Results Couldn’t Be Trusted</title>
-    <link>https://www.wired.com/story/british-police-built-a-sprawling-crime-prediction-machine-some-results-couldnt-be-trusted/</link>
-    <guid isPermaLink="true">https://www.wired.com/story/british-police-built-a-sprawling-crime-prediction-machine-some-results-couldnt-be-trusted/</guid>
-    <pubDate>Thu, 25 Jun 2026 10:00:00 +0000</pubDate>
-    <category>Cyber Threat Landscape</category>
-    <description>As UK police embrace the AI revolution, a WIRED investigation reveals the messy inside story of one region’s experiment with predictive analytics.</description>
-  </item>
-  <item>
-    <title>New macOS malware embeds fake errors to confuse AI analysis tools</title>
-    <link>https://www.bleepingcomputer.com/news/security/new-macos-malware-embeds-fake-errors-to-confuse-ai-analysis-tools/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/new-macos-malware-embeds-fake-errors-to-confuse-ai-analysis-tools/</guid>
-    <pubDate>Thu, 25 Jun 2026 12:23:19 -0400</pubDate>
-    <category>Cyber Threat Landscape</category>
-    <description>A newly discovered macOS malware dubbed &quot;Gaslight&quot; is designed to confuse AI-assisted malware analysis tools by hiding prompt injection strings and fake debugging data within the executable. [...]</description>
-  </item>
-  <item>
-    <title>Chrome Ad Blocker with 10M+ Installs Found with Dormant Script Injection Capability</title>
-    <link>https://thehackernews.com/2026/06/chrome-ad-blocker-with-10m-installs.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/06/chrome-ad-blocker-with-10m-installs.html</guid>
-    <pubDate>Thu, 25 Jun 2026 19:42:52 +0530</pubDate>
-    <category>Infosec News</category>
-    <description>An analysis of a popular Google Chrome ad block extension for YouTube has uncovered the ability to execute arbitrary JavaScript code. According to Island, the extension, named Adblock for YouTube (ID: cmedhionkhpnakcndndgjdbohmhepckk), has more than 10 million installs and carrie…</description>
-  </item>
-  <item>
-    <title>ThreatsDay Bulletin: Smart TV Proxyware, 24-Year curl Bug, AI Crime Forums + 13 More Stories</title>
-    <link>https://thehackernews.com/2026/06/threatsday-bulletin-smart-tv-proxyware.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/06/threatsday-bulletin-smart-tv-proxyware.html</guid>
-    <pubDate>Thu, 25 Jun 2026 17:54:43 +0530</pubDate>
-    <category>Infosec News</category>
-    <description>It’s dumb out there again. This week has the usual smell of prod on fire and nobody wanting to admit who left the door open — old creds still working, trusted apps doing sketchy crap, browser tricks jumping the fence, and “normal” workflows turning into phishing pipes because app…</description>
-  </item>
-  <item>
-    <title>Update Chrome to patch critical browser security flaws</title>
-    <link>https://www.malwarebytes.com/blog/news/2026/06/update-chrome-to-patch-critical-browser-security-flaws</link>
-    <guid isPermaLink="true">https://www.malwarebytes.com/blog/news/2026/06/update-chrome-to-patch-critical-browser-security-flaws</guid>
-    <pubDate>Thu, 25 Jun 2026 11:04:48 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>Chrome has patched 18 vulnerabilities, including four critical flaws. Two WebGL bugs could allow attackers to escape the browser&#x27;s security sandbox.</description>
-  </item>
-  <item>
-    <title>Fake domain renewal emails trick website owners into paying scammers</title>
-    <link>https://www.malwarebytes.com/blog/threat-intel/2026/06/fake-domain-renewal-emails-trick-website-owners-into-paying-scammers</link>
-    <guid isPermaLink="true">https://www.malwarebytes.com/blog/threat-intel/2026/06/fake-domain-renewal-emails-trick-website-owners-into-paying-scammers</guid>
-    <pubDate>Thu, 25 Jun 2026 10:26:48 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>We uncovered fake domain renewal notices and convincing websites to pressure website owners into paying scammers.</description>
-  </item>
-  <item>
-    <title>Court allows for Ohio to implement restrictions on social media use.</title>
-    <link>https://thecyberwire.com/newsletters/caveat-briefing/4/25</link>
-    <guid isPermaLink="true">https://thecyberwire.com/newsletters/caveat-briefing/4/25</guid>
-    <pubDate>Thu, 25 Jun 2026 20:00:00 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>Five Eyes warns about the frontier AI model.</description>
-  </item>
-  <item>
-    <title>HR1 and the future of U.S. tech security</title>
-    <link>https://thecyberwire.com/podcasts/caveat/314/notes</link>
-    <guid isPermaLink="true">https://thecyberwire.com/podcasts/caveat/314/notes</guid>
-    <pubDate>Thu, 25 Jun 2026 05:00:00 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>We hope you enjoy this encore of Caveat. This week on Caveat, Dave and Ben welcome back N2K’s own ⁠⁠⁠⁠⁠⁠Ethan Cook⁠⁠⁠⁠⁠⁠ for our latest policy deep dive segment. As our lead analyst, Ethan shares his knowledge of law, privacy, and surveillance on the latest policy developments sh…</description>
-  </item>
-  <item>
-    <title>Russia used Cellebrite phone-hacking tool to crack down on dissident after firm cut off country</title>
-    <link>https://therecord.media/russia-used-cellebrite-tool-after-company-pulled-out-of-country</link>
-    <guid isPermaLink="true">https://therecord.media/russia-used-cellebrite-tool-after-company-pulled-out-of-country</guid>
-    <pubDate>Thu, 25 Jun 2026 12:15:00 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>The continued use of the powerful data extraction product soon after the company in March 2021 said it would stop working with Russia suggests the firm has been unable to pull back its technology from authoritarian government customers, researchers say.</description>
-  </item>
-  <item>
-    <title>Twenty Million US IP Connections Used by Proxy Services</title>
-    <link>https://www.infosecurity-magazine.com/news/twenty-million-us-ip-connections/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/twenty-million-us-ip-connections/</guid>
-    <pubDate>Thu, 25 Jun 2026 13:00:00 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>Digital Citizens Alliance report claims that millions of Americans may have unwittingly had IP connections used by cybercriminals</description>
-  </item>
-  <item>
-    <title>macOS Flaw Lets Standard Users Disable EDR and MDM</title>
-    <link>https://www.infosecurity-magazine.com/news/macos-xpc-flaw-disable-edr-mdm/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/macos-xpc-flaw-disable-edr-mdm/</guid>
-    <pubDate>Thu, 25 Jun 2026 11:00:00 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>macos-xpc-flaw-disable-edr-mdm-standard-user-xm-cyber</description>
-  </item>
-  <item>
-    <title>How to Spot a Client in the DoD Industrial Base That Handles CUI</title>
-    <link>https://www.huntress.com/blog/how-to-identify-dod-cui-clients</link>
-    <guid isPermaLink="true">https://www.huntress.com/blog/how-to-identify-dod-cui-clients</guid>
-    <pubDate>Thu, 25 Jun 2026 14:00:00 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>Learn how MSPs/MSSPs can identify if a client is a DoD contractor handling CUI.</description>
-  </item>
-  <item>
-    <title>Anthropic is testing desktop-like Claude Cowork for mobile</title>
-    <link>https://www.bleepingcomputer.com/news/artificial-intelligence/anthropic-is-testing-desktop-like-claude-cowork-for-mobile/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/artificial-intelligence/anthropic-is-testing-desktop-like-claude-cowork-for-mobile/</guid>
-    <pubDate>Thu, 25 Jun 2026 18:53:32 -0400</pubDate>
-    <category>Infosec News</category>
-    <description>Anthropic appears to be testing Claude Cowork support on mobile, allowing you to manage long-running Claude tasks from your phone. [...]</description>
-  </item>
-  <item>
-    <title>PirloTV sports piracy network disrupted as 44 domains seized</title>
-    <link>https://www.bleepingcomputer.com/news/security/pirlotv-sports-piracy-network-disrupted-as-44-domains-seized/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/pirlotv-sports-piracy-network-disrupted-as-44-domains-seized/</guid>
-    <pubDate>Thu, 25 Jun 2026 11:36:56 -0400</pubDate>
-    <category>Infosec News</category>
-    <description>A major sports piracy ring linked to the illegal PirloTV streaming platform has been disrupted in an action that targeted 44 domains. [...]</description>
-  </item>
-  <item>
-    <title>Bluekit phishing kit adopts browser-in-the-middle for login theft</title>
-    <link>https://www.bleepingcomputer.com/news/security/bluekit-phishing-kit-adopts-browser-in-the-middle-for-login-theft/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/bluekit-phishing-kit-adopts-browser-in-the-middle-for-login-theft/</guid>
-    <pubDate>Thu, 25 Jun 2026 11:00:00 -0400</pubDate>
-    <category>Infosec News</category>
-    <description>The Bluekit phishing-as-a-service platform continues to evolve with nearly 70 new hostnames identified over the past week and by adding browser-in-the-middle capabilities for improved data theft. [...]</description>
-  </item>
-  <item>
-    <title>The Four Elevations of Effective Fraud Prevention</title>
-    <link>https://www.bleepingcomputer.com/news/security/the-four-elevations-of-effective-fraud-prevention/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/the-four-elevations-of-effective-fraud-prevention/</guid>
-    <pubDate>Thu, 25 Jun 2026 10:01:11 -0400</pubDate>
-    <category>Infosec News</category>
-    <description>Fraudsters don&#x27;t attack just one transaction. They target accounts, platforms, and entire ecosystems. IPQS explains the four elevations of fraud prevention and why broader visibility improves fraud detection. [...]</description>
-  </item>
-  <item>
-    <title>In Less Than 24 Hours, Attackers Weaponize Cisco CUCM Flaw</title>
-    <link>https://www.darkreading.com/cyberattacks-data-breaches/less-than-24-hours-attackers-weaponize-cisco-cucm-flaw</link>
-    <guid isPermaLink="true">https://www.darkreading.com/cyberattacks-data-breaches/less-than-24-hours-attackers-weaponize-cisco-cucm-flaw</guid>
-    <pubDate>Thu, 25 Jun 2026 21:54:34 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>The flaw enables server-side request forgery (SSRF) and escalates privileges to root, impacting Cisco Unified CM and Unified CM SME deployments.</description>
-  </item>
-  <item>
-    <title>EdTech Attackers Shift From Schools to Their Software Suppliers</title>
-    <link>https://www.darkreading.com/cyberattacks-data-breaches/edtech-attackers-shift-schools-software-suppliers</link>
-    <guid isPermaLink="true">https://www.darkreading.com/cyberattacks-data-breaches/edtech-attackers-shift-schools-software-suppliers</guid>
-    <pubDate>Thu, 25 Jun 2026 20:34:14 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>Educational institutions, the edtech companies they rely on, and, more concerningly, the challenges they pose for schools are the focus of the latest Reporters&#x27; Notebook video series.</description>
-  </item>
-  <item>
-    <title>Uncovering Hidden Attack Paths in Cloud Environments Using Runtime Signals</title>
-    <link>https://www.wiz.io/blog/runtime-signals-in-security-graph</link>
-    <guid isPermaLink="true">https://www.wiz.io/blog/runtime-signals-in-security-graph</guid>
-    <pubDate>Thu, 25 Jun 2026 11:59:34 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>Wiz now layers runtime signals into the Security Graph, exposing hidden attack paths to give security teams a complete picture of risk.</description>
-  </item>
-  <item>
-    <title>Attackers exploit Cisco Unified CM flaw weeks after patch release</title>
-    <link>https://www.csoonline.com/article/4188867/attackers-exploit-cisco-unified-cm-flaw-weeks-after-patch-release.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4188867/attackers-exploit-cisco-unified-cm-flaw-weeks-after-patch-release.html</guid>
-    <pubDate>Wed, 24 Jun 2026 11:32:22 +0000</pubDate>
-    <category>CISA KEV</category>
-    <description>A critical Cisco Unified CM vulnerability is now under active exploitation, weeks after the company issued patches warning it could allow attackers to gain root access. Threat intelligence firm Defused reported the exploitation on June 23. The company said it observed the activit…</description>
-  </item>
-  <item>
-    <title>Hole in widely-used FFmpeg codec could crash media servers or enable RCE</title>
-    <link>https://www.csoonline.com/article/4188531/hole-in-widely-used-ffmpeg-codec-could-crash-media-servers-or-enable-rce.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4188531/hole-in-widely-used-ffmpeg-codec-could-crash-media-servers-or-enable-rce.html</guid>
-    <pubDate>Wed, 24 Jun 2026 00:23:53 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>A newly discovered critical vulnerability in the FFmpeg media processing framework bundled in a huge number of open source and commercial applications points, again, to the need for CSOs to have strategies to deal with software supply chain vulnerabilities, which should include d…</description>
-  </item>
-  <item>
-    <title>Hackers Exploiting Cisco Unified CM Vulnerability</title>
-    <link>https://www.securityweek.com/hackers-exploiting-cisco-unified-cm-vulnerability/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/hackers-exploiting-cisco-unified-cm-vulnerability/</guid>
-    <pubDate>Wed, 24 Jun 2026 05:44:15 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Cisco noted that a PoC had been available for CVE-2026-20230 when it announced patches in early June. The post Hackers Exploiting Cisco Unified CM Vulnerability appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Cisco Unified CM Flaw Exploited After PoC Reveals File-Write Path to Root</title>
-    <link>https://thehackernews.com/2026/06/cisco-unified-cm-flaw-exploited-after.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/06/cisco-unified-cm-flaw-exploited-after.html</guid>
-    <pubDate>Wed, 24 Jun 2026 12:20:38 +0530</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Threat actors have begun to exploit a recently disclosed critical security flaw impacting Cisco Unified Communications Manager (Unified CM) and Unified Communications Manager Session Management Edition (Unified CM SME). The vulnerability, tracked as CVE-2026-20230 (CVSS score: 8.…</description>
-  </item>
-  <item>
-    <title>Cisco Unified CM flaw actively exploited to drop webshells (CVE-2026-20230)</title>
-    <link>https://www.helpnetsecurity.com/2026/06/24/cisco-unified-cm-flaw-exploited-to-drop-webshells-cve-2026-20230/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/24/cisco-unified-cm-flaw-exploited-to-drop-webshells-cve-2026-20230/</guid>
-    <pubDate>Wed, 24 Jun 2026 11:36:30 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>CVE-2026-20230, a server-side request forgery (SSRF) vulnerability affecting Cisco&amp;#8217;s Unified Communications Manager (Unified CM), is being exploited to drop webshells and achieve remote code execution capability on the underlying server. &amp;#8220;Our honeypots are seeing auto…</description>
-  </item>
-  <item>
-    <title>How much cyber risk does AI create for organizations? 457 million security issues. Here’s what you can do about it.</title>
-    <link>https://www.tenable.com/blog/how-much-cyber-risk-does-ai-create-for-organizations-457-million-security-issues-heres-what</link>
-    <guid isPermaLink="true">https://www.tenable.com/blog/how-much-cyber-risk-does-ai-create-for-organizations-457-million-security-issues-heres-what</guid>
-    <pubDate>Wed, 24 Jun 2026 09:00:00 -0400</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Over a 30 day period, Tenable detected 457 million AI-related security issues among 7,000-plus organizations, an average of 62,000 exposures per organization. If we didn’t already know that shadow AI was a problem, data like this makes it clear every organization needs to visuali…</description>
-  </item>
-  <item>
-    <title>CISA Warns Critical Lantronix EDS5000 Flaw Is Being Actively Exploited</title>
-    <link>https://thehackernews.com/2026/06/cisa-warns-critical-lantronix-eds5000.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/06/cisa-warns-critical-lantronix-eds5000.html</guid>
-    <pubDate>Wed, 24 Jun 2026 22:49:18 +0530</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>The U.S. Cybersecurity and Infrastructure Security Agency (CISA) on Tuesday warned of active exploitation of a critical security flaw impacting Lantronix EDS5000 Series devices, urging Federal Civilian Executive Branch (FCEB) agencies to apply the fixes by June 26, 2026. The vuln…</description>
-  </item>
-  <item>
-    <title>Mandiant reveals how Cisco SD-WAN zero-day attacks gained root access</title>
-    <link>https://www.bleepingcomputer.com/news/security/mandiant-reveals-how-cisco-sd-wan-zero-day-attacks-gained-root-access/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/mandiant-reveals-how-cisco-sd-wan-zero-day-attacks-gained-root-access/</guid>
-    <pubDate>Wed, 24 Jun 2026 17:29:10 -0400</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>New details have been revealed on how hackers exploited a Cisco Catalyst SD-WAN vulnerability tracked as CVE-2026-20245 in zero-day attacks to create rogue root accounts on targeted devices. [...]</description>
-  </item>
-  <item>
-    <title>Meta pauses employee monitoring program after data protections fail</title>
-    <link>https://www.csoonline.com/article/4188623/meta-pauses-employee-monitoring-program-after-data-protections-fail.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4188623/meta-pauses-employee-monitoring-program-after-data-protections-fail.html</guid>
-    <pubDate>Wed, 24 Jun 2026 01:13:53 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>An extensive program at Meta to gather a wide range of data from employees to train its AI model has been frozen after employees reportedly broke through its guardrails and accessed restricted data, and then did so again after Meta claimed to have fixed the vulnerability. Whether…</description>
-  </item>
-  <item>
-    <title>Anthropic’s Mythos Model Found Vulnerabilities in Classified US Government Systems, Official Says</title>
-    <link>https://www.securityweek.com/anthropics-mythos-model-found-vulnerabilities-in-classified-us-government-systems-official-says/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/anthropics-mythos-model-found-vulnerabilities-in-classified-us-government-systems-official-says/</guid>
-    <pubDate>Wed, 24 Jun 2026 03:29:58 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Come vulnerabilities were found within hours, but that does not mean the model was able to exploit them within that time, the official said. The post Anthropic’s Mythos Model Found Vulnerabilities in Classified US Government Systems, Official Says appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Cybersecurity jobs available right now: June 24, 2026</title>
-    <link>https://www.helpnetsecurity.com/2026/06/24/cybersecurity-jobs-available-right-now-june-24-2026/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/24/cybersecurity-jobs-available-right-now-june-24-2026/</guid>
-    <pubDate>Wed, 24 Jun 2026 04:00:32 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Application Security Leader DriveNets &amp;#124; Israel &amp;#124; Hybrid &amp;#8211; View job details As an Application Security Leader, you will define security requirements, drive secure coding practices, oversee vulnerability management, and integrate security testing and automation into…</description>
-  </item>
-  <item>
-    <title>Risky Business #843 -- Fortibleed is kinda awesome, actually</title>
-    <link>https://risky.biz/RB843/</link>
-    <guid isPermaLink="true">https://risky.biz/RB843/</guid>
-    <pubDate>Wed, 24 Jun 2026 15:47:01 +1000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>On this week’s show special guest co-host Rob Joyce joins Patrick Gray and James Wilson to discuss the week’s cybersecurity news. Rob served as an advisor to Donald Trump during his first term as president and also served at NSA for 34 years. While at the agency, Joyce led Tailor…</description>
   </item>
   </channel>
 </rss>
