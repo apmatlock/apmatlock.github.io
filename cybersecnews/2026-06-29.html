@@ -105,8 +105,8 @@
 <main class="container wide">
 
     <div class="stats-bar">
-      <div class="stat"><span class="stat-value">9</span><span class="stat-label">Articles</span></div>
-      <div class="stat"><span class="stat-value">3</span><span class="stat-label">Categories</span></div>
+      <div class="stat"><span class="stat-value">19</span><span class="stat-label">Articles</span></div>
+      <div class="stat"><span class="stat-value">5</span><span class="stat-label">Categories</span></div>
       <div class="stat"><span class="stat-value">2026-06-29</span><span class="stat-label">Date</span></div>
     </div>
     <div class="search-wrap">
@@ -115,6 +115,19 @@
       <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
       <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
     </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">8</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="public poc released for critical libssh2 cve-2026-55200 client-side ssh flaw" data-date="2026-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/06/public-poc-released-for-critical.html" target="_blank" rel="noopener">Public PoC Released for Critical libssh2 CVE-2026-55200 Client-Side SSH Flaw</a><span class="article-summary">A public proof-of-concept is now out for CVE-2026-55200, a critical flaw in libssh2 that lets a malicious or compromised SSH server trigger memory corruption on a connecting client, with possible code execution. No credentials, no user interaction. The bug affects every release u…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="cve-2026-52910 bpf: free reuseport cbpf prog after rcu grace period." data-date="2026-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-52910" target="_blank" rel="noopener">CVE-2026-52910 bpf: Free reuseport cBPF prog after RCU grace period.</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-52908 rdma: during rereg_mr ensure that rereg_access is compatible" data-date="2026-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-52908" target="_blank" rel="noopener">CVE-2026-52908 RDMA: During rereg_mr ensure that REREG_ACCESS is compatible</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-58050 libssh2 - integer overflow in publickey subsystem attribute allocation" data-date="2026-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58050" target="_blank" rel="noopener">CVE-2026-58050 libssh2 - Integer Overflow in publickey Subsystem Attribute Allocation</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-58051 libssh2 - free of uninitialized pointer in publickey list cleanup" data-date="2026-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58051" target="_blank" rel="noopener">CVE-2026-58051 libssh2 - Free of Uninitialized Pointer in publickey List Cleanup</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-58058 nmap - integer underflow in ipv6 extension header parsing" data-date="2026-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58058" target="_blank" rel="noopener">CVE-2026-58058 Nmap - Integer Underflow in IPv6 Extension Header Parsing</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-52909 ip6_vti: set netns_immutable on the fallback device." data-date="2026-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-52909" target="_blank" rel="noopener">CVE-2026-52909 ip6_vti: set netns_immutable on the fallback device.</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+<div class="headline" data-title="cve-2026-58055 nghttp2 nghttpx - http request/response smuggling via upgrade request with content-length" data-date="2026-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58055" target="_blank" rel="noopener">CVE-2026-58055 nghttp2 nghttpx - HTTP Request/Response Smuggling via Upgrade Request with Content-Length</a><span class="article-summary">Information published.</span></span><span class="headline-source">MSRC.MICROSOFT.COM</span></div>
+  </div>
+</div>
 <div class="cat-section" id="cat-vulnerability-disclosure">
   <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
   <div class="cat-section-body headlines">
@@ -131,19 +144,26 @@
   </div>
 </div>
 <div class="cat-section" id="cat-threat-intelligence">
-  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">4</span><span class="section-toggle">[−]</span></div>
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
   <div class="cat-section-body headlines">
 <div class="headline" data-title="isc stormcast for monday, june 29th, 2026 https://isc.sans.edu/podcastdetail/9986, (mon, jun 29th)" data-date="2026-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/33108" target="_blank" rel="noopener">ISC Stormcast For Monday, June 29th, 2026 https://isc.sans.edu/podcastdetail/9986, (Mon, Jun 29th)</a><span class="article-summary">(c) SANS Internet Storm Center. https://isc.sans.edu Creative Commons Attribution-Noncommercial 3.0 United States License.</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
 <div class="headline" data-title="risky bulletin: white house asks openai to restrict gpt 5.6" data-date="2026-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://risky.biz/RBNEWS583/" target="_blank" rel="noopener">Risky Bulletin: White House asks OpenAI to restrict GPT 5.6</a><span class="article-summary">The White House asks OpenAI to keep a tight grip on ChatGPT 5.6, the US Secret Service made some appalling OpSec mistakes, AMD has reintroduced a CPU security feature after consumer backlash, and an Iranian APT operator has been arrested in Montenegro.</span></span><span class="headline-source">RISKY.BIZ</span></div>
 <div class="headline" data-title="most teams accept higher risk for faster ai database work" data-date="2026-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/29/teams-ai-database-security/" target="_blank" rel="noopener">Most teams accept higher risk for faster AI database work</a><span class="article-summary">Database professionals are using AI for everyday work like writing queries, building schemas, and reviewing code, and a growing share rely on autonomous tools that act on the database itself. The use of AI in database management has almost tripled in a year, climbing from 15% to …</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
 <div class="headline" data-title="companies keep bolting ai onto their products, and the security bill is coming due" data-date="2026-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/06/29/products-ai-pentesting/" target="_blank" rel="noopener">Companies keep bolting AI onto their products, and the security bill is coming due</a><span class="article-summary">Companies keep bolting AI and LLM features onto their products, and the security results are starting to show a pattern. The vulnerabilities those features create get rated high risk far more often than anything else, and they get fixed slower than anything else. The figures come…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="openai unveils gpt-5.6 sol as its most advanced cybersecurity ai" data-date="2026-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/openai-unveils-gpt-5-6-sol-as-its-most-advanced-cybersecurity-ai/" target="_blank" rel="noopener">OpenAI Unveils GPT-5.6 Sol as Its Most Advanced Cybersecurity AI</a><span class="article-summary">The company says Sol matches competing systems like Mythos Preview while using only a third of the output tokens. The post OpenAI Unveils GPT-5.6 Sol as Its Most Advanced Cybersecurity AI appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cyber-threat-landscape">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,136,204,0.5);" onclick="toggleSection(this)">🌐 CYBER THREAT LANDSCAPE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="a week in security (june 22 &amp;#8211; june 28)" data-date="2026-06-29"><span class="headline-date">29 Jun</span><span class="headline-body"><a class="headline-title" href="https://www.malwarebytes.com/blog/news/2026/06/a-week-in-security-june-22-june-28" target="_blank" rel="noopener">A week in security (June 22 &amp;#8211; June 28)</a><span class="article-summary">A list of topics we covered in the week of June 22 to June 28 of 2026</span></span><span class="headline-source">MALWAREBYTES.COM</span></div>
   </div>
 </div>
 
 </main>
 <button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
 <footer class="site-footer">
-  threat intelligence // 85 sources // generated 2026-06-29 04:03<span class="blink"></span>
+  threat intelligence // 85 sources // generated 2026-06-29 05:03<span class="blink"></span>
 </footer>
 </body>
 </html>
