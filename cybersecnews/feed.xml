@@ -5,8 +5,16 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 30 Jun 2026 02:03:46 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 30 Jun 2026 03:03:43 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Oracle E-Business Suite Flaw CVE-2026-46817 Actively Exploited in the Wild</title>
+    <link>https://thehackernews.com/2026/06/oracle-e-business-suite-flaw-cve-2026.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/06/oracle-e-business-suite-flaw-cve-2026.html</guid>
+    <pubDate>Tue, 30 Jun 2026 10:34:06 +0530</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>A critical security flaw impacting Oracle E-Business Suite has come under active exploitation in the wild, according to Defused Cyber. The vulnerability, tracked as CVE-2026-46817 (CVSS score: 9.8), refers to an improper privilege management and authentication flaw in Oracle Paym…</description>
+  </item>
   <item>
     <title>Malicious Perplexity Chrome Extension Intercepted Searches and Address Bar Input</title>
     <link>https://thehackernews.com/2026/06/malicious-perplexity-chrome-extension.html</link>
@@ -24,12 +32,44 @@
     <description>AI Offensive Security Engineer AGAPI &amp;#124; UAE &amp;#124; On-site &amp;#8211; View job details As an AI Offensive Security Engineer, you will leverage AI and LLMs to accelerate offensive security research, exploit development, vulnerability discovery, and security automation. You will v…</description>
   </item>
   <item>
+    <title>Vulnerability reports are arriving faster than GitHub can review them</title>
+    <link>https://www.helpnetsecurity.com/2026/06/30/github-advisory-database-review/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/30/github-advisory-database-review/</guid>
+    <pubDate>Tue, 30 Jun 2026 05:25:39 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Across the open source world, people are reporting software flaws in record numbers, and the systems built to verify those reports are straining under the weight. The GitHub Advisory Database, which feeds automated security alerts to millions of projects, has reached a point wher…</description>
+  </item>
+  <item>
+    <title>Hottest cybersecurity open-source tools of the month: June 2026</title>
+    <link>https://www.helpnetsecurity.com/2026/06/30/hottest-cybersecurity-open-source-tools-of-the-month-june-2026/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/30/hottest-cybersecurity-open-source-tools-of-the-month-june-2026/</guid>
+    <pubDate>Tue, 30 Jun 2026 05:00:35 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Presented here is a curated selection of noteworthy open-source cybersecurity solutions that have drawn recognition for their ability to enhance security postures across diverse settings. OWASP Agent Memory Guard: Stop AI agents from being weaponized through their own memory AI a…</description>
+  </item>
+  <item>
     <title>Half the defense base still builds security around compliance</title>
     <link>https://www.helpnetsecurity.com/2026/06/30/federal-cybersecurity-compliance-report/</link>
     <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/30/federal-cybersecurity-compliance-report/</guid>
     <pubDate>Tue, 30 Jun 2026 04:30:16 +0000</pubDate>
     <category>Security Advisories</category>
     <description>CMMC requirements are appearing in defense contracts and moving down through supplier networks to thousands of companies new to this kind of compliance work. Many run on limited budgets with lean security teams. The picture comes from nearly 900 defense contractors, C3PAOs, feder…</description>
+  </item>
+  <item>
+    <title>New Controller Flaws Expose Highway Signs and Billboards to Remote Hacking</title>
+    <link>https://www.securityweek.com/new-controller-flaws-expose-highway-signs-and-billboards-to-remote-hacking/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/new-controller-flaws-expose-highway-signs-and-billboards-to-remote-hacking/</guid>
+    <pubDate>Tue, 30 Jun 2026 05:04:15 +0000</pubDate>
+    <category>Security Advisories</category>
+    <description>CISA has published an advisory to inform organizations about three vulnerabilities found by a researcher in Daktronics controllers. The post New Controller Flaws Expose Highway Signs and Billboards to Remote Hacking appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>Product showcase: Scam calls, phishing, and data breaches? Meet AVG Mobile Security</title>
+    <link>https://www.helpnetsecurity.com/2026/06/30/product-showcase-avg-mobile-security-ios/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/30/product-showcase-avg-mobile-security-ios/</guid>
+    <pubDate>Tue, 30 Jun 2026 05:45:06 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>AVG Mobile Security for iOS helps protect users against online threats with features including Web Guard, VPN, Scam Guardian Pro, Hack Alerts, and Photo Vault. It also identifies suspicious calls and scam text messages and helps keep personal information private while using Wi-Fi…</description>
   </item>
   <item>
     <title>ISC Stormcast For Tuesday, June 30th, 2026 https://isc.sans.edu/podcastdetail/9988, (Tue, Jun 30th)</title>
@@ -1564,46 +1604,6 @@
     <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53196</link>
     <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53196</guid>
     <pubDate>Sun, 28 Jun 2026 01:43:13 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-57455 Vim: Stack out-of-bounds write in `spell_soundfold_sofo()` via an over-length `soundfold()` argument</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57455</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57455</guid>
-    <pubDate>Sun, 28 Jun 2026 01:53:31 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-53025 greybus: raw: fix use-after-free on cdev close</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53025</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53025</guid>
-    <pubDate>Sun, 28 Jun 2026 01:51:03 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-57456 Vim: Arbitrary Code Execution via Python Omni-Completion Docstrings</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57456</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57456</guid>
-    <pubDate>Sun, 28 Jun 2026 01:54:14 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-57453 Vim: PowerShell Command Injection via Unescaped Filename in zip.vim Extraction</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57453</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57453</guid>
-    <pubDate>Sun, 28 Jun 2026 01:54:57 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-53215 net: mvpp2: refill RX buffers before XDP or skb use</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53215</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53215</guid>
-    <pubDate>Sun, 28 Jun 2026 01:51:57 -0700</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Information published.</description>
   </item>
