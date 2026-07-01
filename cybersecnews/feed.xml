@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 01 Jul 2026 04:03:39 -0300</lastBuildDate>
+    <lastBuildDate>Wed, 01 Jul 2026 05:03:47 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Citrix Patches Six NetScaler Flaws Allowing File Read and Denial-of-Service</title>
@@ -14,6 +14,398 @@
     <pubDate>Wed, 01 Jul 2026 09:24:22 +0530</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Citrix on Tuesday released security updates to address multiple flaws in NetScaler ADC (formerly Citrix ADC) and NetScaler Gateway (formerly Citrix Gateway) that could be exploited by an attacker to facilitate arbitrary file reads or trigger a denial-of-service (DoS) condition. T…</description>
+  </item>
+  <item>
+    <title>CVE-2026-57062 CMS (Cryptographic Message Syntax) parsing in gpgsm in GnuPG through 2.5.20 mishandles the CMS format for AES-GCM because aes-ICVlen is supposed to be 12 bytes but 4 bytes is accepted. NOTE: this is related to CVE-2026-34182.</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57062</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57062</guid>
+    <pubDate>Wed, 01 Jul 2026 01:40:05 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-42055 NGINX ngx_http_proxy_v2_module and ngx_http_grpc_module vulnerability</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-42055</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-42055</guid>
+    <pubDate>Wed, 01 Jul 2026 01:01:22 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-48779 ws: Memory exhaustion DoS from tiny fragments and data chunks</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-48779</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-48779</guid>
+    <pubDate>Wed, 01 Jul 2026 01:01:28 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-58010 Glib: buffer over-read in glib/gvariant-serialiser.c via gvs_tuple_is_normal()</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58010</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58010</guid>
+    <pubDate>Wed, 01 Jul 2026 01:01:42 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-58015 Glib: path traversal in glib/gio/gdbusauthmechanismsha1.c via keyring_lookup_entry and mechanism_client_data_receive</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58015</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58015</guid>
+    <pubDate>Wed, 01 Jul 2026 01:01:49 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-58016 Glib: integer underflow in gio/gdbusintrospection.c via &quot;g_dbus_node_info_new_for_xml&quot;</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58016</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58016</guid>
+    <pubDate>Wed, 01 Jul 2026 01:01:55 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-58012 Glib: buffer over-read in g_regex_replace() via glib/gregex.c:string_append() and g_utf8_next_char()</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58012</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58012</guid>
+    <pubDate>Wed, 01 Jul 2026 01:02:01 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-58011 Glib: out-of-bounds read in glib/gdatetime.c:g_date_time_get_ymd via invalid gdatetime</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58011</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58011</guid>
+    <pubDate>Wed, 01 Jul 2026 01:02:07 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-58013 Glib: buffer over-read in glib/giochannel.c via &quot;g_io_channel_read_line_backend&quot;</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58013</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58013</guid>
+    <pubDate>Wed, 01 Jul 2026 01:02:15 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-58014 Glib: off-by-one error in glib/gkeyfile.c via &quot;g_key_file_get_locale_string_list&quot;</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58014</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58014</guid>
+    <pubDate>Wed, 01 Jul 2026 01:02:21 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-13322 Kubevirt: virt-handler-rhel9: kubevirt: unbounded virtio-serial readline in virt-handler causes oom denial of service</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13322</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13322</guid>
+    <pubDate>Wed, 01 Jul 2026 01:02:40 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-13208 Kubevirt: virt-handler-rhel9: kubevirt: virt-handler notify server trusts vmi identity from unauthenticated grpc request body</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13208</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13208</guid>
+    <pubDate>Wed, 01 Jul 2026 01:02:53 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-13218 Kubevirt: kubevirt: symlink following in writetocachedfile allows host file overwrite from virt-launcher</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13218</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13218</guid>
+    <pubDate>Wed, 01 Jul 2026 01:02:59 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-13325 Virt-handler-rhel9: kubevirt: kubevirt: disabletls migration setting removes authentication, exposing unauthenticated virtqemud proxy on all interfaces</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13325</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13325</guid>
+    <pubDate>Wed, 01 Jul 2026 01:03:05 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-57918 libnfs through 6.0.2 before 935b8db has an xid integer underflow in READ_IOVEC in rpc_read_from_socket in lib/socket.c during a connection to a crafted NFS server, when the expected pdu size exceeds the absolute pdu size from the xid/record-marker.</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57918</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57918</guid>
+    <pubDate>Wed, 01 Jul 2026 01:03:19 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-6291 Bleichenbacher padding oracle in PKCS#7 KTRI RSA PKCS#1 v1.5 decryption</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6291</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6291</guid>
+    <pubDate>Wed, 01 Jul 2026 01:03:26 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-7532 iPAddress name constraints not enforced when WOLFSSL_IP_ALT_NAME is undefined</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-7532</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-7532</guid>
+    <pubDate>Wed, 01 Jul 2026 01:03:32 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-6450 CRL critical extension bypass in ParseCRL_Extensions</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6450</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6450</guid>
+    <pubDate>Wed, 01 Jul 2026 01:03:39 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-55960 Un-negotiated Raw Public Key (RFC 7250) accepted in place of X.509, bypassing chain validation</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-55960</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-55960</guid>
+    <pubDate>Wed, 01 Jul 2026 01:03:45 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-55964 Chain intermediate CA:TRUE without keyCertSign accepted as a signing CA (temporary CA exemption)</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-55964</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-55964</guid>
+    <pubDate>Wed, 01 Jul 2026 01:03:51 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-6329 PKCS#12 MAC verification uses attacker-controlled comparison length</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6329</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6329</guid>
+    <pubDate>Wed, 01 Jul 2026 01:04:22 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-55961 wolfSSL_PKCS7_verify() reports success for degenerate (certs-only) PKCS#7 with no signer</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-55961</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-55961</guid>
+    <pubDate>Wed, 01 Jul 2026 01:04:29 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-6678 Integer underflow in wc_PKCS7_DecryptOri handling crafted Other Recipient Info</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6678</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6678</guid>
+    <pubDate>Wed, 01 Jul 2026 01:04:35 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-6094 Heap buffer overread in wc_PKCS7_DecodeEnvelopedData parsing crafted PKCS7 EnvelopedData</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6094</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6094</guid>
+    <pubDate>Wed, 01 Jul 2026 01:04:41 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-6331 HMAC zero-length tag forgery in EVP_DigestVerifyFinal</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6331</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6331</guid>
+    <pubDate>Wed, 01 Jul 2026 01:04:48 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-6330 ML-KEM ARM64 NEON ciphertext comparison only compares half of the input</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6330</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6330</guid>
+    <pubDate>Wed, 01 Jul 2026 01:04:54 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-6731 X.509 name constraint bypass via Subject CN treated as a DNS name</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6731</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6731</guid>
+    <pubDate>Wed, 01 Jul 2026 01:05:06 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-55958 Renesas TSIP TLS 1.3 transcript buffer out-of-bounds write in tsip_StoreMessage</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-55958</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-55958</guid>
+    <pubDate>Wed, 01 Jul 2026 01:05:13 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-6325 Out-of-bounds write in SetSuitesHashSigAlgo on oversized signature algorithms list</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6325</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6325</guid>
+    <pubDate>Wed, 01 Jul 2026 01:05:19 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-10592 Wildcard DNS SAN bypasses CA name-constraint checks</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-10592</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-10592</guid>
+    <pubDate>Wed, 01 Jul 2026 01:05:36 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-10512 X25519 x86_64 assembly final reduction leaves non-canonical field element</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-10512</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-10512</guid>
+    <pubDate>Wed, 01 Jul 2026 01:05:43 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-8720 HMAC-BLAKE2 final discards message when key length exceeds block size</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-8720</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-8720</guid>
+    <pubDate>Wed, 01 Jul 2026 01:05:55 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-10098 OCSP CertID serial-number length-confusion in wolfSSL_OCSP_resp_find_status</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-10098</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-10098</guid>
+    <pubDate>Wed, 01 Jul 2026 01:06:01 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-10097 ML-KEM-1024 x64 AVX2 incomplete cipher text comparison enables IND-CCA2 break and static private-key recovery</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-10097</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-10097</guid>
+    <pubDate>Wed, 01 Jul 2026 01:06:07 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-11310 X.509 trust-chain bypass in wolfSSL_X509_verify_cert() via untrusted intermediate anchoring</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11310</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11310</guid>
+    <pubDate>Wed, 01 Jul 2026 01:06:13 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-13595 Util-linux: util-linux: heap use-after-free in libblkid nested partition probing</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13595</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13595</guid>
+    <pubDate>Wed, 01 Jul 2026 01:06:57 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-13318 Virt-api-rhel9: kubevirt: kubevirt: ssrf in virt-api port-forward via unvalidated guest-agent-reported ip</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13318</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13318</guid>
+    <pubDate>Wed, 01 Jul 2026 01:02:46 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-57231 Podman: Malformed Image can trick podman run into leaking host environment variables into the container</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57231</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57231</guid>
+    <pubDate>Wed, 01 Jul 2026 01:03:12 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-11703 Missing SNI/ALPN binding on stateful (session-ID) TLS session resumption</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11703</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11703</guid>
+    <pubDate>Wed, 01 Jul 2026 01:03:57 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-55967 AES-GCM streaming APIs do not reject &gt;64 GiB cumulative single messages, enabling counter wrap and keystream reuse</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-55967</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-55967</guid>
+    <pubDate>Wed, 01 Jul 2026 01:04:04 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-55962 TLS 1.3 post-handshake authentication: server accepts Finished without client Certificate/CertificateVerify</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-55962</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-55962</guid>
+    <pubDate>Wed, 01 Jul 2026 01:04:10 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-11999 X.509 trust-chain bypass via path-depth exhaustion in wolfSSL_X509_verify_cert()</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11999</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11999</guid>
+    <pubDate>Wed, 01 Jul 2026 01:04:16 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-7511 PKCS7_verify signer confusion allows forged signatures to be accepted</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-7511</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-7511</guid>
+    <pubDate>Wed, 01 Jul 2026 01:05:00 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-6091 Partial-chain verification accepts untrusted intermediate as trust anchor</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6091</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6091</guid>
+    <pubDate>Wed, 01 Jul 2026 01:05:25 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-12340 Out-of-bounds heap read in SM2/SM3 certificate Subject Key Identifier computation</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-12340</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-12340</guid>
+    <pubDate>Wed, 01 Jul 2026 01:05:49 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-6092 Encrypt-then-MAC could fall back to MAC-then-Encrypt when HAVE_ENCRYPT_THEN_MAC is configured</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6092</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6092</guid>
+    <pubDate>Wed, 01 Jul 2026 01:06:20 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-6412 Continued acceptance of SHA-1/MD5 digests in certificate processing</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6412</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-6412</guid>
+    <pubDate>Wed, 01 Jul 2026 01:06:26 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-7531 Use-after-free in PQC hybrid key-share handling</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-7531</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-7531</guid>
+    <pubDate>Wed, 01 Jul 2026 01:06:32 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-11625 Bytes::Random::Secure versions through 0.29 for Perl share internal state across forked processes</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11625</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11625</guid>
+    <pubDate>Wed, 01 Jul 2026 01:06:51 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
   </item>
   <item>
     <title>Phantom Squatting: AI-Hallucinated Domains as a Software Supply Chain Vector</title>
@@ -54,6 +446,22 @@
     <pubDate>Wed, 01 Jul 2026 16:55:07 +1000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>An anonymous researcher has dropped a giant cache of zero-day exploits, a sensitive DHS network got hacked, the US Supreme Court restricts geofence warrants, and security firm Huntress has denied accusations of a malicious insider.</description>
+  </item>
+  <item>
+    <title>Anthropic Restores Claude Fable 5 After U.S. Lifts Jailbreak-Linked Export Controls</title>
+    <link>https://thehackernews.com/2026/07/anthropic-restores-claude-fable-5-after.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/anthropic-restores-claude-fable-5-after.html</guid>
+    <pubDate>Wed, 01 Jul 2026 12:16:17 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Anthropic is putting Claude Fable 5 back online worldwide. On&amp;nbsp;June 30, the U.S. Commerce Department lifted the export controls it had imposed on Fable and its more tightly controlled sibling Mythos 5 about two and a half weeks earlier. Fable 5 returns to users on Wednesday, …</description>
+  </item>
+  <item>
+    <title>Casey Ellis on How AI Is Reshaping Vulnerability Research and Patching</title>
+    <link>https://thecyberwire.com/podcasts/microsoft-threat-intelligence/72/notes</link>
+    <guid isPermaLink="true">https://thecyberwire.com/podcasts/microsoft-threat-intelligence/72/notes</guid>
+    <pubDate>Wed, 01 Jul 2026 07:05:00 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>In this episode of the Microsoft Threat Intelligence Podcast, host⁠ ⁠⁠⁠Sherrod DeGrippo⁠ sits down with Casey Ellis, founder of Bugcrowd and co-founder of disclose.io, to explore how AI is reshaping vulnerability research, bug bounty programs, and the future of cyber defense. The…</description>
   </item>
   <item>
     <title>AI-generated code risks reach security, legal, and compliance teams</title>
@@ -136,6 +544,14 @@
     <description>When I spoke at a recent cybersecurity awareness event for financial planners and tax advisors, the audience really engaged with the subject. As happens at conferences the world over, people often come up to speakers to ask follow-up questions, or just give their feedback about p…</description>
   </item>
   <item>
+    <title>Massive Password Spray Campaign Targeting Azure CLI</title>
+    <link>https://www.securityweek.com/massive-password-spray-campaign-targeting-azure-cli/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/massive-password-spray-campaign-targeting-azure-cli/</guid>
+    <pubDate>Wed, 01 Jul 2026 07:46:33 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Hackers were seen making over 81 million login attempts originating from systems associated with hosting provider LSHIY. The post Massive Password Spray Campaign Targeting Azure CLI appeared first on SecurityWeek .</description>
+  </item>
+  <item>
     <title>Researcher Analyzes 3,000 Live ClickFix Payloads, Exposing API-Driven Malware Delivery</title>
     <link>https://thehackernews.com/2026/07/researcher-analyzes-3000-live-clickfix.html</link>
     <guid isPermaLink="true">https://thehackernews.com/2026/07/researcher-analyzes-3000-live-clickfix.html</guid>
@@ -166,6 +582,14 @@
     <pubDate>Wed, 01 Jul 2026 11:16:03 +0530</pubDate>
     <category>Infosec News</category>
     <description>Cybersecurity researchers have warned of a &quot;massive, ongoing, automated password spray attack&quot; aimed at Microsoft&#x27;s Azure command-line interface (CLI), compromising dozens of accounts in the process. The activity, per Huntress, originates from an IPv6 address range (2a0a:d683::/3…</description>
+  </item>
+  <item>
+    <title>Adobe patches seven max severity ColdFusion, Campaign flaws</title>
+    <link>https://www.bleepingcomputer.com/news/security/adobe-patches-seven-max-severity-coldfusion-campaign-flaws/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/adobe-patches-seven-max-severity-coldfusion-campaign-flaws/</guid>
+    <pubDate>Wed, 01 Jul 2026 03:34:52 -0400</pubDate>
+    <category>Infosec News</category>
+    <description>Adobe has released security patches for seven maximum-severity vulnerabilities in the ColdFusion web app development platform and the Campaign Classic marketing automation platform. [...]</description>
   </item>
   <item>
     <title>How CISA BOD 26-04 redefines vulnerability management metrics for security leaders</title>
@@ -1182,430 +1606,6 @@
     <pubDate>Tue, 30 Jun 2026 21:10:18 +0530</pubDate>
     <category>Infosec News</category>
     <description>Cybersecurity researchers have flagged an active browser extension campaign that is designed to steal cryptocurrency by stealthily replacing wallet addresses when unsuspecting users initiate a transaction. The cryptocurrency clipper activity has been codenamed Silent Swap by McAf…</description>
-  </item>
-  <item>
-    <title>CIA chief highlights major shifts in agency’s tech approach</title>
-    <link>https://therecord.media/cia-chief-ratcliffe-highlights-major-shifts-in-agencys-tech-approach</link>
-    <guid isPermaLink="true">https://therecord.media/cia-chief-ratcliffe-highlights-major-shifts-in-agencys-tech-approach</guid>
-    <pubDate>Tue, 30 Jun 2026 19:05:00 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>CIA Director John Ratcliffe said artificial intelligence capabilities are &quot;akin to digital nuclear weapons.”</description>
-  </item>
-  <item>
-    <title>Why Identity Security Is Your Cyber Career Entry Point</title>
-    <link>https://www.darkreading.com/cybersecurity-operations/identity-security-cyber-career-entry-point</link>
-    <guid isPermaLink="true">https://www.darkreading.com/cybersecurity-operations/identity-security-cyber-career-entry-point</guid>
-    <pubDate>Tue, 30 Jun 2026 19:11:40 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>As AI reshapes cybersecurity workflows, John Paul Cunningham, CISO at SIlverfort, says the technology is creating opportunities rather than eliminating jobs — and there are more ways than ever to break into the essential field.</description>
-  </item>
-  <item>
-    <title>Watch out for &amp;#8220;high paying, low effort&amp;#8221; Amazon job texts</title>
-    <link>https://www.malwarebytes.com/blog/scams/2026/06/watch-out-for-high-paying-low-effort-amazon-job-texts</link>
-    <guid isPermaLink="true">https://www.malwarebytes.com/blog/scams/2026/06/watch-out-for-high-paying-low-effort-amazon-job-texts</guid>
-    <pubDate>Tue, 30 Jun 2026 20:46:28 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>Scammers are using Amazon and the promise of big money to lure people in to their trap.</description>
-  </item>
-  <item>
-    <title>New BioShocking attack manipulates AI browser into data theft</title>
-    <link>https://www.bleepingcomputer.com/news/security/new-bioshocking-attack-manipulates-ai-browser-into-data-theft/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/new-bioshocking-attack-manipulates-ai-browser-into-data-theft/</guid>
-    <pubDate>Tue, 30 Jun 2026 17:50:24 -0400</pubDate>
-    <category>Infosec News</category>
-    <description>A new prompt injection attack dubbed &quot;BioShocking&quot; could trick AI-powered browsers into treating real-world risky actions as part of a fictional scenario, causing them to ignore any safety guardrails. [...]</description>
-  </item>
-  <item>
-    <title>Microsoft accelerates quantum-safe roadmap as risks grow</title>
-    <link>https://www.bleepingcomputer.com/news/microsoft/microsoft-accelerates-quantum-safe-roadmap-as-risks-grow/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/microsoft/microsoft-accelerates-quantum-safe-roadmap-as-risks-grow/</guid>
-    <pubDate>Tue, 30 Jun 2026 17:20:06 -0400</pubDate>
-    <category>Infosec News</category>
-    <description>Microsoft announced today that it is accelerating its quantum-safe security roadmap, saying advances in quantum computing are bringing the need to replace today&#x27;s encryption standards sooner than previously expected. [...]</description>
-  </item>
-  <item>
-    <title>Attackers Hijack Exposed AI Endpoints to Power Offensive Ops</title>
-    <link>https://www.darkreading.com/cloud-security/attackers-hijack-exposed-ai-endpoints-power-offensive-ops</link>
-    <guid isPermaLink="true">https://www.darkreading.com/cloud-security/attackers-hijack-exposed-ai-endpoints-power-offensive-ops</guid>
-    <pubDate>Tue, 30 Jun 2026 21:01:58 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>Attackers don&#x27;t need any special authentication to reach a target endpoint — they just need to know where it is.</description>
-  </item>
-  <item>
-    <title>Anthropic rolls out Sonnet 5 with near-Opus 4.8 performance at a lower price</title>
-    <link>https://www.bleepingcomputer.com/news/artificial-intelligence/anthropic-rolls-out-sonnet-5-with-near-opus-48-performance-at-a-lower-price/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/artificial-intelligence/anthropic-rolls-out-sonnet-5-with-near-opus-48-performance-at-a-lower-price/</guid>
-    <pubDate>Tue, 30 Jun 2026 19:13:07 -0400</pubDate>
-    <category>Infosec News</category>
-    <description>Anthropic is now rolling out Sonnet 5, and it&#x27;s almost as good as the Opus range, but it is designed to be cheaper than the company&#x27;s flagship model. [...]</description>
-  </item>
-  <item>
-    <title>Modernizing Global Vulnerability Standards For The Age Of AI</title>
-    <link>https://www.rapid7.com/blog/post/ai-modernizing-global-vulnerability-standards</link>
-    <guid isPermaLink="true">https://www.rapid7.com/blog/post/ai-modernizing-global-vulnerability-standards</guid>
-    <pubDate>Mon, 29 Jun 2026 12:37:04 +0000</pubDate>
-    <category>CISA KEV</category>
-    <description>As AI-driven vulnerability discovery accelerates, the cybersecurity ecosystem is being forced to examine whether the standards, disclosure processes, and prioritization frameworks defenders rely on can still keep pace. Many of those systems were built around human-speed discovery…</description>
-  </item>
-  <item>
-    <title>JSP webshells being dropped on unpatched PTC Windchill instances</title>
-    <link>https://www.helpnetsecurity.com/2026/06/29/ptc-windchill-cve-2026-12569-exploited/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/29/ptc-windchill-cve-2026-12569-exploited/</guid>
-    <pubDate>Mon, 29 Jun 2026 16:18:49 +0000</pubDate>
-    <category>CISA KEV</category>
-    <description>The US Cybersecurity and Infrastructure Security Agency (CISA) added a vulnerability (CVE-2026-12569) in Windchill and FlexPLM, two product lifecycle management software platforms developed by PTC, to its Known Exploited Vulnerabilities (KEV) catalog. Entries in the KEV catalog d…</description>
-  </item>
-  <item>
-    <title>Public PoC Released for Critical libssh2 CVE-2026-55200 Client-Side SSH Flaw</title>
-    <link>https://thehackernews.com/2026/06/public-poc-released-for-critical.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/06/public-poc-released-for-critical.html</guid>
-    <pubDate>Mon, 29 Jun 2026 12:36:34 +0530</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>A public proof-of-concept is now out for CVE-2026-55200, a critical flaw in libssh2 that lets a malicious or compromised SSH server trigger memory corruption on a connecting client, with possible code execution. No credentials, no user interaction. The bug affects every release u…</description>
-  </item>
-  <item>
-    <title>CVE-2026-52910 bpf: Free reuseport cBPF prog after RCU grace period.</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-52910</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-52910</guid>
-    <pubDate>Mon, 29 Jun 2026 01:05:09 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-52908 RDMA: During rereg_mr ensure that REREG_ACCESS is compatible</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-52908</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-52908</guid>
-    <pubDate>Mon, 29 Jun 2026 01:05:37 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-58050 libssh2 - Integer Overflow in publickey Subsystem Attribute Allocation</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58050</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58050</guid>
-    <pubDate>Mon, 29 Jun 2026 01:05:57 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-58051 libssh2 - Free of Uninitialized Pointer in publickey List Cleanup</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58051</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58051</guid>
-    <pubDate>Mon, 29 Jun 2026 01:06:18 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-58058 Nmap - Integer Underflow in IPv6 Extension Header Parsing</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58058</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58058</guid>
-    <pubDate>Mon, 29 Jun 2026 01:06:47 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-52909 ip6_vti: set netns_immutable on the fallback device.</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-52909</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-52909</guid>
-    <pubDate>Mon, 29 Jun 2026 01:05:23 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-58055 nghttp2 nghttpx - HTTP Request/Response Smuggling via Upgrade Request with Content-Length</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58055</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58055</guid>
-    <pubDate>Mon, 29 Jun 2026 01:06:34 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>Hackers now exploit critical Oracle E-Business flaw in attacks</title>
-    <link>https://www.bleepingcomputer.com/news/security/new-oracle-e-business-suite-flaw-now-exploited-in-attacks/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/new-oracle-e-business-suite-flaw-now-exploited-in-attacks/</guid>
-    <pubDate>Mon, 29 Jun 2026 09:46:17 -0400</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Attackers have begun exploiting a critical vulnerability (CVE-2026-46817) in the Oracle E-Business Suite (EBS) financial application, according to threat intelligence company Defused. [...]</description>
-  </item>
-  <item>
-    <title>Critical SimpleHelp flaw exploited to deploy new stealer malware</title>
-    <link>https://www.bleepingcomputer.com/news/security/hackers-exploit-critical-simplehelp-flaw-deploy-new-djinn-infostealer-taskweaver-malware/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/hackers-exploit-critical-simplehelp-flaw-deploy-new-djinn-infostealer-taskweaver-malware/</guid>
-    <pubDate>Mon, 29 Jun 2026 10:00:00 -0400</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Hackers are exploiting a recently disclosed critical vulnerability (CVE-2026-48558) in SimpleHelp to deploy Djinn Stealer, a previously undocumented cross-platform information stealer targeting Windows, macOS, and Linux. [...]</description>
-  </item>
-  <item>
-    <title>Enterprise Tech In, Shell Out (Progress Kemp LoadMaster Uninitialized Heap to Pre-Auth RCE CVE-2026-8037)</title>
-    <link>https://labs.watchtowr.com/enterprise-tech-in-shell-out-progress-kemp-loadmaster-uninitialized-heap-to-pre-auth-rce-cve-2026-8037/</link>
-    <guid isPermaLink="true">https://labs.watchtowr.com/enterprise-tech-in-shell-out-progress-kemp-loadmaster-uninitialized-heap-to-pre-auth-rce-cve-2026-8037/</guid>
-    <pubDate>Mon, 29 Jun 2026 19:24:54 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Welcome back to another watchTowr Labs blog post. This time, we&amp;apos;re looking at Progress Kemp LoadMaster, a load balancer that sits at the edge of a lot of enterprise networks. Edge appliances have a habit of becoming the way in rather than the thing keeping people out, and</description>
-  </item>
-  <item>
-    <title>&#x27;Djinn&#x27; Stealer Targets Cloud, AI Credentials</title>
-    <link>https://www.darkreading.com/cyberattacks-data-breaches/djinn-stealer-targets-cloud-ai-credentials</link>
-    <guid isPermaLink="true">https://www.darkreading.com/cyberattacks-data-breaches/djinn-stealer-targets-cloud-ai-credentials</guid>
-    <pubDate>Mon, 29 Jun 2026 21:29:15 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>The infostealer was delivered via CVE-2026-48558, a critical authentication bypass vulnerability in SimpleHelp, targeting credentials linking development and admin environments to wider enterprise systems.</description>
-  </item>
-  <item>
-    <title>Sponsored: Corelight’s blueprint for AI-era defence</title>
-    <link>https://risky.biz/RBNEWSSI134/</link>
-    <guid isPermaLink="true">https://risky.biz/RBNEWSSI134/</guid>
-    <pubDate>Mon, 29 Jun 2026 11:10:51 +1000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>In this sponsored interview James Wilson chats with Corelight’s VP of Product Vijit Nair about defence strategies for the AI era. When agents can find and exploit vulnerabilities at machine speed, you need to balance between proactive and reactive measures. On the proactive side,…</description>
-  </item>
-  <item>
-    <title>US Restricts Frontier AI models</title>
-    <link>https://cybersecuritytoday.libsyn.com/us-restricts-frontier-ai-models</link>
-    <guid isPermaLink="true">https://cybersecuritytoday.libsyn.com/us-restricts-frontier-ai-models</guid>
-    <pubDate>Mon, 29 Jun 2026 02:15:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>US Loosens Anthropic Claude Mythos Access, Unpatchable iPhone Exploit Emerges, and CISO Burnout Drives Fractional Shift Washington granted a partial reprieve allowing Anthropic&#x27;s Claude Mythos to be released to more than 100 approved U.S. firms and institutions after export contr…</description>
-  </item>
-  <item>
-    <title>DarkMoon: Open-source AI pentesting platform</title>
-    <link>https://www.helpnetsecurity.com/2026/06/29/darkmoon-open-source-ai-pentesting-platform/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/29/darkmoon-open-source-ai-pentesting-platform/</guid>
-    <pubDate>Mon, 29 Jun 2026 05:30:03 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Penetration testing has long run on expert time, with specialists spending days probing a network or web application by hand. Manual engagements stretch across weeks, expert consultants run into thousands of dollars a day, and results vary with the tester. Automation promises to …</description>
-  </item>
-  <item>
-    <title>From mythos to reality: Why the 2026 state of pentesting report proves the need for programmatic defenses</title>
-    <link>https://www.cybersecuritydive.com/spons/from-mythos-to-reality-why-the-2026-state-of-pentesting-report-proves-the/823726/</link>
-    <guid isPermaLink="true">https://www.cybersecuritydive.com/spons/from-mythos-to-reality-why-the-2026-state-of-pentesting-report-proves-the/823726/</guid>
-    <pubDate>Mon, 29 Jun 2026 05:00:00 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>AI can find zero-days in minutes. Your defense strategy must evolve now.</description>
-  </item>
-  <item>
-    <title>Fixing pentesting, Meta is destroying its engineering org, the weekly news  - ESW #465</title>
-    <link>https://www.youtube.com/watch?v=DRg-qoTIvJE</link>
-    <guid isPermaLink="true">https://www.youtube.com/watch?v=DRg-qoTIvJE</guid>
-    <pubDate>Mon, 29 Jun 2026 09:00:16 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Interview with Adriel Desautels - the pentest is broken Adriel joins us for a discussion on the state of penetration testing, why it hasn&#x27;t done much to help security teams over the last 20 years, and why AI won&#x27;t save it. Segment Resources: - https://hbr.org/2026/04/boards-are-f…</description>
-  </item>
-  <item>
-    <title>US Federal Insurance Regulator Confirms Data Breach Via Oracle Flaw</title>
-    <link>https://www.infosecurity-magazine.com/news/us-insurance-regulator-confirms/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/us-insurance-regulator-confirms/</guid>
-    <pubDate>Mon, 29 Jun 2026 10:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>An attacker has exploited a zero day in Oracle Peoplesoft to gain access to the IT systems of the NAIC, the standard-setting association for the US federal insurance system</description>
-  </item>
-  <item>
-    <title>Robot Police Officers</title>
-    <link>https://www.schneier.com/blog/archives/2026/06/robot-police-officers.html</link>
-    <guid isPermaLink="true">https://www.schneier.com/blog/archives/2026/06/robot-police-officers.html</guid>
-    <pubDate>Mon, 29 Jun 2026 10:55:33 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>We&amp;#8217;ve taken one small step towards robot police officers: a drone capable of disarming a suspect: In a June 22 video posted on the Sacramento County Sheriff’s Office’s Instagram page, an officer wearing goggles can be seen operating a drone to retrieve a knife from an armed…</description>
-  </item>
-  <item>
-    <title>Mozilla warns of indirect prompt injection risk in AI coding agents</title>
-    <link>https://www.helpnetsecurity.com/2026/06/29/mozilla-warns-of-indirect-prompt-injection-risk-in-ai-coding-agents/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/29/mozilla-warns-of-indirect-prompt-injection-risk-in-ai-coding-agents/</guid>
-    <pubDate>Mon, 29 Jun 2026 10:48:12 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>A malicious GitHub repository can silently compromise a developer&amp;#8217;s machine without containing a single line of malicious code, security researchers at Mozilla&amp;#8217;s Zero Day Investigative Network (0DIN) warned. The attack The proof-of-concept attack targets AI-powered co…</description>
-  </item>
-  <item>
-    <title>‘DirtyClone’ Linux Kernel Vulnerability Leads to Root Access</title>
-    <link>https://www.securityweek.com/dirtyclone-linux-kernel-vulnerability-leads-to-root-access/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/dirtyclone-linux-kernel-vulnerability-leads-to-root-access/</guid>
-    <pubDate>Mon, 29 Jun 2026 11:20:13 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>A variant of DirtyFrag, the flaw allows unprivileged local users to manipulate the Linux page cache and gain root privileges. The post &amp;#8216;DirtyClone&amp;#8217; Linux Kernel Vulnerability Leads to Root Access appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>The Red Agent POV: Exploiting Broken Object-Level Authorization in an Airline GraphQL API</title>
-    <link>https://www.wiz.io/blog/red-agent-pov-bola</link>
-    <guid isPermaLink="true">https://www.wiz.io/blog/red-agent-pov-bola</guid>
-    <pubDate>Mon, 29 Jun 2026 09:31:40 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Part 2: How the Red Agent bypassed backend resolvers to expose an entire airline booking database in fifteen minutes</description>
-  </item>
-  <item>
-    <title>236,000 DCloud Uni-App Sites Used in Crypto Scams, Phishing, and Wallet Drainers</title>
-    <link>https://thehackernews.com/2026/06/236000-dcloud-uni-app-sites-used-in.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/06/236000-dcloud-uni-app-sites-used-in.html</guid>
-    <pubDate>Mon, 29 Jun 2026 17:27:40 +0530</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>New findings unearthed by Infoblox show that more than 236,000 websites are using investment scam templates built using a legitimate Chinese open-source, cross-platform application development framework called DCloud Uni-App. The templates power bogus cryptocurrency exchanges, mu…</description>
-  </item>
-  <item>
-    <title>Charting your way in: Helm template injection</title>
-    <link>https://www.synacktiv.com/en/publications/charting-your-way-in-helm-template-injection.html</link>
-    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/charting-your-way-in-helm-template-injection.html</guid>
-    <pubDate>Mon, 29 Jun 2026 11:03:05 -0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>During the audit of a Kubernetes cluster, we encountered an injection in a Helm template applied through ArgoCD. To our surprise, very few resources exist regarding YAML injection in vulnerable Helm templates. In this blog post, we will explore this kind of vulnerability and how …</description>
-  </item>
-  <item>
-    <title>UK businesses fear stigma of ransomware</title>
-    <link>https://databreaches.net/2026/06/29/uk-businesses-fear-stigma-of-ransomware/?pk_campaign=feed&amp;pk_kwd=uk-businesses-fear-stigma-of-ransomware</link>
-    <guid isPermaLink="true">https://databreaches.net/2026/06/29/uk-businesses-fear-stigma-of-ransomware/?pk_campaign=feed&amp;pk_kwd=uk-businesses-fear-stigma-of-ransomware</guid>
-    <pubDate>Mon, 29 Jun 2026 12:54:45 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Alex Scroxton reports: Fear of stigmatisation is likely leading businesses across the UK to drastically underreport data on ransomware attacks, especially when they have paid a ransom to a cyber criminal gang, as admission of such is often seen as supporting further criminal acti…</description>
-  </item>
-  <item>
-    <title>Central Bank of Libya investigates alleged data leak after cyberattack</title>
-    <link>https://databreaches.net/2026/06/29/central-bank-of-libya-investigates-alleged-data-leak-after-cyberattack/?pk_campaign=feed&amp;pk_kwd=central-bank-of-libya-investigates-alleged-data-leak-after-cyberattack</link>
-    <guid isPermaLink="true">https://databreaches.net/2026/06/29/central-bank-of-libya-investigates-alleged-data-leak-after-cyberattack/?pk_campaign=feed&amp;pk_kwd=central-bank-of-libya-investigates-alleged-data-leak-after-cyberattack</guid>
-    <pubDate>Mon, 29 Jun 2026 12:54:40 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>SafaAlharathy reports: Libya’s central bank (CBL) says it is investigating data published on the dark web following a recent cyberattack. In a statement, the bank said its technical teams, working with international experts, were analysing the data to determine its nature and whe…</description>
-  </item>
-  <item>
-    <title>ZA: Copying the wrong person on an email could be considered a data breach in South Africa</title>
-    <link>https://databreaches.net/2026/06/29/za-copying-the-wrong-person-on-an-email-could-be-considered-a-data-breach-in-south-africa/?pk_campaign=feed&amp;pk_kwd=za-copying-the-wrong-person-on-an-email-could-be-considered-a-data-breach-in-south-africa</link>
-    <guid isPermaLink="true">https://databreaches.net/2026/06/29/za-copying-the-wrong-person-on-an-email-could-be-considered-a-data-breach-in-south-africa/?pk_campaign=feed&amp;pk_kwd=za-copying-the-wrong-person-on-an-email-could-be-considered-a-data-breach-in-south-africa</guid>
-    <pubDate>Mon, 29 Jun 2026 12:54:32 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Jan Vermeulen reports: Misdirected internal emails that expose personal information can trigger mandatory data breach reporting under South Africa’s data privacy law, POPIA, even when the disclosure was accidental. Armand Swart, Hlonelwa Lutuli, and Isabella Keeves from Werksmans…</description>
-  </item>
-  <item>
-    <title>One Honeypot Ends the Attack</title>
-    <link>https://www.youtube.com/shorts/cr1m3Q5RxDM</link>
-    <guid isPermaLink="true">https://www.youtube.com/shorts/cr1m3Q5RxDM</guid>
-    <pubDate>Mon, 29 Jun 2026 14:00:30 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Many attackers spend their first moments inside a compromised network performing discovery. According to this red team perspective, a properly deployed honeypot or canary token can immediately reveal that activity. That means organizations don&#x27;t always have to catch every exploit…</description>
-  </item>
-  <item>
-    <title>Factoring RSA Keys with Many Zeros</title>
-    <link>https://www.schneier.com/blog/archives/2026/06/factoring-rsa-keys-with-many-zeros.html</link>
-    <guid isPermaLink="true">https://www.schneier.com/blog/archives/2026/06/factoring-rsa-keys-with-many-zeros.html</guid>
-    <pubDate>Mon, 29 Jun 2026 16:05:18 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Interesting research on a new class of weak RSA keys: keys with lots of zeros. It turns out that these keys are out in the wild. The badkeys project is an open-source service that checks public keys for known vulnerabilities. While developing this tool, Hanno collected a massive …</description>
-  </item>
-  <item>
-    <title>Inside the Advisory Database and what happens when vulnerability volume breaks records</title>
-    <link>https://github.blog/security/supply-chain-security/inside-the-advisory-database-and-what-happens-when-vulnerability-volume-breaks-records/</link>
-    <guid isPermaLink="true">https://github.blog/security/supply-chain-security/inside-the-advisory-database-and-what-happens-when-vulnerability-volume-breaks-records/</guid>
-    <pubDate>Mon, 29 Jun 2026 16:10:20 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The GitHub Advisory Database is processing more vulnerability reports than ever before. Here&#x27;s what&#x27;s driving the surge, how we&#x27;re responding, and how the community can help. The post Inside the Advisory Database and what happens when vulnerability volume breaks records appeared …</description>
-  </item>
-  <item>
-    <title>US racks up about 400 wins over illegal World Cup streaming sites</title>
-    <link>https://therecord.media/us-takes-down-hundreds-world-cup-streaming-sites</link>
-    <guid isPermaLink="true">https://therecord.media/us-takes-down-hundreds-world-cup-streaming-sites</guid>
-    <pubDate>Mon, 29 Jun 2026 17:10:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The World Cup’s organizing body, FIFA, helped identify hundreds of domains taken down in an action organized by the U.S., along with the help of U.S. broadcaster NBC Universal and other entities.</description>
-  </item>
-  <item>
-    <title>Nissan hit by Oracle PeopleSoft cyberattack exposing internal data</title>
-    <link>https://cyberinsider.com/nissan-hit-by-oracle-peoplesoft-cyberattack-exposing-internal-data/</link>
-    <guid isPermaLink="true">https://cyberinsider.com/nissan-hit-by-oracle-peoplesoft-cyberattack-exposing-internal-data/</guid>
-    <pubDate>Mon, 29 Jun 2026 19:50:29 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Nissan North America has informed employees that a cyberattack targeting Oracle PeopleSoft systems exposed sensitive personnel records, making the automaker one of the latest known victims linked to a broader campaign exploiting a critical vulnerability in the widely used HR plat…</description>
-  </item>
-  <item>
-    <title>NI: Updated warning to parents over schools cyber attack</title>
-    <link>https://databreaches.net/2026/06/29/ni-updated-warning-to-parents-over-schools-cyber-attack/?pk_campaign=feed&amp;pk_kwd=ni-updated-warning-to-parents-over-schools-cyber-attack</link>
-    <guid isPermaLink="true">https://databreaches.net/2026/06/29/ni-updated-warning-to-parents-over-schools-cyber-attack/?pk_campaign=feed&amp;pk_kwd=ni-updated-warning-to-parents-over-schools-cyber-attack</guid>
-    <pubDate>Mon, 29 Jun 2026 18:16:56 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Niall Glynn and Auryn Cox report: The number of schools in Northern Ireland affected by a recent cyber-attack is larger than previously thought. In a letter issued by the Education Authority (EA) on Thursday, some parents were warned that their child&amp;#8217;s personal data may hav…</description>
-  </item>
-  <item>
-    <title>MOVEit Breach Defendants Lose 2nd Bid to Toss Negligence Claims</title>
-    <link>https://databreaches.net/2026/06/29/moveit-breach-defendants-lose-2nd-bid-to-toss-negligence-claims/?pk_campaign=feed&amp;pk_kwd=moveit-breach-defendants-lose-2nd-bid-to-toss-negligence-claims</link>
-    <guid isPermaLink="true">https://databreaches.net/2026/06/29/moveit-breach-defendants-lose-2nd-bid-to-toss-negligence-claims/?pk_campaign=feed&amp;pk_kwd=moveit-breach-defendants-lose-2nd-bid-to-toss-negligence-claims</guid>
-    <pubDate>Mon, 29 Jun 2026 17:56:32 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Christopher Brown reports: Bellwether defendants in multi-district litigation over a massive data breach of Progress Software’s MOVEit file-transfer application failed to convince a federal court to toss negligence claims against them under the laws of California, Indiana, Michig…</description>
-  </item>
-  <item>
-    <title>AI behind the velvet rope.</title>
-    <link>https://thecyberwire.com/podcasts/daily-podcast/2582/notes</link>
-    <guid isPermaLink="true">https://thecyberwire.com/podcasts/daily-podcast/2582/notes</guid>
-    <pubDate>Mon, 29 Jun 2026 20:30:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The White House keeps frontier AI models on a short leash. Russian threat actors increasingly target secure messaging platforms. DirtyClone is a high-severity Linux kernel privilege escalation flaw. An investigation claims federal websites are violating privacy rules. Microsoft d…</description>
-  </item>
-  <item>
-    <title>Nissan discloses employee data breach linked to Oracle zero-day attacks</title>
-    <link>https://www.bleepingcomputer.com/news/security/nissan-discloses-employee-data-breach-linked-to-oracle-zero-day-attacks/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/nissan-discloses-employee-data-breach-linked-to-oracle-zero-day-attacks/</guid>
-    <pubDate>Mon, 29 Jun 2026 16:40:44 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Nissan is warning that it suffered a data breach affecting current and former employees after threat actors exploited an Oracle PeopleSoft vulnerability in data theft attacks previously linked to the ShinyHunters extortion group. [...]</description>
-  </item>
-  <item>
-    <title>NAIC says public data stolen in ShinyHunters&#x27; PeopleSoft breach</title>
-    <link>https://www.bleepingcomputer.com/news/security/naic-says-public-data-stolen-in-shinyhunters-peoplesoft-breach/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/naic-says-public-data-stolen-in-shinyhunters-peoplesoft-breach/</guid>
-    <pubDate>Mon, 29 Jun 2026 16:30:28 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The National Association of Insurance Commissioners (NAIC) says the ShinyHunters extortion group stole only publicly available data, outdated logs, and configuration files after breaching its systems by exploiting a zero-day vulnerability in an Oracle PeopleSoft server. [...]</description>
-  </item>
-  <item>
-    <title>Stop Building a 2003 SOC with AI: A Modern People &amp; Process Framework (Part 1)</title>
-    <link>https://medium.com/anton-on-security/stop-building-a-2003-soc-with-ai-a-modern-people-process-framework-part-1-7220513c9de1?source=rss----8e8c3ed26c4c---4</link>
-    <guid isPermaLink="true">https://medium.com/anton-on-security/stop-building-a-2003-soc-with-ai-a-modern-people-process-framework-part-1-7220513c9de1?source=rss----8e8c3ed26c4c---4</guid>
-    <pubDate>Mon, 29 Jun 2026 21:24:06 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>One particular aspect of an agentic or AI-powered SOC (but NOT “humanless SOC ”) has bothered me over the last few months: specifically, the people and process side of such a SOC. If you recall my blog posts ( part 1 , part 2 and this video ) about AI SOC readiness, I hinted at c…</description>
-  </item>
-  <item>
-    <title>Vulnerabilities Expose Private Data in Indian Government Systems</title>
-    <link>https://www.darkreading.com/vulnerabilities-threats/vulnerabilities-private-data-indian-government-systems</link>
-    <guid isPermaLink="true">https://www.darkreading.com/vulnerabilities-threats/vulnerabilities-private-data-indian-government-systems</guid>
-    <pubDate>Mon, 29 Jun 2026 21:05:29 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>One critical vulnerability, among many discovered by a researcher, could have allowed anyone to walk in and take over a national government portal.</description>
-  </item>
-  <item>
-    <title>EXCLUSIVE: Top-100 Law Firm Fox Rothschild Suffers Data Breach and Leak by Silent Ransom Group</title>
-    <link>https://databreaches.net/2026/06/29/exclusive-top-100-law-firm-fox-rothschild-suffers-data-breach-and-leak-by-silent-ransom-group/?pk_campaign=feed&amp;pk_kwd=exclusive-top-100-law-firm-fox-rothschild-suffers-data-breach-and-leak-by-silent-ransom-group</link>
-    <guid isPermaLink="true">https://databreaches.net/2026/06/29/exclusive-top-100-law-firm-fox-rothschild-suffers-data-breach-and-leak-by-silent-ransom-group/?pk_campaign=feed&amp;pk_kwd=exclusive-top-100-law-firm-fox-rothschild-suffers-data-breach-and-leak-by-silent-ransom-group</guid>
-    <pubDate>Mon, 29 Jun 2026 22:13:43 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Fox Rothschild is a top-100 law firm whose articles and resources have been cited on DataBreaches.net and PogoWasRight.org dozens of times over the years. This time, however, they are the subject of a post because they were victims of a data breach by a well-known group that targ…</description>
-  </item>
-  <item>
-    <title>What the post-quantum executive order really demands of CISOs</title>
-    <link>https://cyberscoop.com/post-quantum-cryptography-readiness-ciso-deadlines-op-ed/</link>
-    <guid isPermaLink="true">https://cyberscoop.com/post-quantum-cryptography-readiness-ciso-deadlines-op-ed/</guid>
-    <pubDate>Mon, 29 Jun 2026 09:00:00 +0000</pubDate>
-    <category>Security Advisories</category>
-    <description>ith federal PQC deadlines set for 2030 and 2031, CISOs face a multi-year transformation program that most organizations have not yet started. The window for orderly execution is narrowing fast. The post What the post-quantum executive order really demands of CISOs appeared first …</description>
-  </item>
-  <item>
-    <title>OpenAI and Anthropic Limit New AI Models to Trump-Approved Customers During Cybersecurity Review</title>
-    <link>https://www.securityweek.com/openai-and-anthropic-limit-new-ai-models-to-trump-approved-customers-during-cybersecurity-review/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/openai-and-anthropic-limit-new-ai-models-to-trump-approved-customers-during-cybersecurity-review/</guid>
-    <pubDate>Mon, 29 Jun 2026 10:14:01 +0000</pubDate>
-    <category>Security Advisories</category>
-    <description>ChatGPT maker OpenAI said Friday it is restricting the release of its new artificial intelligence model at the request of President Donald Trump’s administration. The post OpenAI and Anthropic Limit New AI Models to Trump-Approved Customers During Cybersecurity Review appeared fi…</description>
-  </item>
-  <item>
-    <title>[Control systems] CISA ICS security advisories (AV26-637)</title>
-    <link>https://cyber.gc.ca/en/alerts-advisories/control-systems-cisa-ics-security-advisories-av26-637</link>
-    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/control-systems-cisa-ics-security-advisories-av26-637</guid>
-    <pubDate>Mon, 29 Jun 2026 11:02:28 -0000</pubDate>
-    <category>Security Advisories</category>
-    <description></description>
-  </item>
-  <item>
-    <title>Red Hat security advisory (AV26-636)</title>
-    <link>https://cyber.gc.ca/en/alerts-advisories/red-hat-security-advisory-av26-636</link>
-    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/red-hat-security-advisory-av26-636</guid>
-    <pubDate>Mon, 29 Jun 2026 11:02:28 -0000</pubDate>
-    <category>Security Advisories</category>
-    <description></description>
   </item>
   </channel>
 </rss>
