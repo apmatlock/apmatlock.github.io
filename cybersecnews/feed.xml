@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 02 Jul 2026 06:07:45 -0300</lastBuildDate>
+    <lastBuildDate>Thu, 02 Jul 2026 07:07:52 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>SharePoint RCE CVE-2026-45659 Added to CISA KEV After Active Exploitation</title>
@@ -72,12 +72,36 @@
     <description>Kerberos delegation capabilities in Linux-based tooling have been extended to allow impersonating any user within a forest. This assumed identity can then be leveraged to access resources across any domain within that forest, or even in a remote forest, provided that a trust rela…</description>
   </item>
   <item>
+    <title>AI Agent Exploits Langflow RCE to Automate Database Ransomware Attack</title>
+    <link>https://thehackernews.com/2026/07/ai-agent-exploits-langflow-rce-to.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/ai-agent-exploits-langflow-rce-to.html</guid>
+    <pubDate>Thu, 02 Jul 2026 14:43:13 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Security firm&amp;nbsp;Sysdig&amp;nbsp;says it has found what it believes is the first ransomware attack run from start to finish by an AI agent. Its Threat Research Team calls the operator JADEPUFFER and says a large language model handled the whole job: breaking in, stealing credential…</description>
+  </item>
+  <item>
+    <title>Adobe fixed multiple maximum-severity flaws in ColdFusion and Campaign Classic</title>
+    <link>https://securityaffairs.com/194622/security/adobe-fixed-multiple-maximum-severity-flaws-in-coldfusion-and-campaign-classic.html</link>
+    <guid isPermaLink="true">https://securityaffairs.com/194622/security/adobe-fixed-multiple-maximum-severity-flaws-in-coldfusion-and-campaign-classic.html</guid>
+    <pubDate>Thu, 02 Jul 2026 09:21:27 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Adobe fixed multiple critical flaws, including max severity bugs in ColdFusion and Campaign Classic that could lead to remote code execution Adobe has released security updates for ColdFusion and Campaign Classic, fixing multiple critical vulnerabilities, including seven maximum-…</description>
+  </item>
+  <item>
     <title>Review: CTRL+ALT+PWN</title>
     <link>https://www.helpnetsecurity.com/2026/07/02/review-ctrl-alt-pwn-the-hackers-playbook/</link>
     <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/02/review-ctrl-alt-pwn-the-hackers-playbook/</guid>
     <pubDate>Thu, 02 Jul 2026 05:30:40 +0000</pubDate>
     <category>Security Advisories</category>
     <description>Hacking gear that once sat in well-funded labs now ships to anyone with a credit card and a video tutorial. Frank Riccardi builds his consumer guide, CTRL+ALT+PWN: The Hacker&amp;#8217;s Playbook (And How to Beat It), on that one condition. He spent twenty-five years in healthcare co…</description>
+  </item>
+  <item>
+    <title>NCSC Shares Tips on How to Make a Pen Tester’s Job Harder</title>
+    <link>https://www.infosecurity-magazine.com/news/ncsc-tips-make-pen-testers-job/</link>
+    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/ncsc-tips-make-pen-testers-job/</guid>
+    <pubDate>Thu, 02 Jul 2026 10:00:00 +0000</pubDate>
+    <category>Security Advisories</category>
+    <description>The NCSC has shared best practice advice from pen testers which could help improve system resilience</description>
   </item>
   <item>
     <title>Medtronic notifies customers impacted by ShinyHunters data breach</title>
@@ -126,6 +150,14 @@
     <pubDate>Thu, 02 Jul 2026 09:00:09 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>Kaspersky Compromise Assessment specialists analyze trends from the service&#x27;s 2025 projects and provide tips on how to enhance your organization&#x27;s security.</description>
+  </item>
+  <item>
+    <title>FortiBleed Credential Theft Linked to INC and Lynx Ransomware Operations</title>
+    <link>https://thehackernews.com/2026/07/fortibleed-credential-theft-linked-to.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/fortibleed-credential-theft-linked-to.html</guid>
+    <pubDate>Thu, 02 Jul 2026 13:30:49 +0530</pubDate>
+    <category>Incident Reporting</category>
+    <description>The recently discovered financially-motivated FortiBleed campaign has been attributed to INC and Lynx ransomware operations, indicating that the verified, stolen credentials were intended for follow-on intrusions. &quot;An operator tied to FortiBleed&#x27;s infrastructure was found activel…</description>
   </item>
   <item>
     <title>ISC Stormcast For Thursday, July 2nd, 2026 https://isc.sans.edu/podcastdetail/9992, (Thu, Jul 2nd)</title>
@@ -1574,38 +1606,6 @@
     <pubDate>Tue, 30 Jun 2026 21:46:38 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>The bulletin includes six NetScaler issues, but attention is centered on a high-severity flaw with similarities to earlier actively exploited bugs. The post Citrix patches a new NetScaler flaw with echoes of CitrixBleed appeared first on CyberScoop .</description>
-  </item>
-  <item>
-    <title>Malicious Perplexity Chrome Extension Intercepted Searches and Address Bar Input</title>
-    <link>https://thehackernews.com/2026/06/malicious-perplexity-chrome-extension.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/06/malicious-perplexity-chrome-extension.html</guid>
-    <pubDate>Tue, 30 Jun 2026 00:10:09 +0530</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Microsoft has found a malicious Chrome extension that posed as the AI search engine Perplexity and quietly logged what people searched for. It routed every query and every character typed into the address bar through an attacker-controlled server before redirecting users to real …</description>
-  </item>
-  <item>
-    <title>Cybersecurity jobs available right now: June 30, 2026</title>
-    <link>https://www.helpnetsecurity.com/2026/06/30/cybersecurity-jobs-available-right-now-june-30-2026/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/30/cybersecurity-jobs-available-right-now-june-30-2026/</guid>
-    <pubDate>Tue, 30 Jun 2026 04:00:38 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>AI Offensive Security Engineer AGAPI &amp;#124; UAE &amp;#124; On-site &amp;#8211; View job details As an AI Offensive Security Engineer, you will leverage AI and LLMs to accelerate offensive security research, exploit development, vulnerability discovery, and security automation. You will v…</description>
-  </item>
-  <item>
-    <title>Vulnerability reports are arriving faster than GitHub can review them</title>
-    <link>https://www.helpnetsecurity.com/2026/06/30/github-advisory-database-review/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/30/github-advisory-database-review/</guid>
-    <pubDate>Tue, 30 Jun 2026 05:25:39 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Across the open source world, people are reporting software flaws in record numbers, and the systems built to verify those reports are straining under the weight. The GitHub Advisory Database, which feeds automated security alerts to millions of projects, has reached a point wher…</description>
-  </item>
-  <item>
-    <title>Hottest cybersecurity open-source tools of the month: June 2026</title>
-    <link>https://www.helpnetsecurity.com/2026/06/30/hottest-cybersecurity-open-source-tools-of-the-month-june-2026/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/06/30/hottest-cybersecurity-open-source-tools-of-the-month-june-2026/</guid>
-    <pubDate>Tue, 30 Jun 2026 05:00:35 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Presented here is a curated selection of noteworthy open-source cybersecurity solutions that have drawn recognition for their ability to enhance security postures across diverse settings. OWASP Agent Memory Guard: Stop AI agents from being weaponized through their own memory AI a…</description>
   </item>
   </channel>
 </rss>
