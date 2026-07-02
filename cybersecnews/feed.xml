@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 02 Jul 2026 04:08:07 -0300</lastBuildDate>
+    <lastBuildDate>Thu, 02 Jul 2026 05:07:58 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>SharePoint RCE CVE-2026-45659 Added to CISA KEV After Active Exploitation</title>
@@ -56,6 +56,14 @@
     <description>Open-source maintainers are receiving more vulnerability reports than they can act on, and a rising share now comes from an AI system working at machine speed. Over roughly two months this spring, Anthropic&amp;#8217;s Claude Mythos Preview combed through more than 23,000 open-source…</description>
   </item>
   <item>
+    <title>New ChocoPoC RAT Targets Vulnerability Researchers via Fake PoC Exploit Repos</title>
+    <link>https://thehackernews.com/2026/07/new-chocopoc-rat-targets-vulnerability.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/new-chocopoc-rat-targets-vulnerability.html</guid>
+    <pubDate>Thu, 02 Jul 2026 12:54:23 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Attackers are hiding a data-stealing trojan inside fake exploit code aimed at the people who hunt bugs for a living. The malware, called ChocoPoC, travels in Python proof-of-concept (PoC) repositories on GitHub that claim to exploit hot new CVEs. Run one, and it quietly lifts you…</description>
+  </item>
+  <item>
     <title>Review: CTRL+ALT+PWN</title>
     <link>https://www.helpnetsecurity.com/2026/07/02/review-ctrl-alt-pwn-the-hackers-playbook/</link>
     <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/02/review-ctrl-alt-pwn-the-hackers-playbook/</guid>
@@ -88,6 +96,22 @@
     <description>In this interview with Help Net Security, IGEL CTO Matthias Haas explains why backups alone do not equal recovery. He makes the case that endpoint recovery is often overlooked, leaving organizations exposed when thousands of devices go down at once. Haas walks through what a well…</description>
   </item>
   <item>
+    <title>Opera blocks ClickFix attacks with new clipboard protection feature</title>
+    <link>https://www.helpnetsecurity.com/2026/07/02/opera-blocks-clickfix-attacks-with-new-clipboard-protection-feature/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/02/opera-blocks-clickfix-attacks-with-new-clipboard-protection-feature/</guid>
+    <pubDate>Thu, 02 Jul 2026 08:00:01 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>Opera has launched Paste Protect, a clipboard protection feature designed to prevent clipboard-based attacks such as hijacking and pastejacking. Paste Protect includes built-in protection and warnings against ClickFix-based cyberattacks, which accounted for more than half of malw…</description>
+  </item>
+  <item>
+    <title>Alleged Scattered Spider Hacker Extradited to U.S. to Face Cybercrime Charges</title>
+    <link>https://securityaffairs.com/194613/security/alleged-scattered-spider-hacker-extradited-to-u-s-to-face-cybercrime-charges.html</link>
+    <guid isPermaLink="true">https://securityaffairs.com/194613/security/alleged-scattered-spider-hacker-extradited-to-u-s-to-face-cybercrime-charges.html</guid>
+    <pubDate>Thu, 02 Jul 2026 08:03:46 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>Alleged Scattered Spider member Peter Stokes, 19, was extradited from Finland to the U.S. over hacking, fraud, and extortion charges. Peter Stokes, 19, an alleged Scattered Spider member known online as &amp;#8220;Bouquet,&amp;#8221; has been extradited from Finland to the U.S. to face h…</description>
+  </item>
+  <item>
     <title>ISC Stormcast For Thursday, July 2nd, 2026 https://isc.sans.edu/podcastdetail/9992, (Thu, Jul 2nd)</title>
     <link>https://isc.sans.edu/diary/rss/33120</link>
     <guid isPermaLink="true">https://isc.sans.edu/diary/rss/33120</guid>
@@ -110,6 +134,14 @@
     <pubDate>Thu, 02 Jul 2026 15:03:03 +1000</pubDate>
     <category>Threat Intelligence</category>
     <description>Tom Uren and James Wilson talk about Chinese AI labs stealing the special sauce of American AI models in ‘distillation attacks’. These attacks are fed by a grey market in which Chinese consumers buy access to American models, where one of the byproducts is logs of user requests a…</description>
+  </item>
+  <item>
+    <title>Opera introduces Paste Protect feature to block ClickFix attacks</title>
+    <link>https://cyberinsider.com/opera-introduces-paste-protect-feature-to-block-clickfix-attacks/</link>
+    <guid isPermaLink="true">https://cyberinsider.com/opera-introduces-paste-protect-feature-to-block-clickfix-attacks/</guid>
+    <pubDate>Thu, 02 Jul 2026 08:00:00 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Opera has introduced a new browser security feature called Paste Protect, designed to stop clipboard-based attacks such as ClickFix before users can execute malicious commands. The feature is enabled by default in Opera&#x27;s desktop browser, and the company says it is the first majo…</description>
   </item>
   <item>
     <title>19-Year-Old Scattered Spider Suspect Extradited to Face U.S. Hacking Charges</title>
@@ -1574,38 +1606,6 @@
     <pubDate>Tue, 30 Jun 2026 04:53:13 -0400</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>CISA confirmed on Monday that ransomware gangs are now exploiting a Microsoft Defender privilege escalation vulnerability, dubbed BlueHammer, that has previously been abused in zero-day attacks. [...]</description>
-  </item>
-  <item>
-    <title>Critical SimpleHelp Vulnerability Exploited for Malware Delivery</title>
-    <link>https://www.securityweek.com/critical-simplehelp-vulnerability-exploited-for-malware-delivery/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/critical-simplehelp-vulnerability-exploited-for-malware-delivery/</guid>
-    <pubDate>Tue, 30 Jun 2026 08:43:10 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The threat actor is focused on collecting credentials, SSH keys, cryptocurrency wallets, and development tooling. The post Critical SimpleHelp Vulnerability Exploited for Malware Delivery appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Shipping post-quantum cryptography to Python</title>
-    <link>https://blog.trailofbits.com/2026/06/30/shipping-post-quantum-cryptography-to-python/</link>
-    <guid isPermaLink="true">https://blog.trailofbits.com/2026/06/30/shipping-post-quantum-cryptography-to-python/</guid>
-    <pubDate>Tue, 30 Jun 2026 07:00:00 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Post-quantum cryptography is now one pip-install away for the entire Python ecosystem. With funding from the Sovereign Tech Agency , we implemented support for ML-KEM, the NIST-standard key-establishment primitive, and ML-DSA, the NIST-standard digital-signature primitive, in pyc…</description>
-  </item>
-  <item>
-    <title>Closer than Cuba: the Able Archer Nuclear Crisis of 1983</title>
-    <link>https://thecyberwire.com/podcasts/spycast/739/notes</link>
-    <guid isPermaLink="true">https://thecyberwire.com/podcasts/spycast/739/notes</guid>
-    <pubDate>Tue, 30 Jun 2026 11:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>It&#x27;s November of 1983, the closest the world came to nuclear war, some may argue even closer than the Cuban Missile Crisis of 1962. Yet the Able Archer 1983 exercise incident is relatively unknown by comparison. A series of events that started with the Soviet shootdown of a Korea…</description>
-  </item>
-  <item>
-    <title>Malicious Chromium extension spoofs Perplexity AI to hijack browser searches</title>
-    <link>https://www.csoonline.com/article/4191060/malicious-chromium-extension-spoofs-perplexity-ai-to-hijack-browser-searches.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4191060/malicious-chromium-extension-spoofs-perplexity-ai-to-hijack-browser-searches.html</guid>
-    <pubDate>Tue, 30 Jun 2026 11:40:56 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Google has removed a malicious browser extension masquerading as Perplexity AI after Microsoft researchers found it was intercepting users’ search traffic and routing queries through attacker-controlled servers before forwarding them to legitimate search engines. Microsoft Threat…</description>
   </item>
   </channel>
 </rss>
