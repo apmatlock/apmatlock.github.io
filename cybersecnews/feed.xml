@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 06 Jul 2026 15:07:26 -0300</lastBuildDate>
+    <lastBuildDate>Mon, 06 Jul 2026 16:07:18 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>AI-Run Ransomware, New Oracle Critical Flaw, NetNut busted</title>
@@ -54,6 +54,14 @@
     <pubDate>Mon, 06 Jul 2026 17:59:25 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Overview HP Printers in the Deskjet 2800 Series running firmware version &amp;lt;=TBP1CN2612AR contain a missing authorization vulnerability tracked as CVE-2026-13753. This vulnerability allows unauthenticated access to the printer&#x27;s webserver API endpoints, exposing Wi-Fi credential…</description>
+  </item>
+  <item>
+    <title>16-Year-Old Linux KVM Flaw Lets Guest VMs Escape to Host on Intel and AMD x86 Systems</title>
+    <link>https://thehackernews.com/2026/07/16-year-old-linux-kvm-flaw-lets-guest.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/16-year-old-linux-kvm-flaw-lets-guest.html</guid>
+    <pubDate>Mon, 06 Jul 2026 23:07:01 +0530</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>A use-after-free bug in Linux&#x27;s KVM hypervisor can be triggered from a guest virtual machine to corrupt the shadow-page state of the host kernel that runs it. Dubbed &#x27;Januscape&#x27; and tracked as&amp;nbsp;CVE-2026-53359, the flaw sits in the shadow MMU code that KVM shares across both I…</description>
   </item>
   <item>
     <title>The future of payment fraud could be automated</title>
@@ -376,6 +384,22 @@
     <description></description>
   </item>
   <item>
+    <title>Qualcomm security advisory – July 2026 monthly rollup (AV26-661)</title>
+    <link>https://cyber.gc.ca/en/alerts-advisories/qualcomm-security-advisory-july-2026-monthly-rollup-av26-661</link>
+    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/qualcomm-security-advisory-july-2026-monthly-rollup-av26-661</guid>
+    <pubDate>Mon, 06 Jul 2026 16:02:31 -0000</pubDate>
+    <category>Security Advisories</category>
+    <description></description>
+  </item>
+  <item>
+    <title>AI Needs an Identity Too</title>
+    <link>https://www.youtube.com/shorts/qfYrfuG5lKc</link>
+    <guid isPermaLink="true">https://www.youtube.com/shorts/qfYrfuG5lKc</guid>
+    <pubDate>Mon, 06 Jul 2026 19:00:35 +0000</pubDate>
+    <category>Security Advisories</category>
+    <description>AI is transforming identity security in two directions. Organizations are using AI to automate identity management, while AI agents themselves are becoming identities that require permissions, monitoring, and governance. As AI agents access sensitive data and perform actions on b…</description>
+  </item>
+  <item>
     <title>How to prioritize AI agent security by business impact</title>
     <link>https://www.helpnetsecurity.com/2026/07/06/prioritize-ai-agent-security-business-impact/</link>
     <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/06/prioritize-ai-agent-security-business-impact/</guid>
@@ -430,6 +454,14 @@
     <pubDate>Mon, 06 Jul 2026 15:17:37 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>The AI agent didn’t accomplish every step in the late June 2026 attack, but it allowed the threat actor to significantly reduce complexity, speed up the tempo and gain operational advantages. The post Sysdig clocks first documented case of agentic ransomware appeared first on Cyb…</description>
+  </item>
+  <item>
+    <title>Major medical device manufacturer notifies nearly 4 million of breach</title>
+    <link>https://therecord.media/medical-device-maker-notifies-nearly-4-million-of-breach</link>
+    <guid isPermaLink="true">https://therecord.media/medical-device-maker-notifies-nearly-4-million-of-breach</guid>
+    <pubDate>Mon, 06 Jul 2026 18:03:00 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>Information like Social Security numbers and health-related data was accessed, but the company said it had “no evidence that impacted information has been publicly posted or exposed on the internet.”</description>
   </item>
   <item>
     <title>Product showcase: Is that text a scam? Malwarebytes Mobile Security can help you find out</title>
@@ -654,6 +686,14 @@
     <pubDate>Mon, 06 Jul 2026 16:22:32 +0000</pubDate>
     <category>Infosec News</category>
     <description>Scammers are using AI-generated images to make fake stories more convincing. Here&#x27;s how to separate real from fake.</description>
+  </item>
+  <item>
+    <title>Vietnam arrests suspects behind HiAnime anime piracy service</title>
+    <link>https://www.bleepingcomputer.com/news/security/vietnam-arrests-suspects-behind-hianime-anime-piracy-service/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/vietnam-arrests-suspects-behind-hianime-anime-piracy-service/</guid>
+    <pubDate>Mon, 06 Jul 2026 14:25:06 -0400</pubDate>
+    <category>Infosec News</category>
+    <description>​Vietnamese authorities have arrested and are prosecuting seven suspects believed to have run HiAnime, the largest anime piracy streaming service before its shutdown in June. [...]</description>
   </item>
   <item>
     <title>Week in review: SimpleHelp vulnerability exploited, Oracle EBS Payments flaw under attack</title>
@@ -1566,46 +1606,6 @@
     <pubDate>Thu, 02 Jul 2026 06:07:08 -0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Kerberos delegation capabilities in Linux-based tooling have been extended to allow impersonating any user within a forest. This assumed identity can then be leveraged to access resources across any domain within that forest, or even in a remote forest, provided that a trust rela…</description>
-  </item>
-  <item>
-    <title>AI Agent Exploits Langflow RCE to Automate Database Ransomware Attack</title>
-    <link>https://thehackernews.com/2026/07/ai-agent-exploits-langflow-rce-to.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/07/ai-agent-exploits-langflow-rce-to.html</guid>
-    <pubDate>Thu, 02 Jul 2026 14:43:13 +0530</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Security firm&amp;nbsp;Sysdig&amp;nbsp;says it has found what it believes is the first ransomware attack run from start to finish by an AI agent. Its Threat Research Team calls the operator JADEPUFFER and says a large language model handled the whole job: breaking in, stealing credential…</description>
-  </item>
-  <item>
-    <title>Adobe fixed multiple maximum-severity flaws in ColdFusion and Campaign Classic</title>
-    <link>https://securityaffairs.com/194622/security/adobe-fixed-multiple-maximum-severity-flaws-in-coldfusion-and-campaign-classic.html</link>
-    <guid isPermaLink="true">https://securityaffairs.com/194622/security/adobe-fixed-multiple-maximum-severity-flaws-in-coldfusion-and-campaign-classic.html</guid>
-    <pubDate>Thu, 02 Jul 2026 09:21:27 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Adobe fixed multiple critical flaws, including max severity bugs in ColdFusion and Campaign Classic that could lead to remote code execution Adobe has released security updates for ColdFusion and Campaign Classic, fixing multiple critical vulnerabilities, including seven maximum-…</description>
-  </item>
-  <item>
-    <title>Argo CD flaw shows why GitOps infrastructure should be treated as tier zero</title>
-    <link>https://www.csoonline.com/article/4192188/argo-cd-flaw-shows-why-gitops-infrastructure-should-be-treated-as-tier-zero.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4192188/argo-cd-flaw-shows-why-gitops-infrastructure-should-be-treated-as-tier-zero.html</guid>
-    <pubDate>Thu, 02 Jul 2026 10:57:39 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>A newly disclosed vulnerability in Argo CD is drawing attention to the security risks of GitOps platforms, with researchers warning that the flaw could allow attackers who gain a foothold inside a Kubernetes cluster to execute code and manipulate application deployments. Security…</description>
-  </item>
-  <item>
-    <title>Field reports from Patch the Planet</title>
-    <link>https://blog.trailofbits.com/2026/07/02/field-reports-from-patch-the-planet/</link>
-    <guid isPermaLink="true">https://blog.trailofbits.com/2026/07/02/field-reports-from-patch-the-planet/</guid>
-    <pubDate>Thu, 02 Jul 2026 07:00:00 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>We’re running Patch the Planet , an ongoing collaboration with OpenAI that pairs Trail of Bits engineers directly with more than 30 open-source projects. Its goal is to front-run a serious problem facing open-source maintainers: highly capable models like GPT-5.5-Cyber will soon …</description>
-  </item>
-  <item>
-    <title>CISA: Microsoft SharePoint RCE flaw now actively exploited</title>
-    <link>https://www.bleepingcomputer.com/news/security/cisa-microsoft-sharepoint-rce-flaw-now-actively-exploited/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/cisa-microsoft-sharepoint-rce-flaw-now-actively-exploited/</guid>
-    <pubDate>Thu, 02 Jul 2026 06:52:43 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>CISA warned on Wednesday that attackers have begun exploiting a high-severity Microsoft SharePoint remote code execution vulnerability patched in May. [...]</description>
   </item>
   </channel>
 </rss>
