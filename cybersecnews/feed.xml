@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 07 Jul 2026 18:07:02 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 07 Jul 2026 19:07:16 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Weekly Threat Bulletin – July 8th, 2026</title>
@@ -14,6 +14,14 @@
     <pubDate>Wed, 08 Jul 2026 18:21:46 +0000</pubDate>
     <category>Infosec News</category>
     <description>These are the top threats you should know about this week.</description>
+  </item>
+  <item>
+    <title>ClickFix to Cash-Out: Anatomy of a Mexican Banking-Fraud Toolkit</title>
+    <link>https://www.elastic.co/security-labs/mexican-banking-fraud-scmbanker-ref6045</link>
+    <guid isPermaLink="true">https://www.elastic.co/security-labs/mexican-banking-fraud-scmbanker-ref6045</guid>
+    <pubDate>Wed, 08 Jul 2026 00:00:00 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>Elastic Security Labs tracks REF6045, an active operator-assisted banking fraud operation targeting customers of Mexican banks, fintech, payment processors, and cryptocurrency exchanges.</description>
   </item>
   <item>
     <title>Insignary Closes SBOM Accuracy Gap With Binary-Level Clarity for Regulatory Risk</title>
@@ -206,6 +214,14 @@
     <pubDate>Tue, 07 Jul 2026 17:17:19 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Attackers are exploiting the critical Gitea vulnerability CVE-2026-20896 to bypass authentication with a single HTTP header and access vulnerable repositories and secrets. The post Critical Gitea Flaw Under Active Exploitation, Researchers Warn appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>16-year-old KVM flaw allows attackers to escape VMs and take over Linux servers</title>
+    <link>https://www.csoonline.com/article/4194085/16-year-old-kvm-flaw-allows-attackers-to-escape-vms-and-take-over-linux-servers.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4194085/16-year-old-kvm-flaw-allows-attackers-to-escape-vms-and-take-over-linux-servers.html</guid>
+    <pubDate>Tue, 07 Jul 2026 21:53:48 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>A critical vulnerability in the Kernel-based Virtual Machine (KVM) module of the Linux kernel allows attackers with root access in a guest VM to execute arbitrary code on the host system. This violates the most important security boundary that cloud providers and enterprises rely…</description>
   </item>
   <item>
     <title>Zscaler finds autonomous agents succumb to IPI traps</title>
@@ -758,6 +774,46 @@
     <pubDate>Tue, 07 Jul 2026 20:17:55 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Two new alleged victims detailed how Grok was used by friends and family to generate sexual images of them as minors. The suit also adds Stability AI as a defendant. The post Deepfake CSAM lawsuit against xAI, Grok expands appeared first on CyberScoop .</description>
+  </item>
+  <item>
+    <title>Watch out for fake support calls in Microsoft Teams</title>
+    <link>https://www.csoonline.com/article/4194026/watch-out-for-fake-support-calls-in-microsoft-teams.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4194026/watch-out-for-fake-support-calls-in-microsoft-teams.html</guid>
+    <pubDate>Tue, 07 Jul 2026 21:20:43 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Palo Alto Networks’ security division, Unit 42, is warning of yet another campaign targeting Microsoft Teams users . The new campaign begins with Teams users receiving an email asking if they would like to participate in a survey. If they open the attached PDF file, they will sho…</description>
+  </item>
+  <item>
+    <title>Dune References, FAT, Claude, ZhiPu, PolinRider, RentaBot, Sony, Aaran Leyland &amp; More - SWN #596</title>
+    <link>https://www.youtube.com/watch?v=A8aIj0glV5c</link>
+    <guid isPermaLink="true">https://www.youtube.com/watch?v=A8aIj0glV5c</guid>
+    <pubDate>Tue, 07 Jul 2026 21:00:08 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Dune References, FAT, Claude, ZhiPu, PolinRider, RentaBot, Sony, Aaran Leyland, and More on the Security Weekly News. Visit https://www.securityweekly.com/swn for all the latest episodes! Show Notes: https://securityweekly.com/swn-596</description>
+  </item>
+  <item>
+    <title>Spain arrests suspected hacker linked to Russian hacktivist campaign</title>
+    <link>https://cyberscoop.com/spain-arrests-alleged-cyber-army-of-russia-reborn-member/</link>
+    <guid isPermaLink="true">https://cyberscoop.com/spain-arrests-alleged-cyber-army-of-russia-reborn-member/</guid>
+    <pubDate>Tue, 07 Jul 2026 21:57:05 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Authorities didn’t name the man or file formal charges, but accuse him of participating in attacks linked to Cyber Army of Russia Reborn and NoName. The post Spain arrests suspected hacker linked to Russian hacktivist campaign appeared first on CyberScoop .</description>
+  </item>
+  <item>
+    <title>Vidar Stealer Unmasked: Code Signing Abuse, Go Loaders and File Inflation</title>
+    <link>https://unit42.paloaltonetworks.com/vidar-stealer-xmrig-miner-campaign-analysis/</link>
+    <guid isPermaLink="true">https://unit42.paloaltonetworks.com/vidar-stealer-xmrig-miner-campaign-analysis/</guid>
+    <pubDate>Tue, 07 Jul 2026 22:00:21 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>A cybercrime campaign combined a loader-as-a-service framework and DLL sideloading via a Go-compiled fake MpClient.dll, a novel evasion layer combination. The post Vidar Stealer Unmasked: Code Signing Abuse, Go Loaders and File Inflation appeared first on Unit 42 .</description>
+  </item>
+  <item>
+    <title>Big Brand Jobs Scam Targets Marketing Pros&#x27; Google Accounts</title>
+    <link>https://www.darkreading.com/cyberattacks-data-breaches/big-brand-jobs-scam-marketing-pros-google-accounts</link>
+    <guid isPermaLink="true">https://www.darkreading.com/cyberattacks-data-breaches/big-brand-jobs-scam-marketing-pros-google-accounts</guid>
+    <pubDate>Tue, 07 Jul 2026 21:02:29 +0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>The phishing campaign uses several tactics, including nested redirects, to evade detection and steal credentials from unsuspecting targets.</description>
   </item>
   <item>
     <title>Between Two Nerds: Why AI has not meant more hacks. Yet.</title>
@@ -1550,62 +1606,6 @@
     <pubDate>Mon, 06 Jul 2026 15:10:39 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>The threat actor uses modular RATs and information stealers in financially motivated and cyber espionage campaigns. The post Armored Likho APT Targeting Government, Electric Power Entities appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>US Army websites defaced with pro-Kurdish sentiments, insults to Trump</title>
-    <link>https://cyberscoop.com/us-army-websites-defaced-404-hijacking-kurdistan/</link>
-    <guid isPermaLink="true">https://cyberscoop.com/us-army-websites-defaced-404-hijacking-kurdistan/</guid>
-    <pubDate>Mon, 06 Jul 2026 17:50:25 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>At least two websites appear to be victim to 404 hijacking attacks. Army officials took the sites down after being contacted by CyberScoop. The post US Army websites defaced with pro-Kurdish sentiments, insults to Trump appeared first on CyberScoop .</description>
-  </item>
-  <item>
-    <title>ExpressVPN adds passkeys on password manager, passes security audit</title>
-    <link>https://cyberinsider.com/expressvpn-adds-passkeys-on-password-manager-passes-security-audit/</link>
-    <guid isPermaLink="true">https://cyberinsider.com/expressvpn-adds-passkeys-on-password-manager-passes-security-audit/</guid>
-    <pubDate>Mon, 06 Jul 2026 19:51:52 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>ExpressVPN has announced a major update to its standalone ExpressKeys password manager, adding passkey support, secure credential sharing, and direct vault imports. Alongside the release, the company published a new independent security assessment by Cure53, which found no severe…</description>
-  </item>
-  <item>
-    <title>Fake IT support calls on Microsoft Teams push EtherRAT malware</title>
-    <link>https://www.bleepingcomputer.com/news/security/fake-it-support-calls-on-microsoft-teams-push-etherrat-malware/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/fake-it-support-calls-on-microsoft-teams-push-etherrat-malware/</guid>
-    <pubDate>Mon, 06 Jul 2026 16:23:45 -0400</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Threat actors are abusing Microsoft Teams voice calls by impersonating corporate IT support staff to trick employees into installing the EtherRAT malware, giving attackers initial access to corporate networks. [...]</description>
-  </item>
-  <item>
-    <title>uBlock Origin Chrome extension now blocks known ClickFix sites</title>
-    <link>https://cyberinsider.com/ublock-origin-chrome-extension-now-blocks-known-clickfix-sites/</link>
-    <guid isPermaLink="true">https://cyberinsider.com/ublock-origin-chrome-extension-now-blocks-known-clickfix-sites/</guid>
-    <pubDate>Mon, 06 Jul 2026 21:22:17 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>uBlock Origin has quietly added protections against ClickFix attacks to its built-in badware filter list, helping block access to websites that attempt to trick users into copying and executing malicious commands. The capability came to light through a user discussion on Mastodon…</description>
-  </item>
-  <item>
-    <title>SkillCloak Lets Malicious AI Agent Skills Evade Static Scanners with Self-Extracting Packing</title>
-    <link>https://thehackernews.com/2026/07/new-skillcloak-technique-lets-malicious.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/07/new-skillcloak-technique-lets-malicious.html</guid>
-    <pubDate>Mon, 06 Jul 2026 12:03:56 +0530</pubDate>
-    <category>Cyber Threat Landscape</category>
-    <description>Scanners meant to catch malicious add-on &quot;skills&quot; for AI coding agents can be fooled by a few simple changes that leave the malware working, according to a&amp;nbsp;new study&amp;nbsp;from researchers at the Hong Kong University of Science and Technology. Their strongest trick slipped pa…</description>
-  </item>
-  <item>
-    <title>A week in security (June 29 &amp;#8211; July 5)</title>
-    <link>https://www.malwarebytes.com/blog/news/2026/07/a-week-in-security-june-29-july-5</link>
-    <guid isPermaLink="true">https://www.malwarebytes.com/blog/news/2026/07/a-week-in-security-june-29-july-5</guid>
-    <pubDate>Mon, 06 Jul 2026 07:14:12 +0000</pubDate>
-    <category>Cyber Threat Landscape</category>
-    <description>A list of topics we covered in the week of June 29 to July 5 of 2026</description>
-  </item>
-  <item>
-    <title>New TrojPix Attack Leaks Data From Air-Gapped Systems via Video Cable Emissions</title>
-    <link>https://thehackernews.com/2026/07/new-trojpix-attack-leaks-data-from-air.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/07/new-trojpix-attack-leaks-data-from-air.html</guid>
-    <pubDate>Mon, 06 Jul 2026 14:20:54 +0530</pubDate>
-    <category>Cyber Threat Landscape</category>
-    <description>Researchers at&amp;nbsp;Shandong University&amp;nbsp;have shown a fast new way to pull data off computers that are cut off from every network. The technique, called&amp;nbsp;TrojPix, tweaks on-screen pixels in ways the eye cannot see, so that the video cable carrying them radiates a faint ra…</description>
   </item>
   </channel>
 </rss>
