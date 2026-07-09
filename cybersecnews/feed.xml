@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 09 Jul 2026 04:07:20 -0300</lastBuildDate>
+    <lastBuildDate>Thu, 09 Jul 2026 05:07:21 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Unpatched Backdoor in Tenda Firmware Grants Admin Access to Devices</title>
@@ -14,6 +14,270 @@
     <pubDate>Thu, 09 Jul 2026 05:00:41 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Tracked as CVE-2026-11405, the vulnerability allows unauthenticated attackers to access a device&#x27;s web management interface. The post Unpatched Backdoor in Tenda Firmware Grants Admin Access to Devices appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>CVE-2026-9547 SSH improper host validation</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-9547</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-9547</guid>
+    <pubDate>Thu, 09 Jul 2026 01:47:17 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-11856 cross-origin Digest auth state leak</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11856</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-11856</guid>
+    <pubDate>Thu, 09 Jul 2026 01:47:43 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-8925 SASL double-free</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-8925</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-8925</guid>
+    <pubDate>Thu, 09 Jul 2026 01:49:49 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-53359 KVM: x86: Fix shadow paging use-after-free due to unexpected role</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53359</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53359</guid>
+    <pubDate>Thu, 09 Jul 2026 01:50:15 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-14355 ext/openssl: Memory corruption in openssl_encrypt with AES-WRAP-PAD</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-14355</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-14355</guid>
+    <pubDate>Thu, 09 Jul 2026 01:50:09 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-59997 internal-sftp in sshd in OpenSSH before 10.4 recognizes only the first 9 command-line arguments, which can be important if a later command-line argument would have helped to ensure the intended security properties of an SFTP connection.</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-59997</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-59997</guid>
+    <pubDate>Thu, 09 Jul 2026 01:01:15 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-59996 scp in OpenSSH before 10.4 may place a file in the parent directory of an intended directory when the copy occurs between two remote destinations.</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-59996</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-59996</guid>
+    <pubDate>Thu, 09 Jul 2026 01:01:22 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-59995 sftp in OpenSSH before 10.4 does not properly constrain the location of downloaded files when &quot;sftp server:/path .&quot; is used with an attacker-controlled server.</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-59995</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-59995</guid>
+    <pubDate>Thu, 09 Jul 2026 01:01:28 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-60001 sshd in OpenSSH before 10.4 does not always honor the minimum authentication delay.</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-60001</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-60001</guid>
+    <pubDate>Thu, 09 Jul 2026 01:01:35 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-60000 sshd in OpenSSH before 10.4 allows remote attackers to cause a denial of service (resource consumption from excessive authentication attempts) because MaxAuthTries was mishandled for GSSAPIAuthentication.</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-60000</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-60000</guid>
+    <pubDate>Thu, 09 Jul 2026 01:01:41 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-59999 In sshd in OpenSSH before 10.4, DisableForwarding=yes was supposed to take precedence over PermitTunnel=yes, but did not.</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-59999</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-59999</guid>
+    <pubDate>Thu, 09 Jul 2026 01:01:47 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-60002 ssh in OpenSSH before 10.4 can have a use-after-free when a server changes its host key during a key re-exchange. (This outcome occurs only on the client side.)</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-60002</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-60002</guid>
+    <pubDate>Thu, 09 Jul 2026 01:01:53 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-56002 libXfont2 PCF Font Parsing Heap Buffer Overflow</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-56002</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-56002</guid>
+    <pubDate>Thu, 09 Jul 2026 01:02:13 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-56000 xorg-x11-server / xwayland GLX contextTags Use-After-Free in CommonMakeCurrent()</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-56000</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-56000</guid>
+    <pubDate>Thu, 09 Jul 2026 01:02:26 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-38968 ntopng through 6.6 is vulnerable to Predictable Session Identifier which can lead to Session Hijacking. HTTP session identifiers in src/HTTPserver.cpp use weak time-seeded pseudo-randomness during session creation. As a result, fresh authenticated logins can receive deterministic or colliding session cookies under attacker-controlled timing.</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-38968</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-38968</guid>
+    <pubDate>Thu, 09 Jul 2026 01:02:45 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-38969 ruby webrick through v1.9.2 WEBrick reparses trailer Content-Length into canonical request state, enabling request smuggling.</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-38969</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-38969</guid>
+    <pubDate>Thu, 09 Jul 2026 01:02:55 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-54908 Pion DTLS: Denial of service via panic while parsing a crafted ECDHE_PSK ServerKeyExchange message</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-54908</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-54908</guid>
+    <pubDate>Thu, 09 Jul 2026 01:03:02 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-53354 arm64: errata: Mitigate TLBI errata on various Arm CPUs</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53354</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53354</guid>
+    <pubDate>Thu, 09 Jul 2026 01:44:00 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-53345 KVM: Don&#x27;t WARN if memory is dirtied without a vCPU when the VM is dying</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53345</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53345</guid>
+    <pubDate>Thu, 09 Jul 2026 01:44:09 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-53332 slimbus: qcom-ngd-ctrl: Register callbacks after creating the ngd</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53332</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53332</guid>
+    <pubDate>Thu, 09 Jul 2026 01:44:16 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-53336 nvmem: layouts: onie-tlv: fix hang on unknown types</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53336</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53336</guid>
+    <pubDate>Thu, 09 Jul 2026 01:44:34 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-53327 debugobjects: Do not fill_pool() if pi_blocked_on</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53327</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53327</guid>
+    <pubDate>Thu, 09 Jul 2026 01:44:25 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-53339 i2c: qcom-cci: Fix NULL pointer dereference in cci_remove()</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53339</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53339</guid>
+    <pubDate>Thu, 09 Jul 2026 01:45:03 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-9079 stale proxy password leak</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-9079</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-9079</guid>
+    <pubDate>Thu, 09 Jul 2026 01:46:04 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-8927 env-set cross-proxy Digest auth state leak</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-8927</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-8927</guid>
+    <pubDate>Thu, 09 Jul 2026 01:49:26 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-12064 proto-default skips SSH verification</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-12064</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-12064</guid>
+    <pubDate>Thu, 09 Jul 2026 01:48:39 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-56001 libXfont2 BitmapScaleBitmaps Integer Overflow Heap Buffer Overflow</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-56001</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-56001</guid>
+    <pubDate>Thu, 09 Jul 2026 01:02:00 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-56003 libXfont2 computeProps Property Buffer Heap Buffer Overflow</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-56003</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-56003</guid>
+    <pubDate>Thu, 09 Jul 2026 01:02:07 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-55999 xorg-server / xwayland glamor font atlas Heap Buffer Overflow</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-55999</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-55999</guid>
+    <pubDate>Thu, 09 Jul 2026 01:02:20 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-14191 WinRAR / UnRAR RAR5 recovery-volume (.rev) out-of-bounds heap write in RecVolumes5::ReadHeader</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-14191</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-14191</guid>
+    <pubDate>Thu, 09 Jul 2026 01:02:39 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-53269 netfilter: synproxy: add mutex to guard hook reference counting</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53269</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53269</guid>
+    <pubDate>Thu, 09 Jul 2026 01:02:32 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-47241 Net::IMAP: Denial of Service via incomplete raw argument validation</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-47241</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-47241</guid>
+    <pubDate>Thu, 09 Jul 2026 01:42:15 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-53167 fuse: limit FUSE_NOTIFY_RETRIEVE to uptodate folios</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53167</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53167</guid>
+    <pubDate>Thu, 09 Jul 2026 01:46:14 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
   </item>
   <item>
     <title>Nayax investigating breach; The Syndicate claims it acquired 1 billion card records and other important data</title>
@@ -70,6 +334,30 @@
     <pubDate>Thu, 09 Jul 2026 07:00:00 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Poorly segmented networks and weak security controls continue to undercut security organizations’ ability to identify and contain attacks, giving attackers free rein after initial compromise, according to a recent study based on real-world enterprise security telemetry. Zero Netw…</description>
+  </item>
+  <item>
+    <title>Cybercriminals Plant Malicious AI Agents in Open Source Tool Repositories</title>
+    <link>https://www.infosecurity-magazine.com/news/cybercriminals-plant-ai-agents/</link>
+    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/cybercriminals-plant-ai-agents/</guid>
+    <pubDate>Thu, 09 Jul 2026 07:30:00 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Cybersecurity researchers at ESET identify big rise in suspicious and malicious toolsets which put users at risk from cyber-attacks</description>
+  </item>
+  <item>
+    <title>AssuranceAmerica data breach exposes records of 6.9 million drivers</title>
+    <link>https://www.bleepingcomputer.com/news/security/assuranceamerica-data-breach-exposes-records-of-69-million-drivers/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/assuranceamerica-data-breach-exposes-records-of-69-million-drivers/</guid>
+    <pubDate>Thu, 09 Jul 2026 03:47:16 -0400</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>American insurance company AssuranceAmerica has disclosed a data breach impacting nearly 7 million drivers after attackers gained access to its systems earlier this year. [...]</description>
+  </item>
+  <item>
+    <title>Chrome 150 Update Patches 27 Vulnerabilities</title>
+    <link>https://www.securityweek.com/chrome-150-update-patches-27-vulnerabilities/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/chrome-150-update-patches-27-vulnerabilities/</guid>
+    <pubDate>Thu, 09 Jul 2026 07:27:59 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>The security refresh resolves 13 use-after-free bugs, including two critical-severity flaws found by Google. The post Chrome 150 Update Patches 27 Vulnerabilities appeared first on SecurityWeek .</description>
   </item>
   <item>
     <title>ISC Stormcast For Thursday, July 9th, 2026 https://isc.sans.edu/podcastdetail/10000, (Thu, Jul 9th)</title>
@@ -144,12 +432,44 @@
     <description>The Spanish startup has closed an extended pre-seed funding round two months after launching its digital identity protection platform. The post 8Layers Raises $2.9 Million for Identity Security Platform appeared first on SecurityWeek .</description>
   </item>
   <item>
+    <title>Detection engineering in the AI era</title>
+    <link>https://intezer.com/blog/detection-engineering-in-ai-era/</link>
+    <guid isPermaLink="true">https://intezer.com/blog/detection-engineering-in-ai-era/</guid>
+    <pubDate>Thu, 09 Jul 2026 07:41:04 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>AI is lowering the barrier to sophisticated attacks. Explore why detection engineering matters and where most programs fall short. The post Detection engineering in the AI era appeared first on Intezer .</description>
+  </item>
+  <item>
+    <title>European Organizations Have a Collaboration Security Confidence Gap</title>
+    <link>https://www.darkreading.com/cybersecurity-operations/european-organizations-collaboration-security-confidence-gap</link>
+    <guid isPermaLink="true">https://www.darkreading.com/cybersecurity-operations/european-organizations-collaboration-security-confidence-gap</guid>
+    <pubDate>Thu, 09 Jul 2026 08:00:00 +0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>A new survey shows security leaders have an inflated sense of safety regarding their collaboration tools and platforms.</description>
+  </item>
+  <item>
+    <title>Srsly Risky Biz: US Supreme Court undermines Section 702 intel</title>
+    <link>https://risky.biz/SRB174/</link>
+    <guid isPermaLink="true">https://risky.biz/SRB174/</guid>
+    <pubDate>Thu, 09 Jul 2026 17:31:00 +1000</pubDate>
+    <category>Podcasts</category>
+    <description>Tom Uren and James Wilson talk about a new US Supreme Court decision that puts the current EU-US data sharing agreement at risk. American intelligence collection efforts have been at the centre of legal challenges of these on-again off-again data transfer agreements, and if the c…</description>
+  </item>
+  <item>
     <title>GhostApproval Symlink Flaws Could Let Malicious Repos Run Code in AI Coding Agents</title>
     <link>https://thehackernews.com/2026/07/ghostapproval-symlink-flaws-could-let.html</link>
     <guid isPermaLink="true">https://thehackernews.com/2026/07/ghostapproval-symlink-flaws-could-let.html</guid>
     <pubDate>Thu, 09 Jul 2026 09:57:18 +0530</pubDate>
     <category>Infosec News</category>
     <description>Researchers at&amp;nbsp;Wiz&amp;nbsp;found that a flaw in six popular AI coding assistants lets a booby-trapped code project quietly take control of a developer&#x27;s computer. The assistant asks permission to edit one harmless-looking file, but the write lands on a sensitive one instead. Th…</description>
+  </item>
+  <item>
+    <title>Meta&#x27;s New AI Image Tool Lets Others Use Your Public Instagram Photos in AI Images</title>
+    <link>https://thehackernews.com/2026/07/metas-new-ai-image-tool-lets-others-use.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/metas-new-ai-image-tool-lets-others-use.html</guid>
+    <pubDate>Thu, 09 Jul 2026 12:51:06 +0530</pubDate>
+    <category>Infosec News</category>
+    <description>Meta has announced that its new artificial intelligence (AI) model Muse Image lets people use public Instagram posts and reels to generate AI content, and it&#x27;s enabled by default. &quot;You can also @-mention Instagram accounts in the Meta AI app to bring specific Instagram profiles r…</description>
   </item>
   <item>
     <title>CISA Adds 4 Actively Exploited Adobe, Joomla, and Langflow Flaws to KEV</title>
@@ -1286,326 +1606,6 @@
     <pubDate>Tue, 07 Jul 2026 09:45:42 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>CERT/CC warns an unpatched backdoor in several Tenda routers lets attackers bypass login and gain full admin access with a hidden password. CERT/CC published an alert documenting an undocumented authentication backdoor in multiple Tenda firmware versions, tracked as CVE-2026-1140…</description>
-  </item>
-  <item>
-    <title>Critical Adobe ColdFusion Vulnerability Exploited in Attacks</title>
-    <link>https://www.securityweek.com/critical-adobe-coldfusion-vulnerability-exploited-in-attacks/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/critical-adobe-coldfusion-vulnerability-exploited-in-attacks/</guid>
-    <pubDate>Tue, 07 Jul 2026 12:38:34 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Hackers are exploiting a recently patched critical vulnerability (CVE-2026-48282) in Adobe ColdFusion that carries a CVSS score of 10/10. The post Critical Adobe ColdFusion Vulnerability Exploited in Attacks appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Attackers exploit critical Adobe ColdFusion vulnerability (CVE-2026-48282)</title>
-    <link>https://www.helpnetsecurity.com/2026/07/07/adobe-coldfusion-cve-2026-48282-exploitation-detected/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/07/adobe-coldfusion-cve-2026-48282-exploitation-detected/</guid>
-    <pubDate>Tue, 07 Jul 2026 12:03:10 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>CVE-2026-48282, one of the maximum severity vulnerabilities patched in Adobe ColdFusion on June 30, 2026, has been targeted by attackers in the wild. Exploitation attempts were detected on July 2, through the honeypot sensors of cybersecurity threat-intelligence service KEVIntel,…</description>
-  </item>
-  <item>
-    <title>Picus Autonomous Exposure Validation Platform validates real-world CVE exploitability</title>
-    <link>https://www.helpnetsecurity.com/2026/07/07/picus-autonomous-exposure-validation-platform-validates-real-world-cve-exploitability/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/07/picus-autonomous-exposure-validation-platform-validates-real-world-cve-exploitability/</guid>
-    <pubDate>Tue, 07 Jul 2026 13:31:50 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Picus Security has launched the Picus Autonomous Exposure Validation Platform, built for a world where frontier AI has collapsed the time between disclosure and attack. Adversaries now weaponize new CVEs in hours, against a backdrop of around 132 published every day. A CVE drops;…</description>
-  </item>
-  <item>
-    <title>CVE-2026-45638 Windows Ancillary Function Driver for WinSock Elevation of Privilege Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-45638</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-45638</guid>
-    <pubDate>Tue, 07 Jul 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Updated an acknowledgement. This is an informational change only.</description>
-  </item>
-  <item>
-    <title>Critical Gitea Flaw Under Active Exploitation, Researchers Warn</title>
-    <link>https://www.securityweek.com/critical-gitea-flaw-under-active-exploitation-researchers-warn/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/critical-gitea-flaw-under-active-exploitation-researchers-warn/</guid>
-    <pubDate>Tue, 07 Jul 2026 17:17:19 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Attackers are exploiting the critical Gitea vulnerability CVE-2026-20896 to bypass authentication with a single HTTP header and access vulnerable repositories and secrets. The post Critical Gitea Flaw Under Active Exploitation, Researchers Warn appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>16-year-old KVM flaw allows attackers to escape VMs and take over Linux servers</title>
-    <link>https://www.csoonline.com/article/4194085/16-year-old-kvm-flaw-allows-attackers-to-escape-vms-and-take-over-linux-servers.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4194085/16-year-old-kvm-flaw-allows-attackers-to-escape-vms-and-take-over-linux-servers.html</guid>
-    <pubDate>Tue, 07 Jul 2026 21:53:48 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>A critical vulnerability in the Kernel-based Virtual Machine (KVM) module of the Linux kernel allows attackers with root access in a guest VM to execute arbitrary code on the host system. This violates the most important security boundary that cloud providers and enterprises rely…</description>
-  </item>
-  <item>
-    <title>Critical Gitea Docker Bug Under Active Exploitation Exposes Repositories and Secrets</title>
-    <link>https://securityaffairs.com/194902/hacking/critical-gitea-docker-bug-under-active-exploitation-exposes-repositories-and-secrets.html</link>
-    <guid isPermaLink="true">https://securityaffairs.com/194902/hacking/critical-gitea-docker-bug-under-active-exploitation-exposes-repositories-and-secrets.html</guid>
-    <pubDate>Tue, 07 Jul 2026 21:16:29 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Attackers are exploiting a critical Gitea flaw (CVE-2026-20896) that bypasses authentication with a single HTTP header, exposing repositories and sensitive data. Sysdig researchers warn that attackers are actively exploiting a critical authentication bypass flaw, tracked as CVE-2…</description>
-  </item>
-  <item>
-    <title>Zscaler finds autonomous agents succumb to IPI traps</title>
-    <link>https://www.csoonline.com/article/4193498/zscaler-finds-autonomous-agents-succumb-to-ipi-traps-2.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4193498/zscaler-finds-autonomous-agents-succumb-to-ipi-traps-2.html</guid>
-    <pubDate>Tue, 07 Jul 2026 01:24:40 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>In a test of major LLMs, Zscaler found that some autonomous AI agents fell victim to frauds, reinforcing how easily some high-end enterprise agents can be conned by schemes that would fool few, if any, humans. The security vendor looked at various forms of indirect prompt injecti…</description>
-  </item>
-  <item>
-    <title>Cybersecurity jobs available right now: July 7, 2026</title>
-    <link>https://www.helpnetsecurity.com/2026/07/07/cybersecurity-jobs-available-right-now-july-7-2026/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/07/cybersecurity-jobs-available-right-now-july-7-2026/</guid>
-    <pubDate>Tue, 07 Jul 2026 04:00:21 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Application Security Lead Gett &amp;#124; Israel &amp;#124; Hybrid &amp;#8211; View job details As an Application Security Lead, you will lead application and cloud security initiatives by integrating security into the SDLC, overseeing threat modeling, secure architecture, application securi…</description>
-  </item>
-  <item>
-    <title>Apple Container: Open-source tool for Linux containers on the Mac</title>
-    <link>https://www.helpnetsecurity.com/2026/07/07/apple-container-open-source-linux-mac/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/07/apple-container-open-source-linux-mac/</guid>
-    <pubDate>Tue, 07 Jul 2026 05:00:58 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Developers on Apple silicon Macs have run Linux containers through software built around a single shared virtual machine for years. Apple&amp;#8217;s open-source Container project gives each Linux workload its own lightweight virtual machine. Container is written in Swift and tuned f…</description>
-  </item>
-  <item>
-    <title>Microsoft wants to keep your AI agents from going rogue</title>
-    <link>https://www.helpnetsecurity.com/2026/07/07/microsoft-execution-containers-ai-agents-constraints/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/07/microsoft-execution-containers-ai-agents-constraints/</guid>
-    <pubDate>Tue, 07 Jul 2026 04:45:37 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Microsoft has introduced Microsoft Execution Containers (MXC), a cross-platform, policy-driven execution layer for AI agents on Windows and Windows Subsystem for Linux (WSL), now available in early preview. Updated Agent 365 platform (Source: Microsoft) Developers can define cons…</description>
-  </item>
-  <item>
-    <title>Power shortages could slow AI data center expansion</title>
-    <link>https://www.helpnetsecurity.com/2026/07/07/ai-data-centers-demand-expansion/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/07/ai-data-centers-demand-expansion/</guid>
-    <pubDate>Tue, 07 Jul 2026 04:30:49 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>AI adoption is increasing demand for data center capacity at the same time operators are running into limits around power, equipment, land, and permitting, according to NTT Data. Access to electricity is becoming a deciding factor in where new data centers are built, when new cap…</description>
-  </item>
-  <item>
-    <title>176: NSL</title>
-    <link>https://darknetdiaries.com/episode/176/</link>
-    <guid isPermaLink="true">https://darknetdiaries.com/episode/176/</guid>
-    <pubDate>Tue, 07 Jul 2026 07:00:00 -0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>One day Nick got a visit from the FBI demanding he give them data on one of his customers. They asked for it in the form of a National Security Letter or NSL. Something wasn’t right about this letter. It seemed to violate the constitution. So he set out to change the law. Learn m…</description>
-  </item>
-  <item>
-    <title>Januscape: 16-Year-Old Linux KVM Bug Enables Cloud VM Escape Attacks</title>
-    <link>https://securityaffairs.com/194868/security/januscape-16-year-old-linux-kvm-bug-enables-cloud-vm-escape-attacks.html</link>
-    <guid isPermaLink="true">https://securityaffairs.com/194868/security/januscape-16-year-old-linux-kvm-bug-enables-cloud-vm-escape-attacks.html</guid>
-    <pubDate>Tue, 07 Jul 2026 07:07:10 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Januscape: A 16-year-old Linux KVM flaw lets cloud VM tenants crash hosts and potentially escape guests. It affects Intel and AMD systems. Security researcher Hyunwoo Kim has published details of a use-after-free vulnerability in Linux&amp;#8217;s KVM hypervisor that allows code runn…</description>
-  </item>
-  <item>
-    <title>Suspected Chinese espionage group used a Roundcube exploit chain to burrow into universities</title>
-    <link>https://cyberscoop.com/china-espionage-attacks-us-canada-universities-proofpoint/</link>
-    <guid isPermaLink="true">https://cyberscoop.com/china-espionage-attacks-us-canada-universities-proofpoint/</guid>
-    <pubDate>Tue, 07 Jul 2026 09:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Proofpoint researchers said attackers targeted physics and engineering departments, and warn that the campaign is likely ongoing. The post Suspected Chinese espionage group used a Roundcube exploit chain to burrow into universities appeared first on CyberScoop .</description>
-  </item>
-  <item>
-    <title>Hackers Exploit Maximum Severity Adobe ColdFusion Flaw</title>
-    <link>https://www.infosecurity-magazine.com/news/exploit-maximum-severity-adobe/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/exploit-maximum-severity-adobe/</guid>
-    <pubDate>Tue, 07 Jul 2026 08:20:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Threat actors are exploiting an Adobe ColdFusion vulnerability which has a CVSS score of 10.0</description>
-  </item>
-  <item>
-    <title>Why The Gentlemen ransomware is a test of identity and recovery controls</title>
-    <link>https://www.csoonline.com/article/4193699/why-the-gentlemen-ransomware-is-a-test-of-identity-and-recovery-controls.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4193699/why-the-gentlemen-ransomware-is-a-test-of-identity-and-recovery-controls.html</guid>
-    <pubDate>Tue, 07 Jul 2026 09:53:33 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The Gentlemen ransomware underscores a challenge many CISOs face: stopping attackers after they gain an initial foothold. Researchers say the malware can spread across enterprise networks using legitimate Windows management tools while simultaneously attempting to weaken security…</description>
-  </item>
-  <item>
-    <title>The modern CISO is becoming the next CFO</title>
-    <link>https://www.csoonline.com/article/4193375/the-modern-ciso-is-becoming-the-next-cfo.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4193375/the-modern-ciso-is-becoming-the-next-cfo.html</guid>
-    <pubDate>Tue, 07 Jul 2026 09:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>At some point, every security leader gets asked a version of the same question: Are we good? It tends to arrive when something is at stake and the person asking needs to know they can rely on the answer. I learned what that question really means at a firm I was with earlier in my…</description>
-  </item>
-  <item>
-    <title>Defense-in-depth strategies for securing mobile applications - Ryan Lloyd - ASW #390</title>
-    <link>https://www.youtube.com/watch?v=gS1owv9nFn4</link>
-    <guid isPermaLink="true">https://www.youtube.com/watch?v=gS1owv9nFn4</guid>
-    <pubDate>Tue, 07 Jul 2026 09:00:15 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Mobile applications have unique risks and threat models compared to server-side applications and infrastructure. Consequently, they need different strategies to ensure their business logic and workflows well secured. We&#x27;ll dive into some of these defense-in-depth strategies and w…</description>
-  </item>
-  <item>
-    <title>Threat landscape for industrial automation systems. Q1 2026</title>
-    <link>https://securelist.com/industrial-threat-report-q1-2026/120643/</link>
-    <guid isPermaLink="true">https://securelist.com/industrial-threat-report-q1-2026/120643/</guid>
-    <pubDate>Tue, 07 Jul 2026 10:00:11 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>This report contains industrial threat statistics for Q1 2026, including industrial threat distribution by type, source, region and industry.</description>
-  </item>
-  <item>
-    <title>Linux Kernel Vulnerability Allows VM Escape on Intel and AMD Systems</title>
-    <link>https://www.securityweek.com/linux-kernel-vulnerability-allows-vm-escape-on-intel-and-amd-systems/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/linux-kernel-vulnerability-allows-vm-escape-on-intel-and-amd-systems/</guid>
-    <pubDate>Tue, 07 Jul 2026 10:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The 16-year-old Januscape flaw affects Linux&#x27;s KVM hypervisor, allowing attackers to escape virtual machines and potentially execute code on the underlying host. The post Linux Kernel Vulnerability Allows VM Escape on Intel and AMD Systems appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>What Changes When Your Software Supply Chain Includes AI Writing Your Code?</title>
-    <link>https://thehackernews.com/2026/07/what-changes-when-your-software-supply.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/07/what-changes-when-your-software-supply.html</guid>
-    <pubDate>Tue, 07 Jul 2026 17:00:00 +0530</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Software supply chain security was hard enough. Then AI joined the build pipeline. For five years, &quot;software supply chain security&quot; meant one question: what&#x27;s in your code? Which open-source packages, which versions, which transitive dependencies three layers deep that nobody cho…</description>
-  </item>
-  <item>
-    <title>New Januscape Linux flaw allows VM escape on Intel, AMD devices</title>
-    <link>https://www.bleepingcomputer.com/news/linux/new-januscape-linux-kernel-flaw-allows-vm-escape-on-intel-amd-devices/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/linux/new-januscape-linux-kernel-flaw-allows-vm-escape-on-intel-amd-devices/</guid>
-    <pubDate>Tue, 07 Jul 2026 08:06:09 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>A 16-year-old Linux kernel vulnerability, dubbed Januscape, allows attackers to escape a virtual machine and execute arbitrary code on the host. [...]</description>
-  </item>
-  <item>
-    <title>Commvault measures cyber recovery readiness with AI attack simulations</title>
-    <link>https://www.helpnetsecurity.com/2026/07/07/commvault-measures-cyber-recovery-readiness-with-ai-attack-simulations/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/07/commvault-measures-cyber-recovery-readiness-with-ai-attack-simulations/</guid>
-    <pubDate>Tue, 07 Jul 2026 12:50:02 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Commvault has announced Commvault Minutes to Recovery, a scenario-driven cyber resilience simulation that lets participants act as a hacker and run their own attacks using frontier AI tools. Then, participants are challenged to defend against and recover from an incident under pr…</description>
-  </item>
-  <item>
-    <title>Court Filing Reveals Windows Device ID Helped FBI Trace Alleged Scattered Spider Hacker</title>
-    <link>https://thehackernews.com/2026/07/court-filing-reveals-windows-device-id.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/07/court-filing-reveals-windows-device-id.html</guid>
-    <pubDate>Tue, 07 Jul 2026 18:57:20 +0530</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>U.S. prosecutors linked an alleged Scattered Spider hacker to a break-in at a luxury jewelry retailer using a persistent Windows device ID, according to a newly unsealed federal complaint. Microsoft records tied that ID first to the account the attackers used to keep access durin…</description>
-  </item>
-  <item>
-    <title>Writer AI Flaw Could Let Agent Previews Leak Session Tokens Across Tenants</title>
-    <link>https://thehackernews.com/2026/07/writer-ai-flaw-could-let-agent-previews.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/07/writer-ai-flaw-could-let-agent-previews.html</guid>
-    <pubDate>Tue, 07 Jul 2026 18:57:09 +0530</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Cybersecurity researchers have disclosed details of a now-patched critical session isolation vulnerability in Writer, an enterprise generative artificial intelligence (AI) platform, that could result in cross-tenant compromise. The one-click vulnerability has been codenamed Write…</description>
-  </item>
-  <item>
-    <title>Bojangles sued again by workers over Russian hacker data breach. NC judge weighs in</title>
-    <link>https://databreaches.net/2026/07/07/bojangles-sued-again-by-workers-over-russian-hacker-data-breach-nc-judge-weighs-in/?pk_campaign=feed&amp;pk_kwd=bojangles-sued-again-by-workers-over-russian-hacker-data-breach-nc-judge-weighs-in</link>
-    <guid isPermaLink="true">https://databreaches.net/2026/07/07/bojangles-sued-again-by-workers-over-russian-hacker-data-breach-nc-judge-weighs-in/?pk_campaign=feed&amp;pk_kwd=bojangles-sued-again-by-workers-over-russian-hacker-data-breach-nc-judge-weighs-in</guid>
-    <pubDate>Tue, 07 Jul 2026 12:46:49 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Chase Jordan reports an update in the litigation stemming from a 2024 breach by Hunters International. This case has raised a number of issues about standing and negligence and has been up and down in the courts, with plaintiffs seeming to fare better in state court: A class-acti…</description>
-  </item>
-  <item>
-    <title>Jacksonville, Texas, keeps some city systems offline after cyber incident</title>
-    <link>https://databreaches.net/2026/07/07/jacksonville-texas-keeps-some-city-systems-offline-after-cyber-incident/?pk_campaign=feed&amp;pk_kwd=jacksonville-texas-keeps-some-city-systems-offline-after-cyber-incident</link>
-    <guid isPermaLink="true">https://databreaches.net/2026/07/07/jacksonville-texas-keeps-some-city-systems-offline-after-cyber-incident/?pk_campaign=feed&amp;pk_kwd=jacksonville-texas-keeps-some-city-systems-offline-after-cyber-incident</guid>
-    <pubDate>Tue, 07 Jul 2026 12:46:37 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>DysruptionHub reports: Jacksonville, Texas, took some city systems offline after detecting suspicious network activity Friday, leaving some online services unavailable Monday as officials investigated a cybersecurity incident. The city said it detected the activity July 3 and lat…</description>
-  </item>
-  <item>
-    <title>CERT/CC warns of an unpatched backdoor affecting Tenda routers.</title>
-    <link>https://thecyberwire.com/newsletters/daily-briefing/15/127</link>
-    <guid isPermaLink="true">https://thecyberwire.com/newsletters/daily-briefing/15/127</guid>
-    <pubDate>Tue, 07 Jul 2026 16:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Maximum-severity ColdFusion flaw is under active exploitation. Canadian intelligence agencies hacked criminal groups.</description>
-  </item>
-  <item>
-    <title>Suspected Chinese Threat Group Targets Universities via Vulnerable Roundcube Servers</title>
-    <link>https://www.infosecurity-magazine.com/news/china-aligned-cluster-roundcube/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/china-aligned-cluster-roundcube/</guid>
-    <pubDate>Tue, 07 Jul 2026 15:40:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>A suspected Chinese threat cluster is exploiting Roundcube vulnerabilities to compromise university networks in the US and Canada and harvest user credentials</description>
-  </item>
-  <item>
-    <title>Sophisticated threat campaign pushes Cisco to the very edge</title>
-    <link>https://www.cybersecuritydive.com/news/sophisticated-threat-campaign-pushes-cisco-to-the-very-edge/824569/</link>
-    <guid isPermaLink="true">https://www.cybersecuritydive.com/news/sophisticated-threat-campaign-pushes-cisco-to-the-very-edge/824569/</guid>
-    <pubDate>Tue, 07 Jul 2026 09:41:27 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>A monthslong exploitation wave against Cisco SD-WAN systems raises larger questions about trust and the insecurity of network infrastructure.</description>
-  </item>
-  <item>
-    <title>OMB M-26-14: Why federal agencies must fix asset visibility first</title>
-    <link>https://www.tenable.com/blog/omb-m-26-14-asset-visibility-logging-maturity-model-compliance</link>
-    <guid isPermaLink="true">https://www.tenable.com/blog/omb-m-26-14-asset-visibility-logging-maturity-model-compliance</guid>
-    <pubDate>Tue, 07 Jul 2026 14:30:00 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The new OMB logging directive raises the bar on log collection and explicitly ties every maturity milestone to how well agencies know what’s on their networks. Learn why asset visibility is the first problem to solve. Key takeaways M-26-14 rescinds M-21-31 and replaces blanket da…</description>
-  </item>
-  <item>
-    <title>Enforce zero data retention on Amazon Bedrock with Bedrock Projects and service control policies</title>
-    <link>https://aws.amazon.com/blogs/security/enforce-zero-data-retention-on-amazon-bedrock-with-bedrock-projects-and-service-control-policies/</link>
-    <guid isPermaLink="true">https://aws.amazon.com/blogs/security/enforce-zero-data-retention-on-amazon-bedrock-with-bedrock-projects-and-service-control-policies/</guid>
-    <pubDate>Tue, 07 Jul 2026 18:18:52 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>With the introduction of models that require data sharing with third-party providers—such as Claude Fable 5—organizations need a way to centrally enforce data retention policies. Amazon Bedrock gives you control over whether your prompts and model outputs are retained after an in…</description>
-  </item>
-  <item>
-    <title>Chinese hackers develop LONGLEASH malware to expand ORB network</title>
-    <link>https://www.bleepingcomputer.com/news/security/chinese-hackers-develop-longleash-malware-to-expand-orb-network/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/chinese-hackers-develop-longleash-malware-to-expand-orb-network/</guid>
-    <pubDate>Tue, 07 Jul 2026 14:52:19 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Chinese hackers tracked as &#x27;UAT-7810&#x27; are actively evolving their malware to expand their Operational Relay Box (ORB) network by compromising internet-facing networking devices, primarily unpatched Ruckus routers. [...]</description>
-  </item>
-  <item>
-    <title>Why Streaming Apps Protect Content</title>
-    <link>https://www.youtube.com/shorts/gDOC8Udanqo</link>
-    <guid isPermaLink="true">https://www.youtube.com/shorts/gDOC8Udanqo</guid>
-    <pubDate>Tue, 07 Jul 2026 19:00:22 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>For streaming platforms, the most security-sensitive asset is often the content itself. Licensing agreements require providers to protect movies, shows, and live events from unauthorized distribution. Technologies like DRM and digital watermarking help enforce those protections a…</description>
-  </item>
-  <item>
-    <title>Welcome home, hacker.</title>
-    <link>https://thecyberwire.com/podcasts/daily-podcast/2587/notes</link>
-    <guid isPermaLink="true">https://thecyberwire.com/podcasts/daily-podcast/2587/notes</guid>
-    <pubDate>Tue, 07 Jul 2026 20:30:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>CERT/CC warns of an unpatched Tenda router backdoor. Adobe races to patch an actively exploited ColdFusion flaw. Canada pulls back the curtain on offensive cyber operations. Anthropic quietly removes hidden tracking from Claude Code. Chinese AI gains momentum as U.S. providers sw…</description>
-  </item>
-  <item>
-    <title>Accenture confirms breach after hacker offers stolen data for sale</title>
-    <link>https://www.bleepingcomputer.com/news/security/accenture-confirms-breach-after-hacker-offers-stolen-data-for-sale/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/accenture-confirms-breach-after-hacker-offers-stolen-data-for-sale/</guid>
-    <pubDate>Tue, 07 Jul 2026 18:06:07 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>IT services giant Accenture has confirmed it suffered a security breach after a threat actor claimed to have stolen 35 GB of source code and other data from the company. [...]</description>
-  </item>
-  <item>
-    <title>Washington Dept. of Social and Health Services announces massive data breach</title>
-    <link>https://databreaches.net/2026/07/07/washington-dept-of-social-and-health-services-announces-massive-data-breach/?pk_campaign=feed&amp;pk_kwd=washington-dept-of-social-and-health-services-announces-massive-data-breach</link>
-    <guid isPermaLink="true">https://databreaches.net/2026/07/07/washington-dept-of-social-and-health-services-announces-massive-data-breach/?pk_campaign=feed&amp;pk_kwd=washington-dept-of-social-and-health-services-announces-massive-data-breach</guid>
-    <pubDate>Tue, 07 Jul 2026 22:17:55 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>KIRO7 reports: The Washington Department of Social and Health Services (DSHS) is issuing a notice of a massive data breach that happened in March, potentially compromising the personal data of around 8,600 people. An internal investigation revealed that a former DSHS employee acc…</description>
-  </item>
-  <item>
-    <title>SN 1086: The Apex Agentic Adversary - Visual Prompt Injection Strikes</title>
-    <link>https://twit.tv/shows/security-now/episodes/1086</link>
-    <guid isPermaLink="true">https://twit.tv/shows/security-now/episodes/1086</guid>
-    <pubDate>Tue, 07 Jul 2026 19:19:20 -0700</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>From the sudden retirement of Internet pioneer Vint Cerf to the unstoppable advance of &quot;apex agentic adversaries,&quot; get a front-row seat to the unfolding security revolution and its massive real-world stakes. Why Fable5&#x27;s re-release has disappointed. Opera becomes the first browse…</description>
-  </item>
-  <item>
-    <title>Iran-Linked Hackers Use New Cavern C2 Framework to Target Israeli Organizations</title>
-    <link>https://thehackernews.com/2026/07/iran-linked-hackers-use-new-cavern-c2.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/07/iran-linked-hackers-use-new-cavern-c2.html</guid>
-    <pubDate>Tue, 07 Jul 2026 00:04:26 +0530</pubDate>
-    <category>Security Advisories</category>
-    <description>An Iranian hacking group affiliated with Iran&#x27;s Ministry of Intelligence and Security (MOIS) has been wielding a previously undocumented modular command-and-control (C2) framework dubbed Cavern (aka Cav3rn) targeting Israeli organizations. The activity, which has primarily single…</description>
   </item>
   </channel>
 </rss>
