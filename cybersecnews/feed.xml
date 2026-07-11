@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Sat, 11 Jul 2026 05:07:06 -0300</lastBuildDate>
+    <lastBuildDate>Sat, 11 Jul 2026 06:07:52 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Weekly Metasploit Update: Exploits for FlowiseAI CSV Agent and MacOS Package Kit</title>
@@ -270,6 +270,14 @@
     <pubDate>Sat, 11 Jul 2026 04:15:00 +0000</pubDate>
     <category>Cyber Threat Landscape</category>
     <description>FBI disrupts residential proxy network used by botnet. Zimbra patches a critical flaw in its Classic Web Client.</description>
+  </item>
+  <item>
+    <title>&#x27;Ghostcommit&#x27; hides prompt injection in images to fool AI agents, steal secrets</title>
+    <link>https://www.bleepingcomputer.com/news/security/ghostcommit-hides-prompt-injection-in-images-to-fool-ai-agents-steal-secrets/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/ghostcommit-hides-prompt-injection-in-images-to-fool-ai-agents-steal-secrets/</guid>
+    <pubDate>Sat, 11 Jul 2026 05:03:57 -0400</pubDate>
+    <category>Infosec News</category>
+    <description>A PNG hiding a prompt injection could steal your repo&#x27;s secrets, researchers demonstrate. The technique, dubbed &#x27;Ghostcommit,&#x27; slipped past AI code reviewers CodeRabbit and Bugbot, which never open image files at all, then convinced a coding agent to read a repo&#x27;s .env and write …</description>
   </item>
   <item>
     <title>CVE-2026-56288 NULL Pointer Dereference in GNU patch</title>
@@ -1598,14 +1606,6 @@
     <pubDate>Thu, 09 Jul 2026 12:18:46 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Hackers exploited a zero-day vulnerability in a third-party system to access a KDDI email system for ISPs. The post 12 Million Impacted by Data Breach at Japanese Telco KDDI appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Palo Alto Networks Patches 13 Vulnerabilities</title>
-    <link>https://www.securityweek.com/palo-alto-networks-patches-13-vulnerabilities/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/palo-alto-networks-patches-13-vulnerabilities/</guid>
-    <pubDate>Thu, 09 Jul 2026 13:49:42 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Buffer overflow, DoS, command injection, SSRF, authentication bypass, and other types of vulnerabilities have been found in PAN-OS software. The post Palo Alto Networks Patches 13 Vulnerabilities appeared first on SecurityWeek .</description>
   </item>
   </channel>
 </rss>
