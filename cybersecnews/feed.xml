@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Sun, 12 Jul 2026 03:07:53 -0300</lastBuildDate>
+    <lastBuildDate>Sun, 12 Jul 2026 04:07:09 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Security Affairs newsletter Round 585 by Pierluigi Paganini – INTERNATIONAL EDITION</title>
@@ -14,6 +14,38 @@
     <pubDate>Sun, 12 Jul 2026 04:58:08 +0000</pubDate>
     <category>CISA KEV</category>
     <description>A new round of the weekly Security Affairs newsletter has arrived! Every week, the best security articles from Security Affairs are free in your email box. Enjoy a new round of the weekly SecurityAffairs newsletter, including the international press. U.S. CISA adds iCagenda and B…</description>
+  </item>
+  <item>
+    <title>CVE-2026-15308 Incremental HTMLParser feed() allows CPU-exhaustion DoS via repeated unterminated markup declarations</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-15308</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-15308</guid>
+    <pubDate>Sun, 12 Jul 2026 01:01:27 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-59871 node-tar: Process crash via PAX numeric path type confusion</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-59871</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-59871</guid>
+    <pubDate>Sun, 12 Jul 2026 01:01:34 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-59873 node-tar: Decompression/parse DoS via unlimited input</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-59873</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-59873</guid>
+    <pubDate>Sun, 12 Jul 2026 01:01:40 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-59874 node-tar: Negative tar entry size causes infinite loop in archive replace</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-59874</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-59874</guid>
+    <pubDate>Sun, 12 Jul 2026 01:01:47 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
   </item>
   <item>
     <title>Space after quantum.</title>
@@ -1574,38 +1606,6 @@
     <pubDate>Fri, 10 Jul 2026 09:00:00 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Security leaders have made strong progress in visibility. Most organizations can now identify vulnerabilities across their applications, dependencies and development pipelines with far more consistency than in the past. Yet a fundamental imbalance remains: Vulnerabilities are bei…</description>
-  </item>
-  <item>
-    <title>“GhostLock” flaw survived in the Linux kernel code for 15 years</title>
-    <link>https://cyberinsider.com/ghostlock-flaw-survived-in-the-linux-kernel-code-for-15-years/</link>
-    <guid isPermaLink="true">https://cyberinsider.com/ghostlock-flaw-survived-in-the-linux-kernel-code-for-15-years/</guid>
-    <pubDate>Fri, 10 Jul 2026 12:16:49 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>A Linux kernel vulnerability remained hidden in virtually every major Linux distribution for more than 15 years before being fixed earlier this year. The flaw, tracked as CVE-2026-43499 and dubbed GhostLock, can be exploited by an unprivileged local attacker to gain root privileg…</description>
-  </item>
-  <item>
-    <title>VU#564823: GNU Wget enables SSRF via unvalidated FTP PASV IPs</title>
-    <link>https://kb.cert.org/vuls/id/564823</link>
-    <guid isPermaLink="true">https://kb.cert.org/vuls/id/564823</guid>
-    <pubDate>Fri, 10 Jul 2026 18:19:49 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Overview GNU Wget, versions 1.25.0 and earlier, contains a server-side request forgery (SSRF) vulnerability in its implementation of FTP passive mode. Because Wget does not properly validate IP addresses obtained from PASV responses, an attacker-controlled FTP endpoint can redire…</description>
-  </item>
-  <item>
-    <title>Former DigitalMint ransomware negotiator who duped clients sentenced to 70 months in jail</title>
-    <link>https://cyberscoop.com/digitalmint-ransomware-negotiator-angelo-martino-sentenced/</link>
-    <guid isPermaLink="true">https://cyberscoop.com/digitalmint-ransomware-negotiator-angelo-martino-sentenced/</guid>
-    <pubDate>Fri, 10 Jul 2026 00:16:13 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Angelo Martino exploited his insider position and fed confidential information to ransomware co-conspirators to extort a combined $75.3 million from five U.S.-based victims. The post Former DigitalMint ransomware negotiator who duped clients sentenced to 70 months in jail appeare…</description>
-  </item>
-  <item>
-    <title>A questionable breach, bad routers at home and at work and AI gives defenders a win</title>
-    <link>https://cybersecuritytoday.libsyn.com/a-questionable-breach-bad-routers-at-home-and-at-work-and-ai-gives-defenders-a-win</link>
-    <guid isPermaLink="true">https://cybersecuritytoday.libsyn.com/a-questionable-breach-bad-routers-at-home-and-at-work-and-ai-gives-defenders-a-win</guid>
-    <pubDate>Fri, 10 Jul 2026 02:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>This episode covers a hacker&#x27;s claim of stealing 35GB from Accenture—including source code, Azure personal access tokens, RSA keys, and SSH keys—while Accenture calls it an isolated, remediated matter, leaving uncertainty about potential downstream risk to its Fortune 500-heavy c…</description>
   </item>
   </channel>
 </rss>
