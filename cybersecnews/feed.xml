@@ -5,8 +5,16 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 13 Jul 2026 14:07:59 -0300</lastBuildDate>
+    <lastBuildDate>Mon, 13 Jul 2026 15:07:54 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Adversarial Tales</title>
+    <link>https://www.f5.com/labs/articles/adversarial-tales</link>
+    <guid isPermaLink="true">https://www.f5.com/labs/articles/adversarial-tales</guid>
+    <pubDate>Tue, 14 Jul 2026 15:45:00 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>A competitive open-weight model, Claude Fable, and Jade Puffer</description>
+  </item>
   <item>
     <title>iCagenda and Balbooa Forms Joomla Flaws Reportedly Exploited as Zero-Days</title>
     <link>https://thehackernews.com/2026/07/icagenda-and-balbooa-forms-joomla-flaws.html</link>
@@ -424,6 +432,22 @@
     <description>German discount supermarket chain Lidl has notified customers in Germany, Belgium, and the Netherlands that customer data was stolen after attackers breached one of its IT service providers. In notices published on its support websites in Belgium and the Netherlands, Lidl said it…</description>
   </item>
   <item>
+    <title>CrashStealer macOS Malware Uses Notarized Dropper to Pass Gatekeeper Checks</title>
+    <link>https://thehackernews.com/2026/07/crashstealer-macos-malware-uses.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/crashstealer-macos-malware-uses.html</guid>
+    <pubDate>Mon, 13 Jul 2026 23:06:12 +0530</pubDate>
+    <category>Incident Reporting</category>
+    <description>Cybersecurity researchers have flagged a new macOS information stealer called CrashStealer that&#x27;s capable of harvesting sensitive data from compromised systems. Unlike other information stealers that are built on AppleScript droppers or Objective-C-based wrappers, CrashStealer is…</description>
+  </item>
+  <item>
+    <title>Russian celebrity journalist Ksenia Sobchak says hackers accessed Telegram channels via email breach</title>
+    <link>https://therecord.media/ksenia-sobchak-russian-hackers-leak</link>
+    <guid isPermaLink="true">https://therecord.media/ksenia-sobchak-russian-hackers-leak</guid>
+    <pubDate>Mon, 13 Jul 2026 17:15:00 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>Following the breach of several of her Telegram channels, controversial Russian journalist Ksenia Sobchak claimed published screenshots of her correspondence with political figures were fake.</description>
+  </item>
+  <item>
     <title>ISC Stormcast For Monday, July 13th, 2026 https://isc.sans.edu/podcastdetail/10004, (Mon, Jul 13th)</title>
     <link>https://isc.sans.edu/diary/rss/33148</link>
     <guid isPermaLink="true">https://isc.sans.edu/diary/rss/33148</guid>
@@ -766,6 +790,22 @@
     <pubDate>Mon, 13 Jul 2026 15:30:00 +0000</pubDate>
     <category>Infosec News</category>
     <description>Misconfigured server exposed three phishing operators running Evilginx forks to bypass MFA</description>
+  </item>
+  <item>
+    <title>Joint guidance on improving router hygiene to protect against Russian state-sponsored targeting</title>
+    <link>https://cyber.gc.ca/en/news-events/joint-guidance-improving-router-hygiene-protect-against-russian-state-sponsored-targeting</link>
+    <guid isPermaLink="true">https://cyber.gc.ca/en/news-events/joint-guidance-improving-router-hygiene-protect-against-russian-state-sponsored-targeting</guid>
+    <pubDate>Mon, 13 Jul 2026 15:03:24 -0000</pubDate>
+    <category>Infosec News</category>
+    <description></description>
+  </item>
+  <item>
+    <title>Google and Microsoft Pull ModHeader With 1.6 Million Installs After Dormant Collector Found</title>
+    <link>https://thehackernews.com/2026/07/google-and-microsoft-pull-modheader.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/google-and-microsoft-pull-modheader.html</guid>
+    <pubDate>Mon, 13 Jul 2026 22:47:24 +0530</pubDate>
+    <category>Infosec News</category>
+    <description>Google and Microsoft have pulled ModHeader, a popular header-editing extension with roughly 1.6 million installs across Chrome and Edge, after researchers found a hidden browsing-history collector built into its official store version. The collector was dormant. An empty allow-li…</description>
   </item>
   <item>
     <title>Security Affairs newsletter Round 585 by Pierluigi Paganini – INTERNATIONAL EDITION</title>
@@ -1564,46 +1604,6 @@
     <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13819</link>
     <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13819</guid>
     <pubDate>Sat, 11 Jul 2026 15:39:33 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2025) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium: CVE-2026-13825 Uninitialized Use in Dawn</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13825</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13825</guid>
-    <pubDate>Sat, 11 Jul 2026 15:40:53 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2025) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium: CVE-2026-13826 Inappropriate implementation in Autofill</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13826</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13826</guid>
-    <pubDate>Sat, 11 Jul 2026 15:40:54 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2025) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium: CVE-2026-13827 Use after free in Updater</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13827</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13827</guid>
-    <pubDate>Sat, 11 Jul 2026 15:39:34 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2025) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium: CVE-2026-13842 Incorrect security UI in Chrome for iOS</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13842</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13842</guid>
-    <pubDate>Sat, 11 Jul 2026 15:40:07 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2025) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium: CVE-2026-13843 Insufficient validation of untrusted input in Chrome for iOS</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13843</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13843</guid>
-    <pubDate>Sat, 11 Jul 2026 15:40:09 -0700</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2025) for more information.</description>
   </item>
