@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 15 Jul 2026 04:08:02 -0300</lastBuildDate>
+    <lastBuildDate>Wed, 15 Jul 2026 05:08:02 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Patch Tuesday roundup: Microsoft fixes a monthly record 569 holes; SAP patches a critical memory corruption bug</title>
@@ -30,6 +30,118 @@
     <pubDate>Wed, 15 Jul 2026 11:00:21 +0530</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>SonicWall has warned of active exploitation of two zero-day vulnerabilities impacting Secure Mobile Access (SMA) 1000 series appliances, one of which could be exploited to achieve arbitrary command execution. The vulnerabilities are listed below - CVE-2026-15409 (CVSS score: 10.0…</description>
+  </item>
+  <item>
+    <title>CVE-2026-57432 Perl versions through 5.43.10 have an integer overflow in S_measure_struct leading to an out-of-bounds heap read in pack and unpack</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57432</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57432</guid>
+    <pubDate>Wed, 15 Jul 2026 01:01:20 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-39822 Root escape via symlink plus trailing slash in os</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-39822</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-39822</guid>
+    <pubDate>Wed, 15 Jul 2026 01:01:36 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-42505 Invoking Encrypted Client Hello privacy leak in crypto/tls</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-42505</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-42505</guid>
+    <pubDate>Wed, 15 Jul 2026 01:01:45 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-15028 Libarchive: heap overflow oob read while parsing a tar archive contains a pax extended header</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-15028</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-15028</guid>
+    <pubDate>Wed, 15 Jul 2026 01:02:01 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-57219 RabbitMQ: Unauthenticated disclosure of OAuth client credentials via an HTTP API endpoint with certain less common OAuth 2 configurations</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57219</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57219</guid>
+    <pubDate>Wed, 15 Jul 2026 01:02:14 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-13221 Perl versions through 5.43.9 produce silently incorrect regular expression matches when an alternation of more than 65535 fixed string branches is compiled into a trie in Perl_study_chunk</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13221</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13221</guid>
+    <pubDate>Wed, 15 Jul 2026 01:01:27 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-59875 node-tar: Uncaught Exception DoS via NUL byte in PAX path/linkpath records</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-59875</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-59875</guid>
+    <pubDate>Wed, 15 Jul 2026 01:01:52 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-59831 GitHub CLI `gh codespace jupyter` could allow remote code execution when connecting to a malicious Codespace</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-59831</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-59831</guid>
+    <pubDate>Wed, 15 Jul 2026 01:02:07 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-57220 RabbitMQ: Stream listener does not enforce configured frame-size limit during authentication, permitting unauth&#x27;d mem-exhaust DoS</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57220</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57220</guid>
+    <pubDate>Wed, 15 Jul 2026 01:02:20 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-57217 RabbitMQ: Topic authorization can lead to cross-tenant routing-key bypass</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57217</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57217</guid>
+    <pubDate>Wed, 15 Jul 2026 01:02:26 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-57213 RabbitMQ: Stored XSS federation management plugin via unsanitized consumer_tag rendering</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57213</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57213</guid>
+    <pubDate>Wed, 15 Jul 2026 01:02:32 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-57216 RabbitMQ: AMQP 1.0, AMQP 0-9-1, Stream Protocol loopback enforcement can lead to remote guest sessions due to listener-address loopback checks</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57216</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57216</guid>
+    <pubDate>Wed, 15 Jul 2026 01:02:45 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-57211 RabbitMQ: UNC SSRF affecting the management UI on Windows</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57211</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57211</guid>
+    <pubDate>Wed, 15 Jul 2026 01:03:10 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-57215 RabbitMQ: Direct-reply-to binding persistence can lead to unauthorized reply-channel injection and persistent phantom</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57215</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-57215</guid>
+    <pubDate>Wed, 15 Jul 2026 01:03:16 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
   </item>
   <item>
     <title>Microsoft Patches Record 622 Flaws, Including Two Zero-Days Under Active Attack</title>
@@ -96,6 +208,30 @@
     <description>Security engineers play a pivotal role in enterprise cybersecurity, because they are the professionals who design, build, and deploy security systems to protect an organization’s data, applications, systems, networks, and other IT components against a variety of cyber threats. Fi…</description>
   </item>
   <item>
+    <title>Critical Vulnerabilities Patched With Fresh Chrome 150, Firefox 152 Updates</title>
+    <link>https://www.securityweek.com/critical-vulnerabilities-patched-with-fresh-chrome-150-firefox-152-updates/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/critical-vulnerabilities-patched-with-fresh-chrome-150-firefox-152-updates/</guid>
+    <pubDate>Wed, 15 Jul 2026 07:24:52 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Public exploit code targeting the Firefox flaws exists, but no in-the-wild exploitation has been observed. The post Critical Vulnerabilities Patched With Fresh Chrome 150, Firefox 152 Updates appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>Nigeria Deepens Cybersecurity Efforts as Cybercriminals See More Profits</title>
+    <link>https://www.darkreading.com/cyber-risk/nigeria-cybersecurity-efforts-cybercriminals-profits</link>
+    <guid isPermaLink="true">https://www.darkreading.com/cyber-risk/nigeria-cybersecurity-efforts-cybercriminals-profits</guid>
+    <pubDate>Wed, 15 Jul 2026 08:00:00 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>The West African country advanced rules to force organizations to disclose cyberattacks, joining other nations in a shift to mandated transparency.</description>
+  </item>
+  <item>
+    <title>Fortinet adds AI controls and data loss prevention to FortiEndpoint</title>
+    <link>https://www.helpnetsecurity.com/2026/07/15/fortinet-fortiai-assist/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/15/fortinet-fortiai-assist/</guid>
+    <pubDate>Wed, 15 Jul 2026 07:47:57 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Fortinet has announced new capabilities for its unified endpoint platform, FortiEndpoint, designed to help organizations securely adopt AI, protect sensitive data, and reduce risk. By bringing AI visibility and control, native data security, endpoint risk scoring, and FortiAI-ass…</description>
+  </item>
+  <item>
     <title>Microsoft is forcing an enterprise transition to passkeys</title>
     <link>https://www.csoonline.com/article/4197086/microsoft-is-forcing-an-enterprise-transition-to-passkeys-2.html</link>
     <guid isPermaLink="true">https://www.csoonline.com/article/4197086/microsoft-is-forcing-an-enterprise-transition-to-passkeys-2.html</guid>
@@ -104,12 +240,36 @@
     <description>Passkeys have been around for some time, but enterprise-wide adoption to this point has been slow for a number of reasons. But soon, many Microsoft customers won’t have a choice. Starting September 1, Microsoft will roll out passkeys as the default authentication method in its cl…</description>
   </item>
   <item>
+    <title>Product showcase: Trust Chain TPRM turns vendor compliance evidence into verified assurance</title>
+    <link>https://www.helpnetsecurity.com/2026/07/15/product-showcase-strike-graph-trust-chain-tprm/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/15/product-showcase-strike-graph-trust-chain-tprm/</guid>
+    <pubDate>Wed, 15 Jul 2026 07:30:16 +0000</pubDate>
+    <category>Security Advisories</category>
+    <description>Trust Chain is an AI-native third-party risk management (TPRM) solution by Strike Graph that replaces the security questionnaire model with validated evidence of compliance. Rather than asking vendors to self-report their security posture, Trust Chain requires vendors to submit e…</description>
+  </item>
+  <item>
     <title>Weekly Update 512: IoT Lockout Fail</title>
     <link>https://www.troyhunt.com/weekly-update-512/</link>
     <guid isPermaLink="true">https://www.troyhunt.com/weekly-update-512/</guid>
     <pubDate>Wed, 15 Jul 2026 00:35:38 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>Presently sponsored by: Report URI: Guarding you from rogue JavaScript! Don’t get pwned; get real-time alerts &amp; prevent breaches #SecureYourSite &amp;quot;Build a smart home&amp;quot;, they said. &amp;quot;It&amp;apos;ll make life so much better&amp;quot;, they said. Well, life wasn&amp;apos;t very bloo…</description>
+  </item>
+  <item>
+    <title>Behind the Book: Threat-Driven Software Development</title>
+    <link>https://thecyberwire.com/podcasts/microsoft-threat-intelligence/73/notes</link>
+    <guid isPermaLink="true">https://thecyberwire.com/podcasts/microsoft-threat-intelligence/73/notes</guid>
+    <pubDate>Wed, 15 Jul 2026 07:05:00 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>In this episode of the Microsoft Threat Intelligence Podcast, host⁠ ⁠⁠⁠Sherrod DeGrippo⁠ is joined by co-authors Michael Howard, Lee Holmes, and Shawn Hernan for a discussion on their new book, ⁠Threat-Driven Software Development: Defending Online Services from Modern Threat Acto…</description>
+  </item>
+  <item>
+    <title>US charges alleged operators of Russian bulletproof hosting service</title>
+    <link>https://www.bleepingcomputer.com/news/security/us-charges-alleged-russian-bulletproof-hosting-service-operators/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/us-charges-alleged-russian-bulletproof-hosting-service-operators/</guid>
+    <pubDate>Wed, 15 Jul 2026 03:45:50 -0400</pubDate>
+    <category>Incident Reporting</category>
+    <description>U.S. federal prosecutors have unsealed charges against three Russian nationals, accusing them of providing bulletproof hosting (BPH) services to ransomware gangs that caused over $62 million in damages to victims worldwide. [...]</description>
   </item>
   <item>
     <title>Inside the Media Mind of Sasha Ingber: SpyCast Podcast</title>
@@ -1446,166 +1606,6 @@
     <pubDate>Mon, 13 Jul 2026 10:00:00 -0400</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Beyond IT compliance, cloud security is now the backbone of civilian agency resilience, national defense, and warfighter safety, as cloud environments become increasingly complex. Key takeaways For the Department of War (DoW), cloud security is an IT concern and a requirement for…</description>
-  </item>
-  <item>
-    <title>Ghostcommit attack hides malicious AI instructions in images</title>
-    <link>https://www.malwarebytes.com/blog/ai/2026/07/ghostcommit-attack-hides-malicious-ai-instructions-in-images</link>
-    <guid isPermaLink="true">https://www.malwarebytes.com/blog/ai/2026/07/ghostcommit-attack-hides-malicious-ai-instructions-in-images</guid>
-    <pubDate>Mon, 13 Jul 2026 13:18:50 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>A proof-of-concept attack hides prompt injection in a PNG file, turning routine code reviews into a path for secret theft.</description>
-  </item>
-  <item>
-    <title>13th July – Threat Intelligence Report</title>
-    <link>https://research.checkpoint.com/2026/13th-july-threat-intelligence-report/</link>
-    <guid isPermaLink="true">https://research.checkpoint.com/2026/13th-july-threat-intelligence-report/</guid>
-    <pubDate>Mon, 13 Jul 2026 13:06:08 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>For the latest discoveries in cyber research for the week of 13th July, please download our Threat Intelligence Bulletin. TOP ATTACKS AND BREACHES U.S. auto insurer AssuranceAmerica has disclosed a data breach affecting approximately 7 million people. Attackers targeted an employ…</description>
-  </item>
-  <item>
-    <title>Tidal Cyber connects assets, vulnerabilities, and threats through Threat-Led Defense</title>
-    <link>https://www.helpnetsecurity.com/2026/07/13/tidal-cyber-threat-led-asset-visibility/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/13/tidal-cyber-threat-led-asset-visibility/</guid>
-    <pubDate>Mon, 13 Jul 2026 13:44:39 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Tidal Cyber has announced Threat-Led Asset Visibility and Vulnerability Prioritization, new innovations extending the company&amp;#8217;s Threat-Led Defense platform. The announcement marks a significant advancement in defensive security, shifting the industry beyond static asset inv…</description>
-  </item>
-  <item>
-    <title>Pakistani Police Systems Hit by Chinese and Indian Espionage</title>
-    <link>https://www.infosecurity-magazine.com/news/chinese-indian-espionage-pakistani/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/chinese-indian-espionage-pakistani/</guid>
-    <pubDate>Mon, 13 Jul 2026 14:45:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Chinese and Indian spies converged on the same Balochistan police force, SentinelLabs found</description>
-  </item>
-  <item>
-    <title>Centers Lab NJ discloses data breach incident impacting 542,000 people</title>
-    <link>https://cyberinsider.com/centers-lab-nj-discloses-data-breach-incident-impacting-542000-people/</link>
-    <guid isPermaLink="true">https://cyberinsider.com/centers-lab-nj-discloses-data-breach-incident-impacting-542000-people/</guid>
-    <pubDate>Mon, 13 Jul 2026 14:52:05 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Centers Lab NJ has revealed that a cybersecurity incident disclosed last month affected 542,377 individuals, according to a filing with the US Department of Health and Human Services (HHS) Office for Civil Rights (OCR). The figure, published on the agency&#x27;s breach portal, provide…</description>
-  </item>
-  <item>
-    <title>Cloud Security Meets AI: What CISOs Need to Govern Before They Scale - Brent Neal - CSP #226</title>
-    <link>https://www.youtube.com/watch?v=oDDSAX2VtTY</link>
-    <guid isPermaLink="true">https://www.youtube.com/watch?v=oDDSAX2VtTY</guid>
-    <pubDate>Mon, 13 Jul 2026 16:00:39 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>AI is changing cloud security fast, but the biggest challenge is not just adoption. It is governance. In this episode, Jess sits down with Brent Neil, CISO at RapidScale, to talk about what CISOs should be watching as AI becomes embedded in cloud environments, business workflows,…</description>
-  </item>
-  <item>
-    <title>US authorities warn that state-linked hackers are targeting vulnerable networking devices</title>
-    <link>https://www.cybersecuritydive.com/news/us-authorities-state-linked-hackers-vulnerable-networking-devices-Cisco/825062/</link>
-    <guid isPermaLink="true">https://www.cybersecuritydive.com/news/us-authorities-state-linked-hackers-vulnerable-networking-devices-Cisco/825062/</guid>
-    <pubDate>Mon, 13 Jul 2026 11:03:31 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Hackers linked to Russian intelligence have exploited vulnerabilities in Cisco Smart Install devices.</description>
-  </item>
-  <item>
-    <title>CISA warns of actively exploited RCE flaws in Joomla extensions</title>
-    <link>https://www.bleepingcomputer.com/news/security/cisa-warns-of-actively-exploited-rce-flaws-in-joomla-extensions/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/cisa-warns-of-actively-exploited-rce-flaws-in-joomla-extensions/</guid>
-    <pubDate>Mon, 13 Jul 2026 11:20:16 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The U.S. Cybersecurity and Infrastructure Security Agency (CISA) is warning that attackers are exploiting vulnerabilities in the iCagenda and Balbooa Forms extensions for Joomla to achieve remote code execution through arbitrary file uploads. [...]</description>
-  </item>
-  <item>
-    <title>Effective Patch Management Strategies: 7 Best Practices | Huntress</title>
-    <link>https://www.huntress.com/blog/patch-management-strategy</link>
-    <guid isPermaLink="true">https://www.huntress.com/blog/patch-management-strategy</guid>
-    <pubDate>Mon, 13 Jul 2026 15:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Stop letting bad actors exploit old bugs. Build a practical patch management strategy to keep them out and learn to stay secure without all the fluff.</description>
-  </item>
-  <item>
-    <title>Apple says former employee exploited ‘rare’ bug to download confidential files after leaving for OpenAI</title>
-    <link>https://techcrunch.com/2026/07/13/apple-says-former-employee-exploited-rare-bug-to-download-confidential-files-after-leaving-for-openai/</link>
-    <guid isPermaLink="true">https://techcrunch.com/2026/07/13/apple-says-former-employee-exploited-rare-bug-to-download-confidential-files-after-leaving-for-openai/</guid>
-    <pubDate>Mon, 13 Jul 2026 20:00:17 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Apple would not comment on the &quot;security breach,&quot; which allegedly allowed a former employee to download sensitive files from Apple&#x27;s network long after he departed the company for rival OpenAI.</description>
-  </item>
-  <item>
-    <title>Hackers backdoor Jscrambler npm package with infostealer malware</title>
-    <link>https://www.bleepingcomputer.com/news/security/hackers-backdoor-jscrambler-npm-package-with-infostealer-malware/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/hackers-backdoor-jscrambler-npm-package-with-infostealer-malware/</guid>
-    <pubDate>Mon, 13 Jul 2026 15:44:19 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The Jscrambler client-side web security company disclosed that a threat actor published a malicious version of its npm package that has been downloaded almost 1,500 times. [...]</description>
-  </item>
-  <item>
-    <title>NG: Zenith Bank, Others To Be Arraigned Over Alleged Data Breach</title>
-    <link>https://databreaches.net/2026/07/13/ng-zenith-bank-others-to-be-arraigned-over-alleged-data-breach/?pk_campaign=feed&amp;pk_kwd=ng-zenith-bank-others-to-be-arraigned-over-alleged-data-breach</link>
-    <guid isPermaLink="true">https://databreaches.net/2026/07/13/ng-zenith-bank-others-to-be-arraigned-over-alleged-data-breach/?pk_campaign=feed&amp;pk_kwd=ng-zenith-bank-others-to-be-arraigned-over-alleged-data-breach</guid>
-    <pubDate>Mon, 13 Jul 2026 18:36:19 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Fatima Abdullahi reports: The Federal High Court in Abuja has fixed July 21, 2026, for the arraignment of Zenith Bank Plc and three other defendants over allegations of illegally accessing and disclosing the confidential financial records of Makers Island Company Limited. The oth…</description>
-  </item>
-  <item>
-    <title>Lidl Notified Online Shop Customers in Germany, Belgium, and the Netherlands of a Data Breach</title>
-    <link>https://securityaffairs.com/195270/data-breach/lidl-notified-online-shop-customers-in-germany-belgium-and-the-netherlands-of-a-data-breach.html</link>
-    <guid isPermaLink="true">https://securityaffairs.com/195270/data-breach/lidl-notified-online-shop-customers-in-germany-belgium-and-the-netherlands-of-a-data-breach.html</guid>
-    <pubDate>Mon, 13 Jul 2026 19:21:42 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Lidl disclosed a third-party data breach affecting online shop customers in Germany, Belgium, and the Netherlands. Payment data was not exposed. Lidl contacted customers of its online shop in Germany, Belgium, and the Netherlands last week to inform them that their personal data …</description>
-  </item>
-  <item>
-    <title>VPN service favored by ransomware groups is sanctioned by US</title>
-    <link>https://databreaches.net/2026/07/13/vpn-service-favored-by-ransomware-groups-is-sanctioned-by-us/?pk_campaign=feed&amp;pk_kwd=vpn-service-favored-by-ransomware-groups-is-sanctioned-by-us</link>
-    <guid isPermaLink="true">https://databreaches.net/2026/07/13/vpn-service-favored-by-ransomware-groups-is-sanctioned-by-us/?pk_campaign=feed&amp;pk_kwd=vpn-service-favored-by-ransomware-groups-is-sanctioned-by-us</guid>
-    <pubDate>Mon, 13 Jul 2026 21:15:31 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Suzanne Smalley reports: The U.S. government on Monday sanctioned a VPN provider and its Ukrainian administrator for abetting ransomware gangs behind attacks on American municipalities, hospitals, schools and businesses. First VPN Service (1VPNS) provided ransomware groups with t…</description>
-  </item>
-  <item>
-    <title>Microsoft demystifies how Windows updates work</title>
-    <link>https://www.helpnetsecurity.com/2026/07/13/how-microsoft-windows-updates-work/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/13/how-microsoft-windows-updates-work/</guid>
-    <pubDate>Mon, 13 Jul 2026 05:30:39 +0000</pubDate>
-    <category>Security Bulletins</category>
-    <description>Microsoft has published a guide explaining the Windows servicing model, outlining the purpose of monthly security updates, optional preview releases, hotpatch updates, and the mechanisms used to deliver new features throughout the year. “Most individuals and organizations regular…</description>
-  </item>
-  <item>
-    <title>Microsoft Entra ID security updates: Passkeys are the default authentication method in Entra ID</title>
-    <link>https://www.microsoft.com/en-us/security/blog/2026/07/13/microsoft-entra-id-security-updates-passkeys-are-the-default-authentication-method-in-entra-id/</link>
-    <guid isPermaLink="true">https://www.microsoft.com/en-us/security/blog/2026/07/13/microsoft-entra-id-security-updates-passkeys-are-the-default-authentication-method-in-entra-id/</guid>
-    <pubDate>Mon, 13 Jul 2026 17:00:00 +0000</pubDate>
-    <category>Security Bulletins</category>
-    <description>Microsoft Entra ID makes passkeys the default sign-in experience and introduces a new model for SMS and voice authentication. Read about how to prepare. The post Microsoft Entra ID security updates: Passkeys are the default authentication method in Entra ID appeared first on Micr…</description>
-  </item>
-  <item>
-    <title>Why SBOMs, signing, and provenance still don’t tell you if software is safe</title>
-    <link>https://www.helpnetsecurity.com/2026/07/13/sbom-zero-trust-for-code/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/13/sbom-zero-trust-for-code/</guid>
-    <pubDate>Mon, 13 Jul 2026 06:30:20 +0000</pubDate>
-    <category>Security Advisories</category>
-    <description>We have made real progress in software supply chain security, improving visibility into software components, authenticity and build integrity. Much of this progress traces back to Executive Order 14028, which pushed agencies, contractors and enterprises to invest in SBOMs, signin…</description>
-  </item>
-  <item>
-    <title>Russian State Hackers Target Vulnerable Routers Worldwide, Joint Advisory Warns</title>
-    <link>https://www.infosecurity-magazine.com/news/russian-state-hackers-vulnerable/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/russian-state-hackers-vulnerable/</guid>
-    <pubDate>Mon, 13 Jul 2026 10:40:00 +0000</pubDate>
-    <category>Security Advisories</category>
-    <description>Cybersecurity agencies from 12 countries have warned that Russian state-backed hackers are actively targeting vulnerable routers using weak SNMP credentials</description>
-  </item>
-  <item>
-    <title>Red Hat security advisory (AV26-688)</title>
-    <link>https://cyber.gc.ca/en/alerts-advisories/red-hat-security-advisory-av26-688</link>
-    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/red-hat-security-advisory-av26-688</guid>
-    <pubDate>Mon, 13 Jul 2026 10:03:21 -0000</pubDate>
-    <category>Security Advisories</category>
-    <description></description>
-  </item>
-  <item>
-    <title>[Control systems] CISA ICS security advisories (AV26–687)</title>
-    <link>https://cyber.gc.ca/en/alerts-advisories/control-systems-cisa-ics-security-advisories-av26-687</link>
-    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/control-systems-cisa-ics-security-advisories-av26-687</guid>
-    <pubDate>Mon, 13 Jul 2026 10:03:21 -0000</pubDate>
-    <category>Security Advisories</category>
-    <description></description>
   </item>
   </channel>
 </rss>
