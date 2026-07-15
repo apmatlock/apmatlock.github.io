@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 15 Jul 2026 13:07:58 -0300</lastBuildDate>
+    <lastBuildDate>Wed, 15 Jul 2026 14:08:00 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>U.S. CISA adds SonicWall and Microsoft flaws to its Known Exploited Vulnerabilities catalog</title>
@@ -166,6 +166,22 @@
     <pubDate>Wed, 15 Jul 2026 18:48:53 +0530</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Mozilla has released updates to address two critical flaws in Firefox for which it warned that exploit code has been published. The vulnerabilities are listed below - CVE-2026-15718, an invalid pointer in the JavaScript: WebAssembly component CVE-2026-15719, a site isolation in t…</description>
+  </item>
+  <item>
+    <title>VU#725167: node-forge Signature Forgery Vulnerabilities in RSA-PKCS and ED25519 Implementations</title>
+    <link>https://kb.cert.org/vuls/id/725167</link>
+    <guid isPermaLink="true">https://kb.cert.org/vuls/id/725167</guid>
+    <pubDate>Wed, 15 Jul 2026 16:07:29 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Overview Two distinct cryptographic signature verification vulnerabilities exist in Digital Bazaar node-forge, a widely used JavaScript library implementing cryptographic primitives for Node.js and browser environments. These vulnerabilities allow attackers to forge RSA (PKCS#1 v…</description>
+  </item>
+  <item>
+    <title>Rapid7 MDR Team Discovers New SonicWall SMA1000 Zero Days being Actively Exploited (CVE-2026-15409, CVE-2026-15410)</title>
+    <link>https://www.rapid7.com/blog/post/etr-rapid7-mdr-team-discovers-new-sonicwall-sma1000-zero-days-being-actively-exploited-cve-2026-15409-cve-2026-15410</link>
+    <guid isPermaLink="true">https://www.rapid7.com/blog/post/etr-rapid7-mdr-team-discovers-new-sonicwall-sma1000-zero-days-being-actively-exploited-cve-2026-15409-cve-2026-15410</guid>
+    <pubDate>Wed, 15 Jul 2026 16:19:26 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Overview On July 14, 2026, SonicWall published a security advisory addressing two vulnerabilities affecting SMA1000 Series remote access appliances, including the critical server-side request forgery (SSRF) vulnerability CVE-2026-15409 (CVSS 10.0) and the high-severity code injec…</description>
   </item>
   <item>
     <title>Microsoft Patches Record 622 Flaws, Including Two Zero-Days Under Active Attack</title>
@@ -576,6 +592,14 @@
     <description>The industrial giants fixed dozens of vulnerabilities across their ICS products, with advisories also released by CISA and VDE CERT. The post ICS Patch Tuesday: Vulnerabilities Fixed by Siemens, Schneider, Rockwell appeared first on SecurityWeek .</description>
   </item>
   <item>
+    <title>Microsoft patches record number of security vulnerabilities, citing its use of AI</title>
+    <link>https://techcrunch.com/2026/07/15/microsoft-patches-record-number-of-security-vulnerabilities-citing-its-use-of-ai/</link>
+    <guid isPermaLink="true">https://techcrunch.com/2026/07/15/microsoft-patches-record-number-of-security-vulnerabilities-citing-its-use-of-ai/</guid>
+    <pubDate>Wed, 15 Jul 2026 16:20:18 +0000</pubDate>
+    <category>Security Bulletins</category>
+    <description>Microsoft&#x27;s monthly release of security fixes, dubbed Patch Tuesday, resolved a record 570 security vulnerabilities across the company&#x27;s product line, thanks to discoveries with AI.</description>
+  </item>
+  <item>
     <title>Microsoft is forcing an enterprise transition to passkeys</title>
     <link>https://www.csoonline.com/article/4197086/microsoft-is-forcing-an-enterprise-transition-to-passkeys-2.html</link>
     <guid isPermaLink="true">https://www.csoonline.com/article/4197086/microsoft-is-forcing-an-enterprise-transition-to-passkeys-2.html</guid>
@@ -878,6 +902,14 @@
     <pubDate>Wed, 15 Jul 2026 11:37:27 -0400</pubDate>
     <category>Cyber Threat Landscape</category>
     <description>Five malicious versions of AsyncAPI packages were published to the Node Package Manager (npm) in a supply-chain attack that delivered a remote access trojan with info-stealing capabilities. [...]</description>
+  </item>
+  <item>
+    <title>OkoBot Malware Framework Injects Seed Phrase Phishing Into Ledger and Trezor Apps</title>
+    <link>https://thehackernews.com/2026/07/okobot-malware-framework-injects-seed.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/okobot-malware-framework-injects-seed.html</guid>
+    <pubDate>Wed, 15 Jul 2026 21:00:30 +0530</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>A malware framework called OkoBot has been running on Windows machines since April 2025, and one of its modules is built to con hardware wallet owners out of their recovery phrase. On an infected PC, the request comes from inside the wallet&#x27;s own desktop software. Sometimes it wa…</description>
   </item>
   <item>
     <title>Weekly Threat Bulletin – July 15th, 2026</title>
@@ -1574,38 +1606,6 @@
     <pubDate>Tue, 14 Jul 2026 18:03:19 -0000</pubDate>
     <category>Security Advisories</category>
     <description></description>
-  </item>
-  <item>
-    <title>Microsoft security advisory – July 2026 monthly rollup (AV26-698)</title>
-    <link>https://cyber.gc.ca/en/alerts-advisories/microsoft-security-advisory-july-2026-monthly-rollup-av26-698</link>
-    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/microsoft-security-advisory-july-2026-monthly-rollup-av26-698</guid>
-    <pubDate>Tue, 14 Jul 2026 18:03:19 -0000</pubDate>
-    <category>Security Advisories</category>
-    <description></description>
-  </item>
-  <item>
-    <title>Your vendor’s vendor might be the real breach risk</title>
-    <link>https://www.helpnetsecurity.com/2026/07/14/vendor-breach-risk-video/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/14/vendor-breach-risk-video/</guid>
-    <pubDate>Tue, 14 Jul 2026 05:00:29 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>In this Help Net Security video, Chris Boehm, Field CTO, Zero Networks, breaks down how a vendor breach can become your breach. He explains that attackers now target the subcontractors behind your trusted vendors. A compromised credential at a company you have never heard of can …</description>
-  </item>
-  <item>
-    <title>The ransomware negotiator who was working for the other side</title>
-    <link>https://www.bitdefender.com/en-us/blog/hotforsecurity/ransomware-negotiator-working-other-side</link>
-    <guid isPermaLink="true">https://www.bitdefender.com/en-us/blog/hotforsecurity/ransomware-negotiator-working-other-side</guid>
-    <pubDate>Tue, 14 Jul 2026 07:54:08 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>When a company falls victim to a ransomware attack, it is not uncommon for it to turn to experts for help. Specialist ransomware negotiation firms handle communications with criminal gangs on a victim&#x27;s behalf. What victims don&#x27;t expect is that their trusted negotiator might be s…</description>
-  </item>
-  <item>
-    <title>U.S. Sanctions First VPN Service and Malware Cryptor Seller Over Ransomware Support</title>
-    <link>https://thehackernews.com/2026/07/us-sanctions-first-vpn-service-and.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/07/us-sanctions-first-vpn-service-and.html</guid>
-    <pubDate>Tue, 14 Jul 2026 13:32:33 +0530</pubDate>
-    <category>Incident Reporting</category>
-    <description>The U.S. Treasury Department&#x27;s Office of Foreign Assets Control (OFAC) has designated two individuals and a VPN service provider for enabling ransomware actors&#x27; and other cybercriminals&#x27; malicious activities, including ransomware attacks against Americans. The VPN, named First VP…</description>
   </item>
   </channel>
 </rss>
