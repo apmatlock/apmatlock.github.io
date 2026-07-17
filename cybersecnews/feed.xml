@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Fri, 17 Jul 2026 18:07:44 -0300</lastBuildDate>
+    <lastBuildDate>Fri, 17 Jul 2026 19:07:59 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>OpenSSL HollowByte Flaw Could Freeze Server Memory with 11-Byte TLS Requests</title>
@@ -14,6 +14,14 @@
     <pubDate>Sat, 18 Jul 2026 01:50:53 +0530</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Eleven bytes will make an unpatched OpenSSL server set aside up to 131 KB of memory for a message that never arrives. On the glibc systems Okta tested, that memory is gone until the process restarts. OpenSSL shipped the HollowByte fix in June with no CVE, no advisory, and no chan…</description>
+  </item>
+  <item>
+    <title>New wp2shell WordPress Core Flaw Lets Unauthenticated Attackers Run Code</title>
+    <link>https://thehackernews.com/2026/07/new-wp2shell-wordpress-core-flaw-lets.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/new-wp2shell-wordpress-core-flaw-lets.html</guid>
+    <pubDate>Sat, 18 Jul 2026 02:50:10 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>An anonymous HTTP request can run code on a WordPress site. The bug is in core, so a bare install with zero plugins is exploitable. Every 6.9 and 7.0 site was in range until Friday, when WordPress shipped 6.9.5 and 7.0.2 and enabled what it calls forced updates through its auto-u…</description>
   </item>
   <item>
     <title>New North Korean campaign uses fake coding interviews to steal developer credentials</title>
@@ -174,6 +182,62 @@
     <pubDate>Fri, 17 Jul 2026 18:18:53 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Overview On July 14, 2026, Microsoft published a security advisory addressing CVE-2026-58644 , a critical remote code execution (RCE) vulnerability affecting on-premises Microsoft SharePoint Server deployments. The vulnerability, which carries a CVSS v3.1 score of 9.8 (Critical),…</description>
+  </item>
+  <item>
+    <title>Chromium: CVE-2026-15904 Use after free in Ozone</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-15904</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-15904</guid>
+    <pubDate>Fri, 17 Jul 2026 17:42:43 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2025) for more information.</description>
+  </item>
+  <item>
+    <title>Chromium: CVE-2026-15903 Out of bounds read and write in V8</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-15903</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-15903</guid>
+    <pubDate>Fri, 17 Jul 2026 17:42:41 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2025) for more information.</description>
+  </item>
+  <item>
+    <title>Chromium: CVE-2026-15899 Use after free in CameraCapture</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-15899</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-15899</guid>
+    <pubDate>Fri, 17 Jul 2026 17:42:35 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2025) for more information.</description>
+  </item>
+  <item>
+    <title>Chromium: CVE-2026-15900 Use after free in GPU</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-15900</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-15900</guid>
+    <pubDate>Fri, 17 Jul 2026 17:42:38 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2025) for more information.</description>
+  </item>
+  <item>
+    <title>Chromium: CVE-2026-15901 Use after free in Network</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-15901</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-15901</guid>
+    <pubDate>Fri, 17 Jul 2026 17:42:39 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2025) for more information.</description>
+  </item>
+  <item>
+    <title>Chromium: CVE-2026-15902 Use after free in Cast</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-15902</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-15902</guid>
+    <pubDate>Fri, 17 Jul 2026 17:42:40 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2025) for more information.</description>
+  </item>
+  <item>
+    <title>Chromium: CVE-2026-15905 Use after free in Aura</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-15905</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-15905</guid>
+    <pubDate>Fri, 17 Jul 2026 17:42:44 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2025) for more information.</description>
   </item>
   <item>
     <title>Scattered Spiders sentenced, OpenAI builds an AI that breaks AIs, and Iran leans on ChatGPT</title>
@@ -814,6 +878,14 @@
     <pubDate>Fri, 17 Jul 2026 16:43:13 +0000</pubDate>
     <category>Infosec News</category>
     <description>AI models left to both interpret and execute commands eliminate critical cybersecurity oversight.</description>
+  </item>
+  <item>
+    <title>The Zoom hack that says, ‘Don’t record me’</title>
+    <link>https://techcrunch.com/2026/07/17/the-zoom-hack-that-says-dont-record-me/</link>
+    <guid isPermaLink="true">https://techcrunch.com/2026/07/17/the-zoom-hack-that-says-dont-record-me/</guid>
+    <pubDate>Fri, 17 Jul 2026 21:20:47 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>If every meeting, watercooler conversation, and date gets transcribed and summarized, who&#x27;s actually reading any of it?</description>
   </item>
   <item>
     <title>CISA urges immediate SharePoint hardening as exploits mount</title>
@@ -1534,78 +1606,6 @@
     <pubDate>Thu, 16 Jul 2026 13:00:00 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>AI infrastructure introduces new security risks that traditional data center designs were never built to handle. The post AI Data Centers Are Being Built Faster Than They Can Be Secured appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>‘ClickLock Stealer’ Bypasses macOS Security With Social Engineering, Process Killing</title>
-    <link>https://www.securityweek.com/clicklock-stealer-bypasses-macos-security-with-social-engineering-process-killing/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/clicklock-stealer-bypasses-macos-security-with-social-engineering-process-killing/</guid>
-    <pubDate>Thu, 16 Jul 2026 12:43:59 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The new macOS malware has targeted at least 100 users to steal their passwords and cryptocurrency. The post &amp;#8216;ClickLock Stealer&amp;#8217; Bypasses macOS Security With Social Engineering, Process Killing appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>AI Governance Is Everyone&#x27;s Problem</title>
-    <link>https://www.youtube.com/shorts/4Pgj1dpY0Q4</link>
-    <guid isPermaLink="true">https://www.youtube.com/shorts/4Pgj1dpY0Q4</guid>
-    <pubDate>Thu, 16 Jul 2026 14:00:35 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>AI adoption impacts nearly every part of an organization. Security teams must evaluate risks around data, access, and technology, but they cannot manage AI governance alone. A successful AI governance program requires shared ownership across security, IT, legal, privacy, finance,…</description>
-  </item>
-  <item>
-    <title>Sandworm hackers have a CAPTCHA trick for Ukrainians</title>
-    <link>https://therecord.media/ukraine-sandworm-hacks-captcha-powershell</link>
-    <guid isPermaLink="true">https://therecord.media/ukraine-sandworm-hacks-captcha-powershell</guid>
-    <pubDate>Thu, 16 Jul 2026 13:50:00 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Rather than verifying they are human, the CAPTCHA users are instructed to copy and paste a PowerShell command into their Windows computers.</description>
-  </item>
-  <item>
-    <title>Adaptiva simplifies secure patch management for air-gapped networks</title>
-    <link>https://www.helpnetsecurity.com/2026/07/16/adaptiva-airgap-for-onesite-patch/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/16/adaptiva-airgap-for-onesite-patch/</guid>
-    <pubDate>Thu, 16 Jul 2026 13:41:09 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Adaptiva has announced AirGap for OneSite Patch, a new capability that extends autonomous patch management to air-gapped environments. Developed in response to growing demand from government agencies, critical infrastructure operators, and large enterprises managing highly secure…</description>
-  </item>
-  <item>
-    <title>Protecting Privacy in an AI Era</title>
-    <link>https://www.schneier.com/blog/archives/2026/07/protecting-privacy-in-an-ai-era.html</link>
-    <guid isPermaLink="true">https://www.schneier.com/blog/archives/2026/07/protecting-privacy-in-an-ai-era.html</guid>
-    <pubDate>Thu, 16 Jul 2026 14:34:31 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Daniel Solove argues in the Wall Street Journal (alternate link ) that giving people control of their personal data is not an effective way to regulate privacy in this era. Instead, we need to hold companies accountable for their actions, similar to what we do with food and drug …</description>
-  </item>
-  <item>
-    <title>Iran-nexus actors using AI to enhance cyber playbook</title>
-    <link>https://www.cybersecuritydive.com/news/iran-nexus-actors-ai-cyber-ChatGPT-malware/825415/</link>
-    <guid isPermaLink="true">https://www.cybersecuritydive.com/news/iran-nexus-actors-ai-cyber-ChatGPT-malware/825415/</guid>
-    <pubDate>Thu, 16 Jul 2026 10:58:06 -0400</pubDate>
-    <category>Threat Intelligence</category>
-    <description>A report shows state-linked and hacktivist groups have used ChatGPT and other tools for malware development, phishing and mapping out industrial sites.</description>
-  </item>
-  <item>
-    <title>Gaps in network security, oversight strategy hamper US’s aviation cybersecurity regulators</title>
-    <link>https://www.cybersecuritydive.com/news/aviation-cybersecurity-faa-tsa-gao-report/825416/</link>
-    <guid isPermaLink="true">https://www.cybersecuritydive.com/news/aviation-cybersecurity-faa-tsa-gao-report/825416/</guid>
-    <pubDate>Thu, 16 Jul 2026 11:03:14 -0400</pubDate>
-    <category>Threat Intelligence</category>
-    <description>A new government audit identified several weaknesses at the two agencies that protect air travel from hackers.</description>
-  </item>
-  <item>
-    <title>Least privilege for AI agents: Identity, access, and tool binding</title>
-    <link>https://www.microsoft.com/en-us/security/blog/2026/07/16/least-privilege-for-ai-agents-identity-access-and-tool-binding/</link>
-    <guid isPermaLink="true">https://www.microsoft.com/en-us/security/blog/2026/07/16/least-privilege-for-ai-agents-identity-access-and-tool-binding/</guid>
-    <pubDate>Thu, 16 Jul 2026 16:00:00 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>As AI agents become more autonomous, strong identity, access, and auditing controls are critical to keeping them secure. The post Least privilege for AI agents: Identity, access, and tool binding appeared first on Microsoft Security Blog .</description>
-  </item>
-  <item>
-    <title>The BIOS Password Mistake</title>
-    <link>https://www.youtube.com/shorts/3P62uY6obOs</link>
-    <guid isPermaLink="true">https://www.youtube.com/shorts/3P62uY6obOs</guid>
-    <pubDate>Thu, 16 Jul 2026 22:00:27 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Not every &quot;BIOS password&quot; is actually the same thing. In this conversation, the distinction is made between a BIOS setup password, a boot password, a hard drive password, and a BitLocker recovery key. Each protects a different layer of the system. Confusing these terms can lead t…</description>
   </item>
   </channel>
 </rss>
