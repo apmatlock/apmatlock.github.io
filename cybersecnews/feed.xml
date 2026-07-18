@@ -5,8 +5,40 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Sat, 18 Jul 2026 04:07:06 -0300</lastBuildDate>
+    <lastBuildDate>Sat, 18 Jul 2026 05:07:50 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>CVE-2026-62309 CoreDNS: proxyproto plugin panics on PPv2 datagram with non-UDP transport — single 28-byte packet remote DoS</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-62309</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-62309</guid>
+    <pubDate>Sat, 18 Jul 2026 01:01:20 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-62299 CoreDNS: rewrite-plugin EDNS0 response-revert nil-pointer panic (remote DoS) when a downstream plugin returns a response with no OPT record</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-62299</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-62299</guid>
+    <pubDate>Sat, 18 Jul 2026 01:01:26 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-47729 Squid: Memory disclosure in FTP gateway</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-47729</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-47729</guid>
+    <pubDate>Sat, 18 Jul 2026 01:01:34 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-50012 Squid: Memory corruption in cache_digest reply handling</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-50012</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-50012</guid>
+    <pubDate>Sat, 18 Jul 2026 01:01:40 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
   <item>
     <title>OpenSSL HollowByte Flaw Could Freeze Server Memory with 11-Byte TLS Requests</title>
     <link>https://thehackernews.com/2026/07/openssl-hollowbyte-flaw-could-freeze.html</link>
@@ -1574,38 +1606,6 @@
     <pubDate>Thu, 16 Jul 2026 07:59:22 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Signed by Microsoft, the vulnerable UEFI shim bootloaders could be abused on any system, regardless of the OS. The post Old UEFI Shims Expose Systems to Secure Boot Bypass appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>VS Code agent host runs Copilot, Claude, and Codex in a dedicated process</title>
-    <link>https://www.helpnetsecurity.com/2026/07/16/vs-visual-studio-code-agent-host/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/16/vs-visual-studio-code-agent-host/</guid>
-    <pubDate>Thu, 16 Jul 2026 07:45:47 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Developers who lean on AI coding agents often keep several editor windows open at once, each tied to its own session. The 1.129 release of Visual Studio Code reworks that setup with a dedicated agent host. A dedicated process for agent sessions The agent host is a separate proces…</description>
-  </item>
-  <item>
-    <title>China’s Top Cybersecurity Firms Hit by Mounting Military Procurement Bans</title>
-    <link>https://www.securityweek.com/chinas-top-cybersecurity-firms-hit-by-mounting-military-procurement-bans/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/chinas-top-cybersecurity-firms-hit-by-mounting-military-procurement-bans/</guid>
-    <pubDate>Thu, 16 Jul 2026 08:49:27 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Chinese cybersecurity firms are facing action from the country’s military, but it’s not due to product or technical failures. The post China&amp;#8217;s Top Cybersecurity Firms Hit by Mounting Military Procurement Bans appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Police take down investment fraud network that stole €100 million a month</title>
-    <link>https://www.helpnetsecurity.com/2026/07/16/dutch-police-investment-fraud-ring-dismantled/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/16/dutch-police-investment-fraud-ring-dismantled/</guid>
-    <pubDate>Thu, 16 Jul 2026 08:30:41 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Dutch police, working alongside Belgian authorities and Europol, have dismantled a major criminal network accused of operating a global investment fraud scheme through dozens of fraudulent call centers. Investigators estimate the organization generated more than €100 million a mo…</description>
-  </item>
-  <item>
-    <title>Lineation.ai focuses on runtime security for autonomous AI agents</title>
-    <link>https://www.helpnetsecurity.com/2026/07/16/lineation-ai-zero-trust-control-plane/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/16/lineation-ai-zero-trust-control-plane/</guid>
-    <pubDate>Thu, 16 Jul 2026 09:12:21 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Lineation.ai has announced the public launch of its comprehensive agentic security platform. Delivering a solution at the intersection of genAI application security and runtime defense, lineation introduces a zero trust unified control plane and a lightweight endpoint daemon that…</description>
   </item>
   </channel>
 </rss>
