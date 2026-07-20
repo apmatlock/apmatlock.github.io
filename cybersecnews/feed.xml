@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 20 Jul 2026 09:08:04 -0300</lastBuildDate>
+    <lastBuildDate>Mon, 20 Jul 2026 10:08:07 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Critical NGINX Vulnerability Can Crash Workers and May Allow Remote Code Execution</title>
@@ -784,12 +784,52 @@
     <description>7-Zip fixed a vulnerability that could let attackers run code by tricking users into opening malicious XZ-compressed archive files. 7-Zip released version 26.02 to address a remote code execution vulnerability in its handling of XZ-compressed data. The flaw, discovered by researc…</description>
   </item>
   <item>
+    <title>Patch now: WordPress REST API bug allows remote code execution</title>
+    <link>https://www.csoonline.com/article/4198791/patch-now-wordpress-rest-api-bug-allows-remote-code-execution.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4198791/patch-now-wordpress-rest-api-bug-allows-remote-code-execution.html</guid>
+    <pubDate>Mon, 20 Jul 2026 12:30:13 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Organizations running recent versions of WordPress are being asked to patch a newly detailed pre-authentication remote code execution (RCE) vulnerability affecting the platform’s built-in REST Batch API. The flaw, dubbed wp2shell, enables attackers to execute arbitrary code again…</description>
+  </item>
+  <item>
+    <title>20th July – Threat Intelligence Report</title>
+    <link>https://research.checkpoint.com/2026/20th-july-threat-intelligence-report/</link>
+    <guid isPermaLink="true">https://research.checkpoint.com/2026/20th-july-threat-intelligence-report/</guid>
+    <pubDate>Mon, 20 Jul 2026 12:18:41 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>For the latest discoveries in cyber research for the week of 20th July, please download our Threat Intelligence Bulletin. TOP ATTACKS AND BREACHES Ernst &amp;#38; Young, a global accounting and professional services company, has disclosed a data breach involving a compromised third-p…</description>
+  </item>
+  <item>
+    <title>OpenSSL Silently Fixes ‘HollowByte’ DoS Vulnerability</title>
+    <link>https://www.securityweek.com/openssl-silently-fixes-hollowbyte-dos-vulnerability/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/openssl-silently-fixes-hollowbyte-dos-vulnerability/</guid>
+    <pubDate>Mon, 20 Jul 2026 12:32:40 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Attackers could send waves of malicious payloads to trigger buffer pre-allocations that are not freed, exhausting server memory. The post OpenSSL Silently Fixes &amp;#8216;HollowByte&amp;#8217; DoS Vulnerability appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>Broken Promises of Anonymity: Four Months Later, Still No Transparency. Now We’re Seeking Accountability.</title>
+    <link>https://databreaches.net/2026/07/20/broken-promises-of-anonymity-four-months-later-still-no-transparency-now-were-seeking-accountability/?pk_campaign=feed&amp;pk_kwd=broken-promises-of-anonymity-four-months-later-still-no-transparency-now-were-seeking-accountability</link>
+    <guid isPermaLink="true">https://databreaches.net/2026/07/20/broken-promises-of-anonymity-four-months-later-still-no-transparency-now-were-seeking-accountability/?pk_campaign=feed&amp;pk_kwd=broken-promises-of-anonymity-four-months-later-still-no-transparency-now-were-seeking-accountability</guid>
+    <pubDate>Mon, 20 Jul 2026 11:36:04 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>On March 18, 2026, Navigate360 learned that 8.3 million anonymous tips had been exposed. The company&amp;#8217;s response—and the silence of the programs that depend on its platform—has persisted for months. We&amp;#8217;re now seeking accountability through state and federal regulators.…</description>
+  </item>
+  <item>
     <title>Windows KB5121767 OOB update fixes shutdowns on some Dell PCs</title>
     <link>https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-windows-bug-causing-some-dell-pcs-to-shut-down/</link>
     <guid isPermaLink="true">https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-windows-bug-causing-some-dell-pcs-to-shut-down/</guid>
     <pubDate>Mon, 20 Jul 2026 06:06:17 -0400</pubDate>
     <category>Security Bulletins</category>
     <description>Microsoft has released emergency updates to fix a known issue causing some Dell PCs to shut down after installing the July 2026 Windows 11 security updates. [...]</description>
+  </item>
+  <item>
+    <title>Russian Intelligence Hacks IP Cameras to Spy on Military Logistics Across NATO States and Ukraine</title>
+    <link>https://thehackernews.com/2026/07/russian-intelligence-hacks-ip-cameras.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/russian-intelligence-hacks-ip-cameras.html</guid>
+    <pubDate>Mon, 20 Jul 2026 17:43:39 +0530</pubDate>
+    <category>Security Advisories</category>
+    <description>At least one Russian intelligence service is systematically hijacking internet-connected security cameras across Europe and Ukraine, using the feeds to watch military transport routes, weapons shipments bound for Kyiv, and the locations of Ukrainian troops. That is the finding of…</description>
   </item>
   <item>
     <title>More alerts are making your team slower, and an outcome-based SOC fixes that</title>
@@ -814,6 +854,22 @@
     <pubDate>Mon, 20 Jul 2026 11:27:38 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>Hackers stole names, addresses, Social Security numbers, credit/debit card numbers, and other information from a third-party management platform. The post Ernst &amp;#038; Young Data Breach Affects Personal, Financial Information appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>Hugging Face confirms breach affected internal datasets and credentials, urges users to take action</title>
+    <link>https://techcrunch.com/2026/07/20/hugging-face-confirms-breach-affected-internal-datasets-and-credentials-urges-users-to-take-action/</link>
+    <guid isPermaLink="true">https://techcrunch.com/2026/07/20/hugging-face-confirms-breach-affected-internal-datasets-and-credentials-urges-users-to-take-action/</guid>
+    <pubDate>Mon, 20 Jul 2026 12:39:28 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>Hugging Face is urging users to rotate any access tokens stored on the platform and review account activity.</description>
+  </item>
+  <item>
+    <title>Software provider to more than 2,000 US hospitals says hackers stole employee and customer data</title>
+    <link>https://therecord.media/software-provider-for-us-hospitals-customer-data-breach</link>
+    <guid isPermaLink="true">https://therecord.media/software-provider-for-us-hospitals-customer-data-breach</guid>
+    <pubDate>Mon, 20 Jul 2026 11:00:00 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>Craneware, which is headquartered in Edinburgh and listed on London&#x27;s AIM market, told investors it detected unauthorized access to a “subset” of its data environment and has since brought in outside forensic investigators.</description>
   </item>
   <item>
     <title>ISC Stormcast For Monday, July 20th, 2026 https://isc.sans.edu/podcastdetail/10014, (Mon, Jul 20th)</title>
@@ -872,6 +928,14 @@
     <description>We look into how attackers are using the legitimate Ren&#x27;Py game engine to spread a malware loader that ultimately delivers Amatera Stealer.</description>
   </item>
   <item>
+    <title>New HollowGraph Malware Hijacks Microsoft 365 Calendars for Covert C2 Communications</title>
+    <link>https://www.infosecurity-magazine.com/news/hollowgraph-microsoft-calendars/</link>
+    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/hollowgraph-microsoft-calendars/</guid>
+    <pubDate>Mon, 20 Jul 2026 12:30:00 +0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>Researchers have linked HollowGraph malware to the Cavern framework after discovering its use of Microsoft 365 calendars and Microsoft Graph APIs as a stealthy C2 channel</description>
+  </item>
+  <item>
     <title>Sponsored: Thinkst on building companies that don’t suck</title>
     <link>https://risky.biz/RBNEWSSI136/</link>
     <guid isPermaLink="true">https://risky.biz/RBNEWSSI136/</guid>
@@ -926,6 +990,14 @@
     <pubDate>Mon, 20 Jul 2026 06:47:28 -0400</pubDate>
     <category>Infosec News</category>
     <description>Microsoft is working to fix a known issue affecting Windows Server Update Services (WSUS) servers, which has caused synchronization problems for more than a week. [...]</description>
+  </item>
+  <item>
+    <title>Mythos Didn&#x27;t Break Your Security Program. Your Exposure Window Could.</title>
+    <link>https://thehackernews.com/2026/07/mythos-didnt-break-your-security.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/mythos-didnt-break-your-security.html</guid>
+    <pubDate>Mon, 20 Jul 2026 17:00:00 +0530</pubDate>
+    <category>Infosec News</category>
+    <description>The industry spent the initial months after Anthropic&#x27;s April 7 Mythos reveal focused on volume. How many new CVEs would Mythos add to an already overloaded pipeline? How quickly would the flood of AI-driven discovery overwhelm triage capabilities? How long would it take adversar…</description>
   </item>
   <item>
     <title>Attackers Can Take Over WordPress Sites Using Newly Released wp2shell Exploits</title>
@@ -1534,78 +1606,6 @@
     <pubDate>Fri, 17 Jul 2026 16:00:00 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>The Gentlemen topped the ransomware leaderboard in Q2 2026. Ransomware attack disrupts Fairlife dairy production.</description>
-  </item>
-  <item>
-    <title>Ransomware attack forces Coca-Cola to suspend US production at dairy unit</title>
-    <link>https://www.cybersecuritydive.com/news/ransomware-attack-coca-cola-suspend-production-dairy/825540/</link>
-    <guid isPermaLink="true">https://www.cybersecuritydive.com/news/ransomware-attack-coca-cola-suspend-production-dairy/825540/</guid>
-    <pubDate>Fri, 17 Jul 2026 10:35:34 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The beverage company is still working to determine the full scope of the breach at its Fairlife business.</description>
-  </item>
-  <item>
-    <title>OnlyFans performers become unlikely allies of CISOs in securing websites</title>
-    <link>https://www.csoonline.com/article/4198478/onlyfans-performers-become-unlikely-allies-of-cisos-in-securing-websites.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4198478/onlyfans-performers-become-unlikely-allies-of-cisos-in-securing-websites.html</guid>
-    <pubDate>Fri, 17 Jul 2026 17:34:57 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>CISOs at government organizations and universities have an unexpected ally coming to their aid: OnlyFans models. For some time, hackers have exploited weaknesses in the websites of universities or government departments to host scams or malware, using content stolen from the Only…</description>
-  </item>
-  <item>
-    <title>HollowByte DDoS flaw bloats OpenSSL server memory with 11-byte payload</title>
-    <link>https://www.bleepingcomputer.com/news/security/hollowbyte-ddos-flaw-bloats-openssl-server-memory-with-11-byte-payload/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/hollowbyte-ddos-flaw-bloats-openssl-server-memory-with-11-byte-payload/</guid>
-    <pubDate>Fri, 17 Jul 2026 13:56:21 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>A vulnerability dubbed HollowByte allows unauthenticated attackers to trigger a denial-of-service (DoS) condition on OpenSSL servers with a malicious payload of just 11 bytes. [...]</description>
-  </item>
-  <item>
-    <title>FBI arrests man accused of using Steam games to drain victims’ crypto wallets</title>
-    <link>https://databreaches.net/2026/07/17/fbi-arrests-man-accused-of-using-steam-games-to-drain-victims-crypto-wallets/?pk_campaign=feed&amp;pk_kwd=fbi-arrests-man-accused-of-using-steam-games-to-drain-victims-crypto-wallets</link>
-    <guid isPermaLink="true">https://databreaches.net/2026/07/17/fbi-arrests-man-accused-of-using-steam-games-to-drain-victims-crypto-wallets/?pk_campaign=feed&amp;pk_kwd=fbi-arrests-man-accused-of-using-steam-games-to-drain-victims-crypto-wallets</guid>
-    <pubDate>Fri, 17 Jul 2026 17:40:54 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Lorenzo Franceschi-Bicchierai reports: U.S. prosecutors have accused a Florida man of uploading fake video games that contained malware to Steam, the popular PC games platform. Once victims downloaded and installed the games, the malware was designed to infect their computers, st…</description>
-  </item>
-  <item>
-    <title>US Military Smartphones Targeted Through Roaming and Ad Tech</title>
-    <link>https://citizenlab.ca/us-military-smartphones-targeted-through-roaming-and-ad-tech/</link>
-    <guid isPermaLink="true">https://citizenlab.ca/us-military-smartphones-targeted-through-roaming-and-ad-tech/</guid>
-    <pubDate>Fri, 17 Jul 2026 18:18:20 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Senior research fellow Gary Miller spoke to Financial Times about attempts to exploit mobile network vulnerabilities to track US personnel during the Iran war. The post US Military Smartphones Targeted Through Roaming and Ad Tech appeared first on The Citizen Lab .</description>
-  </item>
-  <item>
-    <title>Metasploit Wrap Up: An HTTP to SMB relay plus Payload Improvements</title>
-    <link>https://www.rapid7.com/blog/post/pt-metasploit-wrap-up-an-http-to-smb-relay-plus-payload-improvements</link>
-    <guid isPermaLink="true">https://www.rapid7.com/blog/post/pt-metasploit-wrap-up-an-http-to-smb-relay-plus-payload-improvements</guid>
-    <pubDate>Fri, 17 Jul 2026 19:30:44 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Metasploit Wrap Up Housekeeping While the Metasploit Framework will be continuing its weekly release cadence, bringing you dear reader our latest content, the Weekly Wrap Up is being shifted to a bi-weekly cadence. The team is planning to use the additional time between posts to …</description>
-  </item>
-  <item>
-    <title>A nightmare on Windows street.</title>
-    <link>https://thecyberwire.com/podcasts/daily-podcast/2595/notes</link>
-    <guid isPermaLink="true">https://thecyberwire.com/podcasts/daily-podcast/2595/notes</guid>
-    <pubDate>Fri, 17 Jul 2026 20:30:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Nightmare Eclipse drops another Windows zero-day. The Gentlemen take the ransomware crown. CISA orders emergency Fortinet patching. Canada’s surveillance bill faces U.S. scrutiny. Meta’s Oversight Board flags AI censorship bias. Commerce tops the cyber target list. An active espi…</description>
-  </item>
-  <item>
-    <title>Inc Ransomware Exploits SonicWall SMA Zero-Days</title>
-    <link>https://www.darkreading.com/vulnerabilities-threats/inc-ransomware-exploits-sonicwall-sma-zero-days</link>
-    <guid isPermaLink="true">https://www.darkreading.com/vulnerabilities-threats/inc-ransomware-exploits-sonicwall-sma-zero-days</guid>
-    <pubDate>Fri, 17 Jul 2026 20:01:13 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>When chained together, the two vulnerabilities allow threat actors to gain root-level capabilities on SonicWall&#x27;s mobile access appliances.</description>
-  </item>
-  <item>
-    <title>Proxying to Compromise: SonicWall Secure Mobile Access 0-day Exploitation</title>
-    <link>https://www.volexity.com/blog/2026/07/17/proxying-to-compromise-sonicwall-secure-mobile-access-0-day-exploitation/</link>
-    <guid isPermaLink="true">https://www.volexity.com/blog/2026/07/17/proxying-to-compromise-sonicwall-secure-mobile-access-0-day-exploitation/</guid>
-    <pubDate>Fri, 17 Jul 2026 22:10:37 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>In early July 2026, Volexity was engaged to perform an incident response investigation where it discovered a threat actor had successfully compromised SonicWall Secure Mobile Access (SMA) VPN appliances through [&amp;#8230;] The post Proxying to Compromise: SonicWall Secure Mobile Ac…</description>
   </item>
   </channel>
 </rss>
