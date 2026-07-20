@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 20 Jul 2026 18:07:50 -0300</lastBuildDate>
+    <lastBuildDate>Mon, 20 Jul 2026 19:08:01 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Between Two Nerds: What China gets wrong about Russia&#x27;s cyber war in Ukraine</title>
@@ -696,6 +696,14 @@
     <description>A sandbox security hole that could lead to remote code execution (RCE), patched last week by ServiceNow, is being actively exploited in the wild, according to a report from threat intel firm Defused . The report, posted on X, said the firm is “observing in-the-wild exploitation o…</description>
   </item>
   <item>
+    <title>&#x27;WP2Shell&#x27; Opens Millions of WordPress Sites to Remote Takeover</title>
+    <link>https://www.darkreading.com/cyberattacks-data-breaches/wp2shell-millions-wordpress-sites-remote-takeover</link>
+    <guid isPermaLink="true">https://www.darkreading.com/cyberattacks-data-breaches/wp2shell-millions-wordpress-sites-remote-takeover</guid>
+    <pubDate>Mon, 20 Jul 2026 21:38:18 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Barely three days after disclosure, attackers are widely chaining together CVE-2026-60137 and CVE-2026-63030 to lob exploit attempts against one of the largest attack surfaces on the Internet.</description>
+  </item>
+  <item>
     <title>Wordpress RCE, New Windows 0-day and Coca-Cola&#x27;s Fairline ransomed</title>
     <link>https://cybersecuritytoday.libsyn.com/wordpress-rce-new-windows-0-day-and-coca-colas-fairline-ransomed</link>
     <guid isPermaLink="true">https://cybersecuritytoday.libsyn.com/wordpress-rce-new-windows-0-day-and-coca-colas-fairline-ransomed</guid>
@@ -1208,6 +1216,22 @@
     <description>A malicious component dubbed HollowGraph uses the calendar feature in compromised Microsoft 365 mailboxes as a command-and-control channel to receive attacker commands and exfiltrate stolen data. [...]</description>
   </item>
   <item>
+    <title>Suno - 55,282,226 breached accounts</title>
+    <link>https://haveibeenpwned.com/Breach/Suno</link>
+    <guid isPermaLink="true">https://haveibeenpwned.com/Breach/Suno</guid>
+    <pubDate>Mon, 20 Jul 2026 19:49:51 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>In November 2025, AI music generation tool Suno suffered a data breach that later came to light in July the following year . The data contained over 55M unique email addresses. Phone numbers were also present where they had been used as the sign-up method. Although representing a…</description>
+  </item>
+  <item>
+    <title>JadePuffer agentic attacks now target AI model data with ransomware</title>
+    <link>https://www.bleepingcomputer.com/news/security/jadepuffer-agentic-attacks-now-target-ai-model-data-with-ransomware/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/jadepuffer-agentic-attacks-now-target-ai-model-data-with-ransomware/</guid>
+    <pubDate>Mon, 20 Jul 2026 17:08:02 -0400</pubDate>
+    <category>Incident Reporting</category>
+    <description>The JadePuffer autonomous AI agent has upgraded with custom malware called EncForge that focuses on encrypting AI assets, such as training datasets, vector databases, and model checkpoints. [...]</description>
+  </item>
+  <item>
     <title>ISC Stormcast For Monday, July 20th, 2026 https://isc.sans.edu/podcastdetail/10014, (Mon, Jul 20th)</title>
     <link>https://isc.sans.edu/diary/rss/33166</link>
     <guid isPermaLink="true">https://isc.sans.edu/diary/rss/33166</guid>
@@ -1480,6 +1504,22 @@
     <description>Ivanti CSO Daniel Spicer says frontier models have shown surprising effectiveness in early stages; but cost and human-in-the-loop viability remain open questions.</description>
   </item>
   <item>
+    <title>Introducing the Amazon GuardDuty investigation agent: on-demand AI-powered threat assessment</title>
+    <link>https://aws.amazon.com/blogs/security/introducing-the-amazon-guardduty-investigation-agent-on-demand-ai-powered-threat-assessment/</link>
+    <guid isPermaLink="true">https://aws.amazon.com/blogs/security/introducing-the-amazon-guardduty-investigation-agent-on-demand-ai-powered-threat-assessment/</guid>
+    <pubDate>Mon, 20 Jul 2026 21:59:00 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>The new Amazon GuardDuty investigation agent (now in public preview) investigates security findings across your Amazon Web Services (AWS) environment, reducing investigation time from hours to minutes. GuardDuty is our managed threat detection service that continuously monitors y…</description>
+  </item>
+  <item>
+    <title>Cursor, Codex, Gemini CLI, Antigravity hit by sandbox escapes</title>
+    <link>https://www.bleepingcomputer.com/news/security/cursor-codex-gemini-cli-antigravity-hit-by-sandbox-escapes/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/cursor-codex-gemini-cli-antigravity-hit-by-sandbox-escapes/</guid>
+    <pubDate>Mon, 20 Jul 2026 17:14:42 -0400</pubDate>
+    <category>Infosec News</category>
+    <description>Researchers escaped the sandboxes in Cursor, Codex, Gemini CLI and Antigravity by having the AI agent write files that trusted host tools later run. Multiple CVEs, patches, and Google downgrading two Antigravity findings. [...]</description>
+  </item>
+  <item>
     <title>Attackers Can Take Over WordPress Sites Using Newly Released wp2shell Exploits</title>
     <link>https://securityaffairs.com/195597/hacking/attackers-can-take-over-wordpress-sites-using-newly-released-wp2shell-exploits.html</link>
     <guid isPermaLink="true">https://securityaffairs.com/195597/hacking/attackers-can-take-over-wordpress-sites-using-newly-released-wp2shell-exploits.html</guid>
@@ -1566,46 +1606,6 @@
     <pubDate>Sun, 19 Jul 2026 05:00:00 +0000</pubDate>
     <category>Cybersecurity Briefings</category>
     <description>This week on T-Minus: Space-Cyber Briefing: we look at the recent evolution of the European space program. Whereas the region had previously relied on the US to support its space goals, both the UK and the EU have begun to make significant changes to reduce this reliance.</description>
-  </item>
-  <item>
-    <title>Europe&#x27;s push for space sovereignty.</title>
-    <link>https://thecyberwire.com/podcasts/tminus-space-cyber-briefing/716/notes</link>
-    <guid isPermaLink="true">https://thecyberwire.com/podcasts/tminus-space-cyber-briefing/716/notes</guid>
-    <pubDate>Sun, 19 Jul 2026 05:00:00 +0000</pubDate>
-    <category>Podcasts</category>
-    <description>As space becomes an increasingly critical part of modern infrastructure, governments are reevaluating decades of policy to ensure reliable, secure, and independent access to the systems they are increasingly relying on. In this week’s episode, host Maria Varmazis sits down with p…</description>
-  </item>
-  <item>
-    <title>U.S. CISA adds Fortinet FortiSandbox and Microsoft SharePoint flaws to its Known Exploited Vulnerabilities catalog</title>
-    <link>https://securityaffairs.com/195569/security/u-s-cisa-adds-fortinet-fortisandbox-and-microsoft-sharepoint-flaws-to-its-known-exploited-vulnerabilities-catalog.html</link>
-    <guid isPermaLink="true">https://securityaffairs.com/195569/security/u-s-cisa-adds-fortinet-fortisandbox-and-microsoft-sharepoint-flaws-to-its-known-exploited-vulnerabilities-catalog.html</guid>
-    <pubDate>Sat, 18 Jul 2026 11:49:16 +0000</pubDate>
-    <category>CISA KEV</category>
-    <description>U.S. Cybersecurity and Infrastructure Security Agency (CISA) adds Fortinet FortiSandbox and Microsoft SharePoint flaws to its Known Exploited Vulnerabilities catalog. The U.S. Cybersecurity and Infrastructure Security Agency (CISA) added Fortinet FortiSandbox and Microsoft ShareP…</description>
-  </item>
-  <item>
-    <title>CVE-2026-62309 CoreDNS: proxyproto plugin panics on PPv2 datagram with non-UDP transport — single 28-byte packet remote DoS</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-62309</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-62309</guid>
-    <pubDate>Sat, 18 Jul 2026 01:01:20 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-62299 CoreDNS: rewrite-plugin EDNS0 response-revert nil-pointer panic (remote DoS) when a downstream plugin returns a response with no OPT record</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-62299</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-62299</guid>
-    <pubDate>Sat, 18 Jul 2026 01:01:26 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-47729 Squid: Memory disclosure in FTP gateway</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-47729</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-47729</guid>
-    <pubDate>Sat, 18 Jul 2026 01:01:34 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
   </item>
   </channel>
 </rss>
