@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 20 Jul 2026 06:06:53 -0300</lastBuildDate>
+    <lastBuildDate>Mon, 20 Jul 2026 07:07:11 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Critical NGINX Vulnerability Can Crash Workers and May Allow Remote Code Execution</title>
@@ -592,6 +592,22 @@
     <description>Information published.</description>
   </item>
   <item>
+    <title>New 7-Zip Vulnerability Could Let Crafted XZ Archives Run Code During Extraction</title>
+    <link>https://thehackernews.com/2026/07/new-7-zip-vulnerability-could-let.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/new-7-zip-vulnerability-could-let.html</guid>
+    <pubDate>Mon, 20 Jul 2026 14:40:56 +0530</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Opening a crafted XZ archive in 7-Zip could let an attacker run code on the machine. The flaw, CVE-2026-14266, is a heap-based buffer overflow in how the archiver processes XZ chunked data, and Trend Micro&#x27;s Zero Day Initiative (ZDI) detailed it on July 15. A fix shipped on June …</description>
+  </item>
+  <item>
+    <title>Critical ServiceNow code execution flaw now exploited in attacks</title>
+    <link>https://www.bleepingcomputer.com/news/security/critical-servicenow-code-execution-flaw-now-exploited-in-attacks/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/critical-servicenow-code-execution-flaw-now-exploited-in-attacks/</guid>
+    <pubDate>Mon, 20 Jul 2026 05:29:20 -0400</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Attackers have begun exploiting a critical vulnerability (CVE-2026-6875) in the ServiceNow AI Platform, according to threat intelligence company Defused. [...]</description>
+  </item>
+  <item>
     <title>Wordpress RCE, New Windows 0-day and Coca-Cola&#x27;s Fairline ransomed</title>
     <link>https://cybersecuritytoday.libsyn.com/wordpress-rce-new-windows-0-day-and-coca-colas-fairline-ransomed</link>
     <guid isPermaLink="true">https://cybersecuritytoday.libsyn.com/wordpress-rce-new-windows-0-day-and-coca-colas-fairline-ransomed</guid>
@@ -688,12 +704,36 @@
     <description>Unknown hackers exploited two SonicWall SMA 1000 zero-days to gain root access on VPN appliances before patches became available. Volexity published its findings after conducting an incident response investigation involving a compromised organization whose SonicWall SMA 1000 seri…</description>
   </item>
   <item>
+    <title>Russian-Speaking Hacker Uses Google Gemini CLI to Control Botnet of Eight Dental Clinic PCs</title>
+    <link>https://thehackernews.com/2026/07/russian-speaking-hacker-uses-google.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/russian-speaking-hacker-uses-google.html</guid>
+    <pubDate>Mon, 20 Jul 2026 14:37:11 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>A solo Russian-speaking threat actor known as &quot;bandcampro&quot; outsourced a chunk of their operations to Google&#x27;s open-source Gemini CLI artificial intelligence (AI) and commandeered a live botnet. The findings come from an analysis of 200 Gemini CLI session logs between March 19 and…</description>
+  </item>
+  <item>
+    <title>AI Security at Scale, CMMC phase II paused, and the Weekly Enterprise News - ESW #468</title>
+    <link>https://www.youtube.com/watch?v=SwBWFeUzACI</link>
+    <guid isPermaLink="true">https://www.youtube.com/watch?v=SwBWFeUzACI</guid>
+    <pubDate>Mon, 20 Jul 2026 09:00:03 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Interview with Keith Hollender, CEO and Co-Founder of Arcova Why AI Security Is Becoming an Execution Problem, Not Just a Governance Problem As enterprises move from AI experimentation to adoption at scale, security leaders are under pressure to enable innovation without introduc…</description>
+  </item>
+  <item>
     <title>More alerts are making your team slower, and an outcome-based SOC fixes that</title>
     <link>https://www.helpnetsecurity.com/2026/07/20/outcome-based-soc-video/</link>
     <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/20/outcome-based-soc-video/</guid>
     <pubDate>Mon, 20 Jul 2026 05:30:26 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>In this Help Net Security video, Thom Langford, EMEA CTO, Rapid7, explains why piling on more security alerts makes a SOC slower to respond. Attackers log in with stolen credentials and use trusted tools like PowerShell instead of custom malware. He shares a case where attackers …</description>
+  </item>
+  <item>
+    <title>Hugging Face Hacked in Autonomous AI Attack</title>
+    <link>https://www.securityweek.com/hugging-face-hacked-in-autonomous-ai-attack/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/hugging-face-hacked-in-autonomous-ai-attack/</guid>
+    <pubDate>Mon, 20 Jul 2026 09:36:15 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>Targeting production infrastructure, the attack compromised internal datasets and service credentials. The post Hugging Face Hacked in Autonomous AI Attack appeared first on SecurityWeek .</description>
   </item>
   <item>
     <title>ISC Stormcast For Monday, July 20th, 2026 https://isc.sans.edu/podcastdetail/10014, (Mon, Jul 20th)</title>
@@ -758,6 +798,30 @@
     <pubDate>Mon, 20 Jul 2026 05:00:00 -0400</pubDate>
     <category>Infosec News</category>
     <description>AI changes how infrastructure is accessed. Here&#x27;s what to secure.</description>
+  </item>
+  <item>
+    <title>The ACLU Is Arming Lawyers to Expose State Surveillance Secrets</title>
+    <link>https://www.wired.com/story/the-aclu-is-arming-lawyers-to-expose-state-surveillance-secrets/</link>
+    <guid isPermaLink="true">https://www.wired.com/story/the-aclu-is-arming-lawyers-to-expose-state-surveillance-secrets/</guid>
+    <pubDate>Mon, 20 Jul 2026 10:00:00 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>A new toolkit for attorneys in Massachusetts targets the technologies police use—and conceal—to build criminal cases, from facial recognition to AI-written police reports.</description>
+  </item>
+  <item>
+    <title>Apps Marketed to US Troops Are Shipping Chinese and Russian Code</title>
+    <link>https://www.wired.com/story/apps-marketed-to-us-troops-are-shipping-chinese-and-russian-code/</link>
+    <guid isPermaLink="true">https://www.wired.com/story/apps-marketed-to-us-troops-are-shipping-chinese-and-russian-code/</guid>
+    <pubDate>Mon, 20 Jul 2026 09:30:00 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>A first-of-its-kind analysis found more than one in eight apps built for US service members carried foreign code—some from firms in nations the Pentagon designates as adversaries.</description>
+  </item>
+  <item>
+    <title>Police Chiefs Cite TfL Hack in Push for Cybercrime Risk Orders</title>
+    <link>https://www.infosecurity-magazine.com/news/police-chiefs-tfl-cybercrime-risk/</link>
+    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/police-chiefs-tfl-cybercrime-risk/</guid>
+    <pubDate>Mon, 20 Jul 2026 09:45:00 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>Two chiefs of UK policing agencies said the Transport for London prosecution demonstrates the need for Cybercrime Risk Orders</description>
   </item>
   <item>
     <title>Attackers Can Take Over WordPress Sites Using Newly Released wp2shell Exploits</title>
@@ -1542,70 +1606,6 @@
     <pubDate>Fri, 17 Jul 2026 09:00:00 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>Analysis of ransomware incidents by ReliaQuest indicates a shift in the ransomware landscape</description>
-  </item>
-  <item>
-    <title>Cyberattack Disrupts Operations of Japanese Frozen Food Giant Nichirei</title>
-    <link>https://www.securityweek.com/cyberattack-disrupts-operations-of-japanese-frozen-food-giant-nichirei/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/cyberattack-disrupts-operations-of-japanese-frozen-food-giant-nichirei/</guid>
-    <pubDate>Fri, 17 Jul 2026 09:06:27 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>The company disconnected its systems on July 13 and is starting to gradually restore operations. The post Cyberattack Disrupts Operations of Japanese Frozen Food Giant Nichirei appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>New GoSerpent Malware Targets Southeast Asian Governments and Diplomats for Espionage</title>
-    <link>https://thehackernews.com/2026/07/new-goserpent-malware-targets-southeast.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/07/new-goserpent-malware-targets-southeast.html</guid>
-    <pubDate>Fri, 17 Jul 2026 14:16:45 +0530</pubDate>
-    <category>Incident Reporting</category>
-    <description>Cybersecurity researchers have discovered a previously undocumented malware called GoSerpent that has been put to use in cyber attacks targeting entities in Southeast Asia since late 2025 with a focus on long-term access and intelligence gathering. Russian cybersecurity company K…</description>
-  </item>
-  <item>
-    <title>EY says client tax data exposed in third-party IT software breach</title>
-    <link>https://cyberinsider.com/ey-says-client-tax-data-exposed-in-third-party-it-software-breach/</link>
-    <guid isPermaLink="true">https://cyberinsider.com/ey-says-client-tax-data-exposed-in-third-party-it-software-breach/</guid>
-    <pubDate>Fri, 17 Jul 2026 10:47:23 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>Ernst &amp;#038; Young (EY) is notifying affected individuals that personal and financial information was exposed after attackers breached a third-party IT service management platform used by the firm&#x27;s tax practice. The professional services giant says the incident resulted in unaut…</description>
-  </item>
-  <item>
-    <title>Armenia Detains Russian Tourist on U.S. Warrant for REvil Hacker, Lawyers Say Wrong Man</title>
-    <link>https://thehackernews.com/2026/07/armenia-detains-russian-tourist-on-us.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/07/armenia-detains-russian-tourist-on-us.html</guid>
-    <pubDate>Fri, 17 Jul 2026 16:23:31 +0530</pubDate>
-    <category>Incident Reporting</category>
-    <description>Armenia has held a Russian tourist named Aleksandr Ermakov in a detention center since June 28, on a U.S. extradition request for a REvil ransomware suspect named Aleksandr Ermakov. His wife, Maria Yurova, told REN TV that border officers pulled him out of the departure hall at Y…</description>
-  </item>
-  <item>
-    <title>Shark vacuum flaw exposes cameras, home maps and Wi-Fi passwords</title>
-    <link>https://www.malwarebytes.com/blog/news/2026/07/shark-vacuum-flaw-exposes-cameras-home-maps-and-wi-fi-passwords</link>
-    <guid isPermaLink="true">https://www.malwarebytes.com/blog/news/2026/07/shark-vacuum-flaw-exposes-cameras-home-maps-and-wi-fi-passwords</guid>
-    <pubDate>Fri, 17 Jul 2026 12:29:56 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>One compromised Shark robot vacuum could unlock remote access to many others.</description>
-  </item>
-  <item>
-    <title>Spirals ransomware locks down victim systems in under 24 hours</title>
-    <link>https://www.helpnetsecurity.com/2026/07/17/spirals-ransomware-south-asia/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/17/spirals-ransomware-south-asia/</guid>
-    <pubDate>Fri, 17 Jul 2026 12:25:24 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>A previously unknown ransomware strain called Spirals was used last month in an attack against an IT services company in South Asia, where attackers went from initial access to data theft and encrypting the network in less than 24 hours, according to Symantec&amp;#8217;s Threat Hunte…</description>
-  </item>
-  <item>
-    <title>Dairy company Fairlife suspends production in US after cyber incident</title>
-    <link>https://therecord.media/dairy-company-fairlife-suspends-production-us-cyber-incident</link>
-    <guid isPermaLink="true">https://therecord.media/dairy-company-fairlife-suspends-production-us-cyber-incident</guid>
-    <pubDate>Fri, 17 Jul 2026 13:40:00 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>Fairlife’s U.S. operation includes plants in Michigan, New York and Arizona, and the company&#x27;s retail sales passed $1 billion in 2022.</description>
-  </item>
-  <item>
-    <title>When Patching Is Already Too Late</title>
-    <link>https://www.youtube.com/shorts/vqzhfsVUgAg</link>
-    <guid isPermaLink="true">https://www.youtube.com/shorts/vqzhfsVUgAg</guid>
-    <pubDate>Fri, 17 Jul 2026 14:00:16 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>The discussion makes a bold claim: many organizations no longer have enough time to patch before attackers compromise vulnerable systems. Instead of treating prevention as the primary strategy, the emphasis shifts toward detecting intrusions quickly and responding before attacker…</description>
   </item>
   </channel>
 </rss>
