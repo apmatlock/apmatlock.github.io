@@ -5,8 +5,16 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 20 Jul 2026 10:08:07 -0300</lastBuildDate>
+    <lastBuildDate>Mon, 20 Jul 2026 11:08:05 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>wp2shell (CVE-2026-63030, CVE-2026-60137): Frequently asked questions about remote code execution chain in WordPress Core</title>
+    <link>https://www.tenable.com/blog/wp2shell-cve-2026-63030-cve-2026-60137-frequently-asked-questions-about-remote-code-execution</link>
+    <guid isPermaLink="true">https://www.tenable.com/blog/wp2shell-cve-2026-63030-cve-2026-60137-frequently-asked-questions-about-remote-code-execution</guid>
+    <pubDate>Mon, 20 Jul 2026 09:36:32 -0400</pubDate>
+    <category>CISA KEV</category>
+    <description>An unauthenticated attacker can chain two WordPress Core vulnerabilities, CVE-2026-63030 and CVE-2026-60137, to achieve remote code execution against affected WordPress installations. Multiple security firms have confirmed active in-the-wild exploitation within days of public dis…</description>
+  </item>
   <item>
     <title>Critical NGINX Vulnerability Can Crash Workers and May Allow Remote Code Execution</title>
     <link>https://thehackernews.com/2026/07/critical-nginx-vulnerability-can-crash.html</link>
@@ -616,6 +624,14 @@
     <description>F5 fixes critical nginx flaw CVE-2026-42533 that can crash servers and, in some cases, allow remote code execution through crafted HTTP requests. F5 released patches for a critical nginx vulnerability, tracked as CVE-2026-42533 (CVSS score of 9.2), that can allow an unauthenticat…</description>
   </item>
   <item>
+    <title>From a Single Alert to 1,000 Files: Inside an Exposed WebDAV Malware Delivery Lab</title>
+    <link>https://www.rapid7.com/blog/post/tr-exposed-webdav-malware-delivery-lab-analysis</link>
+    <guid isPermaLink="true">https://www.rapid7.com/blog/post/tr-exposed-webdav-malware-delivery-lab-analysis</guid>
+    <pubDate>Mon, 20 Jul 2026 13:00:00 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Executive summary An MDR alert recently led our team to an exposed server that was doing more than hosting payloads. It was functioning as a fully operational malware delivery lab. Containing over 1,000 artifacts, the infrastructure served as a QA hub where attackers systematical…</description>
+  </item>
+  <item>
     <title>Wordpress RCE, New Windows 0-day and Coca-Cola&#x27;s Fairline ransomed</title>
     <link>https://cybersecuritytoday.libsyn.com/wordpress-rce-new-windows-0-day-and-coca-colas-fairline-ransomed</link>
     <guid isPermaLink="true">https://cybersecuritytoday.libsyn.com/wordpress-rce-new-windows-0-day-and-coca-colas-fairline-ransomed</guid>
@@ -816,6 +832,30 @@
     <description>On March 18, 2026, Navigate360 learned that 8.3 million anonymous tips had been exposed. The company&amp;#8217;s response—and the silence of the programs that depend on its platform—has persisted for months. We&amp;#8217;re now seeking accountability through state and federal regulators.…</description>
   </item>
   <item>
+    <title>⚡ Weekly Recap: WordPress RCE, SonicWall 0-Days, AI Service Attacks, SharePoint 0-Day and More</title>
+    <link>https://thehackernews.com/2026/07/weekly-recap-wordpress-rce-sonicwall-0.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/weekly-recap-wordpress-rce-sonicwall-0.html</guid>
+    <pubDate>Mon, 20 Jul 2026 19:02:26 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>A single request should not be able to do this much. But this week, small inputs led to code execution, memory loss, stolen keys, and disabled security tools. The paths were often simple: exposed systems, weak checks, old drivers, fake prompts, and public code used for malware de…</description>
+  </item>
+  <item>
+    <title>Researchers Build WordPress Exploit Using OpenAI&#x27;s GPT</title>
+    <link>https://www.infosecurity-magazine.com/news/researchers-wordpress-exploit/</link>
+    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/researchers-wordpress-exploit/</guid>
+    <pubDate>Mon, 20 Jul 2026 14:00:00 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>A researcher who discovered a critical vulnerability in WordPress has used OpenAI’s latest model to develop an exploit chain</description>
+  </item>
+  <item>
+    <title>Italy fines WINDTRE €1.7 million over security flaws behind two data breaches</title>
+    <link>https://www.helpnetsecurity.com/2026/07/20/italy-windtre-1-7-million-fine/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/20/italy-windtre-1-7-million-fine/</guid>
+    <pubDate>Mon, 20 Jul 2026 13:19:05 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Italy&amp;#8217;s data protection authority, the Garante per la Protezione dei Dati Personali, fined WINDTRE €1.7 million over &amp;#8220;serious data security shortcomings&amp;#8221; that let hackers breach its systems twice and exfiltrate personal data belonging to more than 365,000 custom…</description>
+  </item>
+  <item>
     <title>Windows KB5121767 OOB update fixes shutdowns on some Dell PCs</title>
     <link>https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-windows-bug-causing-some-dell-pcs-to-shut-down/</link>
     <guid isPermaLink="true">https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-windows-bug-causing-some-dell-pcs-to-shut-down/</guid>
@@ -870,6 +910,14 @@
     <pubDate>Mon, 20 Jul 2026 11:00:00 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>Craneware, which is headquartered in Edinburgh and listed on London&#x27;s AIM market, told investors it detected unauthorized access to a “subset” of its data environment and has since brought in outside forensic investigators.</description>
+  </item>
+  <item>
+    <title>JadePuffer Returns With Ransomware Designed to Wipe AI Models</title>
+    <link>https://www.infosecurity-magazine.com/news/jadepuffer-ai-model-ransomware/</link>
+    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/jadepuffer-ai-model-ransomware/</guid>
+    <pubDate>Mon, 20 Jul 2026 14:05:00 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>JadePuffer follow-up campaign deployed ENCFORGE locker built to destroy AI model artifacts</description>
   </item>
   <item>
     <title>ISC Stormcast For Monday, July 20th, 2026 https://isc.sans.edu/podcastdetail/10014, (Mon, Jul 20th)</title>
@@ -998,6 +1046,14 @@
     <pubDate>Mon, 20 Jul 2026 17:00:00 +0530</pubDate>
     <category>Infosec News</category>
     <description>The industry spent the initial months after Anthropic&#x27;s April 7 Mythos reveal focused on volume. How many new CVEs would Mythos add to an already overloaded pipeline? How quickly would the flood of AI-driven discovery overwhelm triage capabilities? How long would it take adversar…</description>
+  </item>
+  <item>
+    <title>Cybersecurity Keeps Events &#x27;Uneventful&#x27;</title>
+    <link>https://www.darkreading.com/cyber-risk/cybersecurity-keeps-events-uneventful</link>
+    <guid isPermaLink="true">https://www.darkreading.com/cyber-risk/cybersecurity-keeps-events-uneventful</guid>
+    <pubDate>Mon, 20 Jul 2026 14:00:00 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>From the World Cup to the United States&#x27; 250th celebration, this year&#x27;s event calendar has been packed with high-profile gatherings that drew global audiences, intense scrutiny, and enormous security demands.</description>
   </item>
   <item>
     <title>Attackers Can Take Over WordPress Sites Using Newly Released wp2shell Exploits</title>
@@ -1550,62 +1606,6 @@
     <pubDate>Fri, 17 Jul 2026 10:00:24 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>A technical analysis of three chained zero-day vulnerabilities in Siemens ROX II OT switches that allow privilege escalation and persistent root access. The post Three Steps to the Terminal: A Siemens ROX II Zero-Day Trilogy appeared first on Unit 42 .</description>
-  </item>
-  <item>
-    <title>Coca-Cola discloses ransomware attack disrupting fairlife production in the US</title>
-    <link>https://cyberinsider.com/coca-cola-discloses-ransomware-attack-disrupting-fairlife-production-in-the-us/</link>
-    <guid isPermaLink="true">https://cyberinsider.com/coca-cola-discloses-ransomware-attack-disrupting-fairlife-production-in-the-us/</guid>
-    <pubDate>Fri, 17 Jul 2026 10:37:19 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The Coca-Cola Company has disclosed that a ransomware attack affecting its wholly owned dairy subsidiary, fairlife, has temporarily halted fairlife&#x27;s US production operations after attackers gained unauthorized access to part of its network, including production-related systems. …</description>
-  </item>
-  <item>
-    <title>New Windows LegacyHive zero-day gives hackers admin privileges</title>
-    <link>https://www.bleepingcomputer.com/news/security/new-windows-legacyhive-zero-day-exploit-grants-hackers-admin-access/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/new-windows-legacyhive-zero-day-exploit-grants-hackers-admin-access/</guid>
-    <pubDate>Fri, 17 Jul 2026 07:05:30 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>A security researcher using the &quot;Nightmare Eclipse&quot; handle has released a Windows zero-day exploit dubbed LegacyHive that allows attackers to escalate privileges on up-to-date Windows systems. [...]</description>
-  </item>
-  <item>
-    <title>The Race to Field Military Autonomy Is On, Can Trusted Information Infrastructure Keep Pace?</title>
-    <link>https://thehackernews.com/2026/07/the-race-to-field-military-autonomy-is.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/07/the-race-to-field-military-autonomy-is.html</guid>
-    <pubDate>Fri, 17 Jul 2026 17:00:00 +0530</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Military forces are under increasing pressure to field autonomous capabilities faster than ever before. Across the U.S., UK, and NATO, new investment, evolving defense strategies, and accelerated acquisition pathways are transforming how capability is delivered, rewarding program…</description>
-  </item>
-  <item>
-    <title>Gold Eagle Clearinghouse Targets Security Gap, But How Is Unclear</title>
-    <link>https://www.darkreading.com/vulnerabilities-threats/gold-eagle-clearinghouse-targets-security-gap</link>
-    <guid isPermaLink="true">https://www.darkreading.com/vulnerabilities-threats/gold-eagle-clearinghouse-targets-security-gap</guid>
-    <pubDate>Fri, 17 Jul 2026 13:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The White House launched Gold Eagle to coordinate vulnerability response in a new AI world, but multiple questions linger over how it&#x27;s being implemented.</description>
-  </item>
-  <item>
-    <title>Italy fines Wind Tre $2 million for data breaches affecting 365k customers</title>
-    <link>https://cyberinsider.com/italy-fines-wind-tre-2-million-for-data-breaches-affecting-365k-customers/</link>
-    <guid isPermaLink="true">https://cyberinsider.com/italy-fines-wind-tre-2-million-for-data-breaches-affecting-365k-customers/</guid>
-    <pubDate>Fri, 17 Jul 2026 14:42:40 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Italy&#x27;s data protection authority (Garante per la Protezione dei Dati Personali) has fined telecommunications provider Wind Tre €1.715 million (approximately $2 million) after finding serious security shortcomings that led to two data breaches affecting more than 365,000 customer…</description>
-  </item>
-  <item>
-    <title>In Other News: Iran Tracks US Military Phones, CrashStealer macOS Malware, CVD Blueprint</title>
-    <link>https://www.securityweek.com/in-other-news-iran-tracks-us-military-phones-crashstealer-macos-malware-cvd-blueprint/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/in-other-news-iran-tracks-us-military-phones-crashstealer-macos-malware-cvd-blueprint/</guid>
-    <pubDate>Fri, 17 Jul 2026 14:27:54 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Noteworthy stories that might have slipped under the radar: OpenClaw AI agents exploited via WhatsApp, ransomware hits naval defense firm TKMS, Lidl discloses data breach. The post In Other News: Iran Tracks US Military Phones, CrashStealer macOS Malware, CVD Blueprint appeared f…</description>
-  </item>
-  <item>
-    <title>Nightmare Eclipse drops another Windows zero-day.</title>
-    <link>https://thecyberwire.com/newsletters/daily-briefing/15/135</link>
-    <guid isPermaLink="true">https://thecyberwire.com/newsletters/daily-briefing/15/135</guid>
-    <pubDate>Fri, 17 Jul 2026 16:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The Gentlemen topped the ransomware leaderboard in Q2 2026. Ransomware attack disrupts Fairlife dairy production.</description>
   </item>
   </channel>
 </rss>
