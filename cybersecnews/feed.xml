@@ -5,8 +5,16 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 21 Jul 2026 17:08:29 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 21 Jul 2026 18:07:51 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Apple Fixes Hide My Email Bug That Exposed Real Addresses in Mail Logs</title>
+    <link>https://thehackernews.com/2026/07/apple-fixes-hide-my-email-bug-that.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/apple-fixes-hide-my-email-bug-that.html</guid>
+    <pubDate>Wed, 22 Jul 2026 00:16:32 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Apple has moved to address a security flaw in its Hide My Email service that enabled users&#x27; real email addresses to be unmasked, effectively undermining the feature&#x27;s privacy guarantees. 404 Media reported Tuesday that a fix for the issue was deployed by Apple on July 3, 2026, af…</description>
+  </item>
   <item>
     <title>Weekly Threat Bulletin – July 22nd, 2026</title>
     <link>https://www.f5.com/labs/articles/weekly-threat-bulletin-july-22nd-2026</link>
@@ -472,6 +480,14 @@
     <description>Qilin ransomware exploits the PAN-OS GlobalProtect flaw CVE-2026-0257 to gain unauthorized VPN access to unpatched networks. Arctic Wolf researchers warn that the Qilin ransomware gang is exploiting the critical PAN-OS GlobalProtect vulnerability CVE-2026-0257 to compromise corpo…</description>
   </item>
   <item>
+    <title>Critical SharePoint RCE flaw exploited to steal machine keys</title>
+    <link>https://www.bleepingcomputer.com/news/security/critical-sharepoint-rce-flaw-exploited-to-steal-machine-keys/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/critical-sharepoint-rce-flaw-exploited-to-steal-machine-keys/</guid>
+    <pubDate>Tue, 21 Jul 2026 16:06:55 -0400</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Hackers are actively exploiting the critical CVE-2026-50522 vulnerability in Microsoft SharePoint to steal machine keys and maintain access even after affected servers are patched. [...]</description>
+  </item>
+  <item>
     <title>AI-generated reports push GNOME to shorten its disclosure window</title>
     <link>https://www.helpnetsecurity.com/2026/07/21/gnome-security-disclosure-update/</link>
     <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/21/gnome-security-disclosure-update/</guid>
@@ -726,6 +742,14 @@
     <pubDate>Tue, 21 Jul 2026 18:25:39 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Zimbra patched nine flaws in version 10.1.20, including a critical SNMP monitoring command injection issue enabling arbitrary command execution. Zimbra released version 10.1.20 to fix nine security vulnerabilities, including a critical command injection flaw in the SNMP monitorin…</description>
+  </item>
+  <item>
+    <title>Cyberattack against Maine telecom disrupted municipal internet service in 23 towns</title>
+    <link>https://databreaches.net/2026/07/21/cyberattack-against-maine-telecom-disrupted-municipal-internet-service-in-23-towns/?pk_campaign=feed&amp;pk_kwd=cyberattack-against-maine-telecom-disrupted-municipal-internet-service-in-23-towns</link>
+    <guid isPermaLink="true">https://databreaches.net/2026/07/21/cyberattack-against-maine-telecom-disrupted-municipal-internet-service-in-23-towns/?pk_campaign=feed&amp;pk_kwd=cyberattack-against-maine-telecom-disrupted-municipal-internet-service-in-23-towns</guid>
+    <pubDate>Tue, 21 Jul 2026 19:07:18 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Colin Wood reports: At least one municipal government was among those to see their internet service disrupted after a cyberattack against a Maine telecommunications firm Sunday caused an outage affecting 23 towns along the state’s midcoastal region. A local NBC affiliate reported…</description>
   </item>
   <item>
     <title>Microsoft shares manual fix for WSUS sync delays and timeouts</title>
@@ -1580,30 +1604,6 @@
     <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53401</link>
     <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53401</guid>
     <pubDate>Mon, 20 Jul 2026 01:02:20 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-63811 f2fs: read COW data with the original inode during atomic write</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-63811</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-63811</guid>
-    <pubDate>Mon, 20 Jul 2026 01:02:26 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-63793 ntfs: serialize volume label accesses</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-63793</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-63793</guid>
-    <pubDate>Mon, 20 Jul 2026 01:02:45 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-53403 fbdev: Fix fb_new_modelist to prevent null-ptr-deref in fb_videomode_to_var</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53403</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53403</guid>
-    <pubDate>Mon, 20 Jul 2026 01:02:51 -0700</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Information published.</description>
   </item>
