@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 21 Jul 2026 13:07:09 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 21 Jul 2026 14:08:00 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Weekly Threat Bulletin – July 22nd, 2026</title>
@@ -448,6 +448,30 @@
     <description>Updated an acknowledgement. This is an informational change only.</description>
   </item>
   <item>
+    <title>VU#762226: Plane contains multi-tenant authorization bypass vulnerability</title>
+    <link>https://kb.cert.org/vuls/id/762226</link>
+    <guid isPermaLink="true">https://kb.cert.org/vuls/id/762226</guid>
+    <pubDate>Tue, 21 Jul 2026 16:42:25 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Overview The project management tool Plane, versions 1.3.0 and earlier, contains a multi-tenant authorization bypass vulnerability in its asset-management API that allows unauthorized users to access, delete, or duplicate assets that belong to other workspaces. Description Plane …</description>
+  </item>
+  <item>
+    <title>Critical wp2shell WordPress flaws exploited to install webshells</title>
+    <link>https://www.bleepingcomputer.com/news/security/critical-wp2shell-wordpress-flaws-exploited-to-install-webshells/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/critical-wp2shell-wordpress-flaws-exploited-to-install-webshells/</guid>
+    <pubDate>Tue, 21 Jul 2026 12:41:50 -0400</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Hackers are exploiting the &quot;wp2shell&quot; critical vulnerability suite (CVE-2026-63030 and CVE-2026-60137) affecting WordPress Core to deploy persistent webshells and install malicious plugins on affected servers. [...]</description>
+  </item>
+  <item>
+    <title>Qilin Ransomware Affiliates Abuse CVE-2026-0257 to Gain Unauthorized VPN Access</title>
+    <link>https://securityaffairs.com/195730/cyber-crime/qilin-ransomware-affiliates-abuse-cve-2026-0257-to-gain-unauthorized-vpn-access.html</link>
+    <guid isPermaLink="true">https://securityaffairs.com/195730/cyber-crime/qilin-ransomware-affiliates-abuse-cve-2026-0257-to-gain-unauthorized-vpn-access.html</guid>
+    <pubDate>Tue, 21 Jul 2026 16:08:28 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Qilin ransomware exploits the PAN-OS GlobalProtect flaw CVE-2026-0257 to gain unauthorized VPN access to unpatched networks. Arctic Wolf researchers warn that the Qilin ransomware gang is exploiting the critical PAN-OS GlobalProtect vulnerability CVE-2026-0257 to compromise corpo…</description>
+  </item>
+  <item>
     <title>AI-generated reports push GNOME to shorten its disclosure window</title>
     <link>https://www.helpnetsecurity.com/2026/07/21/gnome-security-disclosure-update/</link>
     <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/21/gnome-security-disclosure-update/</guid>
@@ -672,6 +696,22 @@
     <description>Attackers started exploiting the critical wp2shell vulnerability chain within hours of patches being released, putting sites and their visitors at risk.</description>
   </item>
   <item>
+    <title>AWS Kiro Flaw Let a Poisoned Web Page Rewrite Its Config and Run Code</title>
+    <link>https://thehackernews.com/2026/07/aws-kiro-flaw-let-poisoned-web-page.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/aws-kiro-flaw-let-poisoned-web-page.html</guid>
+    <pubDate>Tue, 21 Jul 2026 21:36:12 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Hidden text on a web page was enough to make Kiro, AWS&#x27;s agentic coding IDE, rewrite its own configuration file and run an attacker&#x27;s code on a developer&#x27;s machine, with no approval step able to stop it. Intezer, in research with Kodem Security, found that a request as ordinary a…</description>
+  </item>
+  <item>
+    <title>Microsoft SharePoint under attack via new exploit</title>
+    <link>https://www.cybersecuritydive.com/news/microsoft-sharepoint-attack-new-exploit/825797/</link>
+    <guid isPermaLink="true">https://www.cybersecuritydive.com/news/microsoft-sharepoint-attack-new-exploit/825797/</guid>
+    <pubDate>Tue, 21 Jul 2026 11:06:13 -0400</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Security researchers warn the potential risk could rival the widespread ToolShell campaign of 2025.</description>
+  </item>
+  <item>
     <title>Microsoft shares manual fix for WSUS sync delays and timeouts</title>
     <link>https://www.bleepingcomputer.com/news/microsoft/microsoft-shares-manual-fix-for-wsus-sync-delays-and-timeouts/</link>
     <guid isPermaLink="true">https://www.bleepingcomputer.com/news/microsoft/microsoft-shares-manual-fix-for-wsus-sync-delays-and-timeouts/</guid>
@@ -718,6 +758,14 @@
     <pubDate>Tue, 21 Jul 2026 16:00:00 +0000</pubDate>
     <category>Security Advisories</category>
     <description>Extortion group wipes Romania&#x27;s land registry database. FBI warns of impersonators targeting scam victims.</description>
+  </item>
+  <item>
+    <title>House intel bill includes provisions on state and local threat intelligence, election security, AI</title>
+    <link>https://cyberscoop.com/house-intel-bill-includes-provisions-on-state-and-local-threat-intelligence-election-security-ai/</link>
+    <guid isPermaLink="true">https://cyberscoop.com/house-intel-bill-includes-provisions-on-state-and-local-threat-intelligence-election-security-ai/</guid>
+    <pubDate>Tue, 21 Jul 2026 16:25:59 +0000</pubDate>
+    <category>Security Advisories</category>
+    <description>The House Intelligence Committee advanced its fiscal 2027 authorization legislation Monday. The post House intel bill includes provisions on state and local threat intelligence, election security, AI appeared first on CyberScoop .</description>
   </item>
   <item>
     <title>PR3TACK preemptive framework maps threats before attackers use them</title>
@@ -992,6 +1040,14 @@
     <description>DTEX researchers found a series of transactions in a payment wallet showing North Korean IT worker salaries flowing into sanctioned entities that support the regime’s military programs. The post North Korea&amp;#8217;s IT worker scheme funds Russia&amp;#8217;s war effort appeared first o…</description>
   </item>
   <item>
+    <title>Ignore Apple, Pay the Price</title>
+    <link>https://www.youtube.com/shorts/XwYHnlMnzm0</link>
+    <guid isPermaLink="true">https://www.youtube.com/shorts/XwYHnlMnzm0</guid>
+    <pubDate>Tue, 21 Jul 2026 16:03:45 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Patrick Wardle shares the biggest lesson he learned after years of building macOS security tools: follow Apple&#x27;s recommended development practices whenever possible. Choosing unsupported techniques may seem like the better engineering decision at first, but platform changes often…</description>
+  </item>
+  <item>
     <title>Securing Research Infrastructure and Managing Shadow AI with Kevin Mortimer</title>
     <link>https://thecyberwire.com/podcasts/data-security-decoded/59/notes</link>
     <guid isPermaLink="true">https://thecyberwire.com/podcasts/data-security-decoded/59/notes</guid>
@@ -1014,6 +1070,14 @@
     <pubDate>Tue, 21 Jul 2026 11:59:31 +0000</pubDate>
     <category>Cyber Threat Landscape</category>
     <description>A new macOS infostealer tricks victims into revealing their system password and installs a persistent backdoor for future access.</description>
+  </item>
+  <item>
+    <title>A Sneaky Hacking Tool Targeting AI Infrastructure Is Lurking in Victims’ Blind Spots</title>
+    <link>https://www.wired.com/story/a-sneaky-hacking-tool-targeting-ai-infrastructure-is-lurking-in-victims-blind-spots/</link>
+    <guid isPermaLink="true">https://www.wired.com/story/a-sneaky-hacking-tool-targeting-ai-infrastructure-is-lurking-in-victims-blind-spots/</guid>
+    <pubDate>Tue, 21 Jul 2026 16:08:44 +0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>A new type of malware can worm deep into AI coding systems to steal data and logins—and can flip a “death switch” to destroy files and keep out real users.</description>
   </item>
   <item>
     <title>Between Two Nerds: What China gets wrong about Russia&#x27;s cyber war in Ukraine</title>
@@ -1094,6 +1158,22 @@
     <pubDate>Tue, 21 Jul 2026 13:26:13 +0000</pubDate>
     <category>Infosec News</category>
     <description>How Agentless Workload Detection exposes hidden threats in virtual appliances and modern cloud networks.</description>
+  </item>
+  <item>
+    <title>Google Launches Gemini 3.5 Flash Cyber AI to Find and Fix Software Vulnerabilities</title>
+    <link>https://thehackernews.com/2026/07/google-launches-gemini-35-flash-cyber.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/google-launches-gemini-35-flash-cyber.html</guid>
+    <pubDate>Tue, 21 Jul 2026 20:39:28 +0530</pubDate>
+    <category>Infosec News</category>
+    <description>Google&#x27;s DeepMind on Tuesday announced the release of Gemini 3.5 Flash Cyber, a specialized artificial intelligence (AI) model built atop 3.5 Flash that&#x27;s designed to discover, validate, and patch vulnerabilities quickly and efficiently. According to the tech giant, the model wil…</description>
+  </item>
+  <item>
+    <title>Do more with AWS WAF labels using dynamic label interpolation</title>
+    <link>https://aws.amazon.com/blogs/security/do-more-with-aws-waf-labels-using-dynamic-label-interpolation/</link>
+    <guid isPermaLink="true">https://aws.amazon.com/blogs/security/do-more-with-aws-waf-labels-using-dynamic-label-interpolation/</guid>
+    <pubDate>Tue, 21 Jul 2026 17:03:16 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>AWS WAF classifies web traffic by attaching metadata to each request it evaluates. Managed rule groups such as AWS WAF Bot Control and AWS WAF Fraud Control account takeover prevention (ATP) attach labels that describe what they found. A label can record that a request came from …</description>
   </item>
   <item>
     <title>wp2shell (CVE-2026-63030, CVE-2026-60137): Frequently asked questions about remote code execution chain in WordPress Core</title>
@@ -1524,86 +1604,6 @@
     <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-63807</link>
     <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-63807</guid>
     <pubDate>Mon, 20 Jul 2026 01:04:56 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-53384 serial: 8250_dw: unregister 8250 port if clk_notifier_register() fails</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53384</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53384</guid>
-    <pubDate>Mon, 20 Jul 2026 01:05:15 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-63830 net: skmsg: preserve sg.copy across SG transforms</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-63830</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-63830</guid>
-    <pubDate>Mon, 20 Jul 2026 01:05:21 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-53388 fuse: re-lock request before replacing page cache folio</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53388</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-53388</guid>
-    <pubDate>Mon, 20 Jul 2026 01:05:40 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-63794 KVM: SVM: Fix page overflow in sev_dbg_crypt() for ENCRYPT path</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-63794</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-63794</guid>
-    <pubDate>Mon, 20 Jul 2026 01:05:46 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-63821 wifi: rtw88: usb: fix memory leaks on USB write failures</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-63821</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-63821</guid>
-    <pubDate>Mon, 20 Jul 2026 01:06:05 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-63824 KEYS: fix overflow in keyctl_pkey_params_get_2()</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-63824</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-63824</guid>
-    <pubDate>Mon, 20 Jul 2026 01:06:11 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-63798 irqchip/imgpdc: Fix resource leak, add missing chained handler cleanup on remove</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-63798</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-63798</guid>
-    <pubDate>Mon, 20 Jul 2026 01:06:17 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-63823 keys: Pin request_key_auth payload in instantiate paths</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-63823</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-63823</guid>
-    <pubDate>Mon, 20 Jul 2026 01:06:24 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-63800 pNFS: Fix use-after-free in pnfs_update_layout()</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-63800</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-63800</guid>
-    <pubDate>Mon, 20 Jul 2026 01:06:30 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-63797 rpmsg: char: Fix use-after-free on probe error path</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-63797</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-63797</guid>
-    <pubDate>Mon, 20 Jul 2026 01:06:36 -0700</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Information published.</description>
   </item>
