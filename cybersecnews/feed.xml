@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 22 Jul 2026 15:07:08 -0300</lastBuildDate>
+    <lastBuildDate>Wed, 22 Jul 2026 16:08:01 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>U.S. CISA adds DD-WRT, Langflow and WordPress flaws to its Known Exploited Vulnerabilities catalog</title>
@@ -198,6 +198,22 @@
     <pubDate>Wed, 22 Jul 2026 17:24:02 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Overview Duplicati v2.3.0.1 is vulnerable to arbitrary code execution when installed outside the default C:\Program Files\Duplicati 2\ directory. An attacker with local user privileges who can write files to the Duplicati installation directory can execute arbitrary code by placi…</description>
+  </item>
+  <item>
+    <title>Ubuntu snap-confine Flaw Could Give Local Users Root on Default Desktop Installs</title>
+    <link>https://thehackernews.com/2026/07/ubuntu-snap-confine-flaw-could-give.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/ubuntu-snap-confine-flaw-could-give.html</guid>
+    <pubDate>Wed, 22 Jul 2026 23:37:16 +0530</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Cybersecurity researchers have disclosed details of a new local privilege escalation (LPE) vulnerability in snap-confine that an unprivileged user can trigger to obtain root access and gain complete control of a target environment. The high-severity flaw, tracked as CVE-2026-8933…</description>
+  </item>
+  <item>
+    <title>Oracle’s July update fixes ten 10.0 vulnerabilities in Fusion Middleware</title>
+    <link>https://www.csoonline.com/article/4200184/oracles-july-update-fixes-ten-10-0-vulnerabilities-in-fusion-middleware.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4200184/oracles-july-update-fixes-ten-10-0-vulnerabilities-in-fusion-middleware.html</guid>
+    <pubDate>Wed, 22 Jul 2026 18:14:27 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Oracle’s July 2026 Critical Patch Update, its largest ever, contains 1,449 new security patches spanning 32 product families, from Oracle Database and E-Business Suite to PeopleSoft, GoldenGate, Java SE, and Fusion Middleware. Fusion Middleware was particularly hard hit, with new…</description>
   </item>
   <item>
     <title>Apple Fixes Hide My Email Bug That Exposed Real Addresses in Mail Logs</title>
@@ -564,6 +580,46 @@
     <link>https://cyber.gc.ca/en/alerts-advisories/atlassian-security-advisory-av26-731</link>
     <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/atlassian-security-advisory-av26-731</guid>
     <pubDate>Wed, 22 Jul 2026 15:02:21 -0000</pubDate>
+    <category>Security Advisories</category>
+    <description></description>
+  </item>
+  <item>
+    <title>Drupal security advisory (AV26-738)</title>
+    <link>https://cyber.gc.ca/en/alerts-advisories/drupal-security-advisory-av26-738</link>
+    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/drupal-security-advisory-av26-738</guid>
+    <pubDate>Wed, 22 Jul 2026 16:03:22 -0000</pubDate>
+    <category>Security Advisories</category>
+    <description></description>
+  </item>
+  <item>
+    <title>Exim security advisory (AV26-737)</title>
+    <link>https://cyber.gc.ca/en/alerts-advisories/exim-security-advisory-av26-737</link>
+    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/exim-security-advisory-av26-737</guid>
+    <pubDate>Wed, 22 Jul 2026 16:03:22 -0000</pubDate>
+    <category>Security Advisories</category>
+    <description></description>
+  </item>
+  <item>
+    <title>Progress security advisory (AV26-736)</title>
+    <link>https://cyber.gc.ca/en/alerts-advisories/progress-security-advisory-av26-736</link>
+    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/progress-security-advisory-av26-736</guid>
+    <pubDate>Wed, 22 Jul 2026 16:03:22 -0000</pubDate>
+    <category>Security Advisories</category>
+    <description></description>
+  </item>
+  <item>
+    <title>Check Point security advisory (AV26-735)</title>
+    <link>https://cyber.gc.ca/en/alerts-advisories/check-point-security-advisory-av26-735</link>
+    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/check-point-security-advisory-av26-735</guid>
+    <pubDate>Wed, 22 Jul 2026 16:03:22 -0000</pubDate>
+    <category>Security Advisories</category>
+    <description></description>
+  </item>
+  <item>
+    <title>Mitel security advisory (AV26-734)</title>
+    <link>https://cyber.gc.ca/en/alerts-advisories/mitel-security-advisory-av26-734</link>
+    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/mitel-security-advisory-av26-734</guid>
+    <pubDate>Wed, 22 Jul 2026 16:03:22 -0000</pubDate>
     <category>Security Advisories</category>
     <description></description>
   </item>
@@ -1550,62 +1606,6 @@
     <pubDate>Tue, 21 Jul 2026 10:19:21 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>A security researcher discovered a broken access control vulnerability in Meta’s support infrastructure. The post Meta Paid $78,000 Bounty for Vulnerability Exposing Customer Support Data appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>AI agents can escape sandboxes without ever breaking them</title>
-    <link>https://www.csoonline.com/article/4199408/ai-agents-can-escape-sandboxes-without-ever-breaking-them.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4199408/ai-agents-can-escape-sandboxes-without-ever-breaking-them.html</guid>
-    <pubDate>Tue, 21 Jul 2026 11:46:02 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Sandboxes have become a key security control for AI coding agents, but new research suggests they may not provide the isolation many organizations assume. Pillar Security has disclosed a series of vulnerabilities showing how agents in tools such as Cursor, Codex, Gemini CLI, and …</description>
-  </item>
-  <item>
-    <title>Estée Lauder Discloses Impact From Oracle EBS Zero-Day Hack</title>
-    <link>https://www.securityweek.com/estee-lauder-discloses-impact-from-oracle-ebs-zero-day-hack/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/estee-lauder-discloses-impact-from-oracle-ebs-zero-day-hack/</guid>
-    <pubDate>Tue, 21 Jul 2026 11:12:33 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Hackers exfiltrated personal, financial, and health information from the company’s Oracle EBS instance in August 2025. The post Estée Lauder Discloses Impact From Oracle EBS Zero-Day Hack appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Open-Source Android AI Agents Could Let Invisible Screen Text Run Code on Host PCs</title>
-    <link>https://thehackernews.com/2026/07/open-source-android-ai-agents-could-let.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/07/open-source-android-ai-agents-could-let.html</guid>
-    <pubDate>Tue, 21 Jul 2026 17:28:00 +0530</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>An Android app that can draw over other windows and write to shared storage can slip instructions to the AI agent driving that phone, in text no human eye will ever see. Two more steps, and the same app is running commands on the PC driving the agent. Researchers demonstrated tha…</description>
-  </item>
-  <item>
-    <title>N-day is Becoming N-Hour. Patching Faster Won&#x27;t Save You.</title>
-    <link>https://thehackernews.com/2026/07/n-day-is-becoming-n-hour-patching.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/07/n-day-is-becoming-n-hour-patching.html</guid>
-    <pubDate>Tue, 21 Jul 2026 17:12:23 +0530</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Every patch is a confession. The moment a vendor ships a security fix, the diff between the old code and the new code tells anyone watching exactly what was broken and where. Turn that diff back into a working exploit, and you can hit every system that hasn&#x27;t updated yet. This is…</description>
-  </item>
-  <item>
-    <title>New Bit2Watt Attack Could Let Cloud Tenants Disrupt Power Grids Without an Exploit</title>
-    <link>https://thehackernews.com/2026/07/new-bit2watt-attack-could-let-cloud.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/07/new-bit2watt-attack-could-let-cloud.html</guid>
-    <pubDate>Tue, 21 Jul 2026 16:54:50 +0530</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>A cloud tenant using nothing but ordinary GPU access can push a data center&#x27;s power draw up and down fast enough to threaten the grid it runs on, with no exploit and no break-in. That is the claim behind Bit2Watt, described by three Zhejiang University researchers in a paper acce…</description>
-  </item>
-  <item>
-    <title>Your AI agent’s config is now the payload: How attackers are targeting the developer agent harness</title>
-    <link>https://www.tenable.com/blog/ai-coding-assistant-agent-harness-attacks</link>
-    <guid isPermaLink="true">https://www.tenable.com/blog/ai-coding-assistant-agent-harness-attacks</guid>
-    <pubDate>Tue, 21 Jul 2026 09:00:00 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Attackers have shifted from hiding from AI tools to running inside them. By poisoning the config files that govern AI coding assistants, a new worm class achieves silent persistence, evades AI-based scanners, and spreads across an organization&#x27;s repositories through developers&#x27; o…</description>
-  </item>
-  <item>
-    <title>Cisco’s open-weight Antares models make vulnerability localization cheaper</title>
-    <link>https://www.helpnetsecurity.com/2026/07/21/cisco-antares-vulnerability-localization-released/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/21/cisco-antares-vulnerability-localization-released/</guid>
-    <pubDate>Tue, 21 Jul 2026 13:01:57 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>A security analyst opens an unfamiliar repository, pulls up a vulnerability advisory, and starts hunting for the file where the weakness lives. The naming conventions belong to someone else. Evidence sits in scattered corners of a codebase that runs to thousands of files. That fi…</description>
   </item>
   </channel>
 </rss>
