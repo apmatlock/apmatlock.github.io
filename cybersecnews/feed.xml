@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 22 Jul 2026 20:08:11 -0300</lastBuildDate>
+    <lastBuildDate>Wed, 22 Jul 2026 21:08:06 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>wp2shell hits WordPress: detecting pre-auth RCE from plugin drop to command execution</title>
@@ -246,6 +246,14 @@
     <pubDate>Wed, 22 Jul 2026 21:19:29 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Adobe patched CVE-2026-48294, a flaw in Adobe Acrobat Chrome extension that could let attackers steal WhatsApp Web chats by luring users to a webpage. Guardio Labs researcher Shaked Biner disclosed HermeticReader, a vulnerability chain in the Adobe Acrobat Chrome extension that a…</description>
+  </item>
+  <item>
+    <title>CVE-2026-8933: Ubuntu security flaw breaks Snap sandbox protections</title>
+    <link>https://securityaffairs.com/195833/security/cve-2026-8933-ubuntu-security-flaw-breaks-snap-sandbox-protections.html</link>
+    <guid isPermaLink="true">https://securityaffairs.com/195833/security/cve-2026-8933-ubuntu-security-flaw-breaks-snap-sandbox-protections.html</guid>
+    <pubDate>Wed, 22 Jul 2026 22:25:57 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Qualys disclosed CVE-2026-8933, a high-severity Ubuntu flaw that lets local attackers gain root privileges through a race condition in snap-confine. Qualys has disclosed a high-severity local privilege escalation vulnerability, tracked as CVE-2026-8933 (CVSS score of 7.8), affect…</description>
   </item>
   <item>
     <title>Apple Fixes Hide My Email Bug That Exposed Real Addresses in Mail Logs</title>
@@ -574,6 +582,30 @@
     <pubDate>Wed, 22 Jul 2026 21:29:01 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Sandworm_Mode is an early example of malware that exploits trusted AI tools and workflows to make malicious activity virtually indistinguishable from normal activity.</description>
+  </item>
+  <item>
+    <title>Smashing Security podcast #477: How 14 orders of chicken McNuggets helped nail a suspected Russian hacker</title>
+    <link>https://grahamcluley.com/smashing-security-podcast-477/</link>
+    <guid isPermaLink="true">https://grahamcluley.com/smashing-security-podcast-477/</guid>
+    <pubDate>Wed, 22 Jul 2026 23:10:22 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>A Russian intelligence-linked hacker is arrested in Thailand while enjoying a beach holiday - and the trail of evidence that nailed him to the Russian government includes 14 separate orders of chicken McNuggets. Meanwhile, AI music generator Suno has been hacked - and the stolen …</description>
+  </item>
+  <item>
+    <title>German law enforcement claims to have ‘dismantled’ mega phishing-as-a-service group Kratos</title>
+    <link>https://www.csoonline.com/article/4200215/german-law-enforcement-claims-to-have-dismantled-mega-phishing-as-a-service-group-kratos.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4200215/german-law-enforcement-claims-to-have-dismantled-mega-phishing-as-a-service-group-kratos.html</guid>
+    <pubDate>Wed, 22 Jul 2026 23:48:12 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>A global law enforcement crackdown has seized infrastructure serving the massive phishing-as-a-service (PhaaS) group Kratos, as well resulting in the arrest of an unnamed Kratos “developer and technical administrator” in Indonesia. The effort was managed by German law enforcement…</description>
+  </item>
+  <item>
+    <title>OpenAI Models Escaped Containment and Hacked Hugging Face</title>
+    <link>https://databreaches.net/2026/07/22/openai-models-escaped-containment-and-hacked-hugging-face/?pk_campaign=feed&amp;pk_kwd=openai-models-escaped-containment-and-hacked-hugging-face</link>
+    <guid isPermaLink="true">https://databreaches.net/2026/07/22/openai-models-escaped-containment-and-hacked-hugging-face/?pk_campaign=feed&amp;pk_kwd=openai-models-escaped-containment-and-hacked-hugging-face</guid>
+    <pubDate>Wed, 22 Jul 2026 21:47:48 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>It&amp;#8217;s happened. The nightmare of the future is now in our present. Or was this just old-fashioned negligence? Lily Hay Newman and Dell Cameron report: OpenAI disclosed on Tuesday that it lost control of two AI models during a security test that ended in a breach of the open …</description>
   </item>
   <item>
     <title>Oracle Patches Over 1,400 Vulnerabilities With Quarterly Security Updates</title>
@@ -1574,38 +1606,6 @@
     <pubDate>Tue, 21 Jul 2026 19:34:57 +0530</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Threat actors have been observed exploiting a now-patched high-severity Palo Alto Networks PAN-OS vulnerability as an entry point to deploy Qilin (aka Agenda) ransomware on victim environments. Arctic Wolf Labs said it investigated multiple intrusions in June 2026 that began with…</description>
-  </item>
-  <item>
-    <title>Critical SharePoint RCE CVE-2026-50522 Under Active Exploitation After Public PoC</title>
-    <link>https://thehackernews.com/2026/07/critical-sharepoint-rce-cve-2026-50522.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/07/critical-sharepoint-rce-cve-2026-50522.html</guid>
-    <pubDate>Tue, 21 Jul 2026 20:27:51 +0530</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>A third SharePoint Server flaw patched by Microsoft as part of its Patch Tuesday update for July 2026 has come under active exploitation, per watchTowr. The vulnerability in question is CVE-2026-50522 (CVSS score: 9.8), a critical deserialization of untrusted data in Microsoft Of…</description>
-  </item>
-  <item>
-    <title>CVE-2026-58640 Windows NTFS Remote Code Execution Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58640</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-58640</guid>
-    <pubDate>Tue, 21 Jul 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Updated an acknowledgement. This is an informational change only.</description>
-  </item>
-  <item>
-    <title>CVE-2026-50462 Windows Ancillary Function Driver for WinSock Elevation of Privilege Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-50462</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-50462</guid>
-    <pubDate>Tue, 21 Jul 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Updated an acknowledgement. This is an informational change only.</description>
-  </item>
-  <item>
-    <title>VU#762226: Plane contains multi-tenant authorization bypass vulnerability</title>
-    <link>https://kb.cert.org/vuls/id/762226</link>
-    <guid isPermaLink="true">https://kb.cert.org/vuls/id/762226</guid>
-    <pubDate>Tue, 21 Jul 2026 16:42:25 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Overview The project management tool Plane, versions 1.3.0 and earlier, contains a multi-tenant authorization bypass vulnerability in its asset-management API that allows unauthorized users to access, delete, or duplicate assets that belong to other workspaces. Description Plane …</description>
   </item>
   </channel>
 </rss>
