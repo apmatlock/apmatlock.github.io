@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 23 Jul 2026 07:07:58 -0300</lastBuildDate>
+    <lastBuildDate>Thu, 23 Jul 2026 08:08:07 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Microsoft’s 3-day patching directive comes with added operational risk</title>
@@ -376,6 +376,14 @@
     <description>Check Point addressed a critical authentication bypass flaw, tracked as CVE-2026-16232, in SmartConsole that is being actively exploited. Check Point has released security updates to fix multiple vulnerabilities, including CVE-2026-16232 (CVSS score of 9.3), a critical authentica…</description>
   </item>
   <item>
+    <title>Attackers exploit critical Check Point flaw to take over firewall management (CVE-2026-16232)</title>
+    <link>https://www.helpnetsecurity.com/2026/07/23/check-point-vulnerability-cve-2026-16232/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/23/check-point-vulnerability-cve-2026-16232/</guid>
+    <pubDate>Thu, 23 Jul 2026 10:42:06 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Attackers are exploiting a critical authentication bypass vulnerability (CVE-2026-16232) that affects Check Point Security Management and Multi-Domain Security Management, the management servers that push policy to Check Point security gateways (i.e., firewalls). &amp;#8220;An unauth…</description>
+  </item>
+  <item>
     <title>wp2shell hits WordPress: detecting pre-auth RCE from plugin drop to command execution</title>
     <link>https://www.elastic.co/security-labs/wp2shell-wordpress-rce-detection-elastic-defend</link>
     <guid isPermaLink="true">https://www.elastic.co/security-labs/wp2shell-wordpress-rce-detection-elastic-defend</guid>
@@ -440,6 +448,14 @@
     <description>GitHub is changing its bug bounty program to reward higher-quality vulnerability reports and reduce low-effort submissions, including AI-generated reports. The changes will take effect on July 27, 2026. Reports submitted before that date will be honored under the previous bounty …</description>
   </item>
   <item>
+    <title>Months-long breach exposes South Korean diplomats’ personal data</title>
+    <link>https://www.helpnetsecurity.com/2026/07/23/south-korea-diplomatic-academy-data-breach/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/23/south-korea-diplomatic-academy-data-breach/</guid>
+    <pubDate>Thu, 23 Jul 2026 11:04:44 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>South Korea&amp;#8217;s Foreign Ministry has disclosed that attackers breached the Korea National Diplomatic Academy&amp;#8217;s online education system, compromising personal data belonging to current and former ministry staff and diplomats stationed abroad. The Korea National Diplomati…</description>
+  </item>
+  <item>
     <title>US Warns of Iranian Hackers Targeting Siemens, Schneider, and Rockwell ICS Devices</title>
     <link>https://www.securityweek.com/us-warns-of-iranian-hackers-targeting-siemens-schneider-and-rockwell-ics-devices/</link>
     <guid isPermaLink="true">https://www.securityweek.com/us-warns-of-iranian-hackers-targeting-siemens-schneider-and-rockwell-ics-devices/</guid>
@@ -494,6 +510,30 @@
     <pubDate>Thu, 23 Jul 2026 09:31:19 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>The Python Package Index (PyPI) now rejects uploads of new files to releases older than 14 days to prevent attackers from poisoning long-stable releases if a project&amp;#8217;s publishing tokens or release workflows are compromised. “This change will protect Python users and reduce …</description>
+  </item>
+  <item>
+    <title>Chaos ransomware&#x27;s msaRAT: Living off the browser to build a covert C2 channel</title>
+    <link>https://blog.talosintelligence.com/chaos-msarat-living-off-the-browser-to-build-covert-c2-channel/</link>
+    <guid isPermaLink="true">https://blog.talosintelligence.com/chaos-msarat-living-off-the-browser-to-build-covert-c2-channel/</guid>
+    <pubDate>Thu, 23 Jul 2026 10:00:38 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>The Chaos ransomware group uses new malware &quot;msaRAT&quot; that hijacks browsers. The malware doesn&#x27;t communicate directly with C2 but connects through the browser. It enables arbitrary command execution while hiding the attacker&#x27;s IP from victims via WebRTC over TURN.</description>
+  </item>
+  <item>
+    <title>Upbound Group Says Data Breach Led to $13 Million in Fraudulent Contract Losses</title>
+    <link>https://www.securityweek.com/upbound-group-says-data-breach-led-to-13-million-in-fraudulent-contract-losses/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/upbound-group-says-data-breach-led-to-13-million-in-fraudulent-contract-losses/</guid>
+    <pubDate>Thu, 23 Jul 2026 10:49:10 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>Hackers recently obtained non-sensitive customer information and other documents from the company. The post Upbound Group Says Data Breach Led to $13 Million in Fraudulent Contract Losses appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>Chaos ransomware msaRAT hides its C2 channel inside a legitimate browser process</title>
+    <link>https://www.helpnetsecurity.com/2026/07/23/cisco-talos-chaos-ransomware-msarat/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/23/cisco-talos-chaos-ransomware-msarat/</guid>
+    <pubDate>Thu, 23 Jul 2026 10:38:07 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>Cisco Talos has identified a Rust-based remote access trojan it attributes to the Chaos ransomware group, named msaRAT after four of the binding names left in the binary. The tool starts its own instance of Chrome or Edge on the victim machine and controls it through Chrome DevTo…</description>
   </item>
   <item>
     <title>ISC Stormcast For Thursday, July 23rd, 2026 https://isc.sans.edu/podcastdetail/10020, (Thu, Jul 23rd)</title>
@@ -552,6 +592,14 @@
     <description>Portuguese businesses operate in the same native language as Brazilian hackers, making those businesses easy targets.</description>
   </item>
   <item>
+    <title>New Dolphin X Stealer Employs AI Profiling to Prioritize Targets</title>
+    <link>https://www.infosecurity-magazine.com/news/new-dolphin-x-stealer-ai-targets/</link>
+    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/new-dolphin-x-stealer-ai-targets/</guid>
+    <pubDate>Thu, 23 Jul 2026 10:19:00 +0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>Dolphin X is a new infostealer that uses AI to sort and rank victims, giving cybercriminals a faster way to identify lucrative targets</description>
+  </item>
+  <item>
     <title>Srsly Risky Biz: Knives are out for open-weight AI models</title>
     <link>https://risky.biz/SRB176/</link>
     <guid isPermaLink="true">https://risky.biz/SRB176/</guid>
@@ -582,6 +630,14 @@
     <pubDate>Thu, 23 Jul 2026 05:20:10 -0400</pubDate>
     <category>Infosec News</category>
     <description>Microsoft is working to resolve an ongoing Exchange Online issue that has been mistakenly quarantining customers&#x27; mailboxes since Sunday. [...]</description>
+  </item>
+  <item>
+    <title>Preview: Cisco Talos at Black Hat USA 2026</title>
+    <link>https://blog.talosintelligence.com/preview-cisco-talos-at-black-hat-usa-2026/</link>
+    <guid isPermaLink="true">https://blog.talosintelligence.com/preview-cisco-talos-at-black-hat-usa-2026/</guid>
+    <pubDate>Thu, 23 Jul 2026 10:00:14 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>Here’s some of the ways Talos is showing up at Black Hat, alongside our friends at Cisco and Splunk.</description>
   </item>
   <item>
     <title>U.S. CISA adds DD-WRT, Langflow and WordPress flaws to its Known Exploited Vulnerabilities catalog</title>
@@ -1550,62 +1606,6 @@
     <pubDate>Wed, 22 Jul 2026 14:00:00 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Identity confidence changes throughout every interaction and should be reassessed continuously as new risk signals emerge. The post When Identity Verification Fails: Lessons from a Real-World SIM Swap and Near Account Takeover appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>ThreatDown expands security visibility to AI tools and machine identities</title>
-    <link>https://www.helpnetsecurity.com/2026/07/22/threatdown-ai-visibility/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/22/threatdown-ai-visibility/</guid>
-    <pubDate>Wed, 22 Jul 2026 13:38:33 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>ThreatDown has announced a synchronized expansion of its AI and identity security capabilities to protect organizations from emerging, unmanaged risks. The company launched AI visibility, giving security and managed service provider (MSP) teams a full inventory of the AI tools ru…</description>
-  </item>
-  <item>
-    <title>Swimlane AI SOC automates security operations for MSSPs</title>
-    <link>https://www.helpnetsecurity.com/2026/07/22/swimlane-ai-soc-mssps/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/22/swimlane-ai-soc-mssps/</guid>
-    <pubDate>Wed, 22 Jul 2026 13:29:27 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Swimlane has announced the launch of Swimlane AI SOC for MSSPs, which the company says is designed to empower managed security service providers through agentic AI automation rather than compete for their customers. Some AI SOC providers are moving into managed services, turning …</description>
-  </item>
-  <item>
-    <title>Palo Alto Networks to Acquire Observability Platform Provider Embrace</title>
-    <link>https://www.securityweek.com/palo-alto-networks-to-acquire-observability-platform-provider-embrace/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/palo-alto-networks-to-acquire-observability-platform-provider-embrace/</guid>
-    <pubDate>Wed, 22 Jul 2026 14:58:53 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Acquisition follows January&#x27;s Chronosphere deal, deepening Palo Alto Networks&#x27; push beyond core security into observability. The post Palo Alto Networks to Acquire Observability Platform Provider Embrace appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Next chapter: Restructuring GitHub’s bug bounty program</title>
-    <link>https://github.blog/security/next-chapter-restructuring-githubs-bug-bounty-program/</link>
-    <guid isPermaLink="true">https://github.blog/security/next-chapter-restructuring-githubs-bug-bounty-program/</guid>
-    <pubDate>Wed, 22 Jul 2026 16:00:00 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>GitHub is making some significant changes to its bug bounty program, shifting its focus to give researchers a better experience working with the GitHub team. The post Next chapter: Restructuring GitHub&amp;#8217;s bug bounty program appeared first on The GitHub Blog .</description>
-  </item>
-  <item>
-    <title>You Can&#x27;t Ban Attacker AI</title>
-    <link>https://www.youtube.com/shorts/kIG1gWny_PE</link>
-    <guid isPermaLink="true">https://www.youtube.com/shorts/kIG1gWny_PE</guid>
-    <pubDate>Wed, 22 Jul 2026 17:00:26 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>AI capabilities are becoming widely accessible. The discussion is shifting from whether attackers will use AI to how defenders can use similar technology to identify weaknesses in their own environments. If organizations focus only on restricting AI instead of adopting effective …</description>
-  </item>
-  <item>
-    <title>White House accuses Chinese company of distilling Anthropic’s Fable</title>
-    <link>https://cyberscoop.com/white-house-accuses-moonshot-ai-anthropic-model-distillation/</link>
-    <guid isPermaLink="true">https://cyberscoop.com/white-house-accuses-moonshot-ai-anthropic-model-distillation/</guid>
-    <pubDate>Wed, 22 Jul 2026 16:45:37 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>While distillation attacks by foreign governments and companies have real national security implications, questions around who ultimately owns the data in AI systems are fraught. The post White House accuses Chinese company of distilling Anthropic’s Fable appeared first on CyberS…</description>
-  </item>
-  <item>
-    <title>Malware is targeting AI tools in software development environments</title>
-    <link>https://cyberscoop.com/sandworm-mode-malware-ai-supply-chain-crowdstrike/</link>
-    <guid isPermaLink="true">https://cyberscoop.com/sandworm-mode-malware-ai-supply-chain-crowdstrike/</guid>
-    <pubDate>Wed, 22 Jul 2026 17:24:46 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The worm blends in with thousands of other commands occurring daily in any given environment, yet its intent and origins remain unknown. The post Malware is targeting AI tools in software development environments appeared first on CyberScoop .</description>
   </item>
   </channel>
 </rss>
