@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Fri, 24 Jul 2026 05:08:09 -0300</lastBuildDate>
+    <lastBuildDate>Fri, 24 Jul 2026 06:07:50 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Ransomware groups are hammering your vulnerable VPNs</title>
@@ -78,6 +78,38 @@
     <pubDate>Fri, 24 Jul 2026 04:30:22 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Ransomware activity followed a recognizable pattern during the previous four years. Each year was defined by a dominant actor, its collapse, or a major supply chain incident. Black Kite&amp;#8217;s 2026 Ransomware Report documents a more fragmented market, with multiple ransomware pl…</description>
+  </item>
+  <item>
+    <title>NodeBB Patches Eight AI-Found Flaws Exposing Admin Access and Private Chats</title>
+    <link>https://thehackernews.com/2026/07/nodebb-patches-eight-ai-found-flaws.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/nodebb-patches-eight-ai-found-flaws.html</guid>
+    <pubDate>Fri, 24 Jul 2026 13:11:06 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Eight security flaws in NodeBB went public on Wednesday, along with the code to exploit them. Aikido Security rates all eight as high severity and says its AI pentest agents found them in a six-hour review of the forum software&#x27;s source code. Every version before 4.14.0 is affect…</description>
+  </item>
+  <item>
+    <title>Kimi K3 Agents Found Redis Zero-Days and Built RCE Exploit, Researchers Say</title>
+    <link>https://thehackernews.com/2026/07/kimi-k3-agents-found-redis-zero-days.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/kimi-k3-agents-found-redis-zero-days.html</guid>
+    <pubDate>Fri, 24 Jul 2026 12:28:27 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Redis shipped seven security releases on July 23 after researchers published authenticated RCE PoCs for stock Redis 6.2.22, 7.4.9, 8.6.4, and 8.8.0. All four chains require RESTORE. The Streams chains also need EVAL and XGROUP; the 8.8.0 chain needs EVAL and the bundled RedisBloo…</description>
+  </item>
+  <item>
+    <title>Google gives developers an AI bug hunter that also writes patches</title>
+    <link>https://www.helpnetsecurity.com/2026/07/24/google-codemender-ai-agent-code-security/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/24/google-codemender-ai-agent-code-security/</guid>
+    <pubDate>Fri, 24 Jul 2026 08:53:17 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Google has launched a preview of CodeMender, an AI agent built to scan code for security flaws, confirm they are exploitable, and generate fixes for developers to review. (Source: Google) The company describes it as a response to attackers who are already using AI to speed up the…</description>
+  </item>
+  <item>
+    <title>Google’s newest sign-in method asks you to look at the camera</title>
+    <link>https://www.helpnetsecurity.com/2026/07/24/google-selfie-video-sign-in-verification/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/24/google-selfie-video-sign-in-verification/</guid>
+    <pubDate>Fri, 24 Jul 2026 08:33:58 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Google’s selfie video sign-in option verifies that an account owner is a real person and that the account wasn’t created or used by computer programs or bots for the purpose of abuse, such as spamming. It is not available for all regions, accounts, or devices. Source: Google A se…</description>
   </item>
   <item>
     <title>Data Breach Confirmed After Australian Energy Giant Origin Is Hacked</title>
@@ -1574,38 +1606,6 @@
     <pubDate>Wed, 22 Jul 2026 14:30:26 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Overview Version 3.5.8 of Analog Way&#x27;s Picturall Quad Compact Mark II server contains a local privilege escalation vulnerability, tracked as CVE-2026-14985, due to improper privilege delegation and insufficient input validation in a maintenance script. Description The Picturall Q…</description>
-  </item>
-  <item>
-    <title>What’s New in Rapid7 Products and Services: Q2 2026 in Review</title>
-    <link>https://www.rapid7.com/blog/post/pt-new-products-services-q2-2026-mdr</link>
-    <guid isPermaLink="true">https://www.rapid7.com/blog/post/pt-new-products-services-q2-2026-mdr</guid>
-    <pubDate>Wed, 22 Jul 2026 13:28:02 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>If Q1 set the pace for Rapid7&#x27;s tools, Q2 accelerated it. This quarter brought a steady stream of product enhancements, platform investments, and customer-driven innovation across Rapid7’s portfolio. Each release was designed with a clear goal in mind: helping security teams redu…</description>
-  </item>
-  <item>
-    <title>Adobe fixes Chrome extension flaw that could expose WhatsApp chats</title>
-    <link>https://cyberinsider.com/adobe-fixes-chrome-extension-flaw-that-could-expose-whatsapp-chats/</link>
-    <guid isPermaLink="true">https://cyberinsider.com/adobe-fixes-chrome-extension-flaw-that-could-expose-whatsapp-chats/</guid>
-    <pubDate>Wed, 22 Jul 2026 15:40:03 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>A chain of vulnerabilities in the Adobe Acrobat Chrome extension could have allowed attackers to steal content from a victim&#x27;s WhatsApp Web session simply by luring them to a malicious website. Adobe fixed the flaws within days of the report and assigned the issue CVE-2026-48294.…</description>
-  </item>
-  <item>
-    <title>VU#847406: Duplicati backup software v2.3.0.1 is vulnerable to an incorrect permission assignment vulnerability</title>
-    <link>https://kb.cert.org/vuls/id/847406</link>
-    <guid isPermaLink="true">https://kb.cert.org/vuls/id/847406</guid>
-    <pubDate>Wed, 22 Jul 2026 17:24:02 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Overview Duplicati v2.3.0.1 is vulnerable to arbitrary code execution when installed outside the default C:\Program Files\Duplicati 2\ directory. An attacker with local user privileges who can write files to the Duplicati installation directory can execute arbitrary code by placi…</description>
-  </item>
-  <item>
-    <title>Ubuntu snap-confine Flaw Could Give Local Users Root on Default Desktop Installs</title>
-    <link>https://thehackernews.com/2026/07/ubuntu-snap-confine-flaw-could-give.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/07/ubuntu-snap-confine-flaw-could-give.html</guid>
-    <pubDate>Wed, 22 Jul 2026 23:37:16 +0530</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Cybersecurity researchers have disclosed details of a new local privilege escalation (LPE) vulnerability in snap-confine that an unprivileged user can trigger to obtain root access and gain complete control of a target environment. The high-severity flaw, tracked as CVE-2026-8933…</description>
   </item>
   </channel>
 </rss>
