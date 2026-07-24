@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Fri, 24 Jul 2026 04:07:10 -0300</lastBuildDate>
+    <lastBuildDate>Fri, 24 Jul 2026 05:08:09 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Ransomware groups are hammering your vulnerable VPNs</title>
@@ -14,6 +14,30 @@
     <pubDate>Fri, 24 Jul 2026 07:00:00 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Cybercriminals are actively exploiting a recently discovered vulnerability in Palo Alto Networks firewall and VPN appliances to deploy the Qilin ransomware strain. A critical authentication bypass flaw ( CVE-2026-0257 ) in Palo Alto GlobalProtect portal and gateway was the common…</description>
+  </item>
+  <item>
+    <title>CVE-2026-59676 Local File Deletion Attack Vector in rm_rf() in seunshare</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-59676</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-59676</guid>
+    <pubDate>Fri, 24 Jul 2026 01:02:21 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-59677 Process Kill Attack Vector in killall() in seunshare</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-59677</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-59677</guid>
+    <pubDate>Fri, 24 Jul 2026 01:02:30 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-64600 xfs: resample the data fork mapping after cycling ILOCK</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64600</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64600</guid>
+    <pubDate>Fri, 24 Jul 2026 01:02:36 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
   </item>
   <item>
     <title>Russian Espionage Group Exploited Zimbra Zero-Day to Steal Mail and 2FA Codes</title>
@@ -70,6 +94,14 @@
     <pubDate>Fri, 24 Jul 2026 05:30:33 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>A ransomware attack against a hospital makes headlines, while attacks on the rest of the ecosystem around it tend to stay quiet despite doing damage that can be just as bad. Flare researcher Assaf Morag analyzed ransomware leak-site activity tied to healthcare organizations in th…</description>
+  </item>
+  <item>
+    <title>Clop ransomware targets Windchill, FlexPLM in data theft attacks</title>
+    <link>https://www.bleepingcomputer.com/news/security/clop-ransomware-targets-windchill-flexplm-in-data-theft-attacks/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/clop-ransomware-targets-windchill-flexplm-in-data-theft-attacks/</guid>
+    <pubDate>Fri, 24 Jul 2026 03:36:39 -0400</pubDate>
+    <category>Incident Reporting</category>
+    <description>The Clop ransomware gang (also tracked as Cl0p) is targeting Internet-exposed PTC Windchill and FlexPLM instances in a new data theft extortion campaign. [...]</description>
   </item>
   <item>
     <title>ISC Stormcast For Friday, July 24th, 2026 https://isc.sans.edu/podcastdetail/10022, (Fri, Jul 24th)</title>
@@ -1574,38 +1606,6 @@
     <pubDate>Wed, 22 Jul 2026 23:37:16 +0530</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Cybersecurity researchers have disclosed details of a new local privilege escalation (LPE) vulnerability in snap-confine that an unprivileged user can trigger to obtain root access and gain complete control of a target environment. The high-severity flaw, tracked as CVE-2026-8933…</description>
-  </item>
-  <item>
-    <title>Oracle’s July update fixes ten 10.0 vulnerabilities in Fusion Middleware</title>
-    <link>https://www.csoonline.com/article/4200184/oracles-july-update-fixes-ten-10-0-vulnerabilities-in-fusion-middleware.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4200184/oracles-july-update-fixes-ten-10-0-vulnerabilities-in-fusion-middleware.html</guid>
-    <pubDate>Wed, 22 Jul 2026 18:14:27 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Oracle’s July 2026 Critical Patch Update, its largest ever, contains 1,449 new security patches spanning 32 product families, from Oracle Database and E-Business Suite to PeopleSoft, GoldenGate, Java SE, and Fusion Middleware. Fusion Middleware was particularly hard hit, with new…</description>
-  </item>
-  <item>
-    <title>Critical Zimbra security update fixes 9 vulnerabilities</title>
-    <link>https://www.csoonline.com/article/4200221/critical-zimbra-security-update-fixes-9-vulnerabilities.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4200221/critical-zimbra-security-update-fixes-9-vulnerabilities.html</guid>
-    <pubDate>Wed, 22 Jul 2026 20:26:09 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Business email and collaboration suite Zimbra has received a major security update that fixes several critical issues that could allow attackers to execute malicious code on the server or in users’ browsers. Available in commercial and open-source editions, Zimbra Collaboration S…</description>
-  </item>
-  <item>
-    <title>Adobe Acrobat Chrome extension bug enabled silent WhatsApp data theft</title>
-    <link>https://securityaffairs.com/195805/hacking/adobe-acrobat-chrome-extension-bug-enabled-silent-whatsapp-data-theft.html</link>
-    <guid isPermaLink="true">https://securityaffairs.com/195805/hacking/adobe-acrobat-chrome-extension-bug-enabled-silent-whatsapp-data-theft.html</guid>
-    <pubDate>Wed, 22 Jul 2026 21:19:29 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Adobe patched CVE-2026-48294, a flaw in Adobe Acrobat Chrome extension that could let attackers steal WhatsApp Web chats by luring users to a webpage. Guardio Labs researcher Shaked Biner disclosed HermeticReader, a vulnerability chain in the Adobe Acrobat Chrome extension that a…</description>
-  </item>
-  <item>
-    <title>CVE-2026-8933: Ubuntu security flaw breaks Snap sandbox protections</title>
-    <link>https://securityaffairs.com/195833/security/cve-2026-8933-ubuntu-security-flaw-breaks-snap-sandbox-protections.html</link>
-    <guid isPermaLink="true">https://securityaffairs.com/195833/security/cve-2026-8933-ubuntu-security-flaw-breaks-snap-sandbox-protections.html</guid>
-    <pubDate>Wed, 22 Jul 2026 22:25:57 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Qualys disclosed CVE-2026-8933, a high-severity Ubuntu flaw that lets local attackers gain root privileges through a race condition in snap-confine. Qualys has disclosed a high-severity local privilege escalation vulnerability, tracked as CVE-2026-8933 (CVSS score of 7.8), affect…</description>
   </item>
   </channel>
 </rss>
