@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 28 Jul 2026 06:06:52 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 28 Jul 2026 07:08:00 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>U.S. CISA adds Arista VeloCloud Orchestrator and Fortinet FortiOS flaws to its Known Exploited Vulnerabilities catalog</title>
@@ -22,6 +22,22 @@
     <pubDate>Tue, 28 Jul 2026 10:13:53 +0530</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>A maximum-severity security flaw impacting on-premises versions of Arista VeloCloud Orchestrator (VCO) has come under active exploitation in the wild. The vulnerability, tracked as CVE-2026-16812 (CVSS score: 10.0), is a case of operating system command injection that could pave …</description>
+  </item>
+  <item>
+    <title>Critical TeamCity Flaw Could Let Attackers Run OS Commands Without Logging In</title>
+    <link>https://thehackernews.com/2026/07/critical-teamcity-flaw-could-let.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/critical-teamcity-flaw-could-let.html</guid>
+    <pubDate>Tue, 28 Jul 2026 13:41:22 +0530</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>JetBrains is urging customers of on-premise versions of TeamCity to update to the latest version following the discovery of a critical security issue that could result in arbitrary code execution. The vulnerability, assigned CVE-2026-63077 (CVSS score: 9.8), affects all TeamCity …</description>
+  </item>
+  <item>
+    <title>Researcher Says AI Helped Develop Linux Traffic-Control Race Into Root Exploit</title>
+    <link>https://thehackernews.com/2026/07/researcher-says-ai-helped-develop-linux.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/researcher-says-ai-helped-develop-linux.html</guid>
+    <pubDate>Tue, 28 Jul 2026 13:34:44 +0530</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>STAR Labs has published a Linux kernel exploit that turns an ordinary local user into root on the CentOS Stream 9 build it targeted. The flaw, tracked as CVE-2026-53264 (CVSS score: 7.8), is a use-after-free race in the kernel&#x27;s network traffic-control subsystem.Researcher Lee Ji…</description>
   </item>
   <item>
     <title>AI Agent Drives Espionage Attack on Thai Ministry of Finance</title>
@@ -112,6 +128,22 @@
     <description>Every week, another enterprise technology vendor issues a glossy press release announcing their new autonomous AI agent architecture, complete with a SOC 2 Type II report, an ISO 42001 certification, and an ironclad safety guarantee. On paper, the enterprise security battle looks…</description>
   </item>
   <item>
+    <title>Inside the OWASP Agent Security Regression Harness Project - Mert Satilmaz - ASW #393</title>
+    <link>https://www.youtube.com/watch?v=W9JN09nUK1U</link>
+    <guid isPermaLink="true">https://www.youtube.com/watch?v=W9JN09nUK1U</guid>
+    <pubDate>Tue, 28 Jul 2026 09:00:31 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Orgs need to be able to use agents, MCPs, and LLMs in ways that don&#x27;t lead to unexpected actions and undesirable outcomes. The OWASP Agent Security Regression Harness project is an approach for defining customizable scenarios and testing whether those systems fail against known s…</description>
+  </item>
+  <item>
+    <title>Data breach at medical billing firm MCBS affects 1.26 million people</title>
+    <link>https://www.bleepingcomputer.com/news/security/data-breach-at-medical-billing-firm-mcbs-affects-126-million-people/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/data-breach-at-medical-billing-firm-mcbs-affects-126-million-people/</guid>
+    <pubDate>Tue, 28 Jul 2026 05:10:03 -0400</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Healthcare billing company Medical Computer Business Services (MCBS) has disclosed that a 2025 network breach exposed the sensitive information of more than 1.2 million people. [...]</description>
+  </item>
+  <item>
     <title>For Some, So-Called ‘Skynet Day’ Came too Close to Sci-Fi After a Rogue Agent Hacked Into a Startup</title>
     <link>https://www.securityweek.com/for-some-so-called-skynet-day-came-too-close-to-sci-fi-after-a-rogue-agent-hacked-into-a-startup/</link>
     <guid isPermaLink="true">https://www.securityweek.com/for-some-so-called-skynet-day-came-too-close-to-sci-fi-after-a-rogue-agent-hacked-into-a-startup/</guid>
@@ -200,6 +232,22 @@
     <description>The new two-word naming convention uses a memorable term utilized in public reporting and a cluster-categorization word. The post Google Adopts New Threat Actor Naming System appeared first on SecurityWeek .</description>
   </item>
   <item>
+    <title>Grafana Assistant expands with AI agents for investigations, automation, and observability</title>
+    <link>https://www.helpnetsecurity.com/2026/07/28/grafana-assistant-ai-capabilities/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/28/grafana-assistant-ai-capabilities/</guid>
+    <pubDate>Tue, 28 Jul 2026 09:50:22 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Grafana Labs has announced the general availability of six AI capabilities, extending Grafana Assistant into an agentic operations layer that detects, investigates, and remediates production issues. The releases include Grafana Assistant Investigations, Grafana Assistant Workspac…</description>
+  </item>
+  <item>
+    <title>AWS to retire Shield Advanced L7 automatic mitigation on January 1, 2027</title>
+    <link>https://www.helpnetsecurity.com/2026/07/28/aws-waf-anti-ddos-rule-group/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/28/aws-waf-anti-ddos-rule-group/</guid>
+    <pubDate>Tue, 28 Jul 2026 09:23:50 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>AWS Shield Advanced, a managed service that protects applications from external threats, is adding the Anti-DDoS managed rule group, designed for application-layer (L7) DDoS protection, to eligible web access control lists (ACLs) in Count mode. The addition preserves traffic flow…</description>
+  </item>
+  <item>
     <title>Mirage Kitten targets Middle East and Africa region with new malware</title>
     <link>https://securelist.com/mirage-kitten-new-tools/120811/</link>
     <guid isPermaLink="true">https://securelist.com/mirage-kitten-new-tools/120811/</guid>
@@ -230,6 +278,14 @@
     <pubDate>Tue, 28 Jul 2026 08:57:00 +0000</pubDate>
     <category>Infosec News</category>
     <description>CREST’s new AI standards are optional add-on requirements for cybersecurity service providers wishing to demonstrate responsible AI usage</description>
+  </item>
+  <item>
+    <title>NVIDIA’s Open Secure AI Alliance Is Missing Some Big Names</title>
+    <link>https://www.infosecurity-magazine.com/news/nvidia-open-security-ai-alliance/</link>
+    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/nvidia-open-security-ai-alliance/</guid>
+    <pubDate>Tue, 28 Jul 2026 09:40:00 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>NVIDIA has launched a new Open Secure AI Alliance to build an “open defense stack for agents”</description>
   </item>
   <item>
     <title>CVE-2024-14040 net: nexthop: Increase weight to u16</title>
@@ -1550,62 +1606,6 @@
     <pubDate>Fri, 24 Jul 2026 01:00:00 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>OpenAI&#x27;s AI agent hacked Hugging Face, Microsoft 365 melts down, and Anthropic&#x27;s Claude CoWork sandbox escape Host David Shipley reports that OpenAI admitted an internal ExploitGym test let its GPT-5.6-Saul and a stronger pre-release model bypass safeguards, exploit a proxy zero-…</description>
-  </item>
-  <item>
-    <title>Ransomware in 2026: More groups, more victims, no slowdown</title>
-    <link>https://www.helpnetsecurity.com/2026/07/24/ransomware-attack-trends-2026-report/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/24/ransomware-attack-trends-2026-report/</guid>
-    <pubDate>Fri, 24 Jul 2026 04:30:22 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Ransomware activity followed a recognizable pattern during the previous four years. Each year was defined by a dominant actor, its collapse, or a major supply chain incident. Black Kite&amp;#8217;s 2026 Ransomware Report documents a more fragmented market, with multiple ransomware pl…</description>
-  </item>
-  <item>
-    <title>NodeBB Patches Eight AI-Found Flaws Exposing Admin Access and Private Chats</title>
-    <link>https://thehackernews.com/2026/07/nodebb-patches-eight-ai-found-flaws.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/07/nodebb-patches-eight-ai-found-flaws.html</guid>
-    <pubDate>Fri, 24 Jul 2026 13:11:06 +0530</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Eight security flaws in NodeBB went public on Wednesday, along with the code to exploit them. Aikido Security rates all eight as high severity and says its AI pentest agents found them in a six-hour review of the forum software&#x27;s source code. Every version before 4.14.0 is affect…</description>
-  </item>
-  <item>
-    <title>Kimi K3 Agents Found Redis Zero-Days and Built RCE Exploit, Researchers Say</title>
-    <link>https://thehackernews.com/2026/07/kimi-k3-agents-found-redis-zero-days.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/07/kimi-k3-agents-found-redis-zero-days.html</guid>
-    <pubDate>Fri, 24 Jul 2026 12:28:27 +0530</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Redis shipped seven security releases on July 23 after researchers published authenticated RCE PoCs for stock Redis 6.2.22, 7.4.9, 8.6.4, and 8.8.0. All four chains require RESTORE. The Streams chains also need EVAL and XGROUP; the 8.8.0 chain needs EVAL and the bundled RedisBloo…</description>
-  </item>
-  <item>
-    <title>Google gives developers an AI bug hunter that also writes patches</title>
-    <link>https://www.helpnetsecurity.com/2026/07/24/google-codemender-ai-agent-code-security/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/24/google-codemender-ai-agent-code-security/</guid>
-    <pubDate>Fri, 24 Jul 2026 08:53:17 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Google has launched a preview of CodeMender, an AI agent built to scan code for security flaws, confirm they are exploitable, and generate fixes for developers to review. (Source: Google) The company describes it as a response to attackers who are already using AI to speed up the…</description>
-  </item>
-  <item>
-    <title>Google’s newest sign-in method asks you to look at the camera</title>
-    <link>https://www.helpnetsecurity.com/2026/07/24/google-selfie-video-sign-in-verification/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/24/google-selfie-video-sign-in-verification/</guid>
-    <pubDate>Fri, 24 Jul 2026 08:33:58 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Google’s selfie video sign-in option verifies that an account owner is a real person and that the account wasn’t created or used by computer programs or bots for the purpose of abuse, such as spamming. It is not available for all regions, accounts, or devices. Source: Google A se…</description>
-  </item>
-  <item>
-    <title>US Agencies Warn of Laundry Bear Campaign Targeting Unpatched Zimbra Servers</title>
-    <link>https://securityaffairs.com/195901/apt/us-agencies-warn-of-laundry-bear-campaign-targeting-unpatched-zimbra-servers.html</link>
-    <guid isPermaLink="true">https://securityaffairs.com/195901/apt/us-agencies-warn-of-laundry-bear-campaign-targeting-unpatched-zimbra-servers.html</guid>
-    <pubDate>Fri, 24 Jul 2026 08:31:42 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>US agencies warn Russian group Laundry Bear is exploiting a patched Zimbra flaw to steal email accounts from organizations running unpatched servers. The Cybersecurity and Infrastructure Security Agency (CISA), National Security Agency (NSA), Federal Bureau of Investigation (FBI)…</description>
-  </item>
-  <item>
-    <title>Hacker Runs Hermes AI Agent Unattended for Post-Exploitation at Thai Finance Ministry</title>
-    <link>https://thehackernews.com/2026/07/hacker-runs-hermes-ai-agent-unattended.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/07/hacker-runs-hermes-ai-agent-unattended.html</guid>
-    <pubDate>Fri, 24 Jul 2026 15:45:29 +0530</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Someone installed a popular AI assistant on a rented server, switched off the setting that makes it ask permission before running risky commands, and pointed it at Thailand&#x27;s Ministry of Finance, which runs the country&#x27;s treasury and tax collection. The agent then worked through …</description>
   </item>
   </channel>
 </rss>
