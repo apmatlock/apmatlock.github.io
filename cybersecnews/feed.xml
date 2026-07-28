@@ -5,8 +5,16 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 28 Jul 2026 02:07:09 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 28 Jul 2026 03:09:03 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Attackers Exploit Arista VeloCloud Orchestrator Command Injection Flaw</title>
+    <link>https://thehackernews.com/2026/07/attackers-exploit-arista-velocloud.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/attackers-exploit-arista-velocloud.html</guid>
+    <pubDate>Tue, 28 Jul 2026 10:13:53 +0530</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>A maximum-severity security flaw impacting on-premises versions of Arista VeloCloud Orchestrator (VCO) has come under active exploitation in the wild. The vulnerability, tracked as CVE-2026-16812 (CVSS score: 10.0), is a case of operating system command injection that could pave …</description>
+  </item>
   <item>
     <title>AI Agent Drives Espionage Attack on Thai Ministry of Finance</title>
     <link>https://www.darkreading.com/cyberattacks-data-breaches/ai-agent-espionage-attack-thai-ministry-finance</link>
@@ -64,6 +72,14 @@
     <description>The hacker claimed to have stolen the information of 2 million Origin Energy customers after breaching its systems. The post Origin Energy Data Breach Affects 900,000 Australians appeared first on SecurityWeek .</description>
   </item>
   <item>
+    <title>Shadow AI incident response begins with logs that may already be gone</title>
+    <link>https://www.helpnetsecurity.com/2026/07/28/brandy-wityak-levelblue-shadow-ai-incident-response/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/28/brandy-wityak-levelblue-shadow-ai-incident-response/</guid>
+    <pubDate>Tue, 28 Jul 2026 06:00:29 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>In this Help Net Security interview, Brandy Wityak, VP of Complex Matters at LevelBlue, explains what happens in the hours after a shadow AI incident. She describes how quickly logs roll over, why firewall records of outbound traffic to AI platforms are often gone before responde…</description>
+  </item>
+  <item>
     <title>ISC Stormcast For Tuesday, July 28th, 2026 https://isc.sans.edu/podcastdetail/10026, (Tue, Jul 28th)</title>
     <link>https://isc.sans.edu/diary/rss/33190</link>
     <guid isPermaLink="true">https://isc.sans.edu/diary/rss/33190</guid>
@@ -88,12 +104,28 @@
     <description>Call of Duty Mobile players should watch out for a phishing campaign disguised as a free Call of Duty Points giveaway, Malwarebytes researchers have warned. Victims are asked to log in with their email address and password to claim free Call of Duty Points (CP), the game&amp;#8217;s …</description>
   </item>
   <item>
+    <title>AI took more than junior developer jobs and the bill comes later</title>
+    <link>https://www.helpnetsecurity.com/2026/07/28/genai-junior-developer-pipeline/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/28/genai-junior-developer-pipeline/</guid>
+    <pubDate>Tue, 28 Jul 2026 05:30:30 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>A ticket comes in for a small bug fix. Hand it to the junior on your team and you wait a day, review something that half works, and sit down to explain what went wrong. Describe it to Claude and the patch merges before lunch. The second path wins on every number your team reports…</description>
+  </item>
+  <item>
     <title>Between Two Nerds: Cyber is people</title>
     <link>https://risky.biz/BTN176/</link>
     <guid isPermaLink="true">https://risky.biz/BTN176/</guid>
     <pubDate>Tue, 28 Jul 2026 05:58:12 +1000</pubDate>
     <category>Podcasts</category>
     <description>In this edition of Between Two Nerds Tom Uren and The Grugq discuss how important people are to cyber power and whether the rise of AI is changing that. This episode is also available on YouTube.</description>
+  </item>
+  <item>
+    <title>Hugging Face Has a Deepfake Nudes Problem</title>
+    <link>https://www.wired.com/story/hugging-face-has-a-nonconsensual-deepfakes-problem/</link>
+    <guid isPermaLink="true">https://www.wired.com/story/hugging-face-has-a-nonconsensual-deepfakes-problem/</guid>
+    <pubDate>Tue, 28 Jul 2026 05:30:00 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>Researchers tested top image editing models on Hugging Face and found they could easily create explicit deepfakes—and 1,000 image editing prompts show how people use the software.</description>
   </item>
   <item>
     <title>CVE-2024-14040 net: nexthop: Increase weight to u16</title>
@@ -1574,38 +1606,6 @@
     <pubDate>Fri, 24 Jul 2026 12:06:56 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Brandon Vigliarolo reports: At least 2.2 million vehicles fitted with dealer-installed KARR and SWDS security systems are vulnerable to nearby Bluetooth attacks that can unlock doors or prevent a stopped vehicle from starting, according to researchers at the University of Califor…</description>
-  </item>
-  <item>
-    <title>Certighost Exploit Lets Low-Privileged Active Directory Users Impersonate a Domain Controller</title>
-    <link>https://thehackernews.com/2026/07/certighost-exploit-lets-low-privileged.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/07/certighost-exploit-lets-low-privileged.html</guid>
-    <pubDate>Fri, 24 Jul 2026 19:45:21 +0530</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Researchers H0j3n and Aniq Fakhrul published a working exploit on July 24 that lets a low-privileged Active Directory user obtain a certificate for a Domain Controller and authenticate as that machine. They codenamed the flaw Certighost. Because Domain Controller accounts carry d…</description>
-  </item>
-  <item>
-    <title>How Iran Uses Cellular Infrastructure to Target US Military Phones</title>
-    <link>https://citizenlab.ca/how-iran-uses-cellular-infrastructure-to-target-us-military-phones/</link>
-    <guid isPermaLink="true">https://citizenlab.ca/how-iran-uses-cellular-infrastructure-to-target-us-military-phones/</guid>
-    <pubDate>Fri, 24 Jul 2026 14:48:59 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Senior fellow Gary Miller spoke with Cape Cellular about the exploitation of mobile network vulnerabilities to track US personnel during the Iran war. The post How Iran Uses Cellular Infrastructure to Target US Military Phones appeared first on The Citizen Lab .</description>
-  </item>
-  <item>
-    <title>Russia&#x27;s Laundry Bear targets unpatched Zimbra servers.</title>
-    <link>https://thecyberwire.com/newsletters/daily-briefing/15/140</link>
-    <guid isPermaLink="true">https://thecyberwire.com/newsletters/daily-briefing/15/140</guid>
-    <pubDate>Fri, 24 Jul 2026 16:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>US State Department places visa restrictions on suspected cybercriminals. Stadler Rail refuses to pay ransomware gang.</description>
-  </item>
-  <item>
-    <title>Microsoft, tech companies throw weight behind spread of open-source AI</title>
-    <link>https://cyberscoop.com/tech-leaders-open-source-ai-cybersecurity/</link>
-    <guid isPermaLink="true">https://cyberscoop.com/tech-leaders-open-source-ai-cybersecurity/</guid>
-    <pubDate>Fri, 24 Jul 2026 15:22:15 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Other signatories of the letter include Meta, Palantir, Perplexity, Mistral, NVIDIA, Mozilla, The Linux Foundation, Hugging Face, Dell Technologies and IBM. The post Microsoft, tech companies throw weight behind spread of open-source AI appeared first on CyberScoop .</description>
   </item>
   </channel>
 </rss>
