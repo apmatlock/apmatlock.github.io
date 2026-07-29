@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 29 Jul 2026 12:07:52 -0300</lastBuildDate>
+    <lastBuildDate>Wed, 29 Jul 2026 13:08:03 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>A 13-year-old flaw is exposing tens of thousands of data center management systems</title>
@@ -62,6 +62,30 @@
     <pubDate>Wed, 29 Jul 2026 13:02:49 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Broadcom patched a critical VMware ESXi VM escape flaw (CVE-2026-47876) that could let attackers run code on the host from a compromised virtual machine. Broadcom has released patches to address five vulnerabilities affecting VMware ESXi, vCenter, Workstation, and Fusion, includi…</description>
+  </item>
+  <item>
+    <title>Ruflo MCP Flaw Lets Unauthenticated Attackers Run Commands and Poison AI Memory</title>
+    <link>https://thehackernews.com/2026/07/ruflo-mcp-flaw-lets-unauthenticated.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/ruflo-mcp-flaw-lets-unauthenticated.html</guid>
+    <pubDate>Wed, 29 Jul 2026 21:09:30 +0530</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Cybersecurity researchers have flagged a maximum-severity security flaw in Ruflo, an open-source agent meta-harness for Anthropic Claude Code and OpenAI Codex, that could result in unauthenticated remote code execution. The vulnerability, tracked as CVE-2026-59726 (CVSS score: 10…</description>
+  </item>
+  <item>
+    <title>Three Critical VMware Flaws Allow Auth Bypass, Code Execution, and VM Escape</title>
+    <link>https://thehackernews.com/2026/07/three-critical-vmware-flaws-allow-auth.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/three-critical-vmware-flaws-allow-auth.html</guid>
+    <pubDate>Wed, 29 Jul 2026 21:01:15 +0530</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Broadcom has released security updates to address multiple security flaws impacting VMware ESX, vCenter, Workstation, and Fusion, three of which have been designated as critical in severity. The first of the three critical-rated flaws is CVE-2026-59309 (CVSS score: 9.8), which ha…</description>
+  </item>
+  <item>
+    <title>VU#305509: OPeNDAP Hyrax is vulnerable to SSRF and Credential Disclosure</title>
+    <link>https://kb.cert.org/vuls/id/305509</link>
+    <guid isPermaLink="true">https://kb.cert.org/vuls/id/305509</guid>
+    <pubDate>Wed, 29 Jul 2026 15:18:13 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Overview A vulnerability has been discovered in the OPeNDAP Hyrax software solution. A remote attacker with the ability to submit crafted requests to an affected Hyrax instance could cause the application to communicate with unauthorized remote systems. Under certain conditions, …</description>
   </item>
   <item>
     <title>How AI is Rewriting the Zero-Day Playbook for Preemptive Security</title>
@@ -336,6 +360,38 @@
     <description>ShinyHunters claimed the Ernst &amp;#38; Young data breach, threatening to leak stolen tax records unless the firm contacts the group by July 31. The ShinyHunters cybercrime group has taken responsibility for the recently disclosed data breach involving professional services firm Ern…</description>
   </item>
   <item>
+    <title>Mythos takes its first shot at post-quantum cryptography</title>
+    <link>https://www.csoonline.com/article/4202920/mythos-takes-its-first-shot-at-post-quantum-cryptography.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4202920/mythos-takes-its-first-shot-at-post-quantum-cryptography.html</guid>
+    <pubDate>Wed, 29 Jul 2026 15:17:06 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Anthropic’s Claude Mythos Preview model has helped researchers discover ways to speed up attacks against two widely studied cryptographic algorithms. One of the targets is Hawk, a candidate for post-quantum digital signature algorithms currently being evaluated by NIST, while the…</description>
+  </item>
+  <item>
+    <title>Tame Dependabot: Group your updates, slow the cadence, keep security fast</title>
+    <link>https://github.blog/security/supply-chain-security/tame-dependabot-group-your-updates-slow-the-cadence-keep-security-fast/</link>
+    <guid isPermaLink="true">https://github.blog/security/supply-chain-security/tame-dependabot-group-your-updates-slow-the-cadence-keep-security-fast/</guid>
+    <pubDate>Wed, 29 Jul 2026 16:00:00 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Dependabot keeps your dependencies current, but its defaults can flood your repository with pull requests. Here&#x27;s how grouping updates, slowing the cadence, and keeping security fixes fast cut the noise on a Microsoft open source project. The post Tame Dependabot: Group your upda…</description>
+  </item>
+  <item>
+    <title>Russian-Alligned TA488 Returns With Persistent Outlook Web Access Attack</title>
+    <link>https://www.infosecurity-magazine.com/news/ta488-outlook-half-click-owareaper/</link>
+    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/ta488-outlook-half-click-owareaper/</guid>
+    <pubDate>Wed, 29 Jul 2026 15:10:00 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>TA488 returned with OWA half-click exploit deploying OWAReaper implant that survived re-imaging</description>
+  </item>
+  <item>
+    <title>Patch-Resistant &#x27;RufRoot&#x27; Flaw Can Unleash Malicious AI Agent Swarms</title>
+    <link>https://www.darkreading.com/cyber-risk/patch-resistant-rufroot-flaw-malicious-ai-agent-swarms</link>
+    <guid isPermaLink="true">https://www.darkreading.com/cyber-risk/patch-resistant-rufroot-flaw-malicious-ai-agent-swarms</guid>
+    <pubDate>Wed, 29 Jul 2026 14:40:33 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>The vulnerability in the AI hosting platform Ruflo allows an unauthenticated attacker to take over the system and corrupt memory, so bad behavior can persist after patching.</description>
+  </item>
+  <item>
     <title>AI agent hacks national finance ministry, Botnet uses blockchain, Healthcare chain reopens</title>
     <link>https://cybersecuritytoday.libsyn.com/ai-agent-hacks-national-finance-ministry-botnet-uses-blockchain-healthcare-chain-reopens</link>
     <guid isPermaLink="true">https://cybersecuritytoday.libsyn.com/ai-agent-hacks-national-finance-ministry-botnet-uses-blockchain-healthcare-chain-reopens</guid>
@@ -374,6 +430,14 @@
     <pubDate>Wed, 29 Jul 2026 12:03:20 -0000</pubDate>
     <category>Security Advisories</category>
     <description></description>
+  </item>
+  <item>
+    <title>Joint guidance on minimum elements for a software bill of materials</title>
+    <link>https://cyber.gc.ca/en/news-events/joint-guidance-minimum-elements-software-bill-materials</link>
+    <guid isPermaLink="true">https://cyber.gc.ca/en/news-events/joint-guidance-minimum-elements-software-bill-materials</guid>
+    <pubDate>Wed, 29 Jul 2026 13:03:26 -0000</pubDate>
+    <category>Security Advisories</category>
+    <description>This publication updates and replaces the 2021 Minimum Elements for a Software Bill of Materials published by the United States’ National Telecommunications and Information Administration.</description>
   </item>
   <item>
     <title>OpenAI’s Rogue AI Agent Hacked More Than Just Hugging Face</title>
@@ -518,6 +582,14 @@
     <pubDate>Wed, 29 Jul 2026 10:55:57 -0400</pubDate>
     <category>Incident Reporting</category>
     <description>The Minnesota IT Services (MNIT) agency activated its cybersecurity incident response capabilities across the entire state after hackers targeted more than 30 community water systems in &quot;a coordinated cyberattack.&quot; [...]</description>
+  </item>
+  <item>
+    <title>OpenAI agent used exposed credentials at 4 services in Hugging Face breach</title>
+    <link>https://www.bleepingcomputer.com/news/security/openai-agent-used-exposed-credentials-at-4-services-in-hugging-face-breach/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/openai-agent-used-exposed-credentials-at-4-services-in-hugging-face-breach/</guid>
+    <pubDate>Wed, 29 Jul 2026 12:04:59 -0400</pubDate>
+    <category>Incident Reporting</category>
+    <description>In a new update, OpenAI says its AI models also used publicly exposed credentials to compromise accounts on four third-party services during the recent attack on Hugging Face, expanding the scope of the four-day security incident to other organizations. [...]</description>
   </item>
   <item>
     <title>ISC Stormcast For Wednesday, July 29th, 2026 https://isc.sans.edu/podcastdetail/10028, (Wed, Jul 29th)</title>
@@ -806,6 +878,30 @@
     <pubDate>Wed, 29 Jul 2026 10:02:12 -0400</pubDate>
     <category>Infosec News</category>
     <description>AI agents are designed to improvise as they complete tasks, making broad permissions a growing security risk. Token Security explains why identity, intent-based access controls, and least privilege are becoming the foundation for securing agentic AI. [...]</description>
+  </item>
+  <item>
+    <title>AI robocalls: Why caller ID is still lying to you</title>
+    <link>https://www.malwarebytes.com/blog/news/2026/07/ai-robocalls-why-caller-id-is-still-lying-to-you</link>
+    <guid isPermaLink="true">https://www.malwarebytes.com/blog/news/2026/07/ai-robocalls-why-caller-id-is-still-lying-to-you</guid>
+    <pubDate>Wed, 29 Jul 2026 15:15:32 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>AI is making robocall scams cheaper, more convincing, and harder to spot. Here&#x27;s why caller ID still isn&#x27;t enough.</description>
+  </item>
+  <item>
+    <title>Senate confirms Clayton to head ODNI.</title>
+    <link>https://thecyberwire.com/newsletters/daily-briefing/15/143</link>
+    <guid isPermaLink="true">https://thecyberwire.com/newsletters/daily-briefing/15/143</guid>
+    <pubDate>Wed, 29 Jul 2026 16:00:00 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>OpenAI&#x27;s rogue agent targeted Model Lab&#x27;s customer.</description>
+  </item>
+  <item>
+    <title>LogoKit Phishing Kit Screenshots Victim Sites in Real Time</title>
+    <link>https://www.infosecurity-magazine.com/news/logokit-phishing-real-time/</link>
+    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/logokit-phishing-real-time/</guid>
+    <pubDate>Wed, 29 Jul 2026 16:00:00 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>LogoKit now builds per-victim phishing pages using live screenshots of the target&#x27;s real website</description>
   </item>
   <item>
     <title>U.S. CISA adds Arista VeloCloud Orchestrator and Fortinet FortiOS flaws to its Known Exploited Vulnerabilities catalog</title>
@@ -1510,102 +1606,6 @@
     <pubDate>Tue, 28 Jul 2026 10:17:27 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>The startup will invest in expanding engineering and sales teams, accelerating ecosystem support, and expanding corporate partnerships. The post Hush Security Raises $30 Million for AI Agent Governance appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Axon Is Another License Plate Surveillance Company</title>
-    <link>https://www.schneier.com/blog/archives/2026/07/axon-is-another-license-plate-surveillance-company.html</link>
-    <guid isPermaLink="true">https://www.schneier.com/blog/archives/2026/07/axon-is-another-license-plate-surveillance-company.html</guid>
-    <pubDate>Tue, 28 Jul 2026 11:06:30 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Governments are switching, but I&amp;#8217;m not sure it makes a difference : &amp;#8230;some municipalities, including Denver, Colorado, are ditching their Flock arrays. But keep in mind that if they&amp;#8217;re only switching from Flock to another brand of license-plate readers, like Axon…</description>
-  </item>
-  <item>
-    <title>Microsoft Unveils MAI-Cyber-1-Flash, Its First Cybersecurity AI Model</title>
-    <link>https://www.securityweek.com/microsoft-unveils-mai-cyber-1-flash-its-first-cybersecurity-ai-model/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/microsoft-unveils-mai-cyber-1-flash-its-first-cybersecurity-ai-model/</guid>
-    <pubDate>Tue, 28 Jul 2026 11:11:48 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The company claims MAI-Cyber-1-Flash tops Anthropic’s Mythos and OpenAI’s GPT-5.6 Sol in CyberGym testing. The post Microsoft Unveils MAI-Cyber-1-Flash, Its First Cybersecurity AI Model appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>OT Security Startup Frenos Raises $1.52 Million</title>
-    <link>https://www.securityweek.com/ot-security-startup-frenos-raises-1-52-million/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/ot-security-startup-frenos-raises-1-52-million/</guid>
-    <pubDate>Tue, 28 Jul 2026 13:05:25 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The company will use the fresh investment to grow its customer success and AI R&amp;#038;D teams. The post OT Security Startup Frenos Raises $1.52 Million appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Cyberhaven launches Flow to secure data across human and AI workflows</title>
-    <link>https://www.helpnetsecurity.com/2026/07/28/cyberhaven-flow/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/28/cyberhaven-flow/</guid>
-    <pubDate>Tue, 28 Jul 2026 13:03:27 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Cyberhaven has introduced Cyberhaven Flow, an AI-native data security platform built to protect data across human and AI workflows. Flow connects lineage, identity, and behavior to protect data as it is created, copied, fragmented, and shared, marking a shift in how protection ad…</description>
-  </item>
-  <item>
-    <title>Intel 471 expands Verity471 with AI agent and MCP support for threat intelligence</title>
-    <link>https://www.helpnetsecurity.com/2026/07/28/intel-471-expands-verity471-with-ai-agent-and-mcp-support-for-threat-intelligence/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/28/intel-471-expands-verity471-with-ai-agent-and-mcp-support-for-threat-intelligence/</guid>
-    <pubDate>Tue, 28 Jul 2026 12:55:24 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Intel 471 has announced two new AI capabilities in the Verity471 platform, MCP471 and Agent471. As attackers use AI to lower the barrier to scale, security teams must use their own AI capabilities to make intelligence more accessible, allowing them to pinpoint what is relevant to…</description>
-  </item>
-  <item>
-    <title>SpecterOps brings AWS attack path management and AI to hybrid identity security</title>
-    <link>https://www.helpnetsecurity.com/2026/07/28/specterops-bloodhound-hunter/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/28/specterops-bloodhound-hunter/</guid>
-    <pubDate>Tue, 28 Jul 2026 12:48:19 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>SpecterOps has announced new capabilities built to give defenders a dynamic understanding of how adversaries traverse their hybrid environment and the ability to proactively eliminate pathways before they can be abused. BloodHound Enterprise adds support for Amazon Web Services a…</description>
-  </item>
-  <item>
-    <title>BlackCloak extends deepfake protection to the executive’s trusted circle</title>
-    <link>https://www.helpnetsecurity.com/2026/07/28/blackcloak-deepfake-protection/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/28/blackcloak-deepfake-protection/</guid>
-    <pubDate>Tue, 28 Jul 2026 13:15:34 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Deepfakes have made one of our oldest assumptions unreliable: that you can trust a familiar face or voice. While the industry focuses mainly on building “in-line detection tools” that try to spot the fake, BlackCloak, the leader in Digital Executive Protection (DEP), built Impers…</description>
-  </item>
-  <item>
-    <title>Prescient Security adds attack surface management to Cait, broadens AI-assisted pentesting</title>
-    <link>https://www.helpnetsecurity.com/2026/07/28/prescient-security-cait/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/28/prescient-security-cait/</guid>
-    <pubDate>Tue, 28 Jul 2026 13:10:00 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Prescient Security has announced a series of capability expansions to Cait (Cacilian AI), its continuous AI-assisted penetration testing service. The updates which will roll out through summer 2026 add attack surface management (ASM), new asset testing types and expanded environm…</description>
-  </item>
-  <item>
-    <title>Cyera Acquiring Oasis Security in $1 Billion Deal</title>
-    <link>https://www.securityweek.com/cyera-acquiring-oasis-security-in-1-billion-deal/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/cyera-acquiring-oasis-security-in-1-billion-deal/</guid>
-    <pubDate>Tue, 28 Jul 2026 14:55:30 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Oasis Security recently raised $120 million in Series B funding for its agentic access management platform. The post Cyera Acquiring Oasis Security in $1 Billion Deal appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Apple Patches 87 Vulnerabilities in iOS, 155 in macOS Tahoe</title>
-    <link>https://www.securityweek.com/apple-patches-87-vulnerabilities-in-ios-155-in-macos-tahoe/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/apple-patches-87-vulnerabilities-in-ios-155-in-macos-tahoe/</guid>
-    <pubDate>Tue, 28 Jul 2026 14:19:31 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Apple announced that dozens of vulnerabilities have been patched in each of its operating systems. The post Apple Patches 87 Vulnerabilities in iOS, 155 in macOS Tahoe appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Disrupting supply chain attacks on npm and GitHub Actions</title>
-    <link>https://github.blog/security/supply-chain-security/disrupting-supply-chain-attacks-on-npm-and-github-actions/</link>
-    <guid isPermaLink="true">https://github.blog/security/supply-chain-security/disrupting-supply-chain-attacks-on-npm-and-github-actions/</guid>
-    <pubDate>Tue, 28 Jul 2026 16:00:00 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Explore the changes we&#x27;ve shipped across npm and GitHub Actions over the past few months to disrupt supply chain attack techniques and limit their impact. The post Disrupting supply chain attacks on npm and GitHub Actions appeared first on The GitHub Blog .</description>
-  </item>
-  <item>
-    <title>Microsoft launches agentic security platform designed to combat AI-based attacks</title>
-    <link>https://www.cybersecuritydive.com/news/microsoft-agentic-security-platform-ai-attacks/826365/</link>
-    <guid isPermaLink="true">https://www.cybersecuritydive.com/news/microsoft-agentic-security-platform-ai-attacks/826365/</guid>
-    <pubDate>Tue, 28 Jul 2026 11:12:28 -0400</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The rollout comes amid growing concerns about the ability of hackers to launch campaigns using autonomous methods.&amp;nbsp;</description>
   </item>
   </channel>
 </rss>
