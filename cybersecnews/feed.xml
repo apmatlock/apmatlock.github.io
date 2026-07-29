@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 29 Jul 2026 01:07:58 -0300</lastBuildDate>
+    <lastBuildDate>Wed, 29 Jul 2026 02:08:04 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>A 13-year-old flaw is exposing tens of thousands of data center management systems</title>
@@ -64,6 +64,30 @@
     <description>Security leaders have spent the last decade building controls around people and code. Shift-left practices caught vulnerabilities earlier in the development cycle. Zero trust reduced lateral blast radius. Developer tooling added guardrails at the IDE. The architecture was sound —…</description>
   </item>
   <item>
+    <title>What a CISO and Marketing Partnership Actually Looks Like with Jason Rebholz of Evoke Security</title>
+    <link>https://thecyberwire.com/podcasts/breaking-through-in-cybersecurity-marketing/222/notes</link>
+    <guid isPermaLink="true">https://thecyberwire.com/podcasts/breaking-through-in-cybersecurity-marketing/222/notes</guid>
+    <pubDate>Wed, 29 Jul 2026 05:00:00 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Jason Rebholz read a blog post about MCPs and saw the whole trajectory of AI security play out in front of him. Twenty years of incident response experience told him we were about to make the same mistakes…just faster. He started Evoke Security the same way he has approached ever…</description>
+  </item>
+  <item>
+    <title>Specter: Open-source NFC reader bug sweep for Flipper Zero</title>
+    <link>https://www.helpnetsecurity.com/2026/07/29/specter-flipper-zero-skimmer-detector/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/29/specter-flipper-zero-skimmer-detector/</guid>
+    <pubDate>Wed, 29 Jul 2026 05:00:50 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Specter is a Flipper Zero app that finds powered NFC readers by listening for the radio field they give off. The readers it hunts work at 13.56 MHz. The Flipper&amp;#8217;s own chip does the sensing The onboard ST25R3916 carries a hardware external-field detector, the same circuit th…</description>
+  </item>
+  <item>
+    <title>Your AI agents can reach data no one approved</title>
+    <link>https://www.helpnetsecurity.com/2026/07/29/1password-ai-agent-governance/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/29/1password-ai-agent-governance/</guid>
+    <pubDate>Wed, 29 Jul 2026 04:30:29 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>A credential expired. An AI agent kept using it anyway, and a mid-sized company&amp;#8217;s systems went down for a quarter&amp;#8217;s worth of trouble before anyone traced the failure back to a non-human account no one had been logging. That agent could reach customer records, source c…</description>
+  </item>
+  <item>
     <title>AI agent hacks national finance ministry, Botnet uses blockchain, Healthcare chain reopens</title>
     <link>https://cybersecuritytoday.libsyn.com/ai-agent-hacks-national-finance-ministry-botnet-uses-blockchain-healthcare-chain-reopens</link>
     <guid isPermaLink="true">https://cybersecuritytoday.libsyn.com/ai-agent-hacks-national-finance-ministry-botnet-uses-blockchain-healthcare-chain-reopens</guid>
@@ -78,6 +102,14 @@
     <pubDate>Wed, 29 Jul 2026 00:15:30 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>In a new disclosure, OpenAI says its agent used exposed logins to gain access to at least four “publicly available services” in its unhinged quest to solve a test.</description>
+  </item>
+  <item>
+    <title>Two Compromised joyfill npm Packages Run RAT When Imported Into Node.js</title>
+    <link>https://thehackernews.com/2026/07/two-compromised-joyfill-npm-packages.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/two-compromised-joyfill-npm-packages.html</guid>
+    <pubDate>Wed, 29 Jul 2026 09:50:57 +0530</pubDate>
+    <category>Incident Reporting</category>
+    <description>Beta release versions of two npm packages in the @joyfill namespace have been compromised to deliver a remote access trojan (RAT) associated with the DEV#POPPER malware family. The list of affected packages is as follows - @joyfill/layouts@0.1.2-2773.beta.0 @joyfill/components@4.…</description>
   </item>
   <item>
     <title>ISC Stormcast For Wednesday, July 29th, 2026 https://isc.sans.edu/podcastdetail/10028, (Wed, Jul 29th)</title>
@@ -1574,38 +1606,6 @@
     <pubDate>Mon, 27 Jul 2026 07:00:00 +0000</pubDate>
     <category>Security Advisories</category>
     <description>CISOs have quietly become their organizations’ de facto chief resilience officers as the role has evolved from its primary prevention roots to now include greater emphasis on incident response and business resiliency and recovery. “Any experienced CISO who’s come up through the r…</description>
-  </item>
-  <item>
-    <title>AWS gives DevOps teams an AI investigator for firewall incidents</title>
-    <link>https://www.helpnetsecurity.com/2026/07/27/aws-devops-agent-network-firewall-troubleshooting/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/27/aws-devops-agent-network-firewall-troubleshooting/</guid>
-    <pubDate>Mon, 27 Jul 2026 09:05:19 +0000</pubDate>
-    <category>Security Advisories</category>
-    <description>AWS DevOps Agent helps administrators inspect logs, review firewall rules and network paths, identify configuration changes that caused AWS Network Firewall to block traffic, and restore connectivity. The service is an AI-powered operations assistant for DevOps and SRE teams that…</description>
-  </item>
-  <item>
-    <title>Hackers used autonomous AI agent to spy on Thailand&#x27;s finance ministry</title>
-    <link>https://therecord.media/thailand-hackers-ai-finance-ministry</link>
-    <guid isPermaLink="true">https://therecord.media/thailand-hackers-ai-finance-ministry</guid>
-    <pubDate>Mon, 27 Jul 2026 12:00:00 +0000</pubDate>
-    <category>Security Advisories</category>
-    <description>Hackers used an autonomous artificial intelligence agent to carry out a cyber-espionage campaign against Thailand&#x27;s Ministry of Finance, researchers discovered.</description>
-  </item>
-  <item>
-    <title>JetStream Security enables on-demand shutdown of compromised AI agents</title>
-    <link>https://www.helpnetsecurity.com/2026/07/27/jetstream-ai-kill-switch/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/27/jetstream-ai-kill-switch/</guid>
-    <pubDate>Mon, 27 Jul 2026 13:32:58 +0000</pubDate>
-    <category>Security Advisories</category>
-    <description>JetStream Security has announced the release of an AI Kill Switch that allows organizations to shut down compromised AI agents on-demand without impacting other AI operations. This new control plane for AI agents solves the inability to stop a single agent that falters, begins ov…</description>
-  </item>
-  <item>
-    <title>Hackers target Thailand’s Ministry of Finance with an autonomous AI agent.</title>
-    <link>https://thecyberwire.com/newsletters/daily-briefing/15/141</link>
-    <guid isPermaLink="true">https://thecyberwire.com/newsletters/daily-briefing/15/141</guid>
-    <pubDate>Mon, 27 Jul 2026 16:00:00 +0000</pubDate>
-    <category>Security Advisories</category>
-    <description>SourTrade builds malware in the browser. Golden Chickens lay four new malware families.</description>
   </item>
   </channel>
 </rss>
