@@ -5,8 +5,16 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 28 Jul 2026 22:08:01 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 28 Jul 2026 23:08:01 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>A 13-year-old flaw is exposing tens of thousands of data center management systems</title>
+    <link>https://www.csoonline.com/article/4202530/a-13-year-old-flaw-is-exposing-tens-of-thousands-of-data-center-management-systems.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4202530/a-13-year-old-flaw-is-exposing-tens-of-thousands-of-data-center-management-systems.html</guid>
+    <pubDate>Wed, 29 Jul 2026 01:34:10 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>The ‘no man’s land’ beneath the OS on enterprise servers is becoming the malicious actors’ next target. Attackers are gaining a foothold into broader data center environments by exploiting Baseboard Management Controllers (BMCs) that are largely unprotected, still running decades…</description>
+  </item>
   <item>
     <title>How AI is Rewriting the Zero-Day Playbook for Preemptive Security</title>
     <link>https://www.rapid7.com/blog/post/ai-rewriting-zero-day-playbook-for-preemptive-security</link>
@@ -32,6 +40,30 @@
     <description>Arista has patched a VeloCloud Orchestrator (VCO) security hole that has been actively leveraged in the wild, one that the vendor says “may allow a remote attacker to access privileged internal functionality and impact the VCO host.” The Arista security advisory added that the ho…</description>
   </item>
   <item>
+    <title>Measuring LLMs’ Ability to Perform Cryptanalysis</title>
+    <link>https://www.schneier.com/blog/archives/2026/07/measuring-llms-ability-to-perform-cryptanalysis.html</link>
+    <guid isPermaLink="true">https://www.schneier.com/blog/archives/2026/07/measuring-llms-ability-to-perform-cryptanalysis.html</guid>
+    <pubDate>Wed, 29 Jul 2026 01:47:05 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>There&amp;#8217;s new benchmark measuring AI&amp;#8217;s ability to perform mathematical cryptanalysis. Anthropic&amp;#8217;s frontier model actually found new attacks. The benchmark: &amp;#8220; CryptanalysisBench: Can LLMs do Cryptanalysis? &amp;#8221; The idea is to benchmark the ability of LLMs …</description>
+  </item>
+  <item>
+    <title>Fortinet’s new FortiGate platform converges firewall, SASE technologies</title>
+    <link>https://www.csoonline.com/article/4202566/fortinets-new-fortigate-platform-converges-firewall-sase-technologies-2.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4202566/fortinets-new-fortigate-platform-converges-firewall-sase-technologies-2.html</guid>
+    <pubDate>Wed, 29 Jul 2026 01:35:11 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Fortinet has expanded its firewall family with new high-speed boxes that, when combined with the vendor’s FortiSASE Outpost software, extend cloud-based SASE (secure access service edge) capabilities and policy enforcement to on-premises environments. The new midrange FortiGate 1…</description>
+  </item>
+  <item>
+    <title>The CSO’s blind spot: Why platform engineering 2.0 is now a security imperative</title>
+    <link>https://www.csoonline.com/article/4202540/the-csos-blind-spot-why-platform-engineering-2-0-is-now-a-security-imperative.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4202540/the-csos-blind-spot-why-platform-engineering-2-0-is-now-a-security-imperative.html</guid>
+    <pubDate>Wed, 29 Jul 2026 01:09:14 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Security leaders have spent the last decade building controls around people and code. Shift-left practices caught vulnerabilities earlier in the development cycle. Zero trust reduced lateral blast radius. Developer tooling added guardrails at the IDE. The architecture was sound —…</description>
+  </item>
+  <item>
     <title>AI agent hacks national finance ministry, Botnet uses blockchain, Healthcare chain reopens</title>
     <link>https://cybersecuritytoday.libsyn.com/ai-agent-hacks-national-finance-ministry-botnet-uses-blockchain-healthcare-chain-reopens</link>
     <guid isPermaLink="true">https://cybersecuritytoday.libsyn.com/ai-agent-hacks-national-finance-ministry-botnet-uses-blockchain-healthcare-chain-reopens</guid>
@@ -46,6 +78,14 @@
     <pubDate>Wed, 29 Jul 2026 00:15:30 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>In a new disclosure, OpenAI says its agent used exposed logins to gain access to at least four “publicly available services” in its unhinged quest to solve a test.</description>
+  </item>
+  <item>
+    <title>ISC Stormcast For Wednesday, July 29th, 2026 https://isc.sans.edu/podcastdetail/10028, (Wed, Jul 29th)</title>
+    <link>https://isc.sans.edu/diary/rss/33194</link>
+    <guid isPermaLink="true">https://isc.sans.edu/diary/rss/33194</guid>
+    <pubDate>Wed, 29 Jul 2026 02:00:02 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>(c) SANS Internet Storm Center. https://isc.sans.edu Creative Commons Attribution-Noncommercial 3.0 United States License.</description>
   </item>
   <item>
     <title>Weekly Threat Bulletin – July 29th, 2026</title>
@@ -1566,46 +1606,6 @@
     <pubDate>Mon, 27 Jul 2026 17:02:21 -0000</pubDate>
     <category>Security Advisories</category>
     <description></description>
-  </item>
-  <item>
-    <title>Redis security advisory (AV26-748)</title>
-    <link>https://cyber.gc.ca/en/alerts-advisories/redis-security-advisory-av26-748</link>
-    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/redis-security-advisory-av26-748</guid>
-    <pubDate>Mon, 27 Jul 2026 17:02:21 -0000</pubDate>
-    <category>Security Advisories</category>
-    <description></description>
-  </item>
-  <item>
-    <title>DHS Official Resigns, Citing ‘War on Immigrants’</title>
-    <link>https://www.wired.com/story/dhs-official-resigns-citing-war-on-immigrants/</link>
-    <guid isPermaLink="true">https://www.wired.com/story/dhs-official-resigns-citing-war-on-immigrants/</guid>
-    <pubDate>Mon, 27 Jul 2026 20:34:04 +0000</pubDate>
-    <category>Security Advisories</category>
-    <description>The outgoing executive director of the Office of Homeland Security Statistics is one of very few federal officials to speak out against the Trump administration’s immigration crackdown.</description>
-  </item>
-  <item>
-    <title>Outdated VPNs should be purged from federal agencies, senator says</title>
-    <link>https://therecord.media/federal-purge-outdated-vpns-wyden-letter</link>
-    <guid isPermaLink="true">https://therecord.media/federal-purge-outdated-vpns-wyden-letter</guid>
-    <pubDate>Mon, 27 Jul 2026 20:45:00 +0000</pubDate>
-    <category>Security Advisories</category>
-    <description>Intelligence Committee member Ron Wyden wants CISA, OMB and NIST to lead a federal effort to rout out obsolete VPNs from the U.S. government.</description>
-  </item>
-  <item>
-    <title>&#x27;Confused Deputy&#x27; Flaws Persist in Google Cloud, Microsoft Azure</title>
-    <link>https://www.darkreading.com/cloud-security/confused-deputy-flaws-google-cloud-microsoft-azure</link>
-    <guid isPermaLink="true">https://www.darkreading.com/cloud-security/confused-deputy-flaws-google-cloud-microsoft-azure</guid>
-    <pubDate>Mon, 27 Jul 2026 20:57:26 +0000</pubDate>
-    <category>Security Advisories</category>
-    <description>This category of vulnerabilities allows an attacker to easily acquire administrative level permissions and bypass cloud providers&#x27; access controls.</description>
-  </item>
-  <item>
-    <title>MCBS Data Breach Affects 1.2 Million Individuals</title>
-    <link>https://www.securityweek.com/mcbs-data-breach-affects-1-2-million-individuals/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/mcbs-data-breach-affects-1-2-million-individuals/</guid>
-    <pubDate>Mon, 27 Jul 2026 04:51:32 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>The PEAR ransomware group claimed to have stolen 3 TB of information from the medical business management company. The post MCBS Data Breach Affects 1.2 Million Individuals appeared first on SecurityWeek .</description>
   </item>
   </channel>
 </rss>
