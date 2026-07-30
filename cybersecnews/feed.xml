@@ -5,8 +5,16 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 30 Jul 2026 11:07:59 -0300</lastBuildDate>
+    <lastBuildDate>Thu, 30 Jul 2026 12:07:49 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Exploring the Hugging Face Breach: mapping AI agent tactics to Elastic Defend</title>
+    <link>https://www.elastic.co/security-labs/ai-agent-attack-detection-hugging-face-breach</link>
+    <guid isPermaLink="true">https://www.elastic.co/security-labs/ai-agent-attack-detection-hugging-face-breach</guid>
+    <pubDate>Fri, 31 Jul 2026 00:00:00 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Every stage of the Hugging Face breach maps to Elastic Defend and SIEM rules already shipping, from worker RCE and credential harvest to self-migrating C2 and GenAI detection.</description>
+  </item>
   <item>
     <title>U.S. CISA adds a Cisco Secure Firewall Management Center (FMC) flaw to its Known Exploited Vulnerabilities catalog</title>
     <link>https://securityaffairs.com/196289/security/u-s-cisa-adds-a-cisco-secure-firewall-management-center-fmc-flaw-to-its-known-exploited-vulnerabilities-catalog.html</link>
@@ -78,6 +86,14 @@
     <pubDate>Thu, 30 Jul 2026 12:29:58 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>A critical vulnerability in the open-source AI agent platform Ruflo could allow unauthenticated attackers to take control of enterprise AI environments by exploiting an exposed Model Context Protocol (MCP) bridge, according to research published by Noma Security. The flaw, tracke…</description>
+  </item>
+  <item>
+    <title>Laundry Bear’s new Microsoft Exchange attack triggers on email open (CVE-2026-42897)</title>
+    <link>https://www.helpnetsecurity.com/2026/07/30/cve-2026-42897-microsoft-exchange-email-attack/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/30/cve-2026-42897-microsoft-exchange-email-attack/</guid>
+    <pubDate>Thu, 30 Jul 2026 14:23:34 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Russia-affiliated cyber espionage group Laundry Bear (aka Void Blizzard, aka TA488) is exploiting CVE-2026-42897, a cross-site scripting vulnerability in Microsoft Exchange, to target US and European government entities and a variety of private sector organizations via email. The…</description>
   </item>
   <item>
     <title>CISA unveils a six-step blueprint for isolating critical infrastructure during cyberattacks</title>
@@ -256,6 +272,30 @@
     <description>Chipmaker Analog Devices disclosed a data breach after detecting unauthorized access to systems on June 23. The investigation is ongoing. Semiconductor giant Analog Devices (ADI) disclosed a data breach following a cyberattack that resulted in unauthorized access to some of its s…</description>
   </item>
   <item>
+    <title>Azure Cosmos DB Flaw Exposed Platform-Wide Key That Could Access Any Database</title>
+    <link>https://thehackernews.com/2026/07/azure-cosmos-db-flaw-exposed-platform.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/azure-cosmos-db-flaw-exposed-platform.html</guid>
+    <pubDate>Thu, 30 Jul 2026 19:04:09 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>A now-patched vulnerability in Azure Cosmos DB could have let an attacker escape the service&#x27;s Gremlin query sandbox and obtain full read and write access to databases across customer tenants, according to Wiz. Wiz, which codenamed the chain CosmosEscape, said the exploit chain b…</description>
+  </item>
+  <item>
+    <title>AI Expands Your Attack Surface</title>
+    <link>https://www.youtube.com/shorts/55uiu8-qppc</link>
+    <guid isPermaLink="true">https://www.youtube.com/shorts/55uiu8-qppc</guid>
+    <pubDate>Thu, 30 Jul 2026 14:00:33 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>AI adoption introduces new responsibilities for security teams. Beyond traditional tasks like audits, controls, and awareness training, security leaders must now evaluate AI platforms, data usage, and integrations. AI systems rarely operate alone. Connections to cloud environment…</description>
+  </item>
+  <item>
+    <title>Microsoft Copilot for Word vulnerable to self-propagating worm-like attack</title>
+    <link>https://cyberinsider.com/microsoft-copilot-for-word-vulnerable-to-self-propagating-worm-like-attack/</link>
+    <guid isPermaLink="true">https://cyberinsider.com/microsoft-copilot-for-word-vulnerable-to-self-propagating-worm-like-attack/</guid>
+    <pubDate>Thu, 30 Jul 2026 14:59:38 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Security researcher Håkon Måløy has disclosed a proof-of-concept attack showing how malicious prompts hidden inside Microsoft Word documents can spread between files through Microsoft Copilot for Word. The research suggests that attacker-controlled instructions embedded in one do…</description>
+  </item>
+  <item>
     <title>FCC Restricts New Foreign Robots and Inverters Over Security Risks</title>
     <link>https://securityaffairs.com/196308/security/fcc-restricts-new-foreign-robots-and-inverters-over-security-risks.html</link>
     <guid isPermaLink="true">https://securityaffairs.com/196308/security/fcc-restricts-new-foreign-robots-and-inverters-over-security-risks.html</guid>
@@ -316,6 +356,30 @@
     <link>https://cyber.gc.ca/en/alerts-advisories/gitlab-security-advisory-av26-758</link>
     <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/gitlab-security-advisory-av26-758</guid>
     <pubDate>Thu, 30 Jul 2026 11:03:20 -0000</pubDate>
+    <category>Security Advisories</category>
+    <description></description>
+  </item>
+  <item>
+    <title>[Control Systems] Phoenix Contact security advisory (AV26-762)</title>
+    <link>https://cyber.gc.ca/en/alerts-advisories/control-systems-phoenix-contact-security-advisory-av26-762</link>
+    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/control-systems-phoenix-contact-security-advisory-av26-762</guid>
+    <pubDate>Thu, 30 Jul 2026 12:03:18 -0000</pubDate>
+    <category>Security Advisories</category>
+    <description></description>
+  </item>
+  <item>
+    <title>WebPros security advisory (AV26-761)</title>
+    <link>https://cyber.gc.ca/en/alerts-advisories/webpros-security-advisory-av26-761</link>
+    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/webpros-security-advisory-av26-761</guid>
+    <pubDate>Thu, 30 Jul 2026 12:03:18 -0000</pubDate>
+    <category>Security Advisories</category>
+    <description></description>
+  </item>
+  <item>
+    <title>Adobe security advisory (AV26-760)</title>
+    <link>https://cyber.gc.ca/en/alerts-advisories/adobe-security-advisory-av26-760</link>
+    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/adobe-security-advisory-av26-760</guid>
+    <pubDate>Thu, 30 Jul 2026 12:03:18 -0000</pubDate>
     <category>Security Advisories</category>
     <description></description>
   </item>
@@ -390,6 +454,22 @@
     <pubDate>Thu, 30 Jul 2026 10:01:11 -0400</pubDate>
     <category>Incident Reporting</category>
     <description>Attackers rarely stop after gaining initial access. Huntress analyzes a real-world intrusion to show how threat actors establish persistence, disable defenses, and reshape compromised systems, and why defenders must investigate the original entry point rather than simply remove t…</description>
+  </item>
+  <item>
+    <title>In the Hugging Face breach, OpenAI’s hacker was noisy and fast — but not unstoppable</title>
+    <link>https://techcrunch.com/2026/07/30/in-the-hugging-face-breach-openais-hacker-was-noisy-and-fast-but-not-unstoppable/</link>
+    <guid isPermaLink="true">https://techcrunch.com/2026/07/30/in-the-hugging-face-breach-openais-hacker-was-noisy-and-fast-but-not-unstoppable/</guid>
+    <pubDate>Thu, 30 Jul 2026 14:48:32 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>Cybersecurity experts told TechCrunch that one of the biggest lessons to be taken from the OpenAI hack against HuggingFace has nothing to do with AI, but traditional cybersecurity defense.</description>
+  </item>
+  <item>
+    <title>North Korea’s Lazarus Group sharing tools with ransomware hackers, South Korean agencies warn</title>
+    <link>https://therecord.media/north-korea-hackers-ransomware</link>
+    <guid isPermaLink="true">https://therecord.media/north-korea-hackers-ransomware</guid>
+    <pubDate>Thu, 30 Jul 2026 14:00:00 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>Cyberattack tools and infrastructure used by North Korea’s Lazarus Group appear to have been shared with ransomware criminals targeting South Korean organizations — further evidence of deepening entanglement between Pyongyang-backed hackers and the ransomware ecosystem.</description>
   </item>
   <item>
     <title>Reconnaissance First: An SSH Bot That Sizes Up Your Hardware Before Deploying a Miner &amp;#x5b;Guest Diary&amp;#x5d;, (Thu, Jul 30th)</title>
@@ -560,6 +640,14 @@
     <description>The company will invest in accelerating the development and adoption of its agentic platform. The post Discern Security Raises $13 Million in Series A Funding appeared first on SecurityWeek .</description>
   </item>
   <item>
+    <title>Ghanaian national sentenced to 7 years in prison for stealing $10M from romance scam victims</title>
+    <link>https://cyberscoop.com/ghanaian-national-sentenced-romance-scam/</link>
+    <guid isPermaLink="true">https://cyberscoop.com/ghanaian-national-sentenced-romance-scam/</guid>
+    <pubDate>Thu, 30 Jul 2026 14:35:01 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Derrick Van Yeboah impersonated fake romantic partners and directly interacted with victims for more than nine years. The post Ghanaian national sentenced to 7 years in prison for stealing $10M from romance scam victims appeared first on CyberScoop .</description>
+  </item>
+  <item>
     <title>&#x27;Flying Eagle&#x27; Full-Service Mobile RAT Builder Wings Across China</title>
     <link>https://www.darkreading.com/endpoint-security/flying-eagle-mobile-rat-builder-china</link>
     <guid isPermaLink="true">https://www.darkreading.com/endpoint-security/flying-eagle-mobile-rat-builder-china</guid>
@@ -646,6 +734,14 @@
     <pubDate>Thu, 30 Jul 2026 13:00:00 +0000</pubDate>
     <category>Infosec News</category>
     <description>Action1 report finds sysadmins overestimated their use of AI in predictions made two years ago</description>
+  </item>
+  <item>
+    <title>Hims &amp;amp; Hers sued over alleged health data privacy failures</title>
+    <link>https://www.malwarebytes.com/blog/privacy/2026/07/hims-hers-sued-over-alleged-health-data-privacy-failures</link>
+    <guid isPermaLink="true">https://www.malwarebytes.com/blog/privacy/2026/07/hims-hers-sued-over-alleged-health-data-privacy-failures</guid>
+    <pubDate>Thu, 30 Jul 2026 13:58:10 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>The FTC has sued telehealth provider Hims &amp;#038; Hers, alleging it shared customers&#x27; sensitive health information with advertisers.</description>
   </item>
   <item>
     <title>A 13-year-old flaw is exposing tens of thousands of data center management systems</title>
@@ -1510,102 +1606,6 @@
     <pubDate>Wed, 29 Jul 2026 12:17:14 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>The company was previously valued at $1.6 billion, and the latest raise has significantly increased that valuation. The post ThreatLocker Raises $190 Million in Series F Funding appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Russia charges Telegram founder Pavel Durov with facilitating terrorism</title>
-    <link>https://cyberinsider.com/russia-charges-telegram-founder-pavel-durov-with-facilitating-terrorism/</link>
-    <guid isPermaLink="true">https://cyberinsider.com/russia-charges-telegram-founder-pavel-durov-with-facilitating-terrorism/</guid>
-    <pubDate>Wed, 29 Jul 2026 13:31:19 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Russia&#x27;s Federal Security Service (FSB) claims that Ukrainian intelligence services used the popular Telegram dating chatbot &amp;#8220;Daivinchik/Leo&amp;#8221; to recruit Russian citizens, including minors, into sabotage and terrorist activities through deception and psychological mani…</description>
-  </item>
-  <item>
-    <title>US Bans Foreign-Made Humanoid Robots, Targeting China Over National Security</title>
-    <link>https://www.securityweek.com/us-bans-foreign-made-humanoid-robots-targeting-china-over-national-security/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/us-bans-foreign-made-humanoid-robots-targeting-china-over-national-security/</guid>
-    <pubDate>Wed, 29 Jul 2026 13:31:00 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The agency said imports of advanced robots pose cybersecurity and other national security risks. The post US Bans Foreign-Made Humanoid Robots, Targeting China Over National Security appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>AI Productivity Comes With a Cost</title>
-    <link>https://www.youtube.com/shorts/Y5xspztO0uQ</link>
-    <guid isPermaLink="true">https://www.youtube.com/shorts/Y5xspztO0uQ</guid>
-    <pubDate>Wed, 29 Jul 2026 14:00:18 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>AI increases productivity, but productivity gains don&#x27;t necessarily translate into more free time. As coding assistants and agentic AI become more capable, organizations can expect individual developers to oversee many more projects simultaneously. Higher output can quickly becom…</description>
-  </item>
-  <item>
-    <title>Huntress warns about attack spree that hit 30 SonicWall customers in 2 days</title>
-    <link>https://cyberscoop.com/sonicwall-credential-attacks-vpn-firewall/</link>
-    <guid isPermaLink="true">https://cyberscoop.com/sonicwall-credential-attacks-vpn-firewall/</guid>
-    <pubDate>Wed, 29 Jul 2026 16:06:32 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Unknown attackers broke into 92 unique SonicWall user accounts with legitimate credentials, researchers said. The post Huntress warns about attack spree that hit 30 SonicWall customers in 2 days appeared first on CyberScoop .</description>
-  </item>
-  <item>
-    <title>​​Better security starts with better questions</title>
-    <link>https://www.microsoft.com/en-us/security/blog/2026/07/29/better-security-starts-with-better-questions/</link>
-    <guid isPermaLink="true">https://www.microsoft.com/en-us/security/blog/2026/07/29/better-security-starts-with-better-questions/</guid>
-    <pubDate>Wed, 29 Jul 2026 16:00:00 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Learn how better questions, trusted AI, and human judgment help security leaders make confident decisions and build resilient systems. The post ​​Better security starts with better questions appeared first on Microsoft Security Blog .</description>
-  </item>
-  <item>
-    <title>Supply chain challenges loom large in quantum race, White House official says</title>
-    <link>https://cyberscoop.com/white-house-quantum-supply-chain-challenges/</link>
-    <guid isPermaLink="true">https://cyberscoop.com/white-house-quantum-supply-chain-challenges/</guid>
-    <pubDate>Wed, 29 Jul 2026 20:22:10 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Brad Blakestad, director of the National Quantum Coordination Office, also said encryption and measuring progress would pose challenges. The post Supply chain challenges loom large in quantum race, White House official says appeared first on CyberScoop .</description>
-  </item>
-  <item>
-    <title>The AI Productivity Pay Gap</title>
-    <link>https://www.youtube.com/shorts/9zlXLLRMfuA</link>
-    <guid isPermaLink="true">https://www.youtube.com/shorts/9zlXLLRMfuA</guid>
-    <pubDate>Wed, 29 Jul 2026 21:00:13 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Many organizations expect AI to improve profit margins through higher productivity. But AI adoption still depends on people managing workflows, making decisions, and delivering results. As output increases, some employees feel their compensation hasn&#x27;t kept pace. Productivity gai…</description>
-  </item>
-  <item>
-    <title>Smashing Security podcast #478: This job interview could destroy your company</title>
-    <link>https://grahamcluley.com/smashing-security-podcast-478/</link>
-    <guid isPermaLink="true">https://grahamcluley.com/smashing-security-podcast-478/</guid>
-    <pubDate>Wed, 29 Jul 2026 23:09:41 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>You&#x27;ve been headhunted for a great job in cryptocurrency. All you have to do is complete a short online assessment - with your webcam on, of course, so they can verify who you really are. Which is ironic, because the person recruiting you doesn&#x27;t exist. And North Korean hackers u…</description>
-  </item>
-  <item>
-    <title>Secure your npm and pip package updates in Amazon Linux</title>
-    <link>https://aws.amazon.com/blogs/security/secure-your-npm-and-pip-package-updates-in-amazon-linux/</link>
-    <guid isPermaLink="true">https://aws.amazon.com/blogs/security/secure-your-npm-and-pip-package-updates-in-amazon-linux/</guid>
-    <pubDate>Wed, 29 Jul 2026 14:53:39 +0000</pubDate>
-    <category>Cyber Threat Landscape</category>
-    <description>If you use and install packages from npm or PyPI, the first hours after a package is published are the riskiest because scanners can’t analyze packages before publication. Recent supply chain events affecting NodeJS and Python packages have been detected and removed within hours.…</description>
-  </item>
-  <item>
-    <title>When AppSec Scanners Become a Supply Chain Attack Vector</title>
-    <link>https://www.darkreading.com/application-security/when-appsec-scanners-become-supply-chain-attack-vector</link>
-    <guid isPermaLink="true">https://www.darkreading.com/application-security/when-appsec-scanners-become-supply-chain-attack-vector</guid>
-    <pubDate>Wed, 29 Jul 2026 17:06:52 +0000</pubDate>
-    <category>Cyber Threat Landscape</category>
-    <description>New research shows how security scanners embedded in the software supply chain can be attacked to serve as a foothold for downstream attacks.</description>
-  </item>
-  <item>
-    <title>Hugging Face Hack Lessons for Cyber Defenders</title>
-    <link>https://www.darkreading.com/cyberattacks-data-breaches/hugging-face-hack-lessons-cyber-defenders</link>
-    <guid isPermaLink="true">https://www.darkreading.com/cyberattacks-data-breaches/hugging-face-hack-lessons-cyber-defenders</guid>
-    <pubDate>Wed, 29 Jul 2026 17:35:23 +0000</pubDate>
-    <category>Podcasts</category>
-    <description>Dark Reading Confidential Episode 20: Expert Rich Mogull reflects on lessons cyber teams should pull from the OpenAI agent&#x27;s attack on Hugging Face.</description>
-  </item>
-  <item>
-    <title>Weekly Threat Bulletin – July 29th, 2026</title>
-    <link>https://www.f5.com/labs/articles/weekly-threat-bulletin-july-29th-2026</link>
-    <guid isPermaLink="true">https://www.f5.com/labs/articles/weekly-threat-bulletin-july-29th-2026</guid>
-    <pubDate>Wed, 29 Jul 2026 21:35:25 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>These are the top threats you should know about this week.</description>
   </item>
   </channel>
 </rss>
