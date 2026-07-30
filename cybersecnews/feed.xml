@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 30 Jul 2026 07:08:04 -0300</lastBuildDate>
+    <lastBuildDate>Thu, 30 Jul 2026 08:07:58 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>U.S. CISA adds a Cisco Secure Firewall Management Center (FMC) flaw to its Known Exploited Vulnerabilities catalog</title>
@@ -30,6 +30,30 @@
     <pubDate>Thu, 30 Jul 2026 06:31:31 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>The vulnerability tracked as CVE-2026-20316 can be exploited by a remote, unauthenticated attacker to log into affected devices. The post Cisco Secure FMC Zero-Day Exploited in the Wild appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>Russian hackers turn Exchange flaw into ‘half-click’ mailbox takeover</title>
+    <link>https://www.csoonline.com/article/4203349/russian-hackers-turn-exchange-flaw-into-half-click-mailbox-takeover.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4203349/russian-hackers-turn-exchange-flaw-into-half-click-mailbox-takeover.html</guid>
+    <pubDate>Thu, 30 Jul 2026 10:45:02 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>A Russia-aligned threat group used a “half-click” exploit against Microsoft Exchange’s Outlook Web Access to install a browser-based backdoor when recipients opened specially crafted emails. The campaign began on July 22 and was conducted by TA488, which is also tracked as Void B…</description>
+  </item>
+  <item>
+    <title>Cisco FMC static credentials exploited by attackers (CVE-2026-20316)</title>
+    <link>https://www.helpnetsecurity.com/2026/07/30/cisco-fmc-cve-2026-20316-exploited/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/30/cisco-fmc-cve-2026-20316-exploited/</guid>
+    <pubDate>Thu, 30 Jul 2026 10:44:09 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>A static credentials vulnerability (CVE-2026-20316) in Cisco Secure Firewall Management Center (FMC), a platform for centrally managing multiple Cisco Secure Firewall devices across a network, is being leveraged by attackers, CISA warned. Two FMC flaws, one indicator of compromis…</description>
+  </item>
+  <item>
+    <title>Critical VMware vCenter Vulnerabilities Allow Authentication Bypass and Remote Code Execution (CVE-2026-59309, CVE-2026-59310)</title>
+    <link>https://www.rapid7.com/blog/post/etr-critical-vmware-vcenter-vulnerabilities-allow-authentication-bypass-and-remote-code-execution-cve-2026-59309-cve-2026-59310</link>
+    <guid isPermaLink="true">https://www.rapid7.com/blog/post/etr-critical-vmware-vcenter-vulnerabilities-allow-authentication-bypass-and-remote-code-execution-cve-2026-59309-cve-2026-59310</guid>
+    <pubDate>Thu, 30 Jul 2026 10:35:21 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Overview On July 29, 2026, Broadcom published security advisory VMSA-2026-0006 addressing multiple vulnerabilities in several VMWare products. Included in the advisory are two critical remotely exploitable vulnerabilities affecting VMware vCenter Server: CVE-2026-59309 and CVE-20…</description>
   </item>
   <item>
     <title>CISA unveils a six-step blueprint for isolating critical infrastructure during cyberattacks</title>
@@ -120,6 +144,46 @@
     <description>Unit 42 details a Chinese speaking threat actor combining autonomous AI scanning across seven vulnerabilities with manual exploitation. Read more. The post Chinese-Speaking Threat Actor Harnesses AI Models for Autonomous Cyberattacks appeared first on Unit 42 .</description>
   </item>
   <item>
+    <title>Hackers Exploit AnySign4PC via Hacked Korean Sites to Install Backdoors Without Prompts</title>
+    <link>https://thehackernews.com/2026/07/hackers-exploit-anysign4pc-via-hacked.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/hackers-exploit-anysign4pc-via-hacked.html</guid>
+    <pubDate>Thu, 30 Jul 2026 16:03:15 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>South Korean authorities and four security firms have disclosed a state-sponsored campaign that compromised trusted domestic websites. The attackers used those sites to exploit locally installed financial-security software and infect targeted visitors with SIGNBT or COPPERHEDGE b…</description>
+  </item>
+  <item>
+    <title>Building secure Uniswap v4 hooks</title>
+    <link>https://blog.trailofbits.com/2026/07/30/building-secure-uniswap-v4-hooks/</link>
+    <guid isPermaLink="true">https://blog.trailofbits.com/2026/07/30/building-secure-uniswap-v4-hooks/</guid>
+    <pubDate>Thu, 30 Jul 2026 07:00:00 -0400</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Uniswap v4 hooks let developers add custom behavior to pools, including dynamic fees, custom accounting, and external integrations. This flexibility moves some security responsibilities into application and hook code. The Cork and Bunni exploits are two app-level incidents that s…</description>
+  </item>
+  <item>
+    <title>Analog Devices says hackers stole company files in June cyberattack</title>
+    <link>https://cyberinsider.com/analog-devices-says-hackers-stole-company-files-in-june-cyberattack/</link>
+    <guid isPermaLink="true">https://cyberinsider.com/analog-devices-says-hackers-stole-company-files-in-june-cyberattack/</guid>
+    <pubDate>Thu, 30 Jul 2026 10:49:33 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Analog Devices has disclosed that it suffered a cyberattack in June, resulting in unauthorized access to internal systems and the theft of company files. The semiconductor manufacturer said the incident did not disrupt operations and that it is still investigating the scope of th…</description>
+  </item>
+  <item>
+    <title>PortSwigger introduces Burp AT for agentic AI security testing</title>
+    <link>https://www.helpnetsecurity.com/2026/07/30/portswigger-burp-at/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/30/portswigger-burp-at/</guid>
+    <pubDate>Thu, 30 Jul 2026 10:33:43 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>PortSwigger has announced the public beta of Burp AT, a new addition to Burp Suite that brings agentic AI to professional penetration testing. Burp AT enables penetration testers to delegate defined investigative tasks to AI agents that use Burp Suite&amp;#8217;s tools, project conte…</description>
+  </item>
+  <item>
+    <title>FCC Restricts New Foreign Robots and Inverters Over Security Risks</title>
+    <link>https://securityaffairs.com/196308/security/fcc-restricts-new-foreign-robots-and-inverters-over-security-risks.html</link>
+    <guid isPermaLink="true">https://securityaffairs.com/196308/security/fcc-restricts-new-foreign-robots-and-inverters-over-security-risks.html</guid>
+    <pubDate>Thu, 30 Jul 2026 10:10:44 +0000</pubDate>
+    <category>Security Bulletins</category>
+    <description>The FCC added foreign robots and power inverters to its Covered List, while allowing security updates for existing authorized devices until 2029. The FCC just widened its Covered List again, this time adding foreign-produced advanced robotic devices and power inverters. In plain …</description>
+  </item>
+  <item>
     <title>AI’s latest security wake-up call.</title>
     <link>https://thecyberwire.com/podcasts/caveat/318/notes</link>
     <guid isPermaLink="true">https://thecyberwire.com/podcasts/caveat/318/notes</guid>
@@ -174,6 +238,14 @@
     <pubDate>Thu, 30 Jul 2026 08:59:20 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>A coordinated cyberattack on July 26 and 27 hit operational technology (OT) systems at more than 30 community water utilities across Minnesota, prompting an immediate response from Minnesota IT Services (MNIT) to contain the threat. MNIT confirmed the attack in a statement publis…</description>
+  </item>
+  <item>
+    <title>OpenAI’s Hacking Debacle Was a Human Mistake</title>
+    <link>https://www.wired.com/story/openais-hacking-debacle-was-a-human-mistake/</link>
+    <guid isPermaLink="true">https://www.wired.com/story/openais-hacking-debacle-was-a-human-mistake/</guid>
+    <pubDate>Thu, 30 Jul 2026 10:30:00 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>If the generative AI giant had followed well-known security best practices, it’s likely that its AI agent would never have escaped to the open internet and hacked multiple companies.</description>
   </item>
   <item>
     <title>Reconnaissance First: An SSH Bot That Sizes Up Your Hardware Before Deploying a Miner &amp;#x5b;Guest Diary&amp;#x5d;, (Thu, Jul 30th)</title>
@@ -248,6 +320,46 @@
     <description>Claroty has analyzed 750,000 cyber-physical systems across some of the world’s largest data center facilities. The post 1 in 5 Data Center Assets Are Within Easy Reach of Attackers appeared first on SecurityWeek .</description>
   </item>
   <item>
+    <title>Should You Use AI for a Task? Here’s a Simple Way to Decide</title>
+    <link>https://www.schneier.com/blog/archives/2026/07/should-you-use-ai-for-a-task-heres-a-simple-way-to-decide.html</link>
+    <guid isPermaLink="true">https://www.schneier.com/blog/archives/2026/07/should-you-use-ai-for-a-task-heres-a-simple-way-to-decide.html</guid>
+    <pubDate>Thu, 30 Jul 2026 11:01:32 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>This essay originally appeared in The Guardian . I teach public policy at the Harvard Kennedy School and the Munk School at the University of Toronto. And it will come as no surprise to you that my students regularly use AI to complete their writing assignments. Doing so is a was…</description>
+  </item>
+  <item>
+    <title>Black Hat special: Rewind and revisit</title>
+    <link>https://blog.talosintelligence.com/black-hat-special-rewind-and-revisit/</link>
+    <guid isPermaLink="true">https://blog.talosintelligence.com/black-hat-special-rewind-and-revisit/</guid>
+    <pubDate>Thu, 30 Jul 2026 10:00:08 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Amy looks back at the incredible journeys that brought past guests to the world of threat intelligence.</description>
+  </item>
+  <item>
+    <title>OctLurk and SilkLurk: newly identified tailored backdoors in cyber-espionage campaign in Central Asia</title>
+    <link>https://securelist.com/octlurk-silklurk-backdoors-central-asia/120840/</link>
+    <guid isPermaLink="true">https://securelist.com/octlurk-silklurk-backdoors-central-asia/120840/</guid>
+    <pubDate>Thu, 30 Jul 2026 11:00:12 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Our experts discovered OctLurk and SilkLurk, backdoors operating primarily in memory, targeting Central Asia. They inject plugins to launch shells, scan networks, dump credentials, and keylogging.</description>
+  </item>
+  <item>
+    <title>FTC sues Hims &amp; Hers over alleged data privacy and billing violations</title>
+    <link>https://cyberinsider.com/ftc-sues-hims-hers-over-alleged-data-privacy-and-billing-violations/</link>
+    <guid isPermaLink="true">https://cyberinsider.com/ftc-sues-hims-hers-over-alleged-data-privacy-and-billing-violations/</guid>
+    <pubDate>Thu, 30 Jul 2026 10:27:00 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>The US Federal Trade Commission, joined by the state of Utah and California, has filed a lawsuit against telehealth provider Hims &amp;#038; Hers, accusing the company of secretly sharing sensitive health information with advertising platforms while misleading customers about its pre…</description>
+  </item>
+  <item>
+    <title>Dropzone AI turns threat hunting into a routine SOC operation</title>
+    <link>https://www.helpnetsecurity.com/2026/07/30/dropzone-ai-threat-hunter/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/30/dropzone-ai-threat-hunter/</guid>
+    <pubDate>Thu, 30 Jul 2026 10:43:54 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Dropzone AI has announced the general availability of AI Threat Hunter, its proactive threat hunting agent. The tool enables security teams to run structured hunt packs across their environments to identify hidden threats, emerging risks, and security coverage gaps that tradition…</description>
+  </item>
+  <item>
     <title>&#x27;Flying Eagle&#x27; Full-Service Mobile RAT Builder Wings Across China</title>
     <link>https://www.darkreading.com/endpoint-security/flying-eagle-mobile-rat-builder-china</link>
     <guid isPermaLink="true">https://www.darkreading.com/endpoint-security/flying-eagle-mobile-rat-builder-china</guid>
@@ -294,6 +406,14 @@
     <pubDate>Thu, 30 Jul 2026 10:00:00 +0000</pubDate>
     <category>Infosec News</category>
     <description>Drone warfare is making the skies more dangerous, even for airplanes far from the battlefield.</description>
+  </item>
+  <item>
+    <title>SilverFox Targets Japanese Manufacturer with 3-Driver BYOVD Chain and ValleyRAT</title>
+    <link>https://thehackernews.com/2026/07/silverfox-targets-japanese-manufacturer.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/07/silverfox-targets-japanese-manufacturer.html</guid>
+    <pubDate>Thu, 30 Jul 2026 16:02:59 +0530</pubDate>
+    <category>Infosec News</category>
+    <description>The Chinese cybercrime group known as Silver Fox has been observed using new drivers as part of bring your own vulnerable driver (BYOVD) attacks targeting a Japanese organization in the industrial manufacturing sector to ultimately deliver ValleyRAT (aka Winos 4.0) for persistent…</description>
   </item>
   <item>
     <title>A 13-year-old flaw is exposing tens of thousands of data center management systems</title>
@@ -1486,126 +1606,6 @@
     <pubDate>Tue, 28 Jul 2026 11:17:06 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>JetBrains patched a critical TeamCity flaw (CVE-2026-63077) enabling unauthenticated code execution on affected on-premise servers. JetBrains has released security updates for TeamCity On-Premises after discovering a critical vulnerability, tracked as CVE-2026-63077 (CVSS score o…</description>
-  </item>
-  <item>
-    <title>Critical OpenWrt DHCPv6 Flaw Could Let Unauthenticated Attackers Run Code as Root</title>
-    <link>https://thehackernews.com/2026/07/critical-openwrt-dhcpv6-flaw-could-let.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/07/critical-openwrt-dhcpv6-flaw-could-let.html</guid>
-    <pubDate>Tue, 28 Jul 2026 18:26:14 +0530</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>OpenWrt has shipped version 24.10.8 to close a critical DHCPv6 stack overflow and a wider set of remotely triggerable flaws in network services enabled by default. The critical issue, tracked as CVE-2026-53921 and rated 9.8 on CVSS 3.1 in OpenWrt&#x27;s GitHub advisory, lets an unauth…</description>
-  </item>
-  <item>
-    <title>VU#141367: AT&amp;T&#x27;s Arris BGW210-700 gateway contains authentication bypass vulnerability in LAN-side management interface</title>
-    <link>https://kb.cert.org/vuls/id/141367</link>
-    <guid isPermaLink="true">https://kb.cert.org/vuls/id/141367</guid>
-    <pubDate>Tue, 28 Jul 2026 18:19:12 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Overview Firmware versions 2.7.7 and earlier of the Arris BGW210-700 residential gateway contain an authentication bypass vulnerability, tracked as CVE-2026-16771, that allows any unauthenticated LAN-side user to read sensitive configuration data and modify device settings throug…</description>
-  </item>
-  <item>
-    <title>Check Point SmartConsole Authentication Bypass Technical Analysis (CVE-2026-16232)</title>
-    <link>https://www.rapid7.com/blog/post/ra-check-point-smartconsole-authentication-bypass-technical-analysis-cve-2026-16232</link>
-    <guid isPermaLink="true">https://www.rapid7.com/blog/post/ra-check-point-smartconsole-authentication-bypass-technical-analysis-cve-2026-16232</guid>
-    <pubDate>Tue, 28 Jul 2026 18:32:03 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Overview On July 22, 2026, Check Point published a security advisory for CVE-2026-16232 , an authentication bypass in the SmartConsole login process affecting Security Management Server and Multi-Domain Security Management Server (MDS). By leveraging CVE-2026-16232, an unauthenti…</description>
-  </item>
-  <item>
-    <title>Chromium: CVE-2026-13032 Use after free in WebGL</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13032</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13032</guid>
-    <pubDate>Tue, 28 Jul 2026 15:03:48 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2026) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium: CVE-2026-13028 Use after free in WebGL</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13028</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13028</guid>
-    <pubDate>Tue, 28 Jul 2026 15:03:44 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2026) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium: CVE-2026-13030 Uninitialized Use in GPU</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13030</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13030</guid>
-    <pubDate>Tue, 28 Jul 2026 15:03:47 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2026) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium: CVE-2026-13037 Use after free in WebView</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13037</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-13037</guid>
-    <pubDate>Tue, 28 Jul 2026 15:03:49 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2026) for more information.</description>
-  </item>
-  <item>
-    <title>AI Agent Drives Espionage Attack on Thai Ministry of Finance</title>
-    <link>https://www.darkreading.com/cyberattacks-data-breaches/ai-agent-espionage-attack-thai-ministry-finance</link>
-    <guid isPermaLink="true">https://www.darkreading.com/cyberattacks-data-breaches/ai-agent-espionage-attack-thai-ministry-finance</guid>
-    <pubDate>Tue, 28 Jul 2026 01:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Attackers used Hermes, an autonomous open source tool, in unrestricted &amp;quot;YOLO mode&amp;quot; to conduct espionage against Thailand&#x27;s Ministry of Finance.</description>
-  </item>
-  <item>
-    <title>Samsung’s entry into AI-powered glasses forces CISOs to again consider corporate risk</title>
-    <link>https://www.csoonline.com/article/4201977/samsungs-entry-into-ai-powered-glasses-forces-cisos-to-again-consider-corporate-risk.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4201977/samsungs-entry-into-ai-powered-glasses-forces-cisos-to-again-consider-corporate-risk.html</guid>
-    <pubDate>Tue, 28 Jul 2026 01:42:36 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Now that Samsung has jumped into the crowded AI-powered glasses arena alongside Apple , Google , Meta , and others, CISOs and IT leaders are again having to think through whether it makes sense to establish enterprise restrictions on such devices, given the likely data leakage an…</description>
-  </item>
-  <item>
-    <title>Hackers are compromising hotel Wi-Fi gateways to hijack Microsoft 365 accounts</title>
-    <link>https://www.csoonline.com/article/4202067/hackers-are-compromising-hotel-wi-fi-gateways-to-hijack-microsoft-365-accounts.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4202067/hackers-are-compromising-hotel-wi-fi-gateways-to-hijack-microsoft-365-accounts.html</guid>
-    <pubDate>Tue, 28 Jul 2026 02:28:22 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Traveling enterprise employees beware: Think twice before you log onto that oh-so-convenient public Wi-Fi. Since at least June, threat actors have been compromising “captive” Wi-Fi gateways and other portal appliances at hotels, conference centers, and similar shared venues to hi…</description>
-  </item>
-  <item>
-    <title>Microsoft unveils multi-model agentic cyber stack for security operations</title>
-    <link>https://www.csoonline.com/article/4202080/microsoft-unveils-multi-model-agentic-cyber-stack-for-security-operations.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4202080/microsoft-unveils-multi-model-agentic-cyber-stack-for-security-operations.html</guid>
-    <pubDate>Tue, 28 Jul 2026 02:25:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Microsoft announced a new AI-powered service that enables enterprise security teams to continuously evaluate and update their organization’s security posture through a series of AI agents that can find vulnerabilities, simulate attacks, detect and triage potential threats, and de…</description>
-  </item>
-  <item>
-    <title>Cybersecurity jobs available right now: July 28, 2026</title>
-    <link>https://www.helpnetsecurity.com/2026/07/28/cybersecurity-jobs-available-right-now-july-28-2026/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/28/cybersecurity-jobs-available-right-now-july-28-2026/</guid>
-    <pubDate>Tue, 28 Jul 2026 04:00:11 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Cloud Security Engineer Toyota Automated Logistics &amp;#124; USA &amp;#124; On-site &amp;#8211; View job details As a Cloud Security Engineer, you will design and enforce security controls across Azure and on-premises environments, strengthen identity and access management, and maintain clo…</description>
-  </item>
-  <item>
-    <title>Microsoft Says New Cybersecurity AI Model Helps MDASH Hit 95.95% at Half the Cost</title>
-    <link>https://thehackernews.com/2026/07/microsoft-says-new-cybersecurity-ai.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/07/microsoft-says-new-cybersecurity-ai.html</guid>
-    <pubDate>Tue, 28 Jul 2026 11:37:22 +0530</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Microsoft has launched its first cybersecurity-specific model inside MDASH, its multi-model vulnerability identification and remediation harness. The company says MDASH, using MAI-Cyber-1-Flash and GPT-5.4, scored 95.95% on CyberGym. It also claims the configuration costs 50% les…</description>
-  </item>
-  <item>
-    <title>Critical Arista VeloCloud Orchestrator Vulnerability Exploited as Zero-Day</title>
-    <link>https://www.securityweek.com/critical-arista-velocloud-orchestrator-vulnerability-exploited-as-zero-day/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/critical-arista-velocloud-orchestrator-vulnerability-exploited-as-zero-day/</guid>
-    <pubDate>Tue, 28 Jul 2026 06:40:36 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Impacting on-premises deployments, the OS command injection allows attackers to access privileged internal functionality. The post Critical Arista VeloCloud Orchestrator Vulnerability Exploited as Zero-Day appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Hugging Face breach shows why incident response needs a multi-model AI strategy</title>
-    <link>https://www.csoonline.com/article/4201361/hugging-face-breach-shows-why-incident-response-needs-a-multi-model-ai-strategy.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4201361/hugging-face-breach-shows-why-incident-response-needs-a-multi-model-ai-strategy.html</guid>
-    <pubDate>Tue, 28 Jul 2026 08:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The recent breach of Hugging Face’s platform was the latest in a string of AI-assisted intrusions to come to light in recent weeks , showing that attackers can now use LLMs to automate entire attack chains. But it also exposed a limitation for defenders trying to use AI to respon…</description>
   </item>
   </channel>
 </rss>
