@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 30 Jul 2026 22:08:00 -0300</lastBuildDate>
+    <lastBuildDate>Thu, 30 Jul 2026 23:07:53 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Exploring the Hugging Face Breach: mapping AI agent tactics to Elastic Defend</title>
@@ -14,6 +14,38 @@
     <pubDate>Fri, 31 Jul 2026 00:00:00 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Every stage of the Hugging Face breach maps to Elastic Defend and SIEM rules already shipping, from worker RCE and credential harvest to self-migrating C2 and GenAI detection.</description>
+  </item>
+  <item>
+    <title>Microsoft confirms an AI worm is propagating through Copilot and other MS apps</title>
+    <link>https://www.csoonline.com/article/4203630/microsoft-confirms-an-ai-worm-is-propagating-through-copilot-and-other-ms-apps.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4203630/microsoft-confirms-an-ai-worm-is-propagating-through-copilot-and-other-ms-apps.html</guid>
+    <pubDate>Fri, 31 Jul 2026 01:13:39 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>A prominent Norwegian AI researcher on Tuesday posted details about an AI worm that is wreaking havoc in various Microsoft applications, including Word and Copilot. The report from noted Norwegian AI researcher Håkon Måløy , now confirmed by Microsoft, said that an attacker can c…</description>
+  </item>
+  <item>
+    <title>Anthropic says its AI accidentally hacked three companies during safety tests</title>
+    <link>https://cyberscoop.com/anthropic-claude-ai-hacks-real-companies/</link>
+    <guid isPermaLink="true">https://cyberscoop.com/anthropic-claude-ai-hacks-real-companies/</guid>
+    <pubDate>Fri, 31 Jul 2026 01:13:07 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>Following OpenAI’s own incident, Anthropic reviewed its own evaluations and found three cases of Claude hacking external companies. The post Anthropic says its AI accidentally hacked three companies during safety tests appeared first on CyberScoop .</description>
+  </item>
+  <item>
+    <title>Anthropic Says Claude Hacked 3 Organizations During Cybersecurity Tests</title>
+    <link>https://www.wired.com/story/anthropic-says-claude-hacked-real-systems-during-cybersecurity-tests/</link>
+    <guid isPermaLink="true">https://www.wired.com/story/anthropic-says-claude-hacked-real-systems-during-cybersecurity-tests/</guid>
+    <pubDate>Fri, 31 Jul 2026 01:24:26 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>In a review triggered by OpenAI’s Hugging Face incident, Anthropic discovered three of its AI models had breached real organizations during third-party evaluations.</description>
+  </item>
+  <item>
+    <title>ISC Stormcast For Friday, July 31st, 2026 https://isc.sans.edu/podcastdetail/10032, (Fri, Jul 31st)</title>
+    <link>https://isc.sans.edu/diary/rss/33204</link>
+    <guid isPermaLink="true">https://isc.sans.edu/diary/rss/33204</guid>
+    <pubDate>Fri, 31 Jul 2026 02:00:03 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>(c) SANS Internet Storm Center. https://isc.sans.edu Creative Commons Attribution-Noncommercial 3.0 United States License.</description>
   </item>
   <item>
     <title>U.S. CISA adds a Cisco Secure Firewall Management Center (FMC) flaw to its Known Exploited Vulnerabilities catalog</title>
@@ -787,6 +819,14 @@
     <title>Claude uploaded malware to PyPI in Anthropic&#x27;s botched test</title>
     <link>https://www.bleepingcomputer.com/news/security/claude-uploaded-malware-to-pypi-in-anthropics-botched-test/</link>
     <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/claude-uploaded-malware-to-pypi-in-anthropics-botched-test/</guid>
+    <pubDate>Thu, 30 Jul 2026 20:57:25 -0400</pubDate>
+    <category>Incident Reporting</category>
+    <description>One of Anthropic&#x27;s Claude models built and uploaded a malicious Python package to PyPI during a botched security evaluation, where it ran on 15 real systems and stole credentials from a security vendor. It was one of three incidents affecting real companies. [...]</description>
+  </item>
+  <item>
+    <title>Anthropic&#x27;s Claude breached 3 orgs, uploaded PyPI malware during tests</title>
+    <link>https://www.bleepingcomputer.com/news/security/anthropics-claude-breached-3-orgs-uploaded-pypi-malware-during-tests/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/anthropics-claude-breached-3-orgs-uploaded-pypi-malware-during-tests/</guid>
     <pubDate>Thu, 30 Jul 2026 20:57:25 -0400</pubDate>
     <category>Incident Reporting</category>
     <description>One of Anthropic&#x27;s Claude models built and uploaded a malicious Python package to PyPI during a botched security evaluation, where it ran on 15 real systems and stole credentials from a security vendor. It was one of three incidents affecting real companies. [...]</description>
@@ -1566,46 +1606,6 @@
     <pubDate>Wed, 29 Jul 2026 17:45:00 +0530</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>AI is compressing exploit timelines. The real question isn&#x27;t whether your vulnerability management playbook needs to change, it&#x27;s which part of it you&#x27;ve been getting wrong all along. The conversation happening in security circles right now goes something like this: Mythos is her…</description>
-  </item>
-  <item>
-    <title>OpenAI rogue AI agent’s attack expanded beyond Hugging Face</title>
-    <link>https://www.csoonline.com/article/4202852/openai-rogue-ai-agents-attack-expanded-beyond-hugging-face.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4202852/openai-rogue-ai-agents-attack-expanded-beyond-hugging-face.html</guid>
-    <pubDate>Wed, 29 Jul 2026 12:54:59 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The autonomous AI agent that escaped during OpenAI testing exploited weaknesses across a customer workload, a third-party cloud platform, and Hugging Face’s production environment before being contained, according to new technical disclosures that provide the clearest picture yet…</description>
-  </item>
-  <item>
-    <title>ShutterGap: Aryon Security finds 3.7M AWS cloud resources exposed beyond CSPM/CNAPP visibility</title>
-    <link>https://www.helpnetsecurity.com/2026/07/29/cspm-blind-spot-report/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/29/cspm-blind-spot-report/</guid>
-    <pubDate>Wed, 29 Jul 2026 13:00:01 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Research from Aryon reveals that each year, 3,731,699 short-lived cloud resources containing highly sensitive information are publicly exposed. This impacts any organization using AWS services that support public sharing. These exposures often last only minutes or hours, too brie…</description>
-  </item>
-  <item>
-    <title>Tengu botnet reboots Linux devices to survive removal</title>
-    <link>https://www.helpnetsecurity.com/2026/07/29/tengu-mirai-iot-botnet-linux/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/07/29/tengu-mirai-iot-botnet-linux/</guid>
-    <pubDate>Wed, 29 Jul 2026 13:52:33 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>A new Mirai-derived IoT botnet can force an infected Linux device to reboot once its main process is killed, giving its persistence mechanisms another opportunity to relaunch it, Nozomi Networks Labs has found. The malware, dubbed Tengu, was discovered by a machine-learning syste…</description>
-  </item>
-  <item>
-    <title>The Wiz Red Agent is Now Generally Available</title>
-    <link>https://www.wiz.io/blog/wiz-red-agent-is-ga</link>
-    <guid isPermaLink="true">https://www.wiz.io/blog/wiz-red-agent-is-ga</guid>
-    <pubDate>Wed, 29 Jul 2026 12:50:56 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Continuously uncover complex, exploitable risks to stay ahead in the AI Threat Era with the Red Agent</description>
-  </item>
-  <item>
-    <title>Nine-Year Fraud Campaign Clones Russian Company Sites to Steal Advance Payments</title>
-    <link>https://thehackernews.com/2026/07/nine-year-fraud-campaign.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/07/nine-year-fraud-campaign.html</guid>
-    <pubDate>Wed, 29 Jul 2026 19:12:57 +0530</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Cybersecurity researchers have disclosed details of a large-scale fraud campaign that involves creating lookalike websites of major Russian companies with an aim to siphon funds from international firms for more than nine years. According to Russian cybersecurity vendor F6, the t…</description>
   </item>
   </channel>
 </rss>
