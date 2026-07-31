@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Fri, 31 Jul 2026 07:08:02 -0300</lastBuildDate>
+    <lastBuildDate>Fri, 31 Jul 2026 08:08:06 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>OpenAI&#x27;s rogue agent hit more victims, attackers hit 30 Minnesota water systems, Russian crew delivers weaponized e-mails in Exchange</title>
@@ -22,6 +22,14 @@
     <pubDate>Fri, 31 Jul 2026 06:50:30 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Tracked as CVE-2026-63077, the security defect can be exploited without authentication via the agent polling protocol. The post Critical Code Execution Vulnerability Patched in TeamCity appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>JetBrains says a crafted HTTP request could break TeamCity</title>
+    <link>https://www.csoonline.com/article/4203872/jetbrains-says-a-crafted-http-request-could-break-teamcity.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4203872/jetbrains-says-a-crafted-http-request-could-break-teamcity.html</guid>
+    <pubDate>Fri, 31 Jul 2026 10:46:30 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>JetBrains is warning of a critical security vulnerability in its TeamCity DevOps platform that could allow unauthenticated attackers to execute arbitrary operating system commands on vulnerable servers. “If exploited, this vulnerability may allow an unauthenticated attacker with …</description>
   </item>
   <item>
     <title>Exploring the Hugging Face Breach: mapping AI agent tactics to Elastic Defend</title>
@@ -128,6 +136,14 @@
     <description>Anthropic says a misconfigured test let Claude access three real organizations, prompting tighter AI evaluation and monitoring controls. Anthropic disclosed that Claude models had accessed the real production infrastructure of three separate organizations during cybersecurity eva…</description>
   </item>
   <item>
+    <title>Anthropic says Claude AI hacked three organizations during testing</title>
+    <link>https://cyberinsider.com/anthropic-says-claude-ai-hacked-three-organizations-during-testing/</link>
+    <guid isPermaLink="true">https://cyberinsider.com/anthropic-says-claude-ai-hacked-three-organizations-during-testing/</guid>
+    <pubDate>Fri, 31 Jul 2026 10:39:35 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Anthropic has disclosed that three Claude models gained unauthorized access to the production infrastructure of three separate organizations after a misconfigured cybersecurity evaluation environment inadvertently allowed internet access. The company says the incidents occurred d…</description>
+  </item>
+  <item>
     <title>Anthropic says its AI accidentally hacked three companies during safety tests</title>
     <link>https://cyberscoop.com/anthropic-claude-ai-hacks-real-companies/</link>
     <guid isPermaLink="true">https://cyberscoop.com/anthropic-claude-ai-hacks-real-companies/</guid>
@@ -214,6 +230,30 @@
     <pubDate>Fri, 31 Jul 2026 08:18:57 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Traefik Labs has introduced the Distro Zero image, a hardened, vendor-supported secure runtime delivered as Traefik Hub in proxy mode. It gives platform and security teams a container whose entire executable content is a single memory-safe binary, with validated cryptography buil…</description>
+  </item>
+  <item>
+    <title>AWS Blames North Korean Group for Axios and Other npm Supply Chain Attacks</title>
+    <link>https://www.infosecurity-magazine.com/news/aws-north-korea-axios-npm-supply/</link>
+    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/aws-north-korea-axios-npm-supply/</guid>
+    <pubDate>Fri, 31 Jul 2026 09:50:00 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>AWS has linked North Korea to the axios campaign to other attacks on npm libraries</description>
+  </item>
+  <item>
+    <title>The Xcode Assassin Returns: A Deep Dive Into the Latest XCSSET Version</title>
+    <link>https://unit42.paloaltonetworks.com/xcsset-v40-malware-analysis/</link>
+    <guid isPermaLink="true">https://unit42.paloaltonetworks.com/xcsset-v40-malware-analysis/</guid>
+    <pubDate>Fri, 31 Jul 2026 10:00:18 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Analysis of XCSSET v40 reveals a macOS malware targeting developers via Xcode. Unit 42 used advanced pattern matching and AI to decode its logic. The post The Xcode Assassin Returns: A Deep Dive Into the Latest XCSSET Version appeared first on Unit 42 .</description>
+  </item>
+  <item>
+    <title>Google AI Uncovers 13-Year-Old Chrome Flaw Amid Record Patching Pace</title>
+    <link>https://www.securityweek.com/googles-ai-agent-uncovers-13-year-old-chrome-flaw-amid-record-patching-pace/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/googles-ai-agent-uncovers-13-year-old-chrome-flaw-amid-record-patching-pace/</guid>
+    <pubDate>Fri, 31 Jul 2026 10:28:45 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>The internet giant has built an agent harness to find vulnerabilities across Chrome’s codebase. The post Google AI Uncovers 13-Year-Old Chrome Flaw Amid Record Patching Pace appeared first on SecurityWeek .</description>
   </item>
   <item>
     <title>SilverFox Targets Japanese Manufacturer With Advanced ValleyRAT Campaign</title>
@@ -1566,46 +1606,6 @@
     <pubDate>Wed, 29 Jul 2026 16:16:48 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Overview On July 27, 2026, JetBrains published a security advisory for CVE-2026-63077 , a critical unauthenticated vulnerability affecting all versions of TeamCity On-Premises. The issue is classified as deserialization of untrusted data and has a CVSS score of 9.8 . An unauthent…</description>
-  </item>
-  <item>
-    <title>Critical Rails Flaw Could Let Unauthenticated Attackers Read Server Files via Image Uploads</title>
-    <link>https://thehackernews.com/2026/07/critical-rails-flaw-could-let.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/07/critical-rails-flaw-could-let.html</guid>
-    <pubDate>Wed, 29 Jul 2026 23:40:00 +0530</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Ruby on Rails has released fixes for a critical Active Storage vulnerability that could let unauthenticated attackers read arbitrary files from application servers through crafted image uploads. Tracked as CVE-2026-66066 (CVSS score: 9.5), the flaw can expose the Rails process en…</description>
-  </item>
-  <item>
-    <title>Cisco warns of FMC static credential flaw exploited in zero-day attacks</title>
-    <link>https://www.bleepingcomputer.com/news/security/cisco-warns-of-fmc-static-credential-flaw-exploited-in-zero-day-attacks/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/cisco-warns-of-fmc-static-credential-flaw-exploited-in-zero-day-attacks/</guid>
-    <pubDate>Wed, 29 Jul 2026 17:35:40 -0400</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Cisco is warning that a high-severity Secure Firewall Management Center (FMC) static credential vulnerability, tracked as CVE-2026-20316, was actively exploited in zero-day attacks to gain unauthorized access to vulnerable devices. [...]</description>
-  </item>
-  <item>
-    <title>How AI is Rewriting the Zero-Day Playbook for Preemptive Security</title>
-    <link>https://www.rapid7.com/blog/post/ai-rewriting-zero-day-playbook-for-preemptive-security</link>
-    <guid isPermaLink="true">https://www.rapid7.com/blog/post/ai-rewriting-zero-day-playbook-for-preemptive-security</guid>
-    <pubDate>Wed, 29 Jul 2026 13:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The scenario is all too familiar for any cybersecurity professional: It’s late in the day, and a critical zero-day vulnerability is disclosed. When this happens, CISOs from every industry immediately turn to their Security Operations Centers (SOC) with the single most important, …</description>
-  </item>
-  <item>
-    <title>Claude AI Just Cracked a Post-Quantum Test Scheme and Found a Faster 7-Round AES Attack</title>
-    <link>https://thehackernews.com/2026/07/claude-ai-just-cracked-post-quantum.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/07/claude-ai-just-cracked-post-quantum.html</guid>
-    <pubDate>Wed, 29 Jul 2026 00:29:07 +0530</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Anthropic says Claude Mythos Preview helped derive an end-to-end key-recovery attack against HAWK-256 and a 200- to 800-fold speedup for an attack on seven-round AES-128. The HAWK attack exploits a previously unused symmetry in the lattice behind the signature scheme. Anthropic&#x27;s…</description>
-  </item>
-  <item>
-    <title>Arista patches maximum severity vulnerability that is already being exploited</title>
-    <link>https://www.csoonline.com/article/4202502/arista-patches-maximum-severity-vulnerability-that-is-already-being-exploited.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4202502/arista-patches-maximum-severity-vulnerability-that-is-already-being-exploited.html</guid>
-    <pubDate>Wed, 29 Jul 2026 00:43:54 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Arista has patched a VeloCloud Orchestrator (VCO) security hole that has been actively leveraged in the wild, one that the vendor says “may allow a remote attacker to access privileged internal functionality and impact the VCO host.” The Arista security advisory added that the ho…</description>
   </item>
   </channel>
 </rss>
