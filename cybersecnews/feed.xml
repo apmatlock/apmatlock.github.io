@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 03 Aug 2026 13:07:25 -0300</lastBuildDate>
+    <lastBuildDate>Mon, 03 Aug 2026 14:07:27 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Ruby on Rails Patches Critical Active Storage Vulnerability Affecting Image Processing</title>
@@ -54,6 +54,14 @@
     <pubDate>Mon, 03 Aug 2026 14:33:10 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Attackers are exploiting an authentication bypass vulnerability (CVE-2026-18577) in N-able N-central, a remote monitoring and management (RMM) solution widely used by managed service providers, to gain access to managed endpoints. How the flaw was discovered &amp;#8220;On July 31, 20…</description>
+  </item>
+  <item>
+    <title>N-able warns of N-central auth bypass flaw exploited in attacks</title>
+    <link>https://www.bleepingcomputer.com/news/security/n-able-warns-of-n-central-auth-bypass-flaw-exploited-in-attacks/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/n-able-warns-of-n-central-auth-bypass-flaw-exploited-in-attacks/</guid>
+    <pubDate>Mon, 03 Aug 2026 13:00:56 -0400</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>N-able is warning customers that hackers are exploiting an authentication bypass vulnerability (CVE-2026-18577) affecting both hosted and on-premises N-central servers. [...]</description>
   </item>
   <item>
     <title>Anthropic models hack three firms, Coldcard bug drains $88 million, Midnight Blizzard hijacks hotel Wi-Fi</title>
@@ -246,6 +254,30 @@
     <pubDate>Mon, 03 Aug 2026 14:48:13 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Today marks the release of Metasploit Pro 5.1 - building upon the foundation laid in 5.0, adding new evasion primitives for HTTP Meterpreter payloads, support for tracking service hierarchies, a deeper and more interactive Network Topology view, and continuing our commitment to a…</description>
+  </item>
+  <item>
+    <title>INC Ransomware Emerges as Dominant Actor Exploiting SonicWall SMA 1000 Flaws</title>
+    <link>https://thehackernews.com/2026/08/inc-ransomware-emerges-as-dominant.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/08/inc-ransomware-emerges-as-dominant.html</guid>
+    <pubDate>Mon, 03 Aug 2026 21:45:13 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>The INC Ransomware operation has emerged as the &quot;dominant threat actor&quot; exploiting the recently disclosed security flaws in SonicWall Secure Mobile Access (SMA) 1000 series VPN appliances. In a report published over the weekend, Resecurity said it observed the INC Ransomware acce…</description>
+  </item>
+  <item>
+    <title>Chinese Actor Weaponizes DeepSeek AI Agent to Attack Security Firm</title>
+    <link>https://www.darkreading.com/cyberattacks-data-breaches/chinese-actor-deepseek-ai-agent-attack-security-firm</link>
+    <guid isPermaLink="true">https://www.darkreading.com/cyberattacks-data-breaches/chinese-actor-deepseek-ai-agent-attack-security-firm</guid>
+    <pubDate>Mon, 03 Aug 2026 15:56:28 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Researchers intercepted and investigated the model, which was attempting to compromise more than 1,200 hosts for proxyjacking to launch further attacks.</description>
+  </item>
+  <item>
+    <title>AI Runs the Hack: Chinese Actor Automates Cyberattacks With DeepSeek</title>
+    <link>https://securityaffairs.com/196544/ai/ai-runs-the-hack-chinese-actor-automates-cyberattacks-with-deepseek.html</link>
+    <guid isPermaLink="true">https://securityaffairs.com/196544/ai/ai-runs-the-hack-chinese-actor-automates-cyberattacks-with-deepseek.html</guid>
+    <pubDate>Mon, 03 Aug 2026 15:52:27 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Unit 42 uncovered an AI-driven Chinese hacking campaign where DeepSeek autonomously scanned targets, selected exploits, and launched attacks. Researchers at Palo Alto&amp;#8217;s Unit 42 got a front-row seat to something they&amp;#8217;d only theorized about before: an AI system running …</description>
   </item>
   <item>
     <title>Welcoming the Nepalese Government to Have I Been Pwned</title>
@@ -590,6 +622,14 @@
     <pubDate>Mon, 03 Aug 2026 07:01:00 +0000</pubDate>
     <category>Cyber Threat Landscape</category>
     <description>A list of topics we covered in the week of July 27 to August 2 of 2026</description>
+  </item>
+  <item>
+    <title>Google Password Manager Attacks Could Let Malware Hijack Passkey-Protected Accounts</title>
+    <link>https://thehackernews.com/2026/08/google-password-manager-attacks-could.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/08/google-password-manager-attacks-could.html</guid>
+    <pubDate>Mon, 03 Aug 2026 21:54:47 +0530</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>Malware running as an ordinary user on a Windows machine can sign into a victim&#x27;s passkey-protected accounts without a fingerprint, a PIN, or anything at all appearing on the victim&#x27;s screen. Unit 42 detailed three attack paths against Chrome&#x27;s Google Password Manager cloud authe…</description>
   </item>
   <item>
     <title>⚡ Weekly Recap: Rogue AI Models, $88M Bitcoin Theft, Water-System Attacks and Dangling DNS Hijacks</title>
@@ -1566,46 +1606,6 @@
     <pubDate>Fri, 31 Jul 2026 14:00:23 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Some threat actors are reportedly packaging AI prompt injection techniques into subscription services. The discussion argues that the underlying method isn&#x27;t especially difficult, yet people are still willing to pay for it. IMPLICATION That suggests the real product may not be te…</description>
-  </item>
-  <item>
-    <title>DefCon security conference bans smart glasses with recording capabilities</title>
-    <link>https://www.csoonline.com/article/4203981/defcon-security-conference-bans-smart-glasses-with-recording-capabilities.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4203981/defcon-security-conference-bans-smart-glasses-with-recording-capabilities.html</guid>
-    <pubDate>Fri, 31 Jul 2026 15:53:28 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>It’s a sign of the times: Security conference DefCon has added smart glasses to its list of banned audio- or video-recording devices . The organizers have said that, with no consistent way to understand whether smart glasses are recording or not, they have taken the step to ban t…</description>
-  </item>
-  <item>
-    <title>Anthropic says human error let Claude AI models escape test environment and hack third parties</title>
-    <link>https://www.cybersecuritydive.com/news/anthropic-claude-ai-hacking-test/826708/</link>
-    <guid isPermaLink="true">https://www.cybersecuritydive.com/news/anthropic-claude-ai-hacking-test/826708/</guid>
-    <pubDate>Fri, 31 Jul 2026 11:29:00 -0400</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The company said its discovery, which followed OpenAI&amp;rsquo;s similar admission, proved the need for better testing guardrails.</description>
-  </item>
-  <item>
-    <title>US authorities see ‘significant escalation’ in attacks on water system devices</title>
-    <link>https://www.cybersecuritydive.com/news/us-authorities-escalation-attacks-water-system-devices/826715/</link>
-    <guid isPermaLink="true">https://www.cybersecuritydive.com/news/us-authorities-escalation-attacks-water-system-devices/826715/</guid>
-    <pubDate>Fri, 31 Jul 2026 10:47:51 -0400</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Hackers have locked operators out of their own OT networks, modified passwords and changed IP addresses.</description>
-  </item>
-  <item>
-    <title>Anthropic’s Opus 5 Is Better at Resisting Prompt Injection</title>
-    <link>https://www.schneier.com/blog/archives/2026/07/anthropics-opus-5-is-better-at-resisting-prompt-injection.html</link>
-    <guid isPermaLink="true">https://www.schneier.com/blog/archives/2026/07/anthropics-opus-5-is-better-at-resisting-prompt-injection.html</guid>
-    <pubDate>Fri, 31 Jul 2026 17:23:16 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The chart is interesting. On the IPI benchmark, Opus 5 improved over Opus 4.8, reducing the probability of an attacker succeeding within 15 attempts from 5.5% to 2.0%, and from 0.5% to 0.2% on 1 attempt. It also improved on Sonnet 5 (5.9% at k=15) and Mythos 5 (2.6%), making it t…</description>
-  </item>
-  <item>
-    <title>Kate Robertson on the Risks That Lie Behind Canada’s Unexpected Signing of the UN Cybercrime Convention</title>
-    <link>https://citizenlab.ca/kate-robertson-on-the-risks-that-lie-behind-canadas-unexpected-signing-of-the-un-cybercrime-convention/</link>
-    <guid isPermaLink="true">https://citizenlab.ca/kate-robertson-on-the-risks-that-lie-behind-canadas-unexpected-signing-of-the-un-cybercrime-convention/</guid>
-    <pubDate>Fri, 31 Jul 2026 18:40:20 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Earlier this month, the Canadian government announced that it had signed the United Nations Convention against Cybercrime.&amp;#160; Speaking with Michael Geist of Law Bytes, senior research associate Kate Robertson argues that the convention is a cross-border surveillance and electr…</description>
   </item>
   </channel>
 </rss>
