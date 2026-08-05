@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 05 Aug 2026 08:07:06 -0300</lastBuildDate>
+    <lastBuildDate>Wed, 05 Aug 2026 09:07:14 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Ruby on Rails critical bug puts every image upload under scrutiny</title>
@@ -22,6 +22,22 @@
     <pubDate>Wed, 05 Aug 2026 13:10:39 +0530</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>The U.S. Cybersecurity and Infrastructure Security Agency (CISA), on August 5, 2026, added three flaws to its Known Exploited Vulnerabilities (KEV) catalog, citing evidence of active exploitation in the wild. The list of vulnerabilities is as follows - CVE-2026-9198 (CVSS score: …</description>
+  </item>
+  <item>
+    <title>Critical Gitea Flaw Let Unauthenticated Attackers Read Server Files via Org-Mode Markup</title>
+    <link>https://thehackernews.com/2026/08/critical-gitea-flaw-let-unauthenticated.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/08/critical-gitea-flaw-let-unauthenticated.html</guid>
+    <pubDate>Wed, 05 Aug 2026 16:34:23 +0530</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>An unauthenticated attacker can read any file the service account can access on Gitea, the self-hosted Git platform, in versions 1.22.1 through 1.27.0. No login, no repository write access. A public repository and crafted Org-mode markup are enough. The flaw is fixed in Gitea 1.2…</description>
+  </item>
+  <item>
+    <title>Critical Paperclip bugs expose AI agent trust failures</title>
+    <link>https://www.csoonline.com/article/4205630/critical-paperclip-bugs-expose-ai-agent-trust-failures.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4205630/critical-paperclip-bugs-expose-ai-agent-trust-failures.html</guid>
+    <pubDate>Wed, 05 Aug 2026 12:00:17 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Security researchers are warning against trust assumptions in AI security with newly detailed flaws affecting the open-source AI agent platform Paperclip that could be chained into remote code execution (RCE), data exposure, and developer-machine compromise. An Oasis Security res…</description>
   </item>
   <item>
     <title>National cyber director lays out White House plans to secure AI without writing new rules</title>
@@ -152,6 +168,30 @@
     <description>In one instance, an unsanctioned model attempted to inject malicious code into an open source repository. The post AI Security Institute Reports Anthropic and OpenAI Models Going Rogue Against Organizations appeared first on SecurityWeek .</description>
   </item>
   <item>
+    <title>Leaked n8n API Tokens Exposed Live Instances to Credential Theft</title>
+    <link>https://thehackernews.com/2026/08/leaked-n8n-api-tokens-exposed-live.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/08/leaked-n8n-api-tokens-exposed-live.html</guid>
+    <pubDate>Wed, 05 Aug 2026 16:05:29 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>GitGuardian researchers found 321 n8n instances accepting API tokens exposed in public GitHub commits and demonstrated four ways attackers could use them to access sensitive data and downstream credentials without exploiting a software vulnerability. We scanned public GitHub comm…</description>
+  </item>
+  <item>
+    <title>OpenAI, Anthropic AI agents resorted to deception in new cybersecurity incidents</title>
+    <link>https://www.csoonline.com/article/4205612/openai-anthropic-ai-agents-resorted-to-deception-in-new-cybersecurity-incidents.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4205612/openai-anthropic-ai-agents-resorted-to-deception-in-new-cybersecurity-incidents.html</guid>
+    <pubDate>Wed, 05 Aug 2026 11:41:46 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>OpenAI’s GPT-5.6 Sol and Anthropic’s Mythos 5 have been implicated in another series of AI security incidents after the models created fake online identities, targeted real people, and attempted to manipulate developers into approving malicious code during controlled cyber evalua…</description>
+  </item>
+  <item>
+    <title>Code review used to be the only way to catch these bugs</title>
+    <link>https://www.helpnetsecurity.com/2026/08/05/code-review-ai-vulnerability-discovery/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/08/05/code-review-ai-vulnerability-discovery/</guid>
+    <pubDate>Wed, 05 Aug 2026 11:30:19 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>An automated system called NOVA read the source code of 3,915 open-source projects over two months and came back with 14,090 vulnerabilities, each one confirmed through the system&amp;#8217;s validation pipeline. Vulnerability researchers at Palo Alto Networks&amp;#8217; Unit 42 built th…</description>
+  </item>
+  <item>
     <title>Inside the North American Water Utility Hacking Crisis</title>
     <link>https://cybersecuritytoday.libsyn.com/inside-the-north-american-water-utility-hacking-crisis</link>
     <guid isPermaLink="true">https://cybersecuritytoday.libsyn.com/inside-the-north-american-water-utility-hacking-crisis</guid>
@@ -224,6 +264,22 @@
     <description>Prompt injection remains the most dangerous security threat to LLMs, according to OWASP’s latest Top 10 LLM Applications list</description>
   </item>
   <item>
+    <title>311,000 Impacted by Brown Health Medical Group-MA Data Breach</title>
+    <link>https://www.securityweek.com/311000-impacted-by-brown-health-medical-group-ma-data-breach/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/311000-impacted-by-brown-health-medical-group-ma-data-breach/</guid>
+    <pubDate>Wed, 05 Aug 2026 11:35:23 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>Hackers stole personal information, medical records, and financial information from the organization’s server. The post 311,000 Impacted by Brown Health Medical Group-MA Data Breach appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>Cybersecurity Alliance Drafts SAFE Guidelines for Sharing AI Incident Data</title>
+    <link>https://www.securityweek.com/cybersecurity-alliance-drafts-safe-guidelines-for-sharing-ai-incident-data/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/cybersecurity-alliance-drafts-safe-guidelines-for-sharing-ai-incident-data/</guid>
+    <pubDate>Wed, 05 Aug 2026 11:11:29 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>The guidelines are the work of the recently launched Open Secure AI Alliance, which now includes 120 organizations. The post Cybersecurity Alliance Drafts SAFE Guidelines for Sharing AI Incident Data appeared first on SecurityWeek .</description>
+  </item>
+  <item>
     <title>ISC Stormcast For Wednesday, August 5th, 2026 https://isc.sans.edu/podcastdetail/10038, (Wed, Aug 5th)</title>
     <link>https://isc.sans.edu/diary/rss/33216</link>
     <guid isPermaLink="true">https://isc.sans.edu/diary/rss/33216</guid>
@@ -272,12 +328,28 @@
     <description>This week, we air our thirteenth pre-recorded segment called “Say Easy, Do Hard”. Inspired by my co-host, Jason Albuquerque, we discuss “Performance Through People”. Greg Hoffman joined us a few weeks back to discuss his new book. This week, we dig into his five disciplines of Pe…</description>
   </item>
   <item>
+    <title>Apple WebKit privacy leaks impact Tor, Psylo, and iCloud Private Relay</title>
+    <link>https://cyberinsider.com/apple-webkit-privacy-leaks-impact-tor-psylo-and-icloud-private-relay/</link>
+    <guid isPermaLink="true">https://cyberinsider.com/apple-webkit-privacy-leaks-impact-tor-psylo-and-icloud-private-relay/</guid>
+    <pubDate>Wed, 05 Aug 2026 11:24:22 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Researchers have discovered three WebKit features that can bypass application-level proxy settings on iOS and macOS, potentially exposing users&#x27; real IP addresses or DNS servers. The leaks affect proxy-based browsers, including iOS Tor browsers and Psylo, as well as Apple’s iClou…</description>
+  </item>
+  <item>
     <title>Writing for People with a Remote in Their Hand, with Jake Milstein of Contrast Security</title>
     <link>https://thecyberwire.com/podcasts/breaking-through-in-cybersecurity-marketing/223/notes</link>
     <guid isPermaLink="true">https://thecyberwire.com/podcasts/breaking-through-in-cybersecurity-marketing/223/notes</guid>
     <pubDate>Wed, 05 Aug 2026 05:00:00 +0000</pubDate>
     <category>Cyber Threat Landscape</category>
     <description>Jake Milstein ran newsrooms at CBS, NBC, Fox, and ABC affiliates for 25 years. He has five Emmys and strong feelings about the phrase &quot;in today&#x27;s evolving threat landscape.&quot; It turns out 25 years of writing for people with a remote in their hand is excellent training for cybersec…</description>
+  </item>
+  <item>
+    <title>Google’s synchronized passkeys can be stolen in &amp;#8216;Pass‑ta‑key&amp;#8217; attacks</title>
+    <link>https://www.malwarebytes.com/blog/news/2026/08/googles-synchronized-passkeys-can-be-stolen-in-pass-ta-key-attacks</link>
+    <guid isPermaLink="true">https://www.malwarebytes.com/blog/news/2026/08/googles-synchronized-passkeys-can-be-stolen-in-pass-ta-key-attacks</guid>
+    <pubDate>Wed, 05 Aug 2026 11:11:48 +0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>Over time, passkeys are supposed to replace passwords. But what happens when malware steals the master key?</description>
   </item>
   <item>
     <title>Weekly Threat Bulletin – August 5th, 2026</title>
@@ -1534,78 +1606,6 @@
     <pubDate>Mon, 03 Aug 2026 05:30:57 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>SkillSpector is an open-source scanner from NVIDIA that reads an agent skill and tells you whether to install it. Point it at a directory, a zip file, a single SKILL.md, or a Git URL, and it returns a list of findings, a risk score, and recommendations. The folder it reads runs w…</description>
-  </item>
-  <item>
-    <title>Hugging Face Diffusers Flaws Could Let Model Repositories Execute Arbitrary Code</title>
-    <link>https://thehackernews.com/2026/08/hugging-face-diffusers-flaws-could-let.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/08/hugging-face-diffusers-flaws-could-let.html</guid>
-    <pubDate>Mon, 03 Aug 2026 12:10:31 +0530</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Three high-severity security flaws have been disclosed in Hugging Face&#x27;s Diffusers library that could allow crafted model repositories to stealthily execute arbitrary code on machines that load it, opening the artificial intelligence (AI) supply chain to security risk. &quot;These vul…</description>
-  </item>
-  <item>
-    <title>CrowdStrike 2026 Threat Hunting Report: Exploitation Window Closes as AI Use Accelerates</title>
-    <link>https://www.crowdstrike.com/en-us/blog/crowdstrike-2026-threat-hunting-report/</link>
-    <guid isPermaLink="true">https://www.crowdstrike.com/en-us/blog/crowdstrike-2026-threat-hunting-report/</guid>
-    <pubDate>Mon, 03 Aug 2026 00:00:00 -0500</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description></description>
-  </item>
-  <item>
-    <title>Rapid7 Expands UK and Ireland Channel Presence Through Strategic Partnership with Exclusive Networks</title>
-    <link>https://www.rapid7.com/blog/post/c-rapid7-exclusive-networks-expand-uk-ireland-partnership</link>
-    <guid isPermaLink="true">https://www.rapid7.com/blog/post/c-rapid7-exclusive-networks-expand-uk-ireland-partnership</guid>
-    <pubDate>Mon, 03 Aug 2026 08:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Ross Baker is Senior Director, Northern Europe at Rapid7. As organizations across the United Kingdom and Ireland embrace AI, cloud technologies, and digital transformation in the name of enhancing customer experiences and accelerating business growth, the cybersecurity landscape …</description>
-  </item>
-  <item>
-    <title>Stop depending on heroics and start operationalizing third-party risk</title>
-    <link>https://www.csoonline.com/article/4204027/stop-depending-on-heroics-and-start-operationalizing-third-party-risk.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4204027/stop-depending-on-heroics-and-start-operationalizing-third-party-risk.html</guid>
-    <pubDate>Mon, 03 Aug 2026 09:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>In cybersecurity, third-party risk management normally looks simple on paper: evaluate your vendor, learn the risk, report out on the gaps and weaknesses, transfer to the contract, and continue. Unfortunately, it seldom works that way in practice. In my roles as a CISO, I find my…</description>
-  </item>
-  <item>
-    <title>AI is making cybersecurity fundamentals more important than ever</title>
-    <link>https://www.csoonline.com/article/4204101/ai-is-making-cybersecurity-fundamentals-more-important-than-ever.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4204101/ai-is-making-cybersecurity-fundamentals-more-important-than-ever.html</guid>
-    <pubDate>Mon, 03 Aug 2026 08:25:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>When OpenAI disclosed that one of its models escaped a test environment and broke into Hugging Face’s systems on its own, headlines cast the incident as the start of a new era of AI-driven attacks. But the underlying cause of the incident was a familiar one: a misconfigured sandb…</description>
-  </item>
-  <item>
-    <title>Coldcard Users Lose $89m After Bitcoin Wallet Is Hacked</title>
-    <link>https://www.infosecurity-magazine.com/news/coldcard-users-lose-89m-bitcoin/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/coldcard-users-lose-89m-bitcoin/</guid>
-    <pubDate>Mon, 03 Aug 2026 08:40:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>A hacker has drained nearly $89m from Coldcard Bitcoin wallets after exploiting a legacy bug</description>
-  </item>
-  <item>
-    <title>AppSec, Shopify-Style; State of Mobile Security; the News - Andrew Dunbar, Kern Smith - ESW #470</title>
-    <link>https://www.youtube.com/watch?v=ehUGrjsrx1U</link>
-    <guid isPermaLink="true">https://www.youtube.com/watch?v=ehUGrjsrx1U</guid>
-    <pubDate>Mon, 03 Aug 2026 09:00:33 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Interview with Andrew Dunbar, CISO at Shopify After 13 years at Shopify, Andrew has some valuable insights to share on application security. In this episode, we discuss how AI has changed application security processes where bug bounty now fits in a post-Mythos, post-AI harness w…</description>
-  </item>
-  <item>
-    <title>30 days with Claude Mythos Preview: How Tenable adapted our security program, and why yours is next</title>
-    <link>https://www.tenable.com/blog/testing-claude-mythos-preview-for-code-security-tenable</link>
-    <guid isPermaLink="true">https://www.tenable.com/blog/testing-claude-mythos-preview-for-code-security-tenable</guid>
-    <pubDate>Mon, 03 Aug 2026 06:00:00 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Tenable spent 30 days running frontier AI models against our own code. It didn’t just find bugs — it proved they’re real, with reproducible exploits. That fundamentally changes code security from ranking potential code defects to a much higher signal focused on the findings that …</description>
-  </item>
-  <item>
-    <title>Alleged Żabka Breach Exposes Jira Data, Source Code, and API Keys</title>
-    <link>https://securityaffairs.com/196510/data-breach/alleged-zabka-breach-exposes-jira-data-source-code-and-api-keys.html</link>
-    <guid isPermaLink="true">https://securityaffairs.com/196510/data-breach/alleged-zabka-breach-exposes-jira-data-source-code-and-api-keys.html</guid>
-    <pubDate>Mon, 03 Aug 2026 09:03:39 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Alleged Żabka data leak offered for €5,000 includes Jira data, GitLab repos, and secrets; researchers verified much of the sample. A brand-new forum account showed up on August 2, posted once, and asked five grand for what it claims is a full data dump from Żabka Polska. Żabka Po…</description>
   </item>
   </channel>
 </rss>
