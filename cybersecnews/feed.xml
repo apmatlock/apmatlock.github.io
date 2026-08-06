@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 06 Aug 2026 13:07:22 -0300</lastBuildDate>
+    <lastBuildDate>Thu, 06 Aug 2026 14:07:32 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>U.S. CISA adds a JetBrains TeamCity flaw to its Known Exploited Vulnerabilities catalog</title>
@@ -448,6 +448,14 @@
     <description></description>
   </item>
   <item>
+    <title>How we took malware advisories beyond npm</title>
+    <link>https://github.blog/security/supply-chain-security/how-we-took-malware-advisories-beyond-npm/</link>
+    <guid isPermaLink="true">https://github.blog/security/supply-chain-security/how-we-took-malware-advisories-beyond-npm/</guid>
+    <pubDate>Thu, 06 Aug 2026 16:51:12 +0000</pubDate>
+    <category>Security Advisories</category>
+    <description>GitHub malware advisories no longer stop at npm. Here&#x27;s how we wired OpenSSF&#x27;s malicious-packages data into the Advisory Database, and why we built the pipeline paranoid. The post How we took malware advisories beyond npm appeared first on The GitHub Blog .</description>
+  </item>
+  <item>
     <title>Shai-Hulud strikes again: CHAINDROP worm hits 400+ npm packages</title>
     <link>https://www.elastic.co/security-labs/shai-hulud-chaindrop-npm-supply-chain</link>
     <guid isPermaLink="true">https://www.elastic.co/security-labs/shai-hulud-chaindrop-npm-supply-chain</guid>
@@ -542,6 +550,14 @@
     <pubDate>Thu, 06 Aug 2026 15:25:21 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>A U.S. court sentenced Ransom Cartel founder Maksim Silnikau to 16 years for running a ransomware-as-a-service operation. Maksim Silnikau (aka &amp;#8220;J.P. Morgan,&amp;#8221; &amp;#8220;lansky,&amp;#8221; and &amp;#8220;xxx,&amp;#8221;) built a ransomware business the way a franchise owner builds a c…</description>
+  </item>
+  <item>
+    <title>Meta AI model hacked a company during misconfigured cyber test</title>
+    <link>https://www.bleepingcomputer.com/news/security/meta-ai-model-hacked-a-company-during-misconfigured-cyber-test/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/meta-ai-model-hacked-a-company-during-misconfigured-cyber-test/</guid>
+    <pubDate>Thu, 06 Aug 2026 12:11:39 -0400</pubDate>
+    <category>Incident Reporting</category>
+    <description>Meta has become the latest AI company to confirm that one of its models hacked a real organization during cybersecurity testing, as similar incidents continue to emerge following OpenAI&#x27;sOpenAI&#x27;s initial disclosure that its agents breached Hugging Face. [...]</description>
   </item>
   <item>
     <title>Over 250 ClickFix Domains Use Browser Fingerprinting to Hide macOS Malware Lures</title>
@@ -750,6 +766,30 @@
     <pubDate>Thu, 06 Aug 2026 14:03:03 +0000</pubDate>
     <category>Infosec News</category>
     <description>Cloud and AI threat activity tracked by Wiz Research and CIRT, January through June 2026</description>
+  </item>
+  <item>
+    <title>New Interrupt Injection Attack Can Bypass Spectre v2 Defenses on Intel and AMD CPUs</title>
+    <link>https://thehackernews.com/2026/08/new-interrupt-injection-attack-can.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/08/new-interrupt-injection-attack-can.html</guid>
+    <pubDate>Thu, 06 Aug 2026 21:47:13 +0530</pubDate>
+    <category>Infosec News</category>
+    <description>An unprivileged Linux program can time a hardware interrupt to land in the gap between a processor sanitizing its branch predictor and the kernel using it, re-poisoning the predictor after the defense has run. MIT CSAIL researchers Daniël Trujillo and Mengjia Yan named the techni…</description>
+  </item>
+  <item>
+    <title>Hacker pleads guilty to stealing data from more than 165 Snowflake customers</title>
+    <link>https://techcrunch.com/2026/08/06/hacker-pleads-guilty-to-stealing-data-from-more-than-165-snowflake-customers/</link>
+    <guid isPermaLink="true">https://techcrunch.com/2026/08/06/hacker-pleads-guilty-to-stealing-data-from-more-than-165-snowflake-customers/</guid>
+    <pubDate>Thu, 06 Aug 2026 16:42:40 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>Connor Moucka pled guilty to hacking and stealing data from more than 165 Snowflake customers, which net him and his accomplices more than $2.5 million in ransom payments.</description>
+  </item>
+  <item>
+    <title>Caching KMS data keys in multi-thread environments: Per-tenant encryption for event-driven systems at scale</title>
+    <link>https://aws.amazon.com/blogs/security/caching-kms-data-keys-in-multi-thread-environments-per-tenant-encryption-for-event-driven-systems-at-scale/</link>
+    <guid isPermaLink="true">https://aws.amazon.com/blogs/security/caching-kms-data-keys-in-multi-thread-environments-per-tenant-encryption-for-event-driven-systems-at-scale/</guid>
+    <pubDate>Thu, 06 Aug 2026 16:16:06 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>This post assumes familiarity with envelope encryption and the AWS Encryption SDK. When your encryption system generates millions of duplicate API calls per hour, costs spiral and performance degrades. That’s exactly the challenge NICE Actimize faced while operating their global-…</description>
   </item>
   <item>
     <title>U.S. CISA adds Langflow, Apache Tomcat, and N-able N-central flaws to its Known Exploited Vulnerabilities catalog</title>
@@ -1566,46 +1606,6 @@
     <pubDate>Wed, 05 Aug 2026 19:11:27 +0530</pubDate>
     <category>Cyber Threat Landscape</category>
     <description>Cybersecurity researchers have flagged an evolution of the EtherHiding blockchain-based command-and-control (C2) technique that conceals the C2 server IP address inside a made-up destination address of a completely empty Ethereum transfer. The new dead drop resolver approach, obs…</description>
-  </item>
-  <item>
-    <title>Google Blogger locks hundreds of blogs in malware false positive</title>
-    <link>https://www.bleepingcomputer.com/news/google/google-blogger-locks-hundreds-of-blogs-in-malware-false-positive/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/google/google-blogger-locks-hundreds-of-blogs-in-malware-false-positive/</guid>
-    <pubDate>Wed, 05 Aug 2026 10:59:29 -0400</pubDate>
-    <category>Cyber Threat Landscape</category>
-    <description>Google has locked hundreds of Blogger websites after a false positive claimed they violated its &quot;Malware and Similar Malicious Content&quot; policy, with some sites deleted from the platform. [...]</description>
-  </item>
-  <item>
-    <title>Weekly Threat Bulletin – August 5th, 2026</title>
-    <link>https://www.f5.com/labs/articles/weekly-threat-bulletin-august-5th-2026</link>
-    <guid isPermaLink="true">https://www.f5.com/labs/articles/weekly-threat-bulletin-august-5th-2026</guid>
-    <pubDate>Wed, 05 Aug 2026 17:56:50 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>These are the top threats you should know about this week.</description>
-  </item>
-  <item>
-    <title>SMOKE#SCREEN Campaign Abuses ScreenConnect to Give Attackers Remote Control Access</title>
-    <link>https://securityaffairs.com/196637/uncategorized/smokescreen-campaign-abuses-screenconnect-to-give-attackers-remote-control-access.html</link>
-    <guid isPermaLink="true">https://securityaffairs.com/196637/uncategorized/smokescreen-campaign-abuses-screenconnect-to-give-attackers-remote-control-access.html</guid>
-    <pubDate>Wed, 05 Aug 2026 05:52:28 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>SMOKE#SCREEN uses fake Zoom updates to install ScreenConnect RMM, giving attackers persistent remote access while bypassing defenses. Securonix Threat Research has been tracking an active multi-wave campaign they&amp;#8217;ve named SMOKE#SCREEN, in which unknown attackers use rotatin…</description>
-  </item>
-  <item>
-    <title>Frontier Models Engage in Unsanctioned Behavior During Testing</title>
-    <link>https://www.infosecurity-magazine.com/news/frontier-models-unsanctioned/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/frontier-models-unsanctioned/</guid>
-    <pubDate>Wed, 05 Aug 2026 08:45:00 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>Anthropic and OpenAI models attacked “real people and organizations” during AI Security Institute tests</description>
-  </item>
-  <item>
-    <title>Junk Cleaner clears the clutter from your Android</title>
-    <link>https://www.malwarebytes.com/blog/product/2026/08/junk-cleaner-clears-the-clutter-from-your-android</link>
-    <guid isPermaLink="true">https://www.malwarebytes.com/blog/product/2026/08/junk-cleaner-clears-the-clutter-from-your-android</guid>
-    <pubDate>Wed, 05 Aug 2026 09:07:19 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>The easiest way to reclaim storage on your phone. Free up space without hunting through folders or risking your important files.</description>
   </item>
   </channel>
 </rss>
