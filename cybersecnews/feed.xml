@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 06 Aug 2026 06:06:56 -0300</lastBuildDate>
+    <lastBuildDate>Thu, 06 Aug 2026 07:07:16 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>U.S. CISA adds a JetBrains TeamCity flaw to its Known Exploited Vulnerabilities catalog</title>
@@ -120,6 +120,54 @@
     <description>This week Help Net Security is at the Mandalay Bay, where Arsenal is running alongside the Briefings. If you&amp;#8217;ve never been, it&amp;#8217;s the corner of Black Hat that feels least like a conference and most like a workshop: a room full of stations where the people who wrote the…</description>
   </item>
   <item>
+    <title>Attackers Compile khunt Inside Oracle to Turn SQL Injection Into Windows SYSTEM Access</title>
+    <link>https://thehackernews.com/2026/08/attackers-compile-khunt-inside-oracle.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/08/attackers-compile-khunt-inside-oracle.html</guid>
+    <pubDate>Thu, 06 Aug 2026 14:49:23 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Attackers broke into an organization&#x27;s Oracle database through a SQL injection flaw in a public-facing web application, then installed a post-exploitation toolkit without writing an executable to disk. They fed Java source code to the database, let Oracle compile it into stored s…</description>
+  </item>
+  <item>
+    <title>AWS, Google, and Vercel Agent Flaws Let Attackers Trigger Tools Without Running the Model</title>
+    <link>https://thehackernews.com/2026/08/aws-google-and-vercel-patch-agent-flaws.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/08/aws-google-and-vercel-patch-agent-flaws.html</guid>
+    <pubDate>Thu, 06 Aug 2026 14:27:30 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Security flaws in agent infrastructure from Amazon Web Services (AWS), Google, and Vercel let untrusted or forged instructions reach an agent&#x27;s tools with no check that a model turn had authorized them. In several of the attack paths, the model never ran at all, so system prompts…</description>
+  </item>
+  <item>
+    <title>Why the ‘rogue AI’ problem will lead to an era of headaches for security practitioners</title>
+    <link>https://www.csoonline.com/article/4205718/why-the-rogue-ai-problem-will-lead-to-an-era-of-headaches-for-security-practitioners.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4205718/why-the-rogue-ai-problem-will-lead-to-an-era-of-headaches-for-security-practitioners.html</guid>
+    <pubDate>Thu, 06 Aug 2026 10:00:00 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Shortly after OpenAI publicly acknowledged the Hugging Face breach on July 21, Reuters journalist Raphael Satter called me for comment on a story which would reveal shocking new details about OpenAI’s “rogue model” incident: The agent hadn’t just slipped its leash for a few hours…</description>
+  </item>
+  <item>
+    <title>Token Jacking: Cybercriminals Could Be Stealing Your AI Resources</title>
+    <link>https://unit42.paloaltonetworks.com/ai-token-jacking/</link>
+    <guid isPermaLink="true">https://unit42.paloaltonetworks.com/ai-token-jacking/</guid>
+    <pubDate>Thu, 06 Aug 2026 10:00:49 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Discover how attackers hijack AI tokens to fuel gray market transfer stations by stealing developer API keys. The post Token Jacking: Cybercriminals Could Be Stealing Your AI Resources appeared first on Unit 42 .</description>
+  </item>
+  <item>
+    <title>Meta AI Model Hacked a Company During Testing, Marking Third AI Lab Incident</title>
+    <link>https://securityaffairs.com/196731/security/meta-ai-model-hacked-a-company-during-testing-marking-third-ai-lab-incident.html</link>
+    <guid isPermaLink="true">https://securityaffairs.com/196731/security/meta-ai-model-hacked-a-company-during-testing-marking-third-ai-lab-incident.html</guid>
+    <pubDate>Thu, 06 Aug 2026 09:32:14 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Meta says an AI model hacked a company during testing after accidental internet access, marking the third disclosed AI lab breach in weeks. Meta confirmed that one of its AI models breached an unidentified company during cybersecurity testing, after its independent testing partne…</description>
+  </item>
+  <item>
+    <title>Belarusian Ransom Cartel Mastermind Gets 16 Years in Prison</title>
+    <link>https://www.securityweek.com/belarusian-ransom-cartel-mastermind-gets-16-years-in-prison/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/belarusian-ransom-cartel-mastermind-gets-16-years-in-prison/</guid>
+    <pubDate>Thu, 06 Aug 2026 09:30:30 +0000</pubDate>
+    <category>Security Advisories</category>
+    <description>Maksim Silnikau was the creator and administrator of the ransomware group and involved in Angler EK’s distribution. The post Belarusian Ransom Cartel Mastermind Gets 16 Years in Prison appeared first on SecurityWeek .</description>
+  </item>
+  <item>
     <title>Shai-Hulud strikes again: CHAINDROP worm hits 400+ npm packages</title>
     <link>https://www.elastic.co/security-labs/shai-hulud-chaindrop-npm-supply-chain</link>
     <guid isPermaLink="true">https://www.elastic.co/security-labs/shai-hulud-chaindrop-npm-supply-chain</guid>
@@ -166,6 +214,22 @@
     <pubDate>Thu, 06 Aug 2026 12:49:54 +0530</pubDate>
     <category>Incident Reporting</category>
     <description>A federal judge in Alexandria, Virginia, sentenced Maksim Silnikau to 16 years in prison on August 5 for creating and running Ransom Cartel, the ransomware-as-a-service operation he stood up in 2021. Between 2021 and 2023, Ransom Cartel conspirators attacked at least 18 companies…</description>
+  </item>
+  <item>
+    <title>The water sector just got it’s wake-up call. Again.</title>
+    <link>https://cyberscoop.com/water-utility-cyberattacks-prevention-nozomi-networks-ceo-op-ed/</link>
+    <guid isPermaLink="true">https://cyberscoop.com/water-utility-cyberattacks-prevention-nozomi-networks-ceo-op-ed/</guid>
+    <pubDate>Thu, 06 Aug 2026 10:00:00 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>The attack on water systems across seven states was preventable. Utilities had the playbook. They didn&#x27;t use it. The post The water sector just got it&amp;#8217;s wake-up call. Again. appeared first on CyberScoop .</description>
+  </item>
+  <item>
+    <title>Meta AI Hacked External Systems During Cybersecurity Testing</title>
+    <link>https://www.securityweek.com/meta-ai-hacked-external-systems-during-cybersecurity-testing/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/meta-ai-hacked-external-systems-during-cybersecurity-testing/</guid>
+    <pubDate>Thu, 06 Aug 2026 09:56:26 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>The incident involved a testing environment set up by Irregular, similar to what Anthropic reported last week. The post Meta AI Hacked External Systems During Cybersecurity Testing appeared first on SecurityWeek .</description>
   </item>
   <item>
     <title>Over 250 ClickFix Domains Use Browser Fingerprinting to Hide macOS Malware Lures</title>
@@ -222,6 +286,14 @@
     <pubDate>Thu, 06 Aug 2026 08:32:35 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Signal has introduced broader linked-device support, allowing users to connect additional Android phones, Android tablets, and iPhones to an existing Signal account. The changes are rolling out with Signal Android version 8.20 and Signal iOS version 8.22. Signal developer Jim Lun…</description>
+  </item>
+  <item>
+    <title>Microsoft extends zero trust deeper into enterprise AI</title>
+    <link>https://www.helpnetsecurity.com/2026/08/06/microsoft-zero-trust-for-ai-strategy-updates/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/08/06/microsoft-zero-trust-for-ai-strategy-updates/</guid>
+    <pubDate>Thu, 06 Aug 2026 09:04:51 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Microsoft expanded its Zero Trust for AI strategy with updates to the Zero Trust Assessment tool and the Zero Trust Workshop. The additions help organizations assess security posture, prioritize remediation, and apply zero trust principles to AI agents and AI-assisted software de…</description>
   </item>
   <item>
     <title>U.S. CISA adds Langflow, Apache Tomcat, and N-able N-central flaws to its Known Exploited Vulnerabilities catalog</title>
@@ -1534,78 +1606,6 @@
     <pubDate>Tue, 04 Aug 2026 10:00:10 -0400</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>AI agents need broad access to be useful, but traditional access controls cannot determine whether an action aligns with a user&#x27;s intent. Varonis explains how Agent IBAC detects intent drift and enforces real-time guardrails to keep agents within their intended boundaries. [...]</description>
-  </item>
-  <item>
-    <title>AI developers targeted via trojanized GitHub repositories</title>
-    <link>https://www.helpnetsecurity.com/2026/08/04/developers-github-fake-ai-tools-infostealer/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/08/04/developers-github-fake-ai-tools-infostealer/</guid>
-    <pubDate>Tue, 04 Aug 2026 14:10:32 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Cybercriminals are cloning popular GitHub repositories for AI tools and developer resources to distribute an infostealer, according to Netskope Threat Labs. (Source: Netskope) Netskope came across the campaign while tracking a Windows-based MaaS infostealer, first reported in Apr…</description>
-  </item>
-  <item>
-    <title>INC Ransomware is Calling Victims – Pressure Tactics Post SonicWall Zero-Day Exploit</title>
-    <link>https://securityaffairs.com/196607/malware/inc-ransomware-is-calling-victims-pressure-tactics-post-sonicwall-zero-day-exploit.html</link>
-    <guid isPermaLink="true">https://securityaffairs.com/196607/malware/inc-ransomware-is-calling-victims-pressure-tactics-post-sonicwall-zero-day-exploit.html</guid>
-    <pubDate>Tue, 04 Aug 2026 13:46:54 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>INC Ransomware exploits SonicWall SMA 1000 flaws, using calls and emails to pressure victims during extortion campaigns targeting global organizations. Resecurity disclosed that INC Ransomware has emerged as the dominant threat actor exploiting the recently disclosed SonicWall Se…</description>
-  </item>
-  <item>
-    <title>Prolific ransomware group behind SonicWall zero-day attacks</title>
-    <link>https://cyberscoop.com/inc-ransomware-sonicwall-zero-day-attacks/</link>
-    <guid isPermaLink="true">https://cyberscoop.com/inc-ransomware-sonicwall-zero-day-attacks/</guid>
-    <pubDate>Tue, 04 Aug 2026 15:20:06 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>INC ransomware wasn’t the first group to exploit the zero-days, but it’s been the most assertive and effective in chaining both vulnerabilities to steal and encrypt data for extortion. The post Prolific ransomware group behind SonicWall zero-day attacks appeared first on CyberSco…</description>
-  </item>
-  <item>
-    <title>AI widely used to exploit critical flaws, disrupt supply chains</title>
-    <link>https://www.cybersecuritydive.com/news/ai-exploit-critical-flaws-disrupt-supply-chains/826915/</link>
-    <guid isPermaLink="true">https://www.cybersecuritydive.com/news/ai-exploit-critical-flaws-disrupt-supply-chains/826915/</guid>
-    <pubDate>Tue, 04 Aug 2026 08:41:27 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>A report confirms the growing use of AI across a broad spectrum of threat groups.</description>
-  </item>
-  <item>
-    <title>Sage Water Resources says Utah saltwater disposal controller intrusion bypassed pump safeguards</title>
-    <link>https://databreaches.net/2026/08/04/sage-water-resources-says-utah-saltwater-disposal-controller-intrusion-bypassed-pump-safeguards/</link>
-    <guid isPermaLink="true">https://databreaches.net/2026/08/04/sage-water-resources-says-utah-saltwater-disposal-controller-intrusion-bypassed-pump-safeguards/</guid>
-    <pubDate>Tue, 04 Aug 2026 15:33:45 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Dysruption reports on a critical infrastructure attack in Utah that could have caused more damage than some other recent attacks: Sage Water Resources said workers stopped malicious changes to an automated controller at its oilfield wastewater disposal site near Duchesne, Utah, b…</description>
-  </item>
-  <item>
-    <title>Florida Man Sentenced for Conspiracy to Commit Wire Fraud</title>
-    <link>https://databreaches.net/2026/08/04/florida-man-sentenced-for-conspiracy-to-commit-wire-fraud/</link>
-    <guid isPermaLink="true">https://databreaches.net/2026/08/04/florida-man-sentenced-for-conspiracy-to-commit-wire-fraud/</guid>
-    <pubDate>Tue, 04 Aug 2026 15:29:18 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Stolen wallets are still a thing. From the U.S. Attorney&amp;#8217;s Office, Eastern District of Kentucky: July 31, 2026 LEXINGTON, Ky. – An Orlando, Fl., man, Ivory Joe Pruitt, 61, was sentenced on Friday to 63 months imprisonment by U.S. District Judge Robert Wier for conspiracy to…</description>
-  </item>
-  <item>
-    <title>Hackers steal over $130 million by exploiting bug in offline hardware wallets</title>
-    <link>https://techcrunch.com/2026/08/04/hackers-steal-over-130-million-by-exploiting-bug-in-offline-hardware-wallets/</link>
-    <guid isPermaLink="true">https://techcrunch.com/2026/08/04/hackers-steal-over-130-million-by-exploiting-bug-in-offline-hardware-wallets/</guid>
-    <pubDate>Tue, 04 Aug 2026 16:27:59 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>A security vulnerability in the cryptocurrency hardware wallet Coldcard is allowing hackers to drain the crypto from victims’ wallets. The total losses amount to more than $130 million, according to blockchain monitoring firms.</description>
-  </item>
-  <item>
-    <title>Airlock Digital Unveils Agentic AI Control &amp; Governance to Extend Preventative Endpoint Security</title>
-    <link>https://www.csoonline.com/article/4204310/airlock-digital-unveils-agentic-ai-control-governance-to-extend-preventative-endpoint-security.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4204310/airlock-digital-unveils-agentic-ai-control-governance-to-extend-preventative-endpoint-security.html</guid>
-    <pubDate>Tue, 04 Aug 2026 16:49:31 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Airlock Digital , a leader in preventative endpoint security, today announced Agentic AI Control &amp;amp; Governance at Black Hat USA 2026 . The new capabilities build on application control by providing command- and session-level visibility into trusted AI agent behavior, centraliz…</description>
-  </item>
-  <item>
-    <title>Britain’s next war won’t be an away game: Q&amp;A with former head of Defence Intelligence</title>
-    <link>https://therecord.media/interview-jim-hockenhull-uk-defence-intelligence-russia-ukraine</link>
-    <guid isPermaLink="true">https://therecord.media/interview-jim-hockenhull-uk-defence-intelligence-russia-ukraine</guid>
-    <pubDate>Tue, 04 Aug 2026 16:19:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>As Chief of Defence Intelligence, General Sir Jim Hockenhull decided to declassify and publish what London knew of Russia’s plans to invade Ukraine, down to a map of the routes its forces would take.</description>
   </item>
   </channel>
 </rss>
