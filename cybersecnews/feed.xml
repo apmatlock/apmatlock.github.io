@@ -5,8 +5,16 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Sat, 08 Aug 2026 04:02:50 -0300</lastBuildDate>
+    <lastBuildDate>Sat, 08 Aug 2026 05:02:46 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Progress Kemp LoadMaster Flaw Hits CISA KEV After 792 Reported Exploit Attempts</title>
+    <link>https://thehackernews.com/2026/08/progress-kemp-loadmaster-flaw-hits-cisa.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/08/progress-kemp-loadmaster-flaw-hits-cisa.html</guid>
+    <pubDate>Sat, 08 Aug 2026 12:22:16 +0530</pubDate>
+    <category>CISA KEV</category>
+    <description>The U.S. Cybersecurity and Infrastructure Security Agency (CISA) on Friday added a critical-severity security flaw impacting Progress Kemp LoadMaster to its Known Exploited Vulnerabilities (KEV) catalog, following reports of active exploitation in the wild. The vulnerability, tra…</description>
+  </item>
   <item>
     <title>CVE-2026-63030 and CVE-2026-60137: &#x27;wp2shell&#x27; Captured Exploit Payload</title>
     <link>https://www.f5.com/labs/articles/cve-2026-63030-and-cve-2026-60137-wp2shell-captured-exploit-payload</link>
@@ -64,6 +72,22 @@
     <description>Information published.</description>
   </item>
   <item>
+    <title>CVE-2026-32597 PyJWT accepts unknown `crit` header extensions (RFC 7515 §4.1.11 MUST violation)</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-32597</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-32597</guid>
+    <pubDate>Sat, 08 Aug 2026 01:40:53 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-48524 PyJWT: PyJWKClient unbounded JWKS endpoint requests via attacker-controlled kid values (DoS)</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-48524</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-48524</guid>
+    <pubDate>Sat, 08 Aug 2026 01:40:45 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
     <title>Nearly 800 Malicious npm Packages Deliver Cross-Platform RAT and Infostealer</title>
     <link>https://thehackernews.com/2026/08/nearly-800-malicious-npm-packages.html</link>
     <guid isPermaLink="true">https://thehackernews.com/2026/08/nearly-800-malicious-npm-packages.html</guid>
@@ -78,6 +102,30 @@
     <pubDate>Sat, 08 Aug 2026 04:15:00 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Coding for Veterans: From Military Service to Cybersecurity &amp; Generative AI Careers This episode is sponsored by Nordlayer. Contact them at Nordlayer.com/hashtagtrending and use discount code NLSummer26 for a discount during their summer sale. In this Weekend episode of Cybersecu…</description>
+  </item>
+  <item>
+    <title>Metabase Zero-Day Exploited in Wild Allows Admin Access Without Authentication</title>
+    <link>https://thehackernews.com/2026/08/metabase-zero-day-exploited-in-wild.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/08/metabase-zero-day-exploited-in-wild.html</guid>
+    <pubDate>Sat, 08 Aug 2026 12:28:31 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Metabase has warned that a maximum-severity security flaw impacting its business intelligence and data visualization software package has been exploited in the wild as a zero-day. The vulnerability (CVSS score: 10.0), which does not carry a CVE identifier, allows an unauthenticat…</description>
+  </item>
+  <item>
+    <title>N-able Issues N-central Hotfix 2 as Attackers Reach Managed Systems and Persist</title>
+    <link>https://thehackernews.com/2026/08/n-central-attackers-reach-managed.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/08/n-central-attackers-reach-managed.html</guid>
+    <pubDate>Sat, 08 Aug 2026 12:27:43 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>N-able has released a fresh round of hotfixes for N‑central as part of its investigation into ongoing exploitation of a recently disclosed security flaw in the Remote Monitoring and Management (RMM) product. &quot;We are proactively expanding protections in response to ongoing monitor…</description>
+  </item>
+  <item>
+    <title>Unlimited Technology Systems Data Breach Exposes Data of 3.8 Million Healthcare Patients</title>
+    <link>https://securityaffairs.com/196843/data-breach/unlimited-technology-systems-data-breach-exposes-data-of-3-8-million-healthcare-patients.html</link>
+    <guid isPermaLink="true">https://securityaffairs.com/196843/data-breach/unlimited-technology-systems-data-breach-exposes-data-of-3-8-million-healthcare-patients.html</guid>
+    <pubDate>Sat, 08 Aug 2026 07:25:10 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Hackers stole personal, medical, and insurance data of 3.8 million people from Unlimited Technology Systems&amp;#8217; data center. Unlimited Technology Systems disclosed a data breach affecting more than 3.8 million people after hackers accessed one of its commercial data centers be…</description>
   </item>
   <item>
     <title>Researchers report unauthorized AI behavior.</title>
@@ -1558,54 +1606,6 @@
     <pubDate>Thu, 06 Aug 2026 00:14:31 +0530</pubDate>
     <category>Threat Intelligence</category>
     <description>A macOS ClickFix operation spanning more than 250 front-end domains now fingerprints visitors before deciding whether to show them a malware lure, a change Microsoft Threat Intelligence tracked on infrastructure it had been watching for weeks. The server-side gate hides the malic…</description>
-  </item>
-  <item>
-    <title>22 Seconds to Compromise: How Automated SSH Actors Move From Login to Persistence Before You Can Blink &amp;#x5b;Guest Diary&amp;#x5d;, (Thu, Aug 6th)</title>
-    <link>https://isc.sans.edu/diary/rss/33220</link>
-    <guid isPermaLink="true">https://isc.sans.edu/diary/rss/33220</guid>
-    <pubDate>Thu, 06 Aug 2026 00:15:40 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>&amp;#x5b;This is a Guest Diary by Daryl Jiminez, an ISC intern as part of the SANS.edu BACS program&amp;#x5d; &amp;#xd;</description>
-  </item>
-  <item>
-    <title>ISC Stormcast For Thursday, August 6th, 2026 https://isc.sans.edu/podcastdetail/10040, (Thu, Aug 6th)</title>
-    <link>https://isc.sans.edu/diary/rss/33222</link>
-    <guid isPermaLink="true">https://isc.sans.edu/diary/rss/33222</guid>
-    <pubDate>Thu, 06 Aug 2026 02:00:02 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>(c) SANS Internet Storm Center. https://isc.sans.edu Creative Commons Attribution-Noncommercial 3.0 United States License.</description>
-  </item>
-  <item>
-    <title>Non-human identities are 91% of everything active in production</title>
-    <link>https://www.helpnetsecurity.com/2026/08/06/non-human-identities-active-in-production/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/08/06/non-human-identities-active-in-production/</guid>
-    <pubDate>Thu, 06 Aug 2026 04:45:29 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>A backup job fires at two in the morning. A scanner walks the same AWS account an hour later, a deployment pipeline assumes a role at four, and a logging agent runs straight through the night. Each of those actions carries a credential issued to a machine. An attacker holding one…</description>
-  </item>
-  <item>
-    <title>LOW - Trailer</title>
-    <link>https://thisislow.com/</link>
-    <guid isPermaLink="true">https://thisislow.com/</guid>
-    <pubDate>Thu, 06 Aug 2026 07:00:00 -0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>After 8 years, LOW is finally here. A story about the weight of being and the wreckage of waking up. Five episodes. Five descents. LOW is an audio journey into the unlit corners of human experience. Choices we made in the dark, the silences we carry, and what remains when we stop…</description>
-  </item>
-  <item>
-    <title>NVIDIA Group Proposes SAFE Initiative for Agentic Threat Intel Sharing</title>
-    <link>https://www.infosecurity-magazine.com/news/safe-initiative-agentic-threat/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/safe-initiative-agentic-threat/</guid>
-    <pubDate>Thu, 06 Aug 2026 08:30:00 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The Open Secure AI Alliance has announced plans for the Shared AI Findings Exchange (SAFE)</description>
-  </item>
-  <item>
-    <title>Signal broadens device linking support on Android and iOS</title>
-    <link>https://cyberinsider.com/signal-broadens-device-linking-support-on-android-and-ios/</link>
-    <guid isPermaLink="true">https://cyberinsider.com/signal-broadens-device-linking-support-on-android-and-ios/</guid>
-    <pubDate>Thu, 06 Aug 2026 08:32:35 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Signal has introduced broader linked-device support, allowing users to connect additional Android phones, Android tablets, and iPhones to an existing Signal account. The changes are rolling out with Signal Android version 8.20 and Signal iOS version 8.22. Signal developer Jim Lun…</description>
   </item>
   </channel>
 </rss>
