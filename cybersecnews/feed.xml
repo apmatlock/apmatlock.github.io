@@ -5,8 +5,296 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Sun, 09 Aug 2026 04:02:45 -0300</lastBuildDate>
+    <lastBuildDate>Sun, 09 Aug 2026 05:02:48 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>CVE-2026-64572 ipv4: fib: free fib_alias with kfree_rcu() on insert error path</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64572</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64572</guid>
+    <pubDate>Sun, 09 Aug 2026 01:42:53 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-64569 mpls: fix NULL deref in mpls_valid_fib_dump_req() on CONFIG_INET=n</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64569</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64569</guid>
+    <pubDate>Sun, 09 Aug 2026 01:43:00 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-64567 btrfs: reject free space cache with more entries than pages</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64567</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64567</guid>
+    <pubDate>Sun, 09 Aug 2026 01:43:07 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-64577 gtp: check skb_pull_data() return in gtp1u_send_echo_resp()</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64577</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64577</guid>
+    <pubDate>Sun, 09 Aug 2026 01:43:14 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-64561 KVM: x86: Check for invalid/obsolete root *after* making MMU pages available</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64561</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64561</guid>
+    <pubDate>Sun, 09 Aug 2026 01:41:32 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-64564 sctp: don&#x27;t free the ASCONF&#x27;s own transport in DEL-IP processing</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64564</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64564</guid>
+    <pubDate>Sun, 09 Aug 2026 01:41:39 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-64562 KVM: nVMX: Hide shadow VMCS right after VMCLEAR</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64562</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64562</guid>
+    <pubDate>Sun, 09 Aug 2026 01:41:54 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-18839 Popt-devel: popt-static: size_t underflow in singleoptionhelp</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-18839</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-18839</guid>
+    <pubDate>Sun, 09 Aug 2026 01:03:39 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-64590 dma-buf/udmabuf: skip redundant cpu sync to fix cacheline EEXIST warning</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64590</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64590</guid>
+    <pubDate>Sun, 09 Aug 2026 01:43:23 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-64583 usb: gadget: udc: bdc: free IRQ and drain func_wake_notify before teardown</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64583</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64583</guid>
+    <pubDate>Sun, 09 Aug 2026 01:43:38 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-64584 usb: gadget: f_midi: cancel pending IN work before freeing the midi object</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64584</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64584</guid>
+    <pubDate>Sun, 09 Aug 2026 01:43:45 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-64571 wifi: p54: validate RX frame length in p54_rx_eeprom_readback()</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64571</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64571</guid>
+    <pubDate>Sun, 09 Aug 2026 01:42:09 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-64576 nexthop: initialize extack in nh_res_bucket_migrate()</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64576</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64576</guid>
+    <pubDate>Sun, 09 Aug 2026 01:42:24 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-64676 Kata Containers: Unauthorized mem-agent ttRPC methods let an untrusted host tamper with confidential-guest memory</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64676</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64676</guid>
+    <pubDate>Sun, 09 Aug 2026 01:01:57 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-47243 Kata guest escape: runtime-rs guest-root to host-root escape via virtiofs</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-47243</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-47243</guid>
+    <pubDate>Sun, 09 Aug 2026 01:02:08 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2025-49506 Apache Portable Runtime Utility: apr_password_validate() vulnerable to timing attack</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-49506</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-49506</guid>
+    <pubDate>Sun, 09 Aug 2026 01:02:14 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-34191 Apache Portable Runtime Utility: SQL Injection in apr_dbd_oracle</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-34191</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-34191</guid>
+    <pubDate>Sun, 09 Aug 2026 01:02:21 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-34501 Apache Portable Runtime Utility: Heap buffer overflow in APR redis client</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-34501</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-34501</guid>
+    <pubDate>Sun, 09 Aug 2026 01:02:27 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-34502 Apache Portable Runtime Utility: Heap buffer overflow in APR memcached client</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-34502</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-34502</guid>
+    <pubDate>Sun, 09 Aug 2026 01:02:34 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-68081 KVM: nVMX: Put vmcs12 pages if nested VM-Enter fails due to invalid guest state</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68081</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68081</guid>
+    <pubDate>Sun, 09 Aug 2026 01:02:40 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-68082 libceph: fix two unsafe bare decodes in decode_lockers()</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68082</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68082</guid>
+    <pubDate>Sun, 09 Aug 2026 01:02:46 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-54876 Client-Side Memory Leak in OCSP Response Checking</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-54876</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-54876</guid>
+    <pubDate>Sun, 09 Aug 2026 01:03:06 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-71225 Libkcapi: iv reuse in libkcapi one-shot symmetric cipher chunking causes cipher state reset across chunk boundaries</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-71225</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-71225</guid>
+    <pubDate>Sun, 09 Aug 2026 01:03:14 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-71226 Libkcapi: memory corruption via uncanceled aio requests on error in libkcapi&#x27;s one-shot aio path</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-71226</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-71226</guid>
+    <pubDate>Sun, 09 Aug 2026 01:03:20 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-71227 Libkcapi: infinite loop denial of service in libkcapi _kcapi_aio_read_all() due to unhandled io_getevents() timeout return</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-71227</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-71227</guid>
+    <pubDate>Sun, 09 Aug 2026 01:03:26 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-44605 Rpm: heap buffer overflow in ndb slot table parsing</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-44605</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-44605</guid>
+    <pubDate>Sun, 09 Aug 2026 01:03:34 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-64574 wifi: mac80211: tear down new links on vif update error path</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64574</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64574</guid>
+    <pubDate>Sun, 09 Aug 2026 01:42:39 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-64573 Bluetooth: qca: fix NVM tag length underflow in TLV parser</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64573</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64573</guid>
+    <pubDate>Sun, 09 Aug 2026 01:42:46 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-64565 Input: ims-pcu - fix heap-buffer-overflow in ims_pcu_process_data()</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64565</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64565</guid>
+    <pubDate>Sun, 09 Aug 2026 01:41:47 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-64604 KVM: VMX: Grab vmcs12 on CR8 interception update iff vCPU is in guest mode</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64604</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64604</guid>
+    <pubDate>Sun, 09 Aug 2026 01:43:30 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-64578 ksmbd: validate compound request size before reading StructureSize2</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64578</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64578</guid>
+    <pubDate>Sun, 09 Aug 2026 01:42:02 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-64579 xfrm: policy: preallocate inexact bins before xfrm_hash_rebuild reinsert</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64579</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64579</guid>
+    <pubDate>Sun, 09 Aug 2026 01:42:17 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-64580 xfrm6: clear dst.dev on error to avoid double netdev_put in xfrm6_fill_dst()</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64580</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64580</guid>
+    <pubDate>Sun, 09 Aug 2026 01:42:32 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-50540 Kata Containers: Config Path Annotation Arbitrary File Loading</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-50540</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-50540</guid>
+    <pubDate>Sun, 09 Aug 2026 01:01:47 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-64560 posix-cpu-timers: Prevent UAF caused by non-leader exec() race</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64560</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64560</guid>
+    <pubDate>Sun, 09 Aug 2026 01:41:22 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
+  <item>
+    <title>CVE-2026-64542 ipv6: ndisc: fix NULL deref in accept_untracked_na()</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64542</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64542</guid>
+    <pubDate>Sun, 09 Aug 2026 01:41:15 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
   <item>
     <title>Building space in the AI era.</title>
     <link>https://thecyberwire.com/newsletters/signals-and-space/10/13</link>
@@ -1318,294 +1606,6 @@
     <pubDate>Thu, 06 Aug 2026 12:04:12 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Huntress has documented a case where the Oracle database itself became the malware host. The security firm disclosed a campaign in which threat actors exploited a SQL injection vulnerability to store a custom post-exploitation toolkit, dubbed Khunt, inside an Oracle database usin…</description>
-  </item>
-  <item>
-    <title>Zero-Click AI Browser Hacking: Claude and ChatGPT Atlas Hijacked via Emails, X Posts</title>
-    <link>https://www.securityweek.com/zero-click-ai-browser-hacking-claude-and-chatgpt-atlas-hijacked-via-emails-x-posts/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/zero-click-ai-browser-hacking-claude-and-chatgpt-atlas-hijacked-via-emails-x-posts/</guid>
-    <pubDate>Thu, 06 Aug 2026 12:54:09 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Zenity researchers reported the findings to Anthropic and OpenAI in late 2025 and early 2026, but they remain unpatched. The post Zero-Click AI Browser Hacking: Claude and ChatGPT Atlas Hijacked via Emails, X Posts appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Three in four AI-generated vulnerability patches leave something broken</title>
-    <link>https://www.helpnetsecurity.com/2026/08/06/1password-ai-generated-vulnerability-patches/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/08/06/1password-ai-generated-vulnerability-patches/</guid>
-    <pubDate>Thu, 06 Aug 2026 12:45:29 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Ask a frontier model to patch a real vulnerability and it will hand you something that looks like a fix. It reads like the patch a maintainer would write. When there is a test, it often passes. Roughly one time in four, it is a fix. Researchers at 1Password graded 6,080 patches f…</description>
-  </item>
-  <item>
-    <title>Belarusian Ransom Cartel Mastermind Gets 16 Years in Prison</title>
-    <link>https://databreaches.net/2026/08/06/belarusian-ransom-cartel-mastermind-gets-16-years-in-prison/</link>
-    <guid isPermaLink="true">https://databreaches.net/2026/08/06/belarusian-ransom-cartel-mastermind-gets-16-years-in-prison/</guid>
-    <pubDate>Thu, 06 Aug 2026 12:11:40 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>There is an update to the case of Maksim Silnikau, who was extradited from Poland to the U.S. in August 2024 to stand trial here. Ionut Arghire reports: The Belarusian creator and administrator of the Ransom Cartel ransomware was sentenced to 16 years in prison in the US. Maksim …</description>
-  </item>
-  <item>
-    <title>Dutch retailer Bol follows De Bijenkorf in warning of data breach as leaked data appears on dark web</title>
-    <link>https://databreaches.net/2026/08/06/dutch-retailer-bol-follows-de-bijenkorf-in-warning-of-data-breach-as-leaked-data-appears-on-dark-web/</link>
-    <guid isPermaLink="true">https://databreaches.net/2026/08/06/dutch-retailer-bol-follows-de-bijenkorf-in-warning-of-data-breach-as-leaked-data-appears-on-dark-web/</guid>
-    <pubDate>Thu, 06 Aug 2026 12:11:15 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The NL Times reports: Online retailer Bol has warned customers about a data breach involving one of its logistics partners. The company said unauthorized parties accessed the partner&amp;#8217;s systems, but emphasized that Bol&amp;#8217;s own systems were not affected. Even so, some cus…</description>
-  </item>
-  <item>
-    <title>How a software provider closed unknown paths to cloud compromise</title>
-    <link>https://www.csoonline.com/article/4206219/how-a-software-provider-closed-unknown-paths-to-cloud-compromise.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4206219/how-a-software-provider-closed-unknown-paths-to-cloud-compromise.html</guid>
-    <pubDate>Thu, 06 Aug 2026 13:55:09 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>A healthcare software provider believed its segmented environment was reasonably secure. The company had invested heavily in layered controls across a distributed workforce, separating developer environments, segmenting cloud infrastructure, and tightly managing administrative ac…</description>
-  </item>
-  <item>
-    <title>How a global investment firm reduced security surprises</title>
-    <link>https://www.csoonline.com/article/4206204/how-a-global-investment-firm-reduced-security-surprises.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4206204/how-a-global-investment-firm-reduced-security-surprises.html</guid>
-    <pubDate>Thu, 06 Aug 2026 13:45:02 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Most security teams don’t suffer from a lack of data. They suffer from a lack of certainty. Vulnerability scanners, annual penetration tests, and compliance assessments can generate thousands of findings. Yet they often fail to answer a simple question: Which risks actually matte…</description>
-  </item>
-  <item>
-    <title>Meta joins OpenAI, Anthropic in latest AI test breach</title>
-    <link>https://www.csoonline.com/article/4206116/an-irregular-testing-that-caused-meta-openai-and-anthropic-ai-agents-to-go-rogue.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4206116/an-irregular-testing-that-caused-meta-openai-and-anthropic-ai-agents-to-go-rogue.html</guid>
-    <pubDate>Thu, 06 Aug 2026 13:19:56 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Meta has become the third frontier AI developer in recent weeks to disclose a security incident involving one of its advanced AI models during cyber capability testing conducted by AI safety startup, Irregular, placing the independent evaluator at the center of a series of disclo…</description>
-  </item>
-  <item>
-    <title>Meta Joins OpenAI and Anthropic in Reporting AI Exploit Incident</title>
-    <link>https://www.infosecurity-magazine.com/news/meta-ai-exploit-incident/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/meta-ai-exploit-incident/</guid>
-    <pubDate>Thu, 06 Aug 2026 13:40:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>One of Meta’s AI models exploited a third-party security flaw during an evaluation, the latest in a series of similar incidents involving advanced AI systems</description>
-  </item>
-  <item>
-    <title>Photos: Black Hat USA 2026</title>
-    <link>https://www.helpnetsecurity.com/2026/08/06/black-hat-usa-2026-photos/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/08/06/black-hat-usa-2026-photos/</guid>
-    <pubDate>Thu, 06 Aug 2026 13:30:02 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Photo gallery from the Business Hall at Black Hat USA 2026. Interesting booths, demo stages, crowded aisles, and the moments in between. Featured vendors: Stellar Cyber, Tines, Filigran, Delinea, Prophet AI, Air Security, Legion Security. Featured people: Kunal Modasiya (Qualys) …</description>
-  </item>
-  <item>
-    <title>Novel-reading apps used users’ phones to generate fake ad traffic</title>
-    <link>https://www.helpnetsecurity.com/2026/08/06/papyrus-mobile-ad-fraud-scheme/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/08/06/papyrus-mobile-ad-fraud-scheme/</guid>
-    <pubDate>Thu, 06 Aug 2026 14:07:15 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>A new mobile ad fraud scheme, dubbed Papyrus, is using a cluster of novel-reading apps to generate hidden browser traffic, according to IAS Threat Lab. Sample novel-reading apps associated with Papyrus (Source: IAS Threat Lab) While a person taps through chapters of a romance or …</description>
-  </item>
-  <item>
-    <title>ThreatsDay: Odysseus RCE, Samsung One-Click Takeover, iCloud Backdoor Fight + 27 More Stories</title>
-    <link>https://thehackernews.com/2026/08/threatsday-odysseus-rce-samsung-one.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/08/threatsday-odysseus-rce-samsung-one.html</guid>
-    <pubDate>Thu, 06 Aug 2026 20:54:31 +0530</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Apparently, opening the thing is now enough. A repo can run before the first prompt, a package can hide among hundreds, and a harmless-looking PDF can finish the job. This week runs on cheap leverage: exposed servers, recycled bugs, poisoned agent instructions, remote-access tool…</description>
-  </item>
-  <item>
-    <title>Toolkit Hidden Inside Oracle Database Evades Endpoint Tools</title>
-    <link>https://www.infosecurity-magazine.com/news/khunt-toolkit-oracle-database-sql/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/khunt-toolkit-oracle-database-sql/</guid>
-    <pubDate>Thu, 06 Aug 2026 15:30:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Attackers used SQL injection to compile a post-exploitation toolkit inside an Oracle database</description>
-  </item>
-  <item>
-    <title>New TONTOU CPU attack bypasses Spectre v2 fixes, leaks Linux password hashes</title>
-    <link>https://www.bleepingcomputer.com/news/security/new-tontou-cpu-attack-bypasses-spectre-v2-fixes-leaks-linux-password-hashes/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/new-tontou-cpu-attack-bypasses-spectre-v2-fixes-leaks-linux-password-hashes/</guid>
-    <pubDate>Thu, 06 Aug 2026 14:03:45 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Researchers found a way to bypass recent mitigations for Spectre v2 speculative execution side-channel attacks and developed an exploit to leak secrets from Linux machines. [...]</description>
-  </item>
-  <item>
-    <title>Swiss government SharePoint breach compromised 200 accounts</title>
-    <link>https://www.bleepingcomputer.com/news/security/swiss-government-sharepoint-breach-compromised-200-accounts/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/swiss-government-sharepoint-breach-compromised-200-accounts/</guid>
-    <pubDate>Thu, 06 Aug 2026 14:22:09 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Switzerland&#x27;s federal IT office says hackers exploited vulnerabilities to breach its Microsoft SharePoint servers and compromised approximately 200 accounts. [...]</description>
-  </item>
-  <item>
-    <title>Cardiology Associates of Port Huron remains silent although they were allegedly hacked and had patient data stolen in June.</title>
-    <link>https://databreaches.net/2026/08/06/cardiology-associates-of-port-huron-remains-silent-although-they-were-allegedly-hacked-and-had-patient-data-stolen-in-june/</link>
-    <guid isPermaLink="true">https://databreaches.net/2026/08/06/cardiology-associates-of-port-huron-remains-silent-although-they-were-allegedly-hacked-and-had-patient-data-stolen-in-june/</guid>
-    <pubDate>Thu, 06 Aug 2026 19:29:26 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>There have been approximately 4 dozen new threat actor groups targeting U.S. medical entities in the first half of 2026. One of them calls itself &amp;#8220;Orova.&amp;#8221; They have no &amp;#8220;About&amp;#8221; page or information about themselves on their dark web leak site, so seeing that…</description>
-  </item>
-  <item>
-    <title>When AI Commits Felonies - PSW #938</title>
-    <link>https://www.youtube.com/watch?v=Xse9Fp-8jmU</link>
-    <guid isPermaLink="true">https://www.youtube.com/watch?v=Xse9Fp-8jmU</guid>
-    <pubDate>Thu, 06 Aug 2026 21:00:26 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>This week: - When you are not at summer camp you can&#x27;t read about it - The Fettle continues - Using the CFAA against AI - Social contracts are not security models - VSCode extentions, again - Bugtraq is back! - NVIDA, LVFS, and unraveling AI infrastructure - More routers that com…</description>
-  </item>
-  <item>
-    <title>AI without adult supervision.</title>
-    <link>https://thecyberwire.com/podcasts/daily-podcast/2609/notes</link>
-    <guid isPermaLink="true">https://thecyberwire.com/podcasts/daily-podcast/2609/notes</guid>
-    <pubDate>Thu, 06 Aug 2026 20:30:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Meta’s AI models join the sandbox escape club. China’s telecom footprint in the U.S. may be larger than expected. The White House keeps its AI safety playbook under wraps. AI coding tools introduce new GitHub risks. ENISA expands its CVE role. A critical Paperclip flaw enables co…</description>
-  </item>
-  <item>
-    <title>Capitol Hill wants to know if executive branch, foreign allies coordinated enough to combat scams</title>
-    <link>https://cyberscoop.com/senate-hearing-transnational-scam-task-force/</link>
-    <guid isPermaLink="true">https://cyberscoop.com/senate-hearing-transnational-scam-task-force/</guid>
-    <pubDate>Thu, 06 Aug 2026 20:27:31 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>A Senate Foreign Relations Committee hearing explored how 13 federal agencies and myriad foreign governments are wrestling with the problem. The post Capitol Hill wants to know if executive branch, foreign allies coordinated enough to combat scams appeared first on CyberScoop .</description>
-  </item>
-  <item>
-    <title>Meta says AI model hacked third-party company during cyber testing</title>
-    <link>https://cyberinsider.com/meta-says-ai-model-hacked-third-party-company-during-cyber-testing/</link>
-    <guid isPermaLink="true">https://cyberinsider.com/meta-says-ai-model-hacked-third-party-company-during-cyber-testing/</guid>
-    <pubDate>Thu, 06 Aug 2026 20:58:06 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Meta has disclosed that one of its AI models compromised another company&amp;#8217;s systems during an internal cybersecurity evaluation after a misconfiguration inadvertently granted the model access to the public internet, marking the latest in a series of real-world AI testing inc…</description>
-  </item>
-  <item>
-    <title>Researcher Claims Control of ChatGPT Secure Sandbox</title>
-    <link>https://www.darkreading.com/cloud-security/researcher-claims-control-chatgpt-secure-sandbox</link>
-    <guid isPermaLink="true">https://www.darkreading.com/cloud-security/researcher-claims-control-chatgpt-secure-sandbox</guid>
-    <pubDate>Thu, 06 Aug 2026 20:38:51 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>A researcher demonstrated a proof-of-concept attack chain that provided C2-style influence over ChatGPT&#x27;s isolated sandbox during a session at Black Hat USA 2026.</description>
-  </item>
-  <item>
-    <title>Why exposure management is replacing vulnerability management</title>
-    <link>https://www.csoonline.com/article/4206354/why-exposure-management-is-replacing-vulnerability-management.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4206354/why-exposure-management-is-replacing-vulnerability-management.html</guid>
-    <pubDate>Thu, 06 Aug 2026 21:42:35 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Vulnerability management isn’t failing because security teams lack visibility. Most organizations already have more findings than they can reasonably address. Yet despite all those findings, many CISOs still struggle to answer a deceptively simple question: Are we actually becomi…</description>
-  </item>
-  <item>
-    <title>The Coordination Gap: How Attackers Are Outpacing Law Enforcement</title>
-    <link>https://www.darkreading.com/cyberattacks-data-breaches/coordination-gap-attackers-outpacing-law-enforcement</link>
-    <guid isPermaLink="true">https://www.darkreading.com/cyberattacks-data-breaches/coordination-gap-attackers-outpacing-law-enforcement</guid>
-    <pubDate>Thu, 06 Aug 2026 21:42:50 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The fight against cybercrime continues because threat actors have adapted their strategies to avoid deterrents, but law enforcement still operates in silos.</description>
-  </item>
-  <item>
-    <title>CyberRisk TV Live Coverage from Black Hat 2026 - Day 2</title>
-    <link>https://www.youtube.com/watch?v=PoEzXjFJ8iI</link>
-    <guid isPermaLink="true">https://www.youtube.com/watch?v=PoEzXjFJ8iI</guid>
-    <pubDate>Thu, 06 Aug 2026 23:57:32 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>CyberRisk TV is broadcasting live from Black Hat 2026 in Las Vegas! Tune into our coverage featuring interviews with cybersecurity leaders, practitioners, researchers, and technology innovators from one of the industry’s most influential security events. Throughout the day, we’ll…</description>
-  </item>
-  <item>
-    <title>Belarusian Ransom Cartel Mastermind Gets 16 Years in Prison</title>
-    <link>https://www.securityweek.com/belarusian-ransom-cartel-mastermind-gets-16-years-in-prison/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/belarusian-ransom-cartel-mastermind-gets-16-years-in-prison/</guid>
-    <pubDate>Thu, 06 Aug 2026 09:30:30 +0000</pubDate>
-    <category>Security Advisories</category>
-    <description>Maksim Silnikau was the creator and administrator of the ransomware group and involved in Angler EK’s distribution. The post Belarusian Ransom Cartel Mastermind Gets 16 Years in Prison appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Wiz Brings Automated DISA STIG Assessment to Amazon Linux 2023 and Windows Server 2025</title>
-    <link>https://www.wiz.io/blog/wiz-brings-automated-disa-stig-assessment-to-amazon-linux-and-windows-server</link>
-    <guid isPermaLink="true">https://www.wiz.io/blog/wiz-brings-automated-disa-stig-assessment-to-amazon-linux-and-windows-server</guid>
-    <pubDate>Thu, 06 Aug 2026 12:00:00 +0000</pubDate>
-    <category>Security Advisories</category>
-    <description>Automating DISA STIG Compliance for Amazon Linux 2023 and Windows Server 2025, giving defense and federal teams immediate and continuous hardening validation.</description>
-  </item>
-  <item>
-    <title>GitHub security advisory (AV26-783)</title>
-    <link>https://cyber.gc.ca/en/alerts-advisories/github-security-advisory-av26-783</link>
-    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/github-security-advisory-av26-783</guid>
-    <pubDate>Thu, 06 Aug 2026 10:02:24 -0000</pubDate>
-    <category>Security Advisories</category>
-    <description></description>
-  </item>
-  <item>
-    <title>Jenkins security advisory (AV26-782)</title>
-    <link>https://cyber.gc.ca/en/alerts-advisories/jenkins-security-advisory-av26-782</link>
-    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/jenkins-security-advisory-av26-782</guid>
-    <pubDate>Thu, 06 Aug 2026 10:02:24 -0000</pubDate>
-    <category>Security Advisories</category>
-    <description></description>
-  </item>
-  <item>
-    <title>Progress security advisory (AV26-781)</title>
-    <link>https://cyber.gc.ca/en/alerts-advisories/progress-security-advisory-av26-781</link>
-    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/progress-security-advisory-av26-781</guid>
-    <pubDate>Thu, 06 Aug 2026 10:02:24 -0000</pubDate>
-    <category>Security Advisories</category>
-    <description></description>
-  </item>
-  <item>
-    <title>Zyxel security advisory (AV26-780)</title>
-    <link>https://cyber.gc.ca/en/alerts-advisories/zyxel-security-advisory-av26-780</link>
-    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/zyxel-security-advisory-av26-780</guid>
-    <pubDate>Thu, 06 Aug 2026 10:02:24 -0000</pubDate>
-    <category>Security Advisories</category>
-    <description></description>
-  </item>
-  <item>
-    <title>Podcast: Compliance Won’t Save You: The Future of Cyber Risk with Edna Conway</title>
-    <link>https://www.securityweek.com/podcast-compliance-wont-save-you-the-future-of-cyber-risk-with-edna-conway/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/podcast-compliance-wont-save-you-the-future-of-cyber-risk-with-edna-conway/</guid>
-    <pubDate>Thu, 06 Aug 2026 12:00:00 +0000</pubDate>
-    <category>Security Advisories</category>
-    <description>(Video) In this podcast, we share insights from Edna Conway, a recognized leader in cybersecurity and supply chain resilience with over 40 years of experience in the field. The post Podcast: Compliance Won’t Save You: The Future of Cyber Risk with Edna Conway appeared first on Se…</description>
-  </item>
-  <item>
-    <title>Foxit security advisory (AV26-784)</title>
-    <link>https://cyber.gc.ca/en/alerts-advisories/foxit-security-advisory-av26-784</link>
-    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/foxit-security-advisory-av26-784</guid>
-    <pubDate>Thu, 06 Aug 2026 11:02:25 -0000</pubDate>
-    <category>Security Advisories</category>
-    <description></description>
-  </item>
-  <item>
-    <title>Cisco security advisory (AV26-785)</title>
-    <link>https://cyber.gc.ca/en/alerts-advisories/cisco-security-advisory-av26-785</link>
-    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/cisco-security-advisory-av26-785</guid>
-    <pubDate>Thu, 06 Aug 2026 12:02:22 -0000</pubDate>
-    <category>Security Advisories</category>
-    <description></description>
-  </item>
-  <item>
-    <title>Django security advisory (AV26-786)</title>
-    <link>https://cyber.gc.ca/en/alerts-advisories/django-security-advisory-av26-786</link>
-    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/django-security-advisory-av26-786</guid>
-    <pubDate>Thu, 06 Aug 2026 13:02:24 -0000</pubDate>
-    <category>Security Advisories</category>
-    <description></description>
-  </item>
-  <item>
-    <title>How we took malware advisories beyond npm</title>
-    <link>https://github.blog/security/supply-chain-security/how-we-took-malware-advisories-beyond-npm/</link>
-    <guid isPermaLink="true">https://github.blog/security/supply-chain-security/how-we-took-malware-advisories-beyond-npm/</guid>
-    <pubDate>Thu, 06 Aug 2026 16:51:12 +0000</pubDate>
-    <category>Security Advisories</category>
-    <description>GitHub malware advisories no longer stop at npm. Here&#x27;s how we wired OpenSSF&#x27;s malicious-packages data into the Advisory Database, and why we built the pipeline paranoid. The post How we took malware advisories beyond npm appeared first on The GitHub Blog .</description>
-  </item>
-  <item>
-    <title>Shai-Hulud strikes again: CHAINDROP worm hits 400+ npm packages</title>
-    <link>https://www.elastic.co/security-labs/shai-hulud-chaindrop-npm-supply-chain</link>
-    <guid isPermaLink="true">https://www.elastic.co/security-labs/shai-hulud-chaindrop-npm-supply-chain</guid>
-    <pubDate>Thu, 06 Aug 2026 00:00:00 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>Elastic Security Labs identified the return of Shai-Hulud. Attackers compromised the keyv maintainer and deployed CHAINDROP, a worm that uses stolen npm credentials to backdoor co-owned packages totaling over 1.3 billion monthly downloads.</description>
-  </item>
-  <item>
-    <title>OpenAI Didn’t Notice Its AI Agents Using a Message Board to Plan Their Hacking Spree</title>
-    <link>https://www.wired.com/story/openai-didnt-notice-its-ai-agents-using-a-message-board-to-plan-their-hacking-spree/</link>
-    <guid isPermaLink="true">https://www.wired.com/story/openai-didnt-notice-its-ai-agents-using-a-message-board-to-plan-their-hacking-spree/</guid>
-    <pubDate>Thu, 06 Aug 2026 00:15:04 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>At the Black Hat security conference, the AI giant revealed new details about how its agents went rogue, hacked several other companies—and did it all right under the company’s nose.</description>
   </item>
   </channel>
 </rss>
