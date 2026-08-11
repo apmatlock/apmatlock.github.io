@@ -5,8 +5,16 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 11 Aug 2026 17:08:05 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 11 Aug 2026 18:07:51 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Microsoft Patches 398 Flaws Including a Windows Driver Zero-Day Under Active Attack</title>
+    <link>https://thehackernews.com/2026/08/microsoft-patches-398-flaws-including.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/08/microsoft-patches-398-flaws-including.html</guid>
+    <pubDate>Wed, 12 Aug 2026 01:40:55 +0530</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Microsoft released its monthly security updates on Tuesday, and one of the flaws it closed is already being used in attacks. The bug sits in a core Windows kernel driver that handles network socket operations. An attacker with code already running on a machine can use it to escal…</description>
+  </item>
   <item>
     <title>Sandworm-Linked UAC-0145 Uses Fake Job Interviews to Push VPN That Can Run Commands</title>
     <link>https://thehackernews.com/2026/08/sandworm-linked-uac-0145-uses-fake-job.html</link>
@@ -16,12 +24,28 @@
     <description>The Computer Emergency Response Team of Ukraine (CERT-UA) has disclosed details of a new social engineering campaign orchestrated by Russian nation-state threat actors targeting IT workers in the country by masquerading as recruiters to trick them into installing malware. CERT-UA…</description>
   </item>
   <item>
+    <title>Kimwolf v7 Android Botnet Makes HTTP/2 DDoS Traffic Look Like Legitimate Browsing</title>
+    <link>https://thehackernews.com/2026/08/kimwolf-v7-android-botnet-makes-http2.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/08/kimwolf-v7-android-botnet-makes-http2.html</guid>
+    <pubDate>Wed, 12 Aug 2026 01:06:37 +0530</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>Cybersecurity researchers have discovered a new version of the Kimwolf/AISURU Android and Internet of Things (IoT) botnet that comes with significant improvements to improve its operational resilience and conduct distributed denial-of-service (DDoS) attacks. The new version, trac…</description>
+  </item>
+  <item>
     <title>Weekly Threat Bulletin – August 12th, 2026</title>
     <link>https://www.f5.com/labs/articles/weekly-threat-bulletin-august-12th-2026</link>
     <guid isPermaLink="true">https://www.f5.com/labs/articles/weekly-threat-bulletin-august-12th-2026</guid>
     <pubDate>Wed, 12 Aug 2026 18:07:12 +0000</pubDate>
     <category>Infosec News</category>
     <description>These are the top threats you should know about this week.</description>
+  </item>
+  <item>
+    <title>Zoom Annotation Flaws Could Let a Meeting Participant Hijack Another Attendee&#x27;s Client</title>
+    <link>https://thehackernews.com/2026/08/zoom-annotation-flaws-could-let-meeting.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/08/zoom-annotation-flaws-could-let-meeting.html</guid>
+    <pubDate>Wed, 12 Aug 2026 00:38:47 +0530</pubDate>
+    <category>Infosec News</category>
+    <description>Anyone sharing their screen on a Zoom call could have taken over the computers of everyone watching, and anyone watching could have taken over the presenter&#x27;s. The flaw sat in the annotation tool, the feature that lets participants draw and type on a shared screen, and it asked n…</description>
   </item>
   <item>
     <title>CVE-2026-64581 xfrm: fix sk_dst_cache double-free in xfrm_user_policy()</title>
@@ -1580,30 +1604,6 @@
     <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68196</link>
     <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68196</guid>
     <pubDate>Tue, 11 Aug 2026 01:17:19 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-68370 usb: gadget: dummy_hcd: prevent fifo_req reuse during giveback</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68370</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68370</guid>
-    <pubDate>Tue, 11 Aug 2026 01:17:03 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-68233 drm/vc4: Shut down BO cache timer before teardown</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68233</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68233</guid>
-    <pubDate>Tue, 11 Aug 2026 01:16:58 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-64654 GitHub CLI: Terminal escape sequence injection in multiple `gh` commands</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64654</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-64654</guid>
-    <pubDate>Tue, 11 Aug 2026 01:18:06 -0700</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Information published.</description>
   </item>
