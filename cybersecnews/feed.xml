@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 12 Aug 2026 02:08:02 -0300</lastBuildDate>
+    <lastBuildDate>Wed, 12 Aug 2026 03:07:57 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Microsoft Patches 398 Flaws Including a Windows Driver Zero-Day Under Active Attack</title>
@@ -40,6 +40,14 @@
     <description>Business intelligence (BI) platform provider Metabase has disclosed a zero-day SQL Injection vulnerability, warning that customers’ sensitive credentials, tokens, API keys, and other data may have been exposed. The Metabase vulnerability revealed on August 6, designated CVE-2026-…</description>
   </item>
   <item>
+    <title>Cisco Patches Firewall Zero-Day Exploited for DoS Attacks</title>
+    <link>https://www.securityweek.com/cisco-patches-firewall-zero-day-exploited-for-dos-attacks/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/cisco-patches-firewall-zero-day-exploited-for-dos-attacks/</guid>
+    <pubDate>Wed, 12 Aug 2026 05:10:47 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>CVE-2026-20349 can be exploited remotely without authentication against Secure Firewall ASA and FTD devices. The post Cisco Patches Firewall Zero-Day Exploited for DoS Attacks appeared first on SecurityWeek .</description>
+  </item>
+  <item>
     <title>Sandworm-Linked UAC-0145 Uses Fake Job Interviews to Push VPN That Can Run Commands</title>
     <link>https://thehackernews.com/2026/08/sandworm-linked-uac-0145-uses-fake-job.html</link>
     <guid isPermaLink="true">https://thehackernews.com/2026/08/sandworm-linked-uac-0145-uses-fake-job.html</guid>
@@ -54,6 +62,14 @@
     <pubDate>Wed, 12 Aug 2026 04:00:55 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>CISOs and CTOs expect AI deployments to increase their organizations&amp;#8217; attack surface by an average of 14% over the next year. Nearly all lack visibility into AI deployments, and 90% are concerned about employees using unapproved AI tools outside formal oversight, according …</description>
+  </item>
+  <item>
+    <title>PentestGPT: Open-source automated penetration testing agentic framework</title>
+    <link>https://www.helpnetsecurity.com/2026/08/12/pentestgpt-open-source/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/08/12/pentestgpt-open-source/</guid>
+    <pubDate>Wed, 12 Aug 2026 05:30:45 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>PentestGPT is an open-source penetration testing agent that points a large language model at a target and lets it work. In its default mode it runs recon, then exploit, then walkthrough, each stage feeding the next. Switch it to pentest mode and the stages become asset discovery,…</description>
   </item>
   <item>
     <title>Kimwolf botnet rebuilt to survive takedowns, researchers say</title>
@@ -96,12 +112,28 @@
     <description>A seller on a cybercrime forum is offering a ready-made scam kit for $500, complete with an admin panel that tracks victims, checks their crypto wallets for value, and inflates fake balances to squeeze out more money, Malwarebytes found. Researchers discovered the scam project on…</description>
   </item>
   <item>
+    <title>Post-quantum migration gets harder when every user holds a key</title>
+    <link>https://www.helpnetsecurity.com/2026/08/12/christopher-smith-quantus-post-quantum-migration/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/08/12/christopher-smith-quantus-post-quantum-migration/</guid>
+    <pubDate>Wed, 12 Aug 2026 06:00:53 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>In this Help Net Security interview, Christopher Smith, CEO of Quantus, discusses what cryptographic inventories turn up in banks and hospitals, including default passwords and admin keys still held by former employees. He explains where post-quantum key sizes break old size assu…</description>
+  </item>
+  <item>
     <title>Kimwolf v7 Android Botnet Makes HTTP/2 DDoS Traffic Look Like Legitimate Browsing</title>
     <link>https://thehackernews.com/2026/08/kimwolf-v7-android-botnet-makes-http2.html</link>
     <guid isPermaLink="true">https://thehackernews.com/2026/08/kimwolf-v7-android-botnet-makes-http2.html</guid>
     <pubDate>Wed, 12 Aug 2026 01:06:37 +0530</pubDate>
     <category>Cyber Threat Landscape</category>
     <description>Cybersecurity researchers have discovered a new version of the Kimwolf/AISURU Android and Internet of Things (IoT) botnet that comes with significant improvements to improve its operational resilience and conduct distributed denial-of-service (DDoS) attacks. The new version, trac…</description>
+  </item>
+  <item>
+    <title>Risky Business #848 -- OpenAI comes clean</title>
+    <link>https://risky.biz/RB848/</link>
+    <guid isPermaLink="true">https://risky.biz/RB848/</guid>
+    <pubDate>Wed, 12 Aug 2026 15:19:11 +1000</pubDate>
+    <category>Podcasts</category>
+    <description>On this week’s show Patrick Gray and James Wilson are joined by guest co-host Brad Arkin to talk through the week’s news, including: The AI-agent-hacks-stuff saga continues. This week we have one booting gymgoers from full classes to nab its owner a spot Somehow OpenAI’s legal te…</description>
   </item>
   <item>
     <title>Weekly Threat Bulletin – August 12th, 2026</title>
@@ -1572,38 +1604,6 @@
     <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68327</link>
     <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68327</guid>
     <pubDate>Tue, 11 Aug 2026 01:16:29 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-68188 Bluetooth: RFCOMM: Fix session UAF in set_termios</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68188</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68188</guid>
-    <pubDate>Tue, 11 Aug 2026 01:15:41 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-68360 hwmon: (corsair-cpro) Stop device IO before calling hid_hw_stop</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68360</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68360</guid>
-    <pubDate>Tue, 11 Aug 2026 01:16:03 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-68271 drm/nouveau: fix reversed error cleanup order in ucopy functions</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68271</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68271</guid>
-    <pubDate>Tue, 11 Aug 2026 01:16:49 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-68162 sctp: avoid auth_enable sysctl UAF during netns teardown</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68162</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68162</guid>
-    <pubDate>Tue, 11 Aug 2026 01:16:25 -0700</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Information published.</description>
   </item>
