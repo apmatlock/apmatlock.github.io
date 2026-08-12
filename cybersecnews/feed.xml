@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 11 Aug 2026 21:08:04 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 11 Aug 2026 22:07:11 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Microsoft Patches 398 Flaws Including a Windows Driver Zero-Day Under Active Attack</title>
@@ -16,12 +16,36 @@
     <description>Microsoft released its monthly security updates on Tuesday, and one of the flaws it closed is already being used in attacks. The bug sits in a core Windows kernel driver that handles network socket operations. An attacker with code already running on a machine can use it to escal…</description>
   </item>
   <item>
+    <title>DefCon airplane Wi-Fi drama. GhostJacking leads to agent hijacks, AI agent hacks gym</title>
+    <link>https://cybersecuritytoday.libsyn.com/defcon-airplane-wi-fi-drama-ghostjacking-leads-to-agent-hijacks-ai-agent-hacks-gym</link>
+    <guid isPermaLink="true">https://cybersecuritytoday.libsyn.com/defcon-airplane-wi-fi-drama-ghostjacking-leads-to-agent-hijacks-ai-agent-hacks-gym</guid>
+    <pubDate>Wed, 12 Aug 2026 00:30:00 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>DEF CON In-Flight Wi‑Fi Hack, 400 Microsoft Patches, and AI Agent &#x27;Ghostjacking&#x27; Delta Air Lines is investigating a brief appearance of an unauthorized Wi‑Fi network on a Las Vegas–Atlanta flight carrying DEF CON attendees after reports of a deauthentication attack, a rogue SSID …</description>
+  </item>
+  <item>
+    <title>Patch Tuesday August 2026: A zero-day WinSock driver hole under exploit, and a maximum severity SAP vulnerability</title>
+    <link>https://www.csoonline.com/article/4208185/patch-tuesday-august-2026-a-zero-day-winsock-driver-hole-under-exploit-and-a-maximum-severity-sap-vulnerability.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4208185/patch-tuesday-august-2026-a-zero-day-winsock-driver-hole-under-exploit-and-a-maximum-severity-sap-vulnerability.html</guid>
+    <pubDate>Wed, 12 Aug 2026 00:45:42 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>A currently exploited zero-day elevation of privilege vulnerability that needs to be patched in a Windows driver for WinSock is the highlight of the 398 fixes issued today in Microsoft’s August Patch Tuesday releases. The hole is in Windows’ Ancillary Function Driver for WinSock …</description>
+  </item>
+  <item>
     <title>Sandworm-Linked UAC-0145 Uses Fake Job Interviews to Push VPN That Can Run Commands</title>
     <link>https://thehackernews.com/2026/08/sandworm-linked-uac-0145-uses-fake-job.html</link>
     <guid isPermaLink="true">https://thehackernews.com/2026/08/sandworm-linked-uac-0145-uses-fake-job.html</guid>
     <pubDate>Wed, 12 Aug 2026 00:06:47 +0530</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>The Computer Emergency Response Team of Ukraine (CERT-UA) has disclosed details of a new social engineering campaign orchestrated by Russian nation-state threat actors targeting IT workers in the country by masquerading as recruiters to trick them into installing malware. CERT-UA…</description>
+  </item>
+  <item>
+    <title>Kimwolf botnet rebuilt to survive takedowns, researchers say</title>
+    <link>https://cyberscoop.com/kimwolf-botnet-palo-alto-unit-42-android-tv-boxes/</link>
+    <guid isPermaLink="true">https://cyberscoop.com/kimwolf-botnet-palo-alto-unit-42-android-tv-boxes/</guid>
+    <pubDate>Wed, 12 Aug 2026 00:13:08 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Months after police seized its servers and arrested an alleged operator, the Kimwolf botnet is running code that disguises attacks as Chrome traffic and fetches its orders from the Ethereum blockchain. The post Kimwolf botnet rebuilt to survive takedowns, researchers say appeared…</description>
   </item>
   <item>
     <title>Kimwolf v7 Android Botnet Makes HTTP/2 DDoS Traffic Look Like Legitimate Browsing</title>
@@ -46,6 +70,14 @@
     <pubDate>Wed, 12 Aug 2026 00:38:47 +0530</pubDate>
     <category>Infosec News</category>
     <description>Anyone sharing their screen on a Zoom call could have taken over the computers of everyone watching, and anyone watching could have taken over the presenter&#x27;s. The flaw sat in the annotation tool, the feature that lets participants draw and type on a shared screen, and it asked n…</description>
+  </item>
+  <item>
+    <title>Capability Is Closing the Open-Closed Gap; Security Is Not</title>
+    <link>https://www.f5.com/labs/articles/capability-is-closing-the-open-closed-gap-security-is-not</link>
+    <guid isPermaLink="true">https://www.f5.com/labs/articles/capability-is-closing-the-open-closed-gap-security-is-not</guid>
+    <pubDate>Wed, 12 Aug 2026 00:31:00 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>A competitive open-weight model, Claude Fable, and Jade Puffer.</description>
   </item>
   <item>
     <title>Patch Tuesday - August 2026</title>
@@ -1572,38 +1604,6 @@
     <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68209</link>
     <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68209</guid>
     <pubDate>Tue, 11 Aug 2026 01:16:36 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-20348 ClamAV XAR File Format Processing Memory Corruption Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-20348</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-20348</guid>
-    <pubDate>Tue, 11 Aug 2026 01:17:18 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-68102 drm/amdgpu: fix aperture mapping leak</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68102</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68102</guid>
-    <pubDate>Tue, 11 Aug 2026 01:16:45 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-68325 iommu/amd: Bound the early ACPI HID map</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68325</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68325</guid>
-    <pubDate>Tue, 11 Aug 2026 01:16:43 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-68085 Bluetooth: hci_uart: clear HCI_UART_SENDING when write_work is canceled</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68085</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68085</guid>
-    <pubDate>Tue, 11 Aug 2026 01:17:26 -0700</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Information published.</description>
   </item>
