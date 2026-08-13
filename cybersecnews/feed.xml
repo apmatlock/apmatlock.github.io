@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 13 Aug 2026 07:08:01 -0300</lastBuildDate>
+    <lastBuildDate>Thu, 13 Aug 2026 08:08:00 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Cisco fixes vulnerability exploited to DoS its firewalls (CVE-2026-20349)</title>
@@ -102,6 +102,22 @@
     <pubDate>Thu, 13 Aug 2026 08:38:03 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Dropped on Patch Tuesday, the exploit allows any user to spawn a shell with System privileges. The post Nightmare Eclipse Drops Windows Zero-Day Exploit &amp;#8216;ShieldBreak&amp;#8217; appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>Searchlight Cyber combines exposure and threat intelligence in new PTEM platform</title>
+    <link>https://www.helpnetsecurity.com/2026/08/13/searchlight-cyber-preemptive-threat-exposure-management-ptem-platform/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/08/13/searchlight-cyber-preemptive-threat-exposure-management-ptem-platform/</guid>
+    <pubDate>Thu, 13 Aug 2026 10:34:06 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Searchlight Cyber has launched its Preemptive Threat Exposure Management (PTEM) platform, combining exposure visibility with real-world attacker intelligence to help organizations prioritize and reduce the exposures most likely to be exploited. Security for the real-time era For …</description>
+  </item>
+  <item>
+    <title>153GB of stolen credentials surface after LiteLLM supply chain attack</title>
+    <link>https://www.helpnetsecurity.com/2026/08/13/litellm-breach-stolen-credentials-leak/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/08/13/litellm-breach-stolen-credentials-leak/</guid>
+    <pubDate>Thu, 13 Aug 2026 10:32:51 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>A massive 153GB archive stolen during the LiteLLM supply chain attack exposes credentials and other sensitive data linked to thousands of corporate domains, including AWS, Samsung, Cisco, and Salesforce. Hudson Rock says it obtained and analyzed the archive, which contains 433,90…</description>
   </item>
   <item>
     <title>Srsly Risky Biz: Data extortion is booming. Hooray!</title>
@@ -206,6 +222,30 @@
     <pubDate>Thu, 13 Aug 2026 10:00:00 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Researchers discovered hackers-for-hire performing cyber espionage and financially motivated heists from the same Web panel.</description>
+  </item>
+  <item>
+    <title>Proton VPN is replacing wireguard-go with a new Rust VPN core</title>
+    <link>https://cyberinsider.com/proton-vpn-is-replacing-wireguard-go-with-a-new-rust-vpn-core/</link>
+    <guid isPermaLink="true">https://cyberinsider.com/proton-vpn-is-replacing-wireguard-go-with-a-new-rust-vpn-core/</guid>
+    <pubDate>Thu, 13 Aug 2026 10:48:43 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Proton VPN has developed a new Rust-based client architecture, internally called ProTUN, to provide a common WireGuard implementation across its desktop and mobile applications and give its engineers greater control over anti-censorship features. Proton engineer Antonio Cesarano …</description>
+  </item>
+  <item>
+    <title>WhatsApp adds on-device scam detection without sending chats to Meta</title>
+    <link>https://cyberinsider.com/whatsapp-adds-on-device-scam-detection-without-sending-chats-to-meta/</link>
+    <guid isPermaLink="true">https://cyberinsider.com/whatsapp-adds-on-device-scam-detection-without-sending-chats-to-meta/</guid>
+    <pubDate>Thu, 13 Aug 2026 10:27:17 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Meta has unveiled an early version of Scam Alert, an optional WhatsApp security feature that uses an on-device machine learning model to identify messages that may be part of a scam. The company says message content remains on the user&amp;#8217;s phone during classification and is n…</description>
+  </item>
+  <item>
+    <title>Fortinet Patches Authentication Flaws in FortiWeb and FortiManager</title>
+    <link>https://www.securityweek.com/fortinet-patches-authentication-flaws-in-fortiweb-and-fortimanager/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/fortinet-patches-authentication-flaws-in-fortiweb-and-fortimanager/</guid>
+    <pubDate>Thu, 13 Aug 2026 10:40:57 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>The vulnerabilities could allow attackers to log in with random usernames and passwords or impersonate any FortiGate appliance. The post Fortinet Patches Authentication Flaws in FortiWeb and FortiManager appeared first on SecurityWeek .</description>
   </item>
   <item>
     <title>Surveillance Rulings and Social Media Scrutiny.</title>
@@ -1564,46 +1604,6 @@
     <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68252</link>
     <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68252</guid>
     <pubDate>Tue, 11 Aug 2026 01:05:14 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-68374 usb: core: sysfs: add lock to bos_descriptors_read()</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68374</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68374</guid>
-    <pubDate>Tue, 11 Aug 2026 01:05:28 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-68353 wifi: ath6kl: fix OOB read from firmware num_msg in TX complete handler</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68353</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68353</guid>
-    <pubDate>Tue, 11 Aug 2026 01:05:25 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-68187 exec: fix unsigned loop counter wrap in transfer_args_to_stack()</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68187</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68187</guid>
-    <pubDate>Tue, 11 Aug 2026 01:05:39 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-68411 wifi: mac80211_hwsim: clamp virtio RX length before skb_put</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68411</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68411</guid>
-    <pubDate>Tue, 11 Aug 2026 01:05:51 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-68152 amt: fix use-after-free in AMT delayed works</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68152</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68152</guid>
-    <pubDate>Tue, 11 Aug 2026 01:05:49 -0700</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Information published.</description>
   </item>
