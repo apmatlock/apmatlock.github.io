@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 13 Aug 2026 05:08:06 -0300</lastBuildDate>
+    <lastBuildDate>Thu, 13 Aug 2026 06:07:47 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Cisco fixes vulnerability exploited to DoS its firewalls (CVE-2026-20349)</title>
@@ -22,6 +22,14 @@
     <pubDate>Thu, 13 Aug 2026 11:39:48 +0530</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Threat actors have begun to exploit a newly disclosed Microsoft SharePoint vulnerability following the release of a proof-of-concept (PoC) code. The vulnerability in question is CVE-2026-55040 (CVSS score: 9.1), which refers to a critical security feature bypass that stems from w…</description>
+  </item>
+  <item>
+    <title>SharePoint CVE-2026-55040 Comes Under Attack Following Public Exploit</title>
+    <link>https://securityaffairs.com/197137/hacking/sharepoint-cve-2026-55040-comes-under-attack-following-public-exploit.html</link>
+    <guid isPermaLink="true">https://securityaffairs.com/197137/hacking/sharepoint-cve-2026-55040-comes-under-attack-following-public-exploit.html</guid>
+    <pubDate>Thu, 13 Aug 2026 08:36:30 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Attackers are exploiting SharePoint flaw CVE-2026-55040 after a public PoC was released, allowing unauthenticated users to impersonate administrators. Attackers started exploiting CVE-2026-55040 (CVSS score of 9.1), a critical SharePoint authentication bypass patched in July, wit…</description>
   </item>
   <item>
     <title>More Novo Nordisk data dumped by FulcrumSec</title>
@@ -72,12 +80,44 @@
     <description>Lazarus targets defense professionals with fake Lockheed Martin jobs, exploiting a Windows zero-day to deploy backdoors and evade security controls. Check Point Research has uncovered a new wave of Operation Dream Job, the long-running North Korean campaign that lures defense and…</description>
   </item>
   <item>
+    <title>Microsoft wants you to rethink your approach to cyber defense</title>
+    <link>https://www.csoonline.com/article/4208815/microsoft-wants-you-to-rethink-your-approach-to-cyber-defense.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4208815/microsoft-wants-you-to-rethink-your-approach-to-cyber-defense.html</guid>
+    <pubDate>Thu, 13 Aug 2026 08:25:00 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Cyber defenders need to shake off traditional best practices and switch from reactive patching to building inherently resilient systems in the face of AI-accelerated vulnerability discovery, according to a senior security manager at Microsoft. David Weston, group manager in the W…</description>
+  </item>
+  <item>
+    <title>Nightmare Eclipse Drops Windows Zero-Day Exploit ‘ShieldBreak’</title>
+    <link>https://www.securityweek.com/nightmare-eclipse-drops-windows-zero-day-exploit-shieldbreak/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/nightmare-eclipse-drops-windows-zero-day-exploit-shieldbreak/</guid>
+    <pubDate>Thu, 13 Aug 2026 08:38:03 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Dropped on Patch Tuesday, the exploit allows any user to spawn a shell with System privileges. The post Nightmare Eclipse Drops Windows Zero-Day Exploit &amp;#8216;ShieldBreak&amp;#8217; appeared first on SecurityWeek .</description>
+  </item>
+  <item>
     <title>What do AI-driven ‘bank heist’ attacks mean for defenders?</title>
     <link>https://thecyberwire.com/podcasts/ai-security-brief/9/notes</link>
     <guid isPermaLink="true">https://thecyberwire.com/podcasts/ai-security-brief/9/notes</guid>
     <pubDate>Thu, 13 Aug 2026 05:00:00 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>Attackers aren&#x27;t just using AI to steal data; they&#x27;re using it to fight back while you investigate them in real time. And once an adversary is inside, why would they ever want to leave? That&#x27;s the unsettling reality Tom Kellermann, VP of AI Security and Threat Research at TrendAI…</description>
+  </item>
+  <item>
+    <title>ICO Reprimands Criminal Records Office After 2023 Breach</title>
+    <link>https://www.infosecurity-magazine.com/news/ico-reprimands-acro-records-office/</link>
+    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/ico-reprimands-acro-records-office/</guid>
+    <pubDate>Thu, 13 Aug 2026 08:30:00 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>The ICO has issued a formal reprimand to ACRO after patching and security monitoring failures led to a breach</description>
+  </item>
+  <item>
+    <title>Storm-1175 Replaces Medusa With New StormEncryptor Ransomware</title>
+    <link>https://securityaffairs.com/197119/malware/storm-1175-replaces-medusa-with-new-stormencryptor-ransomware.html</link>
+    <guid isPermaLink="true">https://securityaffairs.com/197119/malware/storm-1175-replaces-medusa-with-new-stormencryptor-ransomware.html</guid>
+    <pubDate>Thu, 13 Aug 2026 08:09:08 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>Microsoft says China-linked Storm-1175 is using a new ransomware called StormEncryptor, replacing Medusa in its latest attacks. Microsoft says China-linked, financially motivated threat actor Storm-1175 has begun using a new ransomware strain called StormEncryptor. The group prev…</description>
   </item>
   <item>
     <title>ISC Stormcast For Thursday, August 13th, 2026 https://isc.sans.edu/podcastdetail/10050, (Thu, Aug 13th)</title>
@@ -1564,46 +1604,6 @@
     <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68238</link>
     <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68238</guid>
     <pubDate>Tue, 11 Aug 2026 01:07:14 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-68241 drm/i915/mst: limit DP MST ESI service loop</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68241</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68241</guid>
-    <pubDate>Tue, 11 Aug 2026 01:07:48 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-68362 wifi: ath11k: fix NULL pointer dereference in ath11k_hal_srng_access_begin</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68362</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68362</guid>
-    <pubDate>Tue, 11 Aug 2026 01:07:46 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-68315 sctp: validate stream count in sctp_process_strreset_inreq()</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68315</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68315</guid>
-    <pubDate>Tue, 11 Aug 2026 01:07:57 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-15534 Perl versions through 5.45.1 have out-of-bounds heap reads and writes during regular expression matching via an undersized superlinear cache in S_regmatch</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-15534</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-15534</guid>
-    <pubDate>Tue, 11 Aug 2026 01:08:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Information published.</description>
-  </item>
-  <item>
-    <title>CVE-2026-68272 drm/amdgpu: validate CP_GFX_SHADOW chunk size in CS pass1</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68272</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68272</guid>
-    <pubDate>Tue, 11 Aug 2026 01:08:00 -0700</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Information published.</description>
   </item>
