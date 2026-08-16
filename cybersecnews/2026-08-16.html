@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>matlock.ca // THREAT INTELLIGENCE — 2026-08-16</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/">MATLOCK<span class="dot">.</span>CA</a>
+  <nav class="primary">
+    <a href="/">Home</a>
+    <a href="/claudeblog/">Walkthroughs</a>
+    <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
+    <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="/cybersecnews/feed.xml">RSS</a>
+  </nav>
+</header>
+
+<nav class="subnav">
+  <span class="nav-label">// JUMP</span>
+<a href="archive.html">Archive</a>
+<a href="index.html" class="active">Today</a>
+<a href="2026-08-15.html">Yesterday</a>
+<a href="2026-08-14.html">14 Aug</a>
+<a href="2026-08-13.html">13 Aug</a>
+<a href="2026-08-12.html">12 Aug</a>
+<a href="2026-08-11.html">11 Aug</a>
+<a href="2026-08-10.html">10 Aug</a>
+
+</nav>
+<main class="container wide">
+
+    <div class="stats-bar">
+      <div class="stat"><span class="stat-value">7</span><span class="stat-label">Articles</span></div>
+      <div class="stat"><span class="stat-value">6</span><span class="stat-label">Categories</span></div>
+      <div class="stat"><span class="stat-value">2026-08-16</span><span class="stat-label">Date</span></div>
+    </div>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
+    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="security affairs newsletter round 590 by pierluigi paganini – international edition" data-date="2026-08-16"><span class="headline-date">16 Aug</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/197288/breaking-news/security-affairs-newsletter-round-590-by-pierluigi-paganini-international-edition.html" target="_blank" rel="noopener">Security Affairs newsletter Round 590 by Pierluigi Paganini – INTERNATIONAL EDITION</a><span class="article-summary">A new round of the weekly Security Affairs newsletter has arrived! Every week, the best security articles from Security Affairs are free in your email box. Enjoy a new round of the weekly SecurityAffairs newsletter, including international press. Crooks Are Buying Your Expired Do…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="week in review: salesforce and servicenow portals exposed for 17 months, exploited metabase 0-day" data-date="2026-08-16"><span class="headline-date">16 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/08/16/week-in-review-salesforce-and-servicenow-portals-exposed-for-17-months-exploited-metabase-0-day/" target="_blank" rel="noopener">Week in review: Salesforce and ServiceNow portals exposed for 17 months, exploited Metabase 0-day</a><span class="article-summary">Here’s an overview of some of last week’s most interesting news, articles, interviews and videos: GitHub Dependabot malware alerts now cover eight ecosystems GitHub has flagged npm malware since March 2026. Anyone pulling in a bad PyPI, Maven, RubyGems, NuGet, Go, crates.io, or P…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="nc: possible cyberattack hits wake election software vendor, leaving poll workers’ data exposed" data-date="2026-08-16"><span class="headline-date">16 Aug</span><span class="headline-body"><a class="headline-title" href="https://databreaches.net/2026/08/15/nc-possible-cyberattack-hits-wake-election-software-vendor-leaving-poll-workers-data-exposed/" target="_blank" rel="noopener">NC: Possible cyberattack hits Wake election software vendor, leaving poll workers’ data exposed</a><span class="article-summary">Caroline Yaffa reports: The Wake County Board of Elections is suspending its use of a software vendor after it reported a possible cyberattack. There’s no evidence that voting machines, ballots, voter registration records or systems used to count votes were affected, according to…</span></span><span class="headline-source">DATABREACHES.NET</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="ai, misinformation, and the future of cybersecurity." data-date="2026-08-16"><span class="headline-date">16 Aug</span><span class="headline-body"><a class="headline-title" href="https://thecyberwire.com/podcasts/tminus-space-cyber-briefing/720/notes" target="_blank" rel="noopener">AI, misinformation, and the future of cybersecurity.</a><span class="article-summary">As AI products proliferate, they continue to introduce new concerns, which have subtly eroded trust in imagery and content created by space-based infrastructure. In this week's episode, host Maria Varmazis sits down with ⁠⁠⁠Dave Bittner and Brandon Karpf to look at Google's troub…</span></span><span class="headline-source">THECYBERWIRE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="apt36 suspected in patchcord espionage campaign using google sheets c2" data-date="2026-08-16"><span class="headline-date">16 Aug</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/197266/intelligence/apt36-suspected-in-patchcord-espionage-campaign-using-google-sheets-c2.html" target="_blank" rel="noopener">APT36 Suspected in PATCHCORD Espionage Campaign Using Google Sheets C2</a><span class="article-summary">Acronis uncovered PATCHCORD, a stealthy backdoor targeting Afghan telecom and South Asian infrastructure via fake VPN tools and Google Sheets C2. Researchers at Acronis just documented an espionage operation that reads like it was built by someone with genuinely good taste in dis…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-cybersecurity-briefings">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(68,170,136,0.5);" onclick="toggleSection(this)">📰 CYBERSECURITY BRIEFINGS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="attacking trust in space." data-date="2026-08-16"><span class="headline-date">16 Aug</span><span class="headline-body"><a class="headline-title" href="https://thecyberwire.com/newsletters/signals-and-space/10/14" target="_blank" rel="noopener">Attacking trust in space.</a><span class="article-summary">This week on T-Minus: Space-Cyber Briefing: we look at how AI systems are being used to abuse the trust people have in space-based imagery. This abuse has caused people to believe that fake images and videos are genuine and dismiss real content as misinformation.</span></span><span class="headline-source">THECYBERWIRE.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="frontier models and the future of cyber defense." data-date="2026-08-16"><span class="headline-date">16 Aug</span><span class="headline-body"><a class="headline-title" href="https://thecyberwire.com/podcasts/special-edition/103/notes" target="_blank" rel="noopener">Frontier models and the future of cyber defense.</a><span class="article-summary">In this special edition from Black Hat, Dave Bittner sits down with ⁠Clint Gibler⁠, Cyber Lead at ⁠OpenAI⁠, and ⁠Robby Winchester⁠, Chief Global Professional Services Officer at ⁠SpecterOps⁠, to explore how frontier AI models are changing the way defenders approach cybersecurity.…</span></span><span class="headline-source">THECYBERWIRE.COM</span></div>
+  </div>
+</div>
+
+</main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
+<footer class="site-footer">
+  threat intelligence // 85 sources // generated 2026-08-16 06:06<span class="blink"></span>
+</footer>
+</body>
+</html>
