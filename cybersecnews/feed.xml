@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 17 Aug 2026 07:07:48 -0300</lastBuildDate>
+    <lastBuildDate>Mon, 17 Aug 2026 08:07:15 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Hackers exploit SharePoint bypass, Snowflake hacker&#x27;s threats to researcher backfire, CISA warns schools</title>
@@ -30,6 +30,14 @@
     <pubDate>Mon, 17 Aug 2026 05:05:33 -0400</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Microsoft is working on a security patch for the &quot;ShieldBreak&quot; zero-day vulnerability disclosed last week by security researcher &quot;Nightmare Eclipse&quot; and now tracked as CVE-2026-69414. [...]</description>
+  </item>
+  <item>
+    <title>Suspected China-Nexus Actor Exploits VMware vCenter Flaw, Deploys Babuk-Derived Ransomware</title>
+    <link>https://thehackernews.com/2026/08/suspected-china-nexus-actor-exploits.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/08/suspected-china-nexus-actor-exploits.html</guid>
+    <pubDate>Mon, 17 Aug 2026 13:06:19 +0530</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Cybersecurity researchers have attributed the exploitation of a newly patched security flaw in Broadcom VMware vCenter to a suspected China-nexus advanced persistent threat (APT). The attacks involve the exploitation of CVE-2026-59310 (CVSS score: 9.8), a severe directory-travers…</description>
   </item>
   <item>
     <title>Sponsored: What npm 12 fixes… and what it doesn’t</title>
@@ -94,6 +102,30 @@
     <pubDate>Mon, 17 Aug 2026 09:37:06 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Hackers exploited a vulnerability in the order-tracking function of a plugin to access SafePal customer information. The post 40,000 Impacted by SafePal Data Breach appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>Evooo1Bot Linux Botnet Exploits Known Flaws to Turn Edge Devices Into SOCKS5 Proxies</title>
+    <link>https://thehackernews.com/2026/08/evooo1bot-linux-botnet-exploits-known.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/08/evooo1bot-linux-botnet-exploits-known.html</guid>
+    <pubDate>Mon, 17 Aug 2026 14:59:55 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Cybersecurity researchers have flagged a previously undocumented Linux botnet family dubbed Evooo1Bot that derives its core functionality from the Mirai botnet source code and is equipped to turn internet-facing devices into SOCKS proxies. &quot;While the malware reuses the DDoS engin…</description>
+  </item>
+  <item>
+    <title>French tax authority data breach affects 678,000 individuals</title>
+    <link>https://www.bleepingcomputer.com/news/security/french-tax-authority-data-breach-affects-678-000-individuals/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/french-tax-authority-data-breach-affects-678-000-individuals/</guid>
+    <pubDate>Mon, 17 Aug 2026 06:09:48 -0400</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>The French Ministry of the Economy and Finance has disclosed a data breach after an attacker accessed the General Directorate of Public Finances (DGFiP) systems and stole data belonging to 678,000 individuals. [...]</description>
+  </item>
+  <item>
+    <title>SafePal breach affects 39,798 customers, data allegedly for sale</title>
+    <link>https://www.helpnetsecurity.com/2026/08/17/safepal-data-breach-customer-order-information/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/08/17/safepal-data-breach-customer-order-information/</guid>
+    <pubDate>Mon, 17 Aug 2026 10:29:57 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Cryptocurrency wallet maker SafePal disclosed a data breach that exposed order information for 39,798 customers, including names, email addresses, shipping addresses, phone numbers and purchase details. The company traced the exposure to an authorization flaw in a plug-in used fo…</description>
   </item>
   <item>
     <title>Fortune 500 Companies Hit in Azure Data Theft Campaign</title>
@@ -1574,38 +1606,6 @@
     <pubDate>Thu, 13 Aug 2026 10:32:51 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>A massive 153GB archive stolen during the LiteLLM supply chain attack exposes credentials and other sensitive data linked to thousands of corporate domains, including AWS, Samsung, Cisco, and Salesforce. Hudson Rock says it obtained and analyzed the archive, which contains 433,90…</description>
-  </item>
-  <item>
-    <title>The Model Is the Malware | What Four Agentic Intrusions Tell Defenders</title>
-    <link>https://www.sentinelone.com/labs/the-model-is-the-malware-what-four-agentic-intrusions-tell-defenders/</link>
-    <guid isPermaLink="true">https://www.sentinelone.com/labs/the-model-is-the-malware-what-four-agentic-intrusions-tell-defenders/</guid>
-    <pubDate>Thu, 13 Aug 2026 13:00:40 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>OpenAI, Anthropic and Meta disclosed agents reaching external systems. The tools didn&#x27;t matter, and that changes the playbook for investigating intrusions.</description>
-  </item>
-  <item>
-    <title>WordPress 7.0.4 Patches Remote Code Execution Vulnerability</title>
-    <link>https://www.securityweek.com/wordpress-7-0-4-patches-remote-code-execution-vulnerability/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/wordpress-7-0-4-patches-remote-code-execution-vulnerability/</guid>
-    <pubDate>Thu, 13 Aug 2026 12:53:56 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Attackers with Author-level user or higher permissions could exploit the flaw via malicious Postscript files. The post WordPress 7.0.4 Patches Remote Code Execution Vulnerability appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>AI agents wage near-autonomous cyberattack on Asian government networks</title>
-    <link>https://www.csoonline.com/article/4209210/ai-agents-wage-near-autonomous-cyberattack-on-asian-government-networks.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4209210/ai-agents-wage-near-autonomous-cyberattack-on-asian-government-networks.html</guid>
-    <pubDate>Thu, 13 Aug 2026 13:23:10 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Autonomous AI agents built on open-source frameworks breached Taiwanese government systems, compromised credentials, and probed a nuclear safety agency in a multi-day cyberattack that researchers say signals a new phase in AI-enabled operations. The campaign unfolded over four da…</description>
-  </item>
-  <item>
-    <title>vCenter Flaw Exploited Just Five Days After Disclosure</title>
-    <link>https://www.infosecurity-magazine.com/news/vcenter-cve-2026-59310-exploited/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/vcenter-cve-2026-59310-exploited/</guid>
-    <pubDate>Thu, 13 Aug 2026 14:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Attackers exploited a critical-severity vCenter flaw five days after Broadcom disclosed it</description>
   </item>
   </channel>
 </rss>
