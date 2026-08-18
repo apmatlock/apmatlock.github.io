@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 18 Aug 2026 16:07:10 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 18 Aug 2026 17:07:11 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Weekly Threat Bulletin – August 19th, 2026</title>
@@ -70,6 +70,14 @@
     <pubDate>Tue, 18 Aug 2026 07:00:00 -0700</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Corrected the affected product from **Azure Monitor Agent Metrics Extension** to **Azure Connected Machine Agent** and updated the Security Updates table. This is an informational change only.</description>
+  </item>
+  <item>
+    <title>Critical GitLab flaw allows attackers to delete and modify public repos</title>
+    <link>https://www.csoonline.com/article/4211140/critical-gitlab-flaw-allows-attackers-to-delete-and-modify-public-repos.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4211140/critical-gitlab-flaw-allows-attackers-to-delete-and-modify-public-repos.html</guid>
+    <pubDate>Tue, 18 Aug 2026 19:33:31 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>GitLab has fixed a critical vulnerability that could allow unauthenticated attackers to perform unauthorized modifications inside code repositories or to completely delete them with a single HTTP request. The patched releases also address a second high-risk cross-site request for…</description>
   </item>
   <item>
     <title>Snowflake GitHub Actions Flaw Lets Crafted Issues Trigger Command Injection</title>
@@ -286,6 +294,22 @@
     <pubDate>Tue, 18 Aug 2026 23:14:05 +0530</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Two critical vulnerabilities impacting MLflow, an open-source artificial intelligence (AI) platform, and FUXA, an open-source, web-based SCADA / HMI software built for operational technology (OT) and industrial automation, are witnessing malicious scanning and exploitation effort…</description>
+  </item>
+  <item>
+    <title>Your LLM Might Find Missing Logs</title>
+    <link>https://www.youtube.com/shorts/luS5aBsfc8I</link>
+    <guid isPermaLink="true">https://www.youtube.com/shorts/luS5aBsfc8I</guid>
+    <pubDate>Tue, 18 Aug 2026 19:00:10 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>LLM agents can do more than generate security queries. They can analyze available data sources and point out potential gaps, including log sources that aren&#x27;t currently being ingested. That can help security teams build a more complete picture of their infrastructure. But the mod…</description>
+  </item>
+  <item>
+    <title>CISOs Break Their Silence in &#x27;Declassified&#x27; Docuseries</title>
+    <link>https://www.darkreading.com/cyber-risk/cisos-break-their-silence-in-declassified-docuseries</link>
+    <guid isPermaLink="true">https://www.darkreading.com/cyber-risk/cisos-break-their-silence-in-declassified-docuseries</guid>
+    <pubDate>Tue, 18 Aug 2026 18:32:01 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Million-dollar heists, divorce, and career-ending burnout are all stories told in the latest docuseries revealing a behind-the-scenes look at the cybersecurity community.</description>
   </item>
   <item>
     <title>UK Legal Regulator Raises AI Misuse Concerns</title>
@@ -1582,30 +1606,6 @@
     <pubDate>Sun, 16 Aug 2026 08:31:53 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>A new round of the weekly Security Affairs newsletter has arrived! Every week, the best security articles from Security Affairs are free in your email box. Enjoy a new round of the weekly SecurityAffairs newsletter, including international press. Crooks Are Buying Your Expired Do…</description>
-  </item>
-  <item>
-    <title>CVE-2026-65769 Microsoft Teams iOS Information Disclosure Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-65769</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-65769</guid>
-    <pubDate>Sun, 16 Aug 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Corrected build number for the security update. This in an informational change only.</description>
-  </item>
-  <item>
-    <title>Week in review: Salesforce and ServiceNow portals exposed for 17 months, exploited Metabase 0-day</title>
-    <link>https://www.helpnetsecurity.com/2026/08/16/week-in-review-salesforce-and-servicenow-portals-exposed-for-17-months-exploited-metabase-0-day/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/08/16/week-in-review-salesforce-and-servicenow-portals-exposed-for-17-months-exploited-metabase-0-day/</guid>
-    <pubDate>Sun, 16 Aug 2026 08:00:56 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Here’s an overview of some of last week’s most interesting news, articles, interviews and videos: GitHub Dependabot malware alerts now cover eight ecosystems GitHub has flagged npm malware since March 2026. Anyone pulling in a bad PyPI, Maven, RubyGems, NuGet, Go, crates.io, or P…</description>
-  </item>
-  <item>
-    <title>NC: Possible cyberattack hits Wake election software vendor, leaving poll workers’ data exposed</title>
-    <link>https://databreaches.net/2026/08/15/nc-possible-cyberattack-hits-wake-election-software-vendor-leaving-poll-workers-data-exposed/</link>
-    <guid isPermaLink="true">https://databreaches.net/2026/08/15/nc-possible-cyberattack-hits-wake-election-software-vendor-leaving-poll-workers-data-exposed/</guid>
-    <pubDate>Sun, 16 Aug 2026 00:19:32 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Caroline Yaffa reports: The Wake County Board of Elections is suspending its use of a software vendor after it reported a possible cyberattack. There’s no evidence that voting machines, ballots, voter registration records or systems used to count votes were affected, according to…</description>
   </item>
   </channel>
 </rss>
