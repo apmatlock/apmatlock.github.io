@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 18 Aug 2026 12:07:01 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 18 Aug 2026 13:07:15 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Weekly Threat Bulletin – August 19th, 2026</title>
@@ -62,6 +62,14 @@
     <pubDate>Tue, 18 Aug 2026 07:00:00 -0700</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Improper neutralization of special elements used in a command (&#x27;command injection&#x27;) in Microsoft Copilot allows an unauthorized attacker to disclose information over a network.</description>
+  </item>
+  <item>
+    <title>CVE-2026-47632 Azure Connected Machine Agent Elevation of Privilege Vulnerability</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-47632</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-47632</guid>
+    <pubDate>Tue, 18 Aug 2026 07:00:00 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Corrected the affected product from **Azure Monitor Agent Metrics Extension** to **Azure Connected Machine Agent** and updated the Security Updates table. This is an informational change only.</description>
   </item>
   <item>
     <title>Snowflake GitHub Actions Flaw Lets Crafted Issues Trigger Command Injection</title>
@@ -456,12 +464,28 @@
     <description>With no formal training and no career plan, Waisman built a path from Argentina&#x27;s early hacking scene to leading security at an AI-powered offensive security firm. The post CISO Conversations: Nico Waisman – From Self-Taught Hacker to AI-Driven Offensive Security at XBOW appeared…</description>
   </item>
   <item>
+    <title>GitLab issues emergency patch for critical code-injection flaw</title>
+    <link>https://www.cybersecuritydive.com/news/gitlab-emergency-patch-critical-code-injection/828151/</link>
+    <guid isPermaLink="true">https://www.cybersecuritydive.com/news/gitlab-emergency-patch-critical-code-injection/828151/</guid>
+    <pubDate>Tue, 18 Aug 2026 10:52:30 -0400</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Researchers warn that unauthenticated attackers would be able to delete or modify publicly accessible projects.</description>
+  </item>
+  <item>
     <title>Silent &#x27;TwinLoot&#x27; Cyber Threat Operates Entirely From Microsoft&#x27;s Cloud</title>
     <link>https://www.darkreading.com/cloud-security/silent-twinloot-threat-operates-microsoft-cloud</link>
     <guid isPermaLink="true">https://www.darkreading.com/cloud-security/silent-twinloot-threat-operates-microsoft-cloud</guid>
     <pubDate>Tue, 18 Aug 2026 13:00:00 +0000</pubDate>
     <category>Cyber Threat Landscape</category>
     <description>The Python-based malware framework takes living-off-the-land tactics to a new heights of stealth, with a modular implant that steals credentials and achieves persistence.</description>
+  </item>
+  <item>
+    <title>US states sue Meta over claims that it deliberately addicts young users.</title>
+    <link>https://thecyberwire.com/newsletters/daily-briefing/15/157</link>
+    <guid isPermaLink="true">https://thecyberwire.com/newsletters/daily-briefing/15/157</guid>
+    <pubDate>Tue, 18 Aug 2026 16:00:00 +0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>Researchers reverse-engineer French malware used to hack EncroChat. An unprecedented number of Apple users received spyware alerts last week.</description>
   </item>
   <item>
     <title>Between Two Nerds: The eye of Sauron</title>
@@ -574,6 +598,30 @@
     <pubDate>Tue, 18 Aug 2026 10:01:11 -0400</pubDate>
     <category>Infosec News</category>
     <description>Security controls can block a familiar attack method while missing quieter ways to achieve the same objective. Picus Security&#x27;s Blue Report 2026 shows how prevention rates can vary dramatically by technique and why behavioral testing is needed to uncover those gaps. [...]</description>
+  </item>
+  <item>
+    <title>Bluesky says its recent outage was caused by another DDoS attack</title>
+    <link>https://techcrunch.com/2026/08/18/bluesky-says-its-recent-outage-was-caused-by-another-ddos-attack/</link>
+    <guid isPermaLink="true">https://techcrunch.com/2026/08/18/bluesky-says-its-recent-outage-was-caused-by-another-ddos-attack/</guid>
+    <pubDate>Tue, 18 Aug 2026 15:59:48 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>This is the latest large-scale DDoS attack to hit the social networking site this year.</description>
+  </item>
+  <item>
+    <title>Apple fixes another image-processing flaw that could allow code execution</title>
+    <link>https://www.malwarebytes.com/blog/bugs/2026/08/apple-fixes-another-image-processing-flaw-that-could-allow-code-execution</link>
+    <guid isPermaLink="true">https://www.malwarebytes.com/blog/bugs/2026/08/apple-fixes-another-image-processing-flaw-that-could-allow-code-execution</guid>
+    <pubDate>Tue, 18 Aug 2026 14:55:04 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>Apple has released updates fixing 27 vulnerabilities in iOS, iPadOS, and macOS Tahoe, including a potentially serious image-processing flaw.</description>
+  </item>
+  <item>
+    <title>Wiz AI Agent Finds Critical Snowflake GitHub Repo Flaw Advanced Security Missed</title>
+    <link>https://www.infosecurity-magazine.com/news/wiz-ai-agent-finds-snowflake/</link>
+    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/wiz-ai-agent-finds-snowflake/</guid>
+    <pubDate>Tue, 18 Aug 2026 15:30:00 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>The security flaw in Snowflake’s GitHub Actions workflow had been missed by a GitHub Advanced Security scan, said a Wiz researcher</description>
   </item>
   <item>
     <title>Hackers exploit SharePoint bypass, Snowflake hacker&#x27;s threats to researcher backfire, CISA warns schools</title>
@@ -1558,54 +1606,6 @@
     <pubDate>Sun, 16 Aug 2026 23:38:43 +0000</pubDate>
     <category>Infosec News</category>
     <description>Large DDoS attacks disrupted Threema, causing severe communication outages. Threema On-Prem users were unaffected by the attacks. Threema suffered multiple large-scale DDoS attacks that disrupted its secure messaging service and caused severe communication issues. Organizations u…</description>
-  </item>
-  <item>
-    <title>macOS Screen Sharing Flaw Exploited to Deploy Monero Miners</title>
-    <link>https://securityaffairs.com/197234/uncategorized/macos-screen-sharing-flaw-exploited-to-deploy-monero-miners.html</link>
-    <guid isPermaLink="true">https://securityaffairs.com/197234/uncategorized/macos-screen-sharing-flaw-exploited-to-deploy-monero-miners.html</guid>
-    <pubDate>Sat, 15 Aug 2026 08:34:46 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Hackers are exploiting a macOS Screen Sharing flaw to gain root access and install Monero miners on Macs with port 5900 exposed online. The Dutch National Cyber Security Centre confirmed active exploitation of a critical macOS authentication flaw, tracked as CVE-2026-65400 (CVSS …</description>
-  </item>
-  <item>
-    <title>SAP Commerce Cloud CVE-2026-58231 Exploited in the Wild</title>
-    <link>https://securityaffairs.com/197244/security/sap-commerce-cloud-cve-2026-58231-exploited-in-the-wild.html</link>
-    <guid isPermaLink="true">https://securityaffairs.com/197244/security/sap-commerce-cloud-cve-2026-58231-exploited-in-the-wild.html</guid>
-    <pubDate>Sat, 15 Aug 2026 17:14:15 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Attackers are actively exploiting a maximum severity SAP Commerce Cloud vulnerability, tracked as CVE-2026-58231, just days after SAP released a patch. A critical SAP Commerce Cloud vulnerability, tracked as CVE-2026-58231 (CVSS score of 10.0), is under active exploitation just d…</description>
-  </item>
-  <item>
-    <title>President Trump authorizes private-sector companies to hack cybercriminals.</title>
-    <link>https://thecyberwire.com/newsletters/week-that-was/10/31</link>
-    <guid isPermaLink="true">https://thecyberwire.com/newsletters/week-that-was/10/31</guid>
-    <pubDate>Sat, 15 Aug 2026 04:15:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Trivy, not LiteLLM, was the original source of the 2,500-organization supply chain attack. Patch Tuesday notes: Microsoft fixes three zero-days.</description>
-  </item>
-  <item>
-    <title>GeoServer Zero-Day Is Already Being Probed. That’s the Problem</title>
-    <link>https://securityaffairs.com/197216/hacking/geoserver-zero-day-is-already-being-probed-thats-the-problem.html</link>
-    <guid isPermaLink="true">https://securityaffairs.com/197216/hacking/geoserver-zero-day-is-already-being-probed-thats-the-problem.html</guid>
-    <pubDate>Sat, 15 Aug 2026 07:18:21 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>GeoServer faces an unpatched zero-day enabling SQL injection and potentially RCE, with attackers already probing exposed systems. A newly disclosed GeoServer zero-day is already attracting active exploitation attempts, and there is no patch available yet. Organisations running th…</description>
-  </item>
-  <item>
-    <title>CISA Unveils New Cybersecurity Resources for K-12 Schools and Districts</title>
-    <link>https://databreaches.net/2026/08/15/cisa-unveils-new-cybersecurity-resources-for-k-12-schools-and-districts/</link>
-    <guid isPermaLink="true">https://databreaches.net/2026/08/15/cisa-unveils-new-cybersecurity-resources-for-k-12-schools-and-districts/</guid>
-    <pubDate>Sat, 15 Aug 2026 11:20:49 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>A recent report claims ransomware attacks on K-12 are down for the first half of 2026, while another news story&amp;#8217;s headline today claims schools are becoming a new cybersecurity battleground. New? We don&amp;#8217;t think it&amp;#8217;s new. But the education sector has long been ch…</description>
-  </item>
-  <item>
-    <title>AI Code Has No Security Layers</title>
-    <link>https://www.youtube.com/shorts/x0NMz1iYuWI</link>
-    <guid isPermaLink="true">https://www.youtube.com/shorts/x0NMz1iYuWI</guid>
-    <pubDate>Sat, 15 Aug 2026 14:00:30 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Open-source software has accumulated layers of security controls over years, including code signing, provenance, version control, maintainer tracking, and MFA for commits. AI MCPs, skills, and AI-generated code can look like ordinary software, but the same security infrastructure…</description>
   </item>
   </channel>
 </rss>
