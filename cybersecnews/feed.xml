@@ -5,8 +5,16 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 19 Aug 2026 16:07:14 -0300</lastBuildDate>
+    <lastBuildDate>Wed, 19 Aug 2026 17:07:14 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Cloudflare Workers Spectre Attack Leaks JWT From Co-Located Worker at 12 Bits/Second</title>
+    <link>https://thehackernews.com/2026/08/cloudflare-workers-spectre-attack-leaks.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/08/cloudflare-workers-spectre-attack-leaks.html</guid>
+    <pubDate>Thu, 20 Aug 2026 00:32:40 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Cybersecurity researchers have disclosed details of a&amp;nbsp;remote Spectre attack&amp;nbsp;against Cloudflare Workers that leaked a JSON Web Token (JWT) from a co-located Worker in the production environment at up to 12 bits per second, 360 times the rate of an earlier attack demonstr…</description>
+  </item>
   <item>
     <title>U.S. CISA adds Apple macOS, Microsoft SharePoint, Broadcom VMware vCenter, and Microsoft IKE flaws to its Known Exploited Vulnerabilities catalog</title>
     <link>https://securityaffairs.com/197490/hacking/u-s-cisa-adds-apple-macos-microsoft-sharepoint-broadcom-vmware-vcenter-and-microsoft-ike-flaws-to-its-known-exploited-vulnerabilities-catalog.html</link>
@@ -126,6 +134,14 @@
     <pubDate>Wed, 19 Aug 2026 16:46:06 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Overview On August 19, 2026, a security advisory was published for CVE-2026-19490 , a critical authentication bypass vulnerability affecting Citrix NetScaler ADC and NetScaler Gateway. The vulnerability carries a CVSS v4.0 base score of 9.3 and can be exploited remotely by an una…</description>
+  </item>
+  <item>
+    <title>VU#874418: RDK-B WebUI contains multiple vulnerabilities</title>
+    <link>https://kb.cert.org/vuls/id/874418</link>
+    <guid isPermaLink="true">https://kb.cert.org/vuls/id/874418</guid>
+    <pubDate>Wed, 19 Aug 2026 19:28:37 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Overview RDK Central RDK-B WebUI version, rdkb-2025q4-kirkstone, contains multiple vulnerabilities involving memory corruption, improper authentication, race conditions, and insufficient input validation. An attacker with network access to an affected WebUI may be able to bypass …</description>
   </item>
   <item>
     <title>CoPilot Snitches on Itself, Hacker leaks Azure data and Texas University deals with cyber attack</title>
@@ -382,6 +398,14 @@
     <pubDate>Wed, 19 Aug 2026 13:50:01 -0400</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>U.S. cybersecurity agencies warn that threat actors are using AI-generated scripts to exploit Siemens S7 Series programmable logic controllers (PLCs) in U.S. critical infrastructure. [...]</description>
+  </item>
+  <item>
+    <title>OpenAI Pauses Frontier RL Training as It Tightens Defenses Against Unsafe AI Behavior</title>
+    <link>https://thehackernews.com/2026/08/openai-pauses-frontier-rl-training-as.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/08/openai-pauses-frontier-rl-training-as.html</guid>
+    <pubDate>Wed, 19 Aug 2026 23:36:44 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>OpenAI on Tuesday revealed that it paused reinforcement learning (RL) training for its latest artificial intelligence (AI) models for two weeks while it shored up additional defenses and increased the scope of its monitoring to avert another Hugging Face-like incident. &quot;As models…</description>
   </item>
   <item>
     <title>Microsoft fixes known issue causing Windows Defender crashes</title>
@@ -910,6 +934,14 @@
     <pubDate>Wed, 19 Aug 2026 18:08:35 +0000</pubDate>
     <category>Infosec News</category>
     <description>A legitimate-looking link or valid digital signature can offer false reassurance. Here’s why familiar download safety checks aren’t always enough.</description>
+  </item>
+  <item>
+    <title>Fortinet has acquired San Francisco-based AI security company Virtue AI.</title>
+    <link>https://thecyberwire.com/newsletters/business-briefing/8/33</link>
+    <guid isPermaLink="true">https://thecyberwire.com/newsletters/business-briefing/8/33</guid>
+    <pubDate>Wed, 19 Aug 2026 20:00:00 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>Dynatrace has agreed to acquire San Francisco-based AI observability platform Arize for $915 million. Cribl has acquired technology assets from Radiant Security&#x27;s AI SOC product.</description>
   </item>
   <item>
     <title>U.S. CISA adds a Ray-Project Ray flaw to its Known Exploited Vulnerabilities catalog</title>
@@ -1574,38 +1606,6 @@
     <pubDate>Tue, 18 Aug 2026 22:00:03 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Researchers demonstrated a technique that manipulated Microsoft Copilot into accessing sensitive information, including passwords and credentials stored in a user&#x27;s inbox. The technique used undocumented parameters and prompt injection, with a webhook allowing information to be s…</description>
-  </item>
-  <item>
-    <title>Silent &#x27;TwinLoot&#x27; Cyber Threat Operates Entirely From Microsoft&#x27;s Cloud</title>
-    <link>https://www.darkreading.com/cloud-security/silent-twinloot-threat-operates-microsoft-cloud</link>
-    <guid isPermaLink="true">https://www.darkreading.com/cloud-security/silent-twinloot-threat-operates-microsoft-cloud</guid>
-    <pubDate>Tue, 18 Aug 2026 13:00:00 +0000</pubDate>
-    <category>Cyber Threat Landscape</category>
-    <description>The Python-based malware framework takes living-off-the-land tactics to a new heights of stealth, with a modular implant that steals credentials and achieves persistence.</description>
-  </item>
-  <item>
-    <title>US states sue Meta over claims that it deliberately addicts young users.</title>
-    <link>https://thecyberwire.com/newsletters/daily-briefing/15/157</link>
-    <guid isPermaLink="true">https://thecyberwire.com/newsletters/daily-briefing/15/157</guid>
-    <pubDate>Tue, 18 Aug 2026 16:00:00 +0000</pubDate>
-    <category>Cyber Threat Landscape</category>
-    <description>Researchers reverse-engineer French malware used to hack EncroChat. An unprecedented number of Apple users received spyware alerts last week.</description>
-  </item>
-  <item>
-    <title>Security Hub Extended adds Supply Chain Security as its tenth category</title>
-    <link>https://aws.amazon.com/blogs/security/security-hub-extended-adds-supply-chain-security-as-its-tenth-category/</link>
-    <guid isPermaLink="true">https://aws.amazon.com/blogs/security/security-hub-extended-adds-supply-chain-security-as-its-tenth-category/</guid>
-    <pubDate>Tue, 18 Aug 2026 17:04:28 +0000</pubDate>
-    <category>Cyber Threat Landscape</category>
-    <description>Since February, we’ve grown AWS Security Hub Extended from 14 curated partners across 9 categories to 23 partners across 10. At Black Hat this month, 14 of those partners were at the Amazon Web Services (AWS) booth demoing live. Four of those partners delivered theater talks and …</description>
-  </item>
-  <item>
-    <title>Between Two Nerds: The eye of Sauron</title>
-    <link>https://risky.biz/BTN179/</link>
-    <guid isPermaLink="true">https://risky.biz/BTN179/</guid>
-    <pubDate>Tue, 18 Aug 2026 05:57:14 +1000</pubDate>
-    <category>Podcasts</category>
-    <description>In this edition of Between Two Nerds Tom Uren and The Grugq discuss The Offense Death Cycle, a paper looking at how to take advantage of a defender’s ability to control a network to discover intruders. This episode is also available on YouTube.</description>
   </item>
   </channel>
 </rss>
