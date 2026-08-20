@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 20 Aug 2026 11:07:09 -0300</lastBuildDate>
+    <lastBuildDate>Thu, 20 Aug 2026 12:06:56 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>U.S. CISA adds an MLflow flaw to its Known Exploited Vulnerabilities catalog</title>
@@ -46,6 +46,30 @@
     <pubDate>Thu, 20 Aug 2026 07:00:00 -0700</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Corrected the Executive Summary to clarify that the vulnerability affects Windows Device Health Attestation (DHA), not Microsoft Azure Attestation. This is an informational change only.</description>
+  </item>
+  <item>
+    <title>Attackers Exploit Zimbra SNMP Flaw for Unauthenticated Remote Code Execution</title>
+    <link>https://thehackernews.com/2026/08/attackers-exploit-zimbra-snmp-flaw-for.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/08/attackers-exploit-zimbra-snmp-flaw-for.html</guid>
+    <pubDate>Thu, 20 Aug 2026 18:54:28 +0530</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>A now-patched security flaw impacting Zimbra Collaboration (ZCS) has come under active exploitation in the wild, according to the Polish Computer Emergency Response Team (CERT Polska). The vulnerability in question is CVE-2026-73570 (CVSS score: 8.9), which refers to a case of co…</description>
+  </item>
+  <item>
+    <title>CVE-2026-62754 Windows Kerberos Elevation of Privilege Vulnerability</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-62754</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-62754</guid>
+    <pubDate>Thu, 20 Aug 2026 07:00:00 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Updated links to security updates. This is an informational change only.</description>
+  </item>
+  <item>
+    <title>Hackers Target Zimbra Servers in Active Exploitation Campaign</title>
+    <link>https://www.securityweek.com/hackers-target-zimbra-servers-in-active-exploitation-campaign/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/hackers-target-zimbra-servers-in-active-exploitation-campaign/</guid>
+    <pubDate>Thu, 20 Aug 2026 14:50:49 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Exploitation of the Zimbra Collaboration vulnerability CVE-2026-73570 has been observed by Poland’s CERT Polska. The post Hackers Target Zimbra Servers in Active Exploitation Campaign appeared first on SecurityWeek .</description>
   </item>
   <item>
     <title>Cloudflare Workers Spectre Attack Leaks JWT From Co-Located Worker at 12 Bits/Second</title>
@@ -272,6 +296,46 @@
     <description>Amar Ćemanović reports: Apple American Group LLC, a major Applebee’s franchise operator in the United States, has disclosed a data breach incident. The event has reportedly exposed sensitive personal information, including Social Security numbers, financial data, health records, …</description>
   </item>
   <item>
+    <title>Isolated-vm Flaw Lets Sandboxed JavaScript Escape to Host for Potential RCE</title>
+    <link>https://thehackernews.com/2026/08/isolated-vm-flaw-lets-sandboxed.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/08/isolated-vm-flaw-lets-sandboxed.html</guid>
+    <pubDate>Thu, 20 Aug 2026 19:18:24 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Cybersecurity researchers have disclosed a critical security flaw in isolated-vm, a popular open-source sandbox with more than 2,900 stars and 190 forks on GitHub, that could allow attackers to escape the confines of the isolated environment. The vulnerability (&quot;GHSA-864f-rcv7-6r…</description>
+  </item>
+  <item>
+    <title>Critical NetScaler Flaw Can Bypass Authentication on Certain Gateway and AAA Servers</title>
+    <link>https://thehackernews.com/2026/08/critical-netscaler-flaw-can-bypass.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/08/critical-netscaler-flaw-can-bypass.html</guid>
+    <pubDate>Thu, 20 Aug 2026 19:05:13 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Citrix has released updates to address two security flaws impacting NetScaler ADC and NetScaler Gateway deployments, including a critical-severity authentication bypass vulnerability. According to the cloud computing and virtualization technology company, the issues affect custom…</description>
+  </item>
+  <item>
+    <title>Frequently asked questions about the active threat to Siemens S7 Series PLCs</title>
+    <link>https://www.tenable.com/blog/frequently-asked-questions-about-the-active-threat-to-siemens-s7-series-plcs</link>
+    <guid isPermaLink="true">https://www.tenable.com/blog/frequently-asked-questions-about-the-active-threat-to-siemens-s7-series-plcs</guid>
+    <pubDate>Thu, 20 Aug 2026 10:01:58 -0400</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>A joint cybersecurity advisory released by multiple U.S. government agencies warns that threat actors are using AI-generated exploitation scripts to target exposed Siemens S7 Series PLCs across critical infrastructure sectors. Key Takeaways Unattributed threat actors are exploiti…</description>
+  </item>
+  <item>
+    <title>Chinese hackers use AI to automate attacks on 170,000 servers</title>
+    <link>https://cyberinsider.com/chinese-hackers-use-ai-to-automate-attacks-on-170000-servers/</link>
+    <guid isPermaLink="true">https://cyberinsider.com/chinese-hackers-use-ai-to-automate-attacks-on-170000-servers/</guid>
+    <pubDate>Thu, 20 Aug 2026 14:54:54 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>A Chinese-speaking cybercrime group is using AI-assisted tooling to automate attacks against vulnerable Windows and Linux web servers worldwide. Tracked as UAT-10147 by Cisco Talos, the threat group targets internet-facing servers for data theft and search engine optimization (SE…</description>
+  </item>
+  <item>
+    <title>Critical Elementor Pro bug exposes WordPress sites to RCE attacks</title>
+    <link>https://www.bleepingcomputer.com/news/security/critical-elementor-pro-bug-exposes-wordpress-sites-to-rce-attacks/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/critical-elementor-pro-bug-exposes-wordpress-sites-to-rce-attacks/</guid>
+    <pubDate>Thu, 20 Aug 2026 10:39:48 -0400</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>A critical vulnerability in the Elementor Pro WordPress plugin could allow attackers to upload executable files for remote code execution on the server. [...]</description>
+  </item>
+  <item>
     <title>When companies can hack back.</title>
     <link>https://thecyberwire.com/podcasts/caveat/321/notes</link>
     <guid isPermaLink="true">https://thecyberwire.com/podcasts/caveat/321/notes</guid>
@@ -360,6 +424,22 @@
     <description>A new Android threat codenamed Manic has been observed actively targeting Ukrainian banks, government and identity services, and messaging applications, as well as Russian and European financial institutions, global fintech and cryptocurrency services, and military-focused commun…</description>
   </item>
   <item>
+    <title>One Programmer Can Break Everything</title>
+    <link>https://www.youtube.com/shorts/70zRpEMf-8I</link>
+    <guid isPermaLink="true">https://www.youtube.com/shorts/70zRpEMf-8I</guid>
+    <pubDate>Thu, 20 Aug 2026 14:00:23 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>A critical system becomes vulnerable when only one person knows how to restore or debug it. Matt Lea calls these people “lone wolf programmers” and connects the problem to the idea of a bus factor. The risk isn&#x27;t just that someone leaves. People get sick, take vacation, burn out,…</description>
+  </item>
+  <item>
+    <title>Pakistan&#x27;s Transparent Tribe Refreshes Toolset for Afghan Cyberattacks</title>
+    <link>https://www.darkreading.com/cyberattacks-data-breaches/pakistan-transparent-tribe-afghan-cyberattacks</link>
+    <guid isPermaLink="true">https://www.darkreading.com/cyberattacks-data-breaches/pakistan-transparent-tribe-afghan-cyberattacks</guid>
+    <pubDate>Thu, 20 Aug 2026 14:59:22 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>A nation-state threat actor is picking on immature organizations run by the Taliban, but failing against more prepared government agencies in India.</description>
+  </item>
+  <item>
     <title>ISC Stormcast For Thursday, August 20th, 2026 https://isc.sans.edu/podcastdetail/10060, (Thu, Aug 20th)</title>
     <link>https://isc.sans.edu/diary/rss/33262</link>
     <guid isPermaLink="true">https://isc.sans.edu/diary/rss/33262</guid>
@@ -440,6 +520,14 @@
     <description>Operation CameraSwarm targeted Dahua cameras across multiple countries, focusing on Russian and CIS telecom netblocks. The post Threat Actor Hacks 14,000 IP Cameras in Ukraine and Russia appeared first on SecurityWeek .</description>
   </item>
   <item>
+    <title>Surveillance – Everything You Wanted to Know, But Were Afraid to Ask</title>
+    <link>https://www.securityweek.com/surveillance-everything-you-wanted-to-know-but-were-afraid-to-ask/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/surveillance-everything-you-wanted-to-know-but-were-afraid-to-ask/</guid>
+    <pubDate>Thu, 20 Aug 2026 14:30:00 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>We all know they’re watching us. But we don’t know who they are, nor why nor how they are doing it. The post Surveillance – Everything You Wanted to Know, But Were Afraid to Ask appeared first on SecurityWeek .</description>
+  </item>
+  <item>
     <title>Updated ToxicPanda Variant Targets 140+ Banking and Crypto Apps</title>
     <link>https://www.infosecurity-magazine.com/news/updated-toxicpanda-140-banking/</link>
     <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/updated-toxicpanda-140-banking/</guid>
@@ -478,6 +566,14 @@
     <pubDate>Thu, 20 Aug 2026 12:45:00 +0000</pubDate>
     <category>Cyber Threat Landscape</category>
     <description>Malwarebytes Firewall gives you a clearer, more intuitive way to manage your Mac&#x27;s inbuilt firewall.</description>
+  </item>
+  <item>
+    <title>JFrog Artifactory Flaws Enable Software Supply Chain Attacks</title>
+    <link>https://www.infosecurity-magazine.com/news/jfrog-flaws-software-supply-chain/</link>
+    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/jfrog-flaws-software-supply-chain/</guid>
+    <pubDate>Thu, 20 Aug 2026 14:30:00 +0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>Two Artifactory flaws allowed attackers to poison package metadata across software repositories</description>
   </item>
   <item>
     <title>Microsoft says August Windows updates may cause gaming issues</title>
@@ -558,6 +654,22 @@
     <pubDate>Thu, 20 Aug 2026 13:28:01 +0000</pubDate>
     <category>Infosec News</category>
     <description>Twitch added an option to opt out of training Amazon AI with your content—two years after it confirmed that training had begun.</description>
+  </item>
+  <item>
+    <title>ChatGPT for Teens tackles risky chats and homework shortcuts</title>
+    <link>https://www.malwarebytes.com/blog/family-and-parenting/2026/08/chatgpt-for-teens-tackles-risky-chats-and-homework-shortcuts</link>
+    <guid isPermaLink="true">https://www.malwarebytes.com/blog/family-and-parenting/2026/08/chatgpt-for-teens-tackles-risky-chats-and-homework-shortcuts</guid>
+    <pubDate>Thu, 20 Aug 2026 14:44:31 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>OpenAI has strengthened ChatGPT&#x27;s protections for teens, but some of its strongest parental controls still depend on linked accounts.</description>
+  </item>
+  <item>
+    <title>How MSPs can catch phishing attacks email filters miss</title>
+    <link>https://www.bleepingcomputer.com/news/security/how-msps-can-catch-phishing-attacks-email-filters-miss/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/how-msps-can-catch-phishing-attacks-email-filters-miss/</guid>
+    <pubDate>Thu, 20 Aug 2026 10:01:11 -0400</pubDate>
+    <category>Infosec News</category>
+    <description>AI is making phishing attacks more personalized, convincing, and difficult for traditional email filters to detect. Kaseya explains how MSPs can monitor identity, email, and endpoint activity to detect and contain attacks that make it past the inbox. [...]</description>
   </item>
   <item>
     <title>U.S. CISA adds Apple macOS, Microsoft SharePoint, Broadcom VMware vCenter, and Microsoft IKE flaws to its Known Exploited Vulnerabilities catalog</title>
@@ -1494,118 +1606,6 @@
     <pubDate>Wed, 19 Aug 2026 14:00:00 +0000</pubDate>
     <category>Infosec News</category>
     <description>Grandoreiro is active after its 2024 disruption, with Mexico now accounting for 40% of detections</description>
-  </item>
-  <item>
-    <title>Simple Scans for Cloud Metadata Service, (Wed, Aug 19th)</title>
-    <link>https://isc.sans.edu/diary/rss/33260</link>
-    <guid isPermaLink="true">https://isc.sans.edu/diary/rss/33260</guid>
-    <pubDate>Wed, 19 Aug 2026 14:24:58 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>Cloud providers typically expose a REST API at 169.254.169.254 that allows code running on virtual machines to retrieve machine-specific data. Some of the data is more or less harmless, such as the region the machine is running in or its MAC and IP addresses. However, the service…</description>
-  </item>
-  <item>
-    <title>Sideloading on Android: What it is, why it’s risky, and how to do it more safely</title>
-    <link>https://www.malwarebytes.com/blog/how-to/2026/08/sideloading-on-android-what-it-is-why-its-risky-and-how-to-do-it-more-safely</link>
-    <guid isPermaLink="true">https://www.malwarebytes.com/blog/how-to/2026/08/sideloading-on-android-what-it-is-why-its-risky-and-how-to-do-it-more-safely</guid>
-    <pubDate>Wed, 19 Aug 2026 15:09:52 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>With the new Advanced Flow for sideloading being rolled out, it&#x27;s time to discuss what sideloading is and how to do it more safely.</description>
-  </item>
-  <item>
-    <title>Wiz Penetration Test Findings is now GA</title>
-    <link>https://www.wiz.io/blog/wiz-pen-test-findings-is-now-ga</link>
-    <guid isPermaLink="true">https://www.wiz.io/blog/wiz-pen-test-findings-is-now-ga</guid>
-    <pubDate>Wed, 19 Aug 2026 15:36:58 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>Transform point-in-time pen-tests into continuous exposure management with unified platform combining pen-test findings and real-time cloud context</description>
-  </item>
-  <item>
-    <title>Propagate user authorization context in AI agents with Amazon Bedrock AgentCore</title>
-    <link>https://aws.amazon.com/blogs/security/propagate-user-authorization-context-in-ai-agents-with-amazon-bedrock-agentcore/</link>
-    <guid isPermaLink="true">https://aws.amazon.com/blogs/security/propagate-user-authorization-context-in-ai-agents-with-amazon-bedrock-agentcore/</guid>
-    <pubDate>Wed, 19 Aug 2026 17:24:15 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>Many teams now deploy AI agents that pull from Amazon DynamoDB tables, document repositories, software as a service (SaaS) platforms, and internal knowledge bases to answer questions and automate workflows. A key risk in these deployments is that the agent has no awareness of who…</description>
-  </item>
-  <item>
-    <title>Researchers say OpenAI revoked their access to limited cyber program</title>
-    <link>https://techcrunch.com/2026/08/19/researchers-complain-that-openai-revoked-their-access-to-limited-cyber-program/</link>
-    <guid isPermaLink="true">https://techcrunch.com/2026/08/19/researchers-complain-that-openai-revoked-their-access-to-limited-cyber-program/</guid>
-    <pubDate>Wed, 19 Aug 2026 18:46:14 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>Multiple cybersecurity researchers said they suddenly lost access to OpenAI’s Trusted Access for Cyber (TAC) program, which offers models with fewer guardrails for vetted users.</description>
-  </item>
-  <item>
-    <title>41 deceptive download sites show a real link, then send you somewhere else</title>
-    <link>https://www.malwarebytes.com/blog/threat-intel/2026/08/41-deceptive-download-sites-show-a-real-link-then-send-you-somewhere-else</link>
-    <guid isPermaLink="true">https://www.malwarebytes.com/blog/threat-intel/2026/08/41-deceptive-download-sites-show-a-real-link-then-send-you-somewhere-else</guid>
-    <pubDate>Wed, 19 Aug 2026 18:08:35 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>A legitimate-looking link or valid digital signature can offer false reassurance. Here’s why familiar download safety checks aren’t always enough.</description>
-  </item>
-  <item>
-    <title>Fortinet has acquired San Francisco-based AI security company Virtue AI.</title>
-    <link>https://thecyberwire.com/newsletters/business-briefing/8/33</link>
-    <guid isPermaLink="true">https://thecyberwire.com/newsletters/business-briefing/8/33</guid>
-    <pubDate>Wed, 19 Aug 2026 20:00:00 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>Dynatrace has agreed to acquire San Francisco-based AI observability platform Arize for $915 million. Cribl has acquired technology assets from Radiant Security&#x27;s AI SOC product.</description>
-  </item>
-  <item>
-    <title>No-Filter &#x27;Kriminal&#x27; AI Platform Raises Cybercrime Concerns</title>
-    <link>https://www.darkreading.com/application-security/no-filter-kriminal-ai-platform-cybercrime-concerns</link>
-    <guid isPermaLink="true">https://www.darkreading.com/application-security/no-filter-kriminal-ai-platform-cybercrime-concerns</guid>
-    <pubDate>Wed, 19 Aug 2026 20:32:09 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>The AI company officially forbids illicit use, while offering guardrail-free social engineering, offensive cybercrime, and OSINT scanning to anyone with a bit of cryptocurrency.</description>
-  </item>
-  <item>
-    <title>OpenAI confirms ChatGPT is down as logins and signups fail</title>
-    <link>https://www.bleepingcomputer.com/news/artificial-intelligence/openai-confirms-chatgpt-is-down-as-logins-and-signups-fail/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/artificial-intelligence/openai-confirms-chatgpt-is-down-as-logins-and-signups-fail/</guid>
-    <pubDate>Wed, 19 Aug 2026 20:20:55 -0400</pubDate>
-    <category>Infosec News</category>
-    <description>ChatGPT is experiencing a major outage, and users are unable to sign in, create accounts, or load chats, including previous conversations. [...]</description>
-  </item>
-  <item>
-    <title>U.S. CISA adds a Ray-Project Ray flaw to its Known Exploited Vulnerabilities catalog</title>
-    <link>https://securityaffairs.com/197419/security/u-s-cisa-adds-a-ray-project-ray-flaw-to-its-known-exploited-vulnerabilities-catalog.html</link>
-    <guid isPermaLink="true">https://securityaffairs.com/197419/security/u-s-cisa-adds-a-ray-project-ray-flaw-to-its-known-exploited-vulnerabilities-catalog.html</guid>
-    <pubDate>Tue, 18 Aug 2026 08:02:44 +0000</pubDate>
-    <category>CISA KEV</category>
-    <description>U.S. Cybersecurity and Infrastructure Security Agency (CISA) adds a Ray-Project Ray vulnerability to its Known Exploited Vulnerabilities catalog. The U.S. Cybersecurity and Infrastructure Security Agency (CISA) added a Progress LoadMaster vulnerability, tracked as CVE-2025-62593 …</description>
-  </item>
-  <item>
-    <title>Critical GitLab GraphQL Flaw Could Let Unauthenticated Attackers Delete Public Projects</title>
-    <link>https://thehackernews.com/2026/08/critical-gitlab-graphql-flaw-could-let.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/08/critical-gitlab-graphql-flaw-could-let.html</guid>
-    <pubDate>Tue, 18 Aug 2026 02:33:04 +0530</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>GitLab has released security updates to address a critical vulnerability impacting its Community Edition (CE) and Enterprise Edition (EE) software that, under certain conditions, could allow an unauthenticated attacker to remotely modify or delete public projects and user data. T…</description>
-  </item>
-  <item>
-    <title>GitLab Patches Critical Unauthenticated GraphQL Vulnerability</title>
-    <link>https://securityaffairs.com/197454/hacking/gitlab-patches-critical-unauthenticated-graphql-vulnerability.html</link>
-    <guid isPermaLink="true">https://securityaffairs.com/197454/hacking/gitlab-patches-critical-unauthenticated-graphql-vulnerability.html</guid>
-    <pubDate>Tue, 18 Aug 2026 08:44:19 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>GitLab patched a critical GraphQL flaw that let unauthenticated attackers remotely modify or delete public projects on self-managed servers. GitLab pushed out an emergency patch this week to address a critical flaw, tracked as CVE-2026-19478 (CVSS score of 9.4), that could let an…</description>
-  </item>
-  <item>
-    <title>300,000 WordPress Sites Potentially Exposed to Hacking Due to Form Plugin Flaw</title>
-    <link>https://www.securityweek.com/300000-wordpress-sites-potentially-exposed-to-hacking-due-to-form-plugin-flaw/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/300000-wordpress-sites-potentially-exposed-to-hacking-due-to-form-plugin-flaw/</guid>
-    <pubDate>Tue, 18 Aug 2026 10:48:23 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Tracked as CVE-2026-15748, the arbitrary file upload bug allows unauthenticated attackers to upload executable files. The post 300,000 WordPress Sites Potentially Exposed to Hacking Due to Form Plugin Flaw appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Critical GitLab flaw allows attackers to modify or delete public projects (CVE-2026-19478)</title>
-    <link>https://www.helpnetsecurity.com/2026/08/18/gitlab-critical-code-injection-flaw-cve-2026-19478/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/08/18/gitlab-critical-code-injection-flaw-cve-2026-19478/</guid>
-    <pubDate>Tue, 18 Aug 2026 11:38:24 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>GitLab has released patches for two vulnerabilities, including a critical-severity code injection flaw that can be exploited without authentication. The vulnerabilities affect GitLab Community Edition (CE) and Enterprise Edition (EE) versions from 18.2 before 18.11.11, 19.0 befor…</description>
   </item>
   </channel>
 </rss>
