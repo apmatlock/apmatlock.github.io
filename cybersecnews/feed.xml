@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 20 Aug 2026 10:07:15 -0300</lastBuildDate>
+    <lastBuildDate>Thu, 20 Aug 2026 11:07:09 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>U.S. CISA adds an MLflow flaw to its Known Exploited Vulnerabilities catalog</title>
@@ -30,6 +30,22 @@
     <pubDate>Thu, 20 Aug 2026 07:48:24 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>CVE-2026-19478 can be exploited without authentication to modify or delete public projects and user data. The post Critical GitLab Flaw Exploited Shortly After Disclosure appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>CVE-2026-66802 Windows Device Health Attestation (DHA) Remote Code Execution Vulnerability</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-66802</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-66802</guid>
+    <pubDate>Thu, 20 Aug 2026 07:00:00 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Corrected the Executive Summary to clarify that the vulnerability affects Windows Device Health Attestation (DHA), not Microsoft Azure Attestation. This is an informational change only.</description>
+  </item>
+  <item>
+    <title>CVE-2026-71331 Windows Device Health Attestation (DHA) Remote Code Execution Vulnerability</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-71331</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-71331</guid>
+    <pubDate>Thu, 20 Aug 2026 07:00:00 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Corrected the Executive Summary to clarify that the vulnerability affects Windows Device Health Attestation (DHA), not Microsoft Azure Attestation. This is an informational change only.</description>
   </item>
   <item>
     <title>Cloudflare Workers Spectre Attack Leaks JWT From Co-Located Worker at 12 Bits/Second</title>
@@ -216,6 +232,46 @@
     <description>The critical-severity flaw allows attackers to send HTTP requests to internal endpoints and extract sensitive information. The post MLflow Vulnerability Exploited for Cloud Credential Theft appeared first on SecurityWeek .</description>
   </item>
   <item>
+    <title>CDN Tsunami Attack Abuses HTTP/3 Translation for Up to 350x DoS Amplification</title>
+    <link>https://thehackernews.com/2026/08/cdn-tsunami-attack-abuses-http3.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/08/cdn-tsunami-attack-abuses-http3.html</guid>
+    <pubDate>Thu, 20 Aug 2026 17:09:35 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Cybersecurity researchers have disclosed two denial-of-service (DoS) attacks that exploit how major content delivery networks (CDNs) convert client-facing HTTP/3 traffic into HTTP/1.1 requests to the websites they front, amplifying a low-bandwidth request stream by up to 350x aga…</description>
+  </item>
+  <item>
+    <title>The push to designate AI as the next critical infrastructure sector</title>
+    <link>https://cyberscoop.com/ai-critical-infrastructure-designation-cisa-report/</link>
+    <guid isPermaLink="true">https://cyberscoop.com/ai-critical-infrastructure-designation-cisa-report/</guid>
+    <pubDate>Thu, 20 Aug 2026 13:31:17 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>The designation would unlock a range of federal services, tools and resources for an industry that policymakers view as increasingly tied to national and economic security. The post The push to designate AI as the next critical infrastructure sector appeared first on CyberScoop .</description>
+  </item>
+  <item>
+    <title>BTR Reforged: Weaponizing Defender’s Remediation Driver as a Kernel Operation Primitive</title>
+    <link>https://research.checkpoint.com/2026/btr-reforged-weaponizing-defenders-remediation-driver-as-a-kernel-operation-primitive/</link>
+    <guid isPermaLink="true">https://research.checkpoint.com/2026/btr-reforged-weaponizing-defenders-remediation-driver-as-a-kernel-operation-primitive/</guid>
+    <pubDate>Thu, 20 Aug 2026 13:07:13 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Research by: Jiří Vinopal (@vinopaljiri) Abstract What if a trusted security component could be repurposed into an attacker-controlled kernel primitive? What if a signed Microsoft remediation driver could be instructed to execute arbitrary file and registry operations from Ring 0…</description>
+  </item>
+  <item>
+    <title>&#x27;Grandoreiro&#x27; Malware Resurfaces With Mexico Campaign</title>
+    <link>https://www.darkreading.com/cyberattacks-data-breaches/grandoreiro-resurfaces-mexico-campaign</link>
+    <guid isPermaLink="true">https://www.darkreading.com/cyberattacks-data-breaches/grandoreiro-resurfaces-mexico-campaign</guid>
+    <pubDate>Thu, 20 Aug 2026 13:30:00 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>The banking Trojan, post-law enforcement takedown, is sprucing itself up with features that make detection and analysis harder.</description>
+  </item>
+  <item>
+    <title>Largest Applebee’s franchisee says hackers stole sensitive data</title>
+    <link>https://databreaches.net/2026/08/20/largest-applebees-franchisee-says-hackers-stole-sensitive-data/</link>
+    <guid isPermaLink="true">https://databreaches.net/2026/08/20/largest-applebees-franchisee-says-hackers-stole-sensitive-data/</guid>
+    <pubDate>Thu, 20 Aug 2026 13:17:23 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Amar Ćemanović reports: Apple American Group LLC, a major Applebee’s franchise operator in the United States, has disclosed a data breach incident. The event has reportedly exposed sensitive personal information, including Social Security numbers, financial data, health records, …</description>
+  </item>
+  <item>
     <title>When companies can hack back.</title>
     <link>https://thecyberwire.com/podcasts/caveat/321/notes</link>
     <guid isPermaLink="true">https://thecyberwire.com/podcasts/caveat/321/notes</guid>
@@ -238,6 +294,14 @@
     <pubDate>Thu, 20 Aug 2026 12:45:00 +0000</pubDate>
     <category>Security Advisories</category>
     <description>NCSC urged sandboxing, oversight and tight access controls for autonomous AI agents</description>
+  </item>
+  <item>
+    <title>Cisco security advisory (AV26-834)</title>
+    <link>https://cyber.gc.ca/en/alerts-advisories/cisco-security-advisory-av26-834</link>
+    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/cisco-security-advisory-av26-834</guid>
+    <pubDate>Thu, 20 Aug 2026 11:02:21 -0000</pubDate>
+    <category>Security Advisories</category>
+    <description></description>
   </item>
   <item>
     <title>StopAndProtect Turns 2,000 Hacked WordPress Sites Into a Criminal Network</title>
@@ -278,6 +342,22 @@
     <pubDate>Thu, 20 Aug 2026 13:01:24 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>The data search and AI giant confirmed unauthorized access to its systems during an incident on Tuesday, and said it was investigating the breach.</description>
+  </item>
+  <item>
+    <title>Why &quot;Shady AI&quot; is Security&#x27;s Next Big Governance Problem</title>
+    <link>https://thehackernews.com/2026/08/why-shady-ai-is-securitys-next-big.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/08/why-shady-ai-is-securitys-next-big.html</guid>
+    <pubDate>Thu, 20 Aug 2026 17:15:00 +0530</pubDate>
+    <category>Incident Reporting</category>
+    <description>In March 2026, an internal AI agent at Meta triggered a “Sev 1” incident after sensitive company and user data was exposed to employees who weren’t authorized to access it.&amp;nbsp; The incident began when a Meta employee posted a technical question on an internal forum. An engineer…</description>
+  </item>
+  <item>
+    <title>Manic Android Malware Exfiltrates Data From Offline Phones via Nearby Infected Devices</title>
+    <link>https://thehackernews.com/2026/08/manic-android-malware-exfiltrates-data.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/08/manic-android-malware-exfiltrates-data.html</guid>
+    <pubDate>Thu, 20 Aug 2026 16:56:08 +0530</pubDate>
+    <category>Incident Reporting</category>
+    <description>A new Android threat codenamed Manic has been observed actively targeting Ukrainian banks, government and identity services, and messaging applications, as well as Russian and European financial institutions, global fintech and cryptocurrency services, and military-focused commun…</description>
   </item>
   <item>
     <title>ISC Stormcast For Thursday, August 20th, 2026 https://isc.sans.edu/podcastdetail/10060, (Thu, Aug 20th)</title>
@@ -350,6 +430,14 @@
     <pubDate>Thu, 20 Aug 2026 11:22:26 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Corero Network Security has announced AI-Augmented Cloud-Assist for SmartWall ONE, extending its automated DDoS protection with cloud-delivered AI analysis, threat intelligence, and policy optimization. As cybercriminals increasingly leverage AI to develop and evolve attack campa…</description>
+  </item>
+  <item>
+    <title>Threat Actor Hacks 14,000 IP Cameras in Ukraine and Russia</title>
+    <link>https://www.securityweek.com/threat-actor-hacks-14000-ip-cameras-in-ukraine-and-russia/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/threat-actor-hacks-14000-ip-cameras-in-ukraine-and-russia/</guid>
+    <pubDate>Thu, 20 Aug 2026 13:16:35 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Operation CameraSwarm targeted Dahua cameras across multiple countries, focusing on Russian and CIS telecom netblocks. The post Threat Actor Hacks 14,000 IP Cameras in Ukraine and Russia appeared first on SecurityWeek .</description>
   </item>
   <item>
     <title>Updated ToxicPanda Variant Targets 140+ Banking and Crypto Apps</title>
@@ -446,6 +534,30 @@
     <pubDate>Thu, 20 Aug 2026 08:14:38 -0400</pubDate>
     <category>Infosec News</category>
     <description>Citrix has warned customers to immediately secure their systems against two vulnerabilities affecting NetScaler Gateway secure remote access solutions and NetScaler ADC networking appliances. [...]</description>
+  </item>
+  <item>
+    <title>Zombie Card Attack Can Revive Expired Visa Cards for Contactless Payments</title>
+    <link>https://thehackernews.com/2026/08/zombie-card-attack-can-revive-expired.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/08/zombie-card-attack-can-revive-expired.html</guid>
+    <pubDate>Thu, 20 Aug 2026 17:31:24 +0530</pubDate>
+    <category>Infosec News</category>
+    <description>Researchers at the University of Massachusetts Amherst have demonstrated an attack that revives expired Visa contactless credit cards for real in-store purchases by rewriting the expiration date a point-of-sale (POS) terminal reads over near-field communication (NFC), without bre…</description>
+  </item>
+  <item>
+    <title>Using Microsoft Graph and Powershell - Risk Detection Commands, (Thu, Aug 20th)</title>
+    <link>https://isc.sans.edu/diary/rss/33266</link>
+    <guid isPermaLink="true">https://isc.sans.edu/diary/rss/33266</guid>
+    <pubDate>Thu, 20 Aug 2026 13:09:50 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>Building on the last diary on Using MS Graph and Powershell, let&amp;&amp;#x23&amp;#x3b;x26&amp;#x3b;&amp;#x23&amp;#x3b;39&amp;#x3b;s look at &quot;Risky&quot; logins. &amp;#xd;</description>
+  </item>
+  <item>
+    <title>Twitch wants your content for Amazon AI training. Here’s how to opt out</title>
+    <link>https://www.malwarebytes.com/blog/ai/2026/08/twitch-wants-your-content-for-amazon-ai-training-heres-how-to-opt-out</link>
+    <guid isPermaLink="true">https://www.malwarebytes.com/blog/ai/2026/08/twitch-wants-your-content-for-amazon-ai-training-heres-how-to-opt-out</guid>
+    <pubDate>Thu, 20 Aug 2026 13:28:01 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>Twitch added an option to opt out of training Amazon AI with your content—two years after it confirmed that training had begun.</description>
   </item>
   <item>
     <title>U.S. CISA adds Apple macOS, Microsoft SharePoint, Broadcom VMware vCenter, and Microsoft IKE flaws to its Known Exploited Vulnerabilities catalog</title>
@@ -1494,118 +1606,6 @@
     <pubDate>Tue, 18 Aug 2026 11:38:24 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>GitLab has released patches for two vulnerabilities, including a critical-severity code injection flaw that can be exploited without authentication. The vulnerabilities affect GitLab Community Edition (CE) and Enterprise Edition (EE) versions from 18.2 before 18.11.11, 19.0 befor…</description>
-  </item>
-  <item>
-    <title>CVE-2026-24301 Microsoft Copilot Information Disclosure Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-24301</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-24301</guid>
-    <pubDate>Tue, 18 Aug 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Improper neutralization of special elements used in a command (&#x27;command injection&#x27;) in Microsoft Copilot allows an unauthorized attacker to disclose information over a network.</description>
-  </item>
-  <item>
-    <title>CVE-2026-47632 Azure Connected Machine Agent Elevation of Privilege Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-47632</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-47632</guid>
-    <pubDate>Tue, 18 Aug 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Corrected the affected product from **Azure Monitor Agent Metrics Extension** to **Azure Connected Machine Agent** and updated the Security Updates table. This is an informational change only.</description>
-  </item>
-  <item>
-    <title>Critical GitLab flaw allows attackers to delete and modify public repos</title>
-    <link>https://www.csoonline.com/article/4211140/critical-gitlab-flaw-allows-attackers-to-delete-and-modify-public-repos.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4211140/critical-gitlab-flaw-allows-attackers-to-delete-and-modify-public-repos.html</guid>
-    <pubDate>Tue, 18 Aug 2026 19:33:31 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>GitLab has fixed a critical vulnerability that could allow unauthenticated attackers to perform unauthorized modifications inside code repositories or to completely delete them with a single HTTP request. The patched releases also address a second high-risk cross-site request for…</description>
-  </item>
-  <item>
-    <title>Critical GitLab Zero-Click Flaw Poses Mitigation Challenges</title>
-    <link>https://www.darkreading.com/application-security/critical-gitlab-zero-click-flaw-mitigation-challenges</link>
-    <guid isPermaLink="true">https://www.darkreading.com/application-security/critical-gitlab-zero-click-flaw-mitigation-challenges</guid>
-    <pubDate>Tue, 18 Aug 2026 21:25:58 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>A lack of technical details could make it hard for organizations running self-managed GitLab versions to detect potential exploitation of CVE-2026-19478.</description>
-  </item>
-  <item>
-    <title>Snowflake GitHub Actions Flaw Lets Crafted Issues Trigger Command Injection</title>
-    <link>https://thehackernews.com/2026/08/snowflake-github-actions-flaw-lets_0330881554.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/08/snowflake-github-actions-flaw-lets_0330881554.html</guid>
-    <pubDate>Tue, 18 Aug 2026 00:14:17 +0530</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Cybersecurity researchers at Wiz&amp;nbsp;have disclosed a new GitHub Actions workflow injection vulnerability in Snowflake&#x27;s public&amp;nbsp;snowflakedb/snowflake-connector-net repository that it said could be exploited through a crafted GitHub issue to execute commands in a workflow co…</description>
-  </item>
-  <item>
-    <title>OpenAI president’s blog pushing agentic AI most notable for what it did not say</title>
-    <link>https://www.csoonline.com/article/4210776/openai-presidents-blog-pushing-agentic-ai-most-notable-for-what-it-did-not-say-2.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4210776/openai-presidents-blog-pushing-agentic-ai-most-notable-for-what-it-did-not-say-2.html</guid>
-    <pubDate>Tue, 18 Aug 2026 01:22:01 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>OpenAI president Greg Brockman on Sunday warned enterprise CISOs that they need to more aggressively embrace agents if they want to survive upcoming cyberattacks. Brockman said in a blog post that it has become “increasingly clear” that company systems are hiding “significant fla…</description>
-  </item>
-  <item>
-    <title>Cybersecurity jobs available right now: August 18, 2026</title>
-    <link>https://www.helpnetsecurity.com/2026/08/18/cybersecurity-jobs-available-right-now-august-18-2026/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/08/18/cybersecurity-jobs-available-right-now-august-18-2026/</guid>
-    <pubDate>Tue, 18 Aug 2026 04:00:51 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>CISO ADI Global Distribution &amp;#124; USA &amp;#124; Hybrid &amp;#8211; View job details As a CISO, you will develop and lead ADI’s global security strategy to protect information assets, digital platforms, critical operations, and AI-enabled environments. Advise executives and the Board o…</description>
-  </item>
-  <item>
-    <title>Attackers turn to AI for help identifying files worth stealing</title>
-    <link>https://www.helpnetsecurity.com/2026/08/18/gambit-security-ai-cyberattack-tools-report/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/08/18/gambit-security-ai-cyberattack-tools-report/</guid>
-    <pubDate>Tue, 18 Aug 2026 04:30:15 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>AI tools are being used by cyber attackers to write malicious code, build tools that harvest credentials, search compromised networks, identify valuable business information, manage technical infrastructure and generate commands during intrusions. Gambit Security researchers exam…</description>
-  </item>
-  <item>
-    <title>Google’s open-source HEIR lets AI work with data it can’t see</title>
-    <link>https://www.helpnetsecurity.com/2026/08/18/google-heir-open-source-compiler-toolchain/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/08/18/google-heir-open-source-compiler-toolchain/</guid>
-    <pubDate>Tue, 18 Aug 2026 06:00:54 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Google’s researchers and engineers developed the Homomorphic Encryption Intermediate Representation (HEIR) compiler project, an open-source compiler toolchain and development platform for homomorphic encryption. It can convert pre-trained AI models designed to operate on unencryp…</description>
-  </item>
-  <item>
-    <title>Dozens of WebKit Vulnerabilities Patched With Fresh macOS, iOS Security Updates</title>
-    <link>https://www.securityweek.com/dozens-of-webkit-vulnerabilities-patched-with-fresh-macos-ios-security-updates/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/dozens-of-webkit-vulnerabilities-patched-with-fresh-macos-ios-security-updates/</guid>
-    <pubDate>Tue, 18 Aug 2026 06:46:22 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The bugs could be exploited to crash Safari, corrupt memory, leak sensitive data, escape the sandbox, and exfiltrate data. The post Dozens of WebKit Vulnerabilities Patched With Fresh macOS, iOS Security Updates appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>CISA Flags Actively Exploited Ray Flaw That Can Trigger Browser-Based RCE</title>
-    <link>https://thehackernews.com/2026/08/cisa-flags-actively-exploited-ray-flaw.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/08/cisa-flags-actively-exploited-ray-flaw.html</guid>
-    <pubDate>Tue, 18 Aug 2026 12:04:20 +0530</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The U.S. Cybersecurity and Infrastructure Security Agency (CISA) on Monday added a critical flaw impacting Ray to its Known Exploited Vulnerabilities (KEV) catalog, citing evidence of active exploitation. Ray is an open-source, Python-native distributed computing framework design…</description>
-  </item>
-  <item>
-    <title>New Mirai-Based Evooo1Bot Botnet Targets Linux Devices</title>
-    <link>https://securityaffairs.com/197434/malware/new-mirai-based-evooo1bot-botnet-targets-linux-devices.html</link>
-    <guid isPermaLink="true">https://securityaffairs.com/197434/malware/new-mirai-based-evooo1bot-botnet-targets-linux-devices.html</guid>
-    <pubDate>Tue, 18 Aug 2026 07:18:49 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Evooo1Bot is a Mirai-based Linux botnet that hijacks routers and IoT devices for DDoS attacks, credential theft and criminal proxy services. Fortinet&amp;#8217;s FortiGuard Labs disclosed Evooo1Bot in mid-August, a previously undocumented Linux botnet that&amp;#8217;s been active since J…</description>
-  </item>
-  <item>
-    <title>What you say during a cyber breach can — and will — be used against you</title>
-    <link>https://www.csoonline.com/article/4210677/what-you-say-during-a-cyber-breach-can-and-will-be-used-against-you.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4210677/what-you-say-during-a-cyber-breach-can-and-will-be-used-against-you.html</guid>
-    <pubDate>Tue, 18 Aug 2026 09:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The first 24 hours after a cyber incident are messy. Teams are moving fast, and a lot gets said on Slack or email that can come back later. People are scrambling to contain the issue, figure out what happened and keep things moving. In the process, they create a record that doesn…</description>
-  </item>
-  <item>
-    <title>AI can find zero-days but still can’t reliably write secure code</title>
-    <link>https://www.csoonline.com/article/4210735/ai-can-find-zero-days-but-still-cant-reliably-write-secure-code.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4210735/ai-can-find-zero-days-but-still-cant-reliably-write-secure-code.html</guid>
-    <pubDate>Tue, 18 Aug 2026 08:25:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>In recent months, LLMs have gone from flooding open-source projects and bug bounty programs with questionable security reports that wasted developers’ time, to routinely finding zero-day flaws that humans and traditional security audit tools had missed for years — a rapid evoluti…</description>
   </item>
   </channel>
 </rss>
