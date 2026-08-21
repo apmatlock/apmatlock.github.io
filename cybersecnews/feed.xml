@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Fri, 21 Aug 2026 11:07:17 -0300</lastBuildDate>
+    <lastBuildDate>Fri, 21 Aug 2026 12:06:55 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>U.S. CISA adds TrueConf Server flaws to its Known Exploited Vulnerabilities catalog</title>
@@ -126,6 +126,14 @@
     <pubDate>Fri, 21 Aug 2026 07:00:00 -0700</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Updated an acknowledgement. This is an informational change only.</description>
+  </item>
+  <item>
+    <title>VU#756733: Calix GS7 XGS GS5239XG residential router contains missing authentication vulnerability</title>
+    <link>https://kb.cert.org/vuls/id/756733</link>
+    <guid isPermaLink="true">https://kb.cert.org/vuls/id/756733</guid>
+    <pubDate>Fri, 21 Aug 2026 14:44:16 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Overview The Calix GS7 XGS GS5239XG router running firmware EXOS/6.6.47 contains a missing authentication vulnerability that exposes its UPnP (Universal Plug and Play) WANIPConnection service on the public WAN interface. Description Calix GS7 XGS GS5239XG is a residential gateway…</description>
   </item>
   <item>
     <title>NSA warns AI exploits target power and water, Android malware leaks data via nearby phones, ransomware&#x27;s sweet spot</title>
@@ -288,6 +296,14 @@
     <description>Cisco patched nine critical flaws, including six rated CVSS 10.0, found during internal testing. None are known to be exploited. Cisco released another batch of security fixes for its Crosswork platforms and Secure Workload software, part of what it&amp;#8217;s calling an ongoing int…</description>
   </item>
   <item>
+    <title>AWS EKS forensics: data sources and investigation tooling</title>
+    <link>https://www.synacktiv.com/en/publications/aws-eks-forensics-data-sources-and-investigation-tooling.html</link>
+    <guid isPermaLink="true">https://www.synacktiv.com/en/publications/aws-eks-forensics-data-sources-and-investigation-tooling.html</guid>
+    <pubDate>Fri, 21 Aug 2026 12:06:18 -0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Investigating a compromise in Amazon EKS means piecing together evidence spread across three layers: the managed Kubernetes control plane, the worker nodes, and the surrounding AWS services. This article maps the data sources an EKS cluster exposes for digital forensics and threa…</description>
+  </item>
+  <item>
     <title>BadBox-linked Android malware has now infected car head units</title>
     <link>https://cyberinsider.com/badbox-linked-android-malware-has-now-infected-car-head-units/</link>
     <guid isPermaLink="true">https://cyberinsider.com/badbox-linked-android-malware-has-now-infected-car-head-units/</guid>
@@ -324,6 +340,14 @@
     <link>https://cyber.gc.ca/en/alerts-advisories/splunk-security-advisory-av26-838</link>
     <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/splunk-security-advisory-av26-838</guid>
     <pubDate>Fri, 21 Aug 2026 11:02:23 -0000</pubDate>
+    <category>Security Advisories</category>
+    <description></description>
+  </item>
+  <item>
+    <title>Mozilla security advisory (AV26-840)</title>
+    <link>https://cyber.gc.ca/en/alerts-advisories/mozilla-security-advisory-av26-840</link>
+    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/mozilla-security-advisory-av26-840</guid>
+    <pubDate>Fri, 21 Aug 2026 12:02:20 -0000</pubDate>
     <category>Security Advisories</category>
     <description></description>
   </item>
@@ -382,6 +406,22 @@
     <pubDate>Fri, 21 Aug 2026 13:30:00 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>The new AI security controls follow the Hugging Face incident last month, though many of these additions perhaps should have been in place prior to the frontier models escaping.</description>
+  </item>
+  <item>
+    <title>Canada’s Hospital for Sick Children attacked by cybercriminals again as employee data stolen</title>
+    <link>https://therecord.media/canada-hospital-for-sick-children-attacked-again-employee-data</link>
+    <guid isPermaLink="true">https://therecord.media/canada-hospital-for-sick-children-attacked-again-employee-data</guid>
+    <pubDate>Fri, 21 Aug 2026 15:00:00 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>The Hospital for Sick Children — which was hit in a ransomware incident in 2022 that disabled some of its systems — released a statement on Thursday warning of a data theft incident they believe is tied to a third-party software application.</description>
+  </item>
+  <item>
+    <title>Is Online Privacy Possible? How Digital Identities Can Help</title>
+    <link>https://www.bleepingcomputer.com/news/security/is-online-privacy-possible-how-digital-identities-can-help/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/is-online-privacy-possible-how-digital-identities-can-help/</guid>
+    <pubDate>Fri, 21 Aug 2026 10:00:10 -0400</pubDate>
+    <category>Incident Reporting</category>
+    <description>Using the same email, phone number, payment method, and other identifiers makes it easier for data brokers and attackers to profile your activity. Anonyome Labs explains how separate digital personas can reduce correlation and limit the impact of breaches, spam, and identity thef…</description>
   </item>
   <item>
     <title>Suspected Russian Hackers Abuse Google OAuth and WhatsApp Linking to Hijack Accounts</title>
@@ -472,6 +512,22 @@
     <description>Pagers are still used in healthcare, and the clip describes patient information being transmitted over a pager network. The network was described as unencrypted and operating as a broadcast medium. Legacy technology can create security exposure when organizations assume that some…</description>
   </item>
   <item>
+    <title>Encrypted Prompts Bypass AI Safety Guardrails in Grok and Gemini</title>
+    <link>https://www.securityweek.com/encrypted-prompts-bypass-ai-safety-guardrails-in-grok-and-gemini/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/encrypted-prompts-bypass-ai-safety-guardrails-in-grok-and-gemini/</guid>
+    <pubDate>Fri, 21 Aug 2026 14:34:05 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Researchers say the new ‘Cryptographic Context Injection’ technique conceals malicious instructions until they are decrypted inside a trusted execution environment. The post Encrypted Prompts Bypass AI Safety Guardrails in Grok and Gemini appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>New Phishing Toolkit Uses Passkeys to Maintain Access After Password Resets</title>
+    <link>https://www.securityweek.com/new-phishing-toolkit-uses-passkeys-to-maintain-access-after-password-resets/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/new-phishing-toolkit-uses-passkeys-to-maintain-access-after-password-resets/</guid>
+    <pubDate>Fri, 21 Aug 2026 14:22:06 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Researchers say iAuthFlow V2 can register an attacker-controlled passkey, enabling persistent access even after passwords are changed and active sessions revoked. The post New Phishing Toolkit Uses Passkeys to Maintain Access After Password Resets appeared first on SecurityWeek .</description>
+  </item>
+  <item>
     <title>The invisible passenger in your car</title>
     <link>https://securelist.com/android-head-unit-malware/121106/</link>
     <guid isPermaLink="true">https://securelist.com/android-head-unit-malware/121106/</guid>
@@ -542,6 +598,22 @@
     <pubDate>Fri, 21 Aug 2026 14:00:00 +0000</pubDate>
     <category>Infosec News</category>
     <description>Government agencies with smaller budgets need support — and here&#x27;s how you can help.</description>
+  </item>
+  <item>
+    <title>Zombie Card: An expired Visa credit card can be used for purchases</title>
+    <link>https://www.malwarebytes.com/blog/news/2026/08/zombie-card-an-expired-visa-credit-card-can-be-used-for-purchases</link>
+    <guid isPermaLink="true">https://www.malwarebytes.com/blog/news/2026/08/zombie-card-an-expired-visa-credit-card-can-be-used-for-purchases</guid>
+    <pubDate>Fri, 21 Aug 2026 14:03:48 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>Scientific research showed that the expiration date on some Visa credit cards can be manipulated in so-called Zombie Card attacks.</description>
+  </item>
+  <item>
+    <title>Microsoft blames Windows gaming issues on RGB lighting devices</title>
+    <link>https://www.bleepingcomputer.com/news/microsoft/microsoft-blames-windows-gaming-issues-on-rgb-lighting-devices/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/microsoft/microsoft-blames-windows-gaming-issues-on-rgb-lighting-devices/</guid>
+    <pubDate>Fri, 21 Aug 2026 10:54:49 -0400</pubDate>
+    <category>Infosec News</category>
+    <description>Microsoft says ongoing issues causing games to crash or fail to launch after installing the August 2026 Windows updates may be caused by peripherals with RGB lighting. [...]</description>
   </item>
   <item>
     <title>U.S. CISA adds an MLflow flaw to its Known Exploited Vulnerabilities catalog</title>
@@ -1534,78 +1606,6 @@
     <pubDate>Wed, 19 Aug 2026 07:19:31 +0000</pubDate>
     <category>CISA KEV</category>
     <description>U.S. Cybersecurity and Infrastructure Security Agency (CISA) adds Apple macOS, Microsoft SharePoint, Broadcom VMware vCenter, and Microsoft IKE flaws to its Known Exploited Vulnerabilities catalog. The U.S. Cybersecurity and Infrastructure Security Agency (CISA) added the followi…</description>
-  </item>
-  <item>
-    <title>Critical macOS, SharePoint, vCenter, and Microsoft IKE Flaws Under Active Exploitation</title>
-    <link>https://thehackernews.com/2026/08/critical-macos-sharepoint-vcenter-and.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/08/critical-macos-sharepoint-vcenter-and.html</guid>
-    <pubDate>Wed, 19 Aug 2026 16:31:48 +0530</pubDate>
-    <category>CISA KEV</category>
-    <description>The U.S. Cybersecurity and Infrastructure Security Agency (CISA) on Tuesday added four critical vulnerabilities to its Known Exploited Vulnerabilities (KEV) catalog, stating they are being exploited in the wild. The shortcomings added to the KEV catalog are listed below - CVE-202…</description>
-  </item>
-  <item>
-    <title>Microsoft finally patches critical one-click Copilot vulnerability, almost eight months after learning of it</title>
-    <link>https://www.csoonline.com/article/4211342/microsoft-finally-patches-critical-one-click-copilot-vulnerability-more-than-eight-months-after-learning-of-it-2.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4211342/microsoft-finally-patches-critical-one-click-copilot-vulnerability-more-than-eight-months-after-learning-of-it-2.html</guid>
-    <pubDate>Wed, 19 Aug 2026 02:27:16 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Almost eight months after confirming a critical security vulnerability within the personal version of its AI assistant, Copilot, Microsoft on Tuesday issued a patch to close the hole, which relies on an LLM’s inability to distinguish the data in a query from an instruction. The C…</description>
-  </item>
-  <item>
-    <title>CVE-2026-20349: Someone Is Crashing Cisco Firewalls. We Need to Talk About Why.</title>
-    <link>https://eclypsium.com/blog/cve-2026-20349-someone-is-crashing-cisco-firewalls-we-need-to-talk-about-why/</link>
-    <guid isPermaLink="true">https://eclypsium.com/blog/cve-2026-20349-someone-is-crashing-cisco-firewalls-we-need-to-talk-about-why/</guid>
-    <pubDate>Wed, 19 Aug 2026 13:00:00 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>An unauthenticated attacker can crash any Cisco ASA or FTD with SSL VPN exposed; it&amp;#8217;s been confirmed exploited in the wild, and Cisco hasn&amp;#8217;t told us who or why. Attackers Can Force Your Firewall To Reboot If you run a Cisco Adaptive Security Appliance or a Firepower T…</description>
-  </item>
-  <item>
-    <title>CVE-2026-70338 Microsoft PowerShell Security Feature Bypass Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-70338</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-70338</guid>
-    <pubDate>Wed, 19 Aug 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Acknowledgement Updated</description>
-  </item>
-  <item>
-    <title>CVE-2026-62705 Microsoft Brokering File System Elevation of Privilege Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-62705</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-62705</guid>
-    <pubDate>Wed, 19 Aug 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Corrected the CVE title from **Windows Bind Filter Driver Elevation of Privilege Vulnerability** to **Microsoft Brokering File System Elevation of Privilege Vulnerability** and updated the acknowledgement. These are informational changes only.</description>
-  </item>
-  <item>
-    <title>CVE-2026-42912 Windows Telephony Service Elevation of Privilege Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-42912</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-42912</guid>
-    <pubDate>Wed, 19 Aug 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Acknowledgement Updated</description>
-  </item>
-  <item>
-    <title>CVE-2026-69414 Microsoft Defender Elevation of Privilege Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-69414</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-69414</guid>
-    <pubDate>Wed, 19 Aug 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>CWE added. Informational change only.</description>
-  </item>
-  <item>
-    <title>CVE-2020-1173 Microsoft Power BI Report Server Spoofing Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2020-1173</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2020-1173</guid>
-    <pubDate>Wed, 19 Aug 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Corrected the Power BI Report Server version in the Security Updates table to use the public release version instead of the internal build number. This is an informational change only.</description>
-  </item>
-  <item>
-    <title>CVE-2021-26859 Microsoft Power BI Information Disclosure Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2021-26859</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2021-26859</guid>
-    <pubDate>Wed, 19 Aug 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Corrected the Power BI Report Server version in the Security Updates table to use the public release version instead of the internal build number. This is an informational change only.</description>
   </item>
   </channel>
 </rss>
