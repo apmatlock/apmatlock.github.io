@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Fri, 21 Aug 2026 07:07:07 -0300</lastBuildDate>
+    <lastBuildDate>Fri, 21 Aug 2026 08:07:05 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>U.S. CISA adds TrueConf Server flaws to its Known Exploited Vulnerabilities catalog</title>
@@ -160,6 +160,22 @@
     <description>Malicious versions of three Rust packages, including the widely used arrayref, were published to the crates.io registry on August 20, carrying a backdoor that executed automatically when affected projects were compiled. Security researchers at Wiz said the attack also shares infr…</description>
   </item>
   <item>
+    <title>Microsoft warns of max severity Entra ID flaw exploited in attacks</title>
+    <link>https://www.bleepingcomputer.com/news/microsoft/microsoft-warns-of-max-severity-entra-id-flaw-exploited-in-attacks/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/microsoft/microsoft-warns-of-max-severity-entra-id-flaw-exploited-in-attacks/</guid>
+    <pubDate>Fri, 21 Aug 2026 07:04:10 -0400</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Microsoft has patched a maximum-severity vulnerability in the Entra ID identity and access management (IAM) platform that has been exploited in attacks. [...]</description>
+  </item>
+  <item>
+    <title>BadBox-linked Android malware has now infected car head units</title>
+    <link>https://cyberinsider.com/badbox-linked-android-malware-has-now-infected-car-head-units/</link>
+    <guid isPermaLink="true">https://cyberinsider.com/badbox-linked-android-malware-has-now-infected-car-head-units/</guid>
+    <pubDate>Fri, 21 Aug 2026 10:18:52 +0000</pubDate>
+    <category>Security Bulletins</category>
+    <description>Android malware is spreading through the built-in firmware update mechanism of automotive head units, turning the devices into nodes for ad fraud and a residential proxy botnet. Kaspersky reports this is the first documented malware campaign with an infection chain specifically d…</description>
+  </item>
+  <item>
     <title>OpenAI adds an AI safety layer to detect misuse without retaining enterprise data</title>
     <link>https://www.csoonline.com/article/4212398/openai-adds-an-ai-safety-layer-to-detect-misuse-without-retaining-enterprise-data.html</link>
     <guid isPermaLink="true">https://www.csoonline.com/article/4212398/openai-adds-an-ai-safety-layer-to-detect-misuse-without-retaining-enterprise-data.html</guid>
@@ -174,6 +190,14 @@
     <pubDate>Fri, 21 Aug 2026 01:52:35 +0530</pubDate>
     <category>Incident Reporting</category>
     <description>The Rust Project has deleted malicious versions of three widely used Rust crates from crates.io after a compromised maintainer account published releases that added a typosquatted dependency whose build script downloaded and executed a remote payload during compilation. The affec…</description>
+  </item>
+  <item>
+    <title>SickKids data breach exposes employee and job applicant info</title>
+    <link>https://www.bleepingcomputer.com/news/security/sickkids-data-breach-exposes-employee-and-job-applicant-info/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/sickkids-data-breach-exposes-employee-and-job-applicant-info/</guid>
+    <pubDate>Fri, 21 Aug 2026 06:10:42 -0400</pubDate>
+    <category>Incident Reporting</category>
+    <description>Toronto&#x27;s Hospital for Sick Children (SickKids) says a cybersecurity incident exposed the personal information of some current and former employees and job applicants, stemming from a flaw in third-party software. Clinical systems and patient records were not affected. (264) [...…</description>
   </item>
   <item>
     <title>Suspected Russian Hackers Abuse Google OAuth and WhatsApp Linking to Hijack Accounts</title>
@@ -230,6 +254,14 @@
     <pubDate>Fri, 21 Aug 2026 09:23:18 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Hackers pushed a poisoned arrayref version that added a dependency to fetch a malicious payload from a remote server. The post Rust Supply Chain Attack Linked to North Korean Hackers appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>Hackers abuse FTP server banners to deliver new Windows malware</title>
+    <link>https://www.bleepingcomputer.com/news/security/hackers-abuse-ftp-server-banners-to-deliver-new-windows-malware/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/hackers-abuse-ftp-server-banners-to-deliver-new-windows-malware/</guid>
+    <pubDate>Fri, 21 Aug 2026 07:00:00 -0400</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Threat actors are abusing FTP banners to hide commands that deliver two previously undocumented remote access trojans named E4del and PINHOLE. [...]</description>
   </item>
   <item>
     <title>The invisible passenger in your car</title>
@@ -1574,38 +1606,6 @@
     <pubDate>Wed, 19 Aug 2026 14:30:52 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>The data theft extortion group likely compromised a critical vulnerability affecting PTC’s product lifecycle management software in June, a month before it sent threatening emails to victims. The post The long tail of Clop’s PTC hack is just beginning to emerge appeared first on …</description>
-  </item>
-  <item>
-    <title>Prison for data analyst who tried to extort $2.5 million from his employer</title>
-    <link>https://databreaches.net/2026/08/19/prison-for-data-analyst-who-tried-to-extort-2-5-million-from-his-employer/</link>
-    <guid isPermaLink="true">https://databreaches.net/2026/08/19/prison-for-data-analyst-who-tried-to-extort-2-5-million-from-his-employer/</guid>
-    <pubDate>Wed, 19 Aug 2026 14:04:38 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>There&amp;#8217;s an update to a previously reported case of a disgruntled former employee who tried to extort his employer, Brightly Software. Graham Cluley reports: When Cameron Curry discovered that his contract as a data analyst wasn&amp;#8217;t going to be renewed, he could have upd…</description>
-  </item>
-  <item>
-    <title>Exclusive: Linux Foundation&#x27;s Akrites to Go Live in September</title>
-    <link>https://www.infosecurity-magazine.com/news/linux-foundations-akrites-go-live/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/linux-foundations-akrites-go-live/</guid>
-    <pubDate>Wed, 19 Aug 2026 15:30:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The Linux Foundation&#x27;s Akrites initiative will become operational in September, when it will begin accepting AI-powered vulnerability reports for open-source projects</description>
-  </item>
-  <item>
-    <title>Firefox 154 blocks silent WebSocket access to local network devices</title>
-    <link>https://cyberinsider.com/firefox-154-blocks-silent-websocket-access-to-local-network-devices/</link>
-    <guid isPermaLink="true">https://cyberinsider.com/firefox-154-blocks-silent-websocket-access-to-local-network-devices/</guid>
-    <pubDate>Wed, 19 Aug 2026 15:25:01 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Mozilla has released Firefox 154 with expanded protections against websites connecting to devices on local networks, new AI-assisted tab organization, and support for NVIDIA GeForce NOW on Windows. The latest update also addresses 58 CVE entries, including multiple high-severity …</description>
-  </item>
-  <item>
-    <title>So Is Your SOC AI-Ready? Part 3: API or Die Audit!</title>
-    <link>https://medium.com/anton-on-security/so-is-your-soc-ai-ready-part-3-api-or-die-audit-fa70711cb301?source=rss----8e8c3ed26c4c---4</link>
-    <guid isPermaLink="true">https://medium.com/anton-on-security/so-is-your-soc-ai-ready-part-3-api-or-die-audit-fa70711cb301?source=rss----8e8c3ed26c4c---4</guid>
-    <pubDate>Wed, 19 Aug 2026 17:13:26 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>This is Part 3 of the AI-ready SOC series ( Part 1 , Part 2 ), and it is focused on validating readiness for pillars #1 (SOC Data Foundations) and #4 (Modern SOC Technology Stack). Specifically, it is about the audit I promised in Part 2 : “The ‘API or Die’ Data Audit: You need t…</description>
   </item>
   </channel>
 </rss>
