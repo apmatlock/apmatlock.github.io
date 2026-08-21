@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Fri, 21 Aug 2026 06:06:56 -0300</lastBuildDate>
+    <lastBuildDate>Fri, 21 Aug 2026 07:07:07 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>U.S. CISA adds TrueConf Server flaws to its Known Exploited Vulnerabilities catalog</title>
@@ -38,6 +38,22 @@
     <pubDate>Fri, 21 Aug 2026 07:55:43 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Citrix has patched two vulnerabilities in NetScaler ADC and NetScaler Gateway, including a critical authentication bypass flaw tracked as CVE-2026-19490, and is urging customers to upgrade affected appliances as soon as possible. &amp;#8220;We strongly recommend that customers review…</description>
+  </item>
+  <item>
+    <title>GitLab Warns of Active Exploitation of Critical GraphQL Flaw</title>
+    <link>https://securityaffairs.com/197622/uncategorized/gitlab-warns-of-active-exploitation-of-critical-graphql-flaw.html</link>
+    <guid isPermaLink="true">https://securityaffairs.com/197622/uncategorized/gitlab-warns-of-active-exploitation-of-critical-graphql-flaw.html</guid>
+    <pubDate>Fri, 21 Aug 2026 09:49:02 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>GitLab flaw CVE-2026-19478 is now under active exploitation, allowing unauthenticated attackers to modify or delete public projects. WatchTowr researchers warn of active exploitation of critical GitLab flaw CVE-2026-19478 (CVSS score of 9.4). This week, GitLab pushed out an emerg…</description>
+  </item>
+  <item>
+    <title>Poland’s CERT Warns of Active Exploitation of Critical Zimbra Collaboration Suite Flaw</title>
+    <link>https://securityaffairs.com/197610/security/polands-cert-warns-of-active-exploitation-of-critical-zimbra-collaboration-suite-flaw.html</link>
+    <guid isPermaLink="true">https://securityaffairs.com/197610/security/polands-cert-warns-of-active-exploitation-of-critical-zimbra-collaboration-suite-flaw.html</guid>
+    <pubDate>Fri, 21 Aug 2026 09:14:02 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>CERT Polska confirmed active exploitation of CVE-2026-73570, a critical unauthenticated RCE in Zimbra Collaboration Suite patched on July 20. CERT Polska, Poland&amp;#8217;s national computer emergency response team, confirmed this week that threat actors are actively exploiting a cr…</description>
   </item>
   <item>
     <title>NSA warns AI exploits target power and water, Android malware leaks data via nearby phones, ransomware&#x27;s sweet spot</title>
@@ -128,6 +144,30 @@
     <description>Most of the fixes resolve code execution, privilege escalation, and information disclosure vulnerabilities. The post Microsoft Rolls Out 22 Fresh Security Patches appeared first on SecurityWeek .</description>
   </item>
   <item>
+    <title>More Incidents of AIs Going Rogue in Cybersecurity Challenges</title>
+    <link>https://www.schneier.com/blog/archives/2026/08/more-incidents-of-ais-going-rogue-in-cybersecurity-challenges.html</link>
+    <guid isPermaLink="true">https://www.schneier.com/blog/archives/2026/08/more-incidents-of-ais-going-rogue-in-cybersecurity-challenges.html</guid>
+    <pubDate>Fri, 21 Aug 2026 09:42:34 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>The AI Security Institute has a new report of AI systems engaging in &amp;#8220;unsanctioned behavior&amp;#8221;&amp;#8212;what I have been calling &amp;#8220; genie behavior &amp;#8212;while being tested on their cybersecurity capabilities. The incident stemmed from a single evaluation where agents…</description>
+  </item>
+  <item>
+    <title>Backdoored Rust packages hit crates.io, exposing developers to malware at build time</title>
+    <link>https://www.csoonline.com/article/4212381/backdoored-rust-packages-hit-crates-io-exposing-developers-to-malware-at-build-time.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4212381/backdoored-rust-packages-hit-crates-io-exposing-developers-to-malware-at-build-time.html</guid>
+    <pubDate>Fri, 21 Aug 2026 09:29:49 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Malicious versions of three Rust packages, including the widely used arrayref, were published to the crates.io registry on August 20, carrying a backdoor that executed automatically when affected projects were compiled. Security researchers at Wiz said the attack also shares infr…</description>
+  </item>
+  <item>
+    <title>OpenAI adds an AI safety layer to detect misuse without retaining enterprise data</title>
+    <link>https://www.csoonline.com/article/4212398/openai-adds-an-ai-safety-layer-to-detect-misuse-without-retaining-enterprise-data.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4212398/openai-adds-an-ai-safety-layer-to-detect-misuse-without-retaining-enterprise-data.html</guid>
+    <pubDate>Fri, 21 Aug 2026 09:45:36 +0000</pubDate>
+    <category>Security Advisories</category>
+    <description>OpenAI is adding a new safety capability that allows enterprises to detect misuse of its AI systems across multiple interactions without retaining prompts or responses, enabling risk monitoring while preserving its Zero Data Retention (ZDR) commitments. “OpenAI does not retain…pr…</description>
+  </item>
+  <item>
     <title>Rust Supply Chain Attack Puts Build-Time Malware in Crates with 245 Million Downloads</title>
     <link>https://thehackernews.com/2026/08/rust-supply-chain-attack-puts-build.html</link>
     <guid isPermaLink="true">https://thehackernews.com/2026/08/rust-supply-chain-attack-puts-build.html</guid>
@@ -166,6 +206,30 @@
     <pubDate>Fri, 21 Aug 2026 08:41:06 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Two industry surveys released this week by Kiteworks and CyberSheath paint a consistent picture of the defense industrial base. The post Contractors&amp;#8217; CMMC Confidence Rises as Ability to Prove It Falls Behind appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>New SynkLoader malware uses fake Windows lock screen to steal passwords</title>
+    <link>https://cyberinsider.com/new-synkloader-malware-uses-fake-windows-lock-screen-to-steal-passwords/</link>
+    <guid isPermaLink="true">https://cyberinsider.com/new-synkloader-malware-uses-fake-windows-lock-screen-to-steal-passwords/</guid>
+    <pubDate>Fri, 21 Aug 2026 10:02:31 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>A new malware family dubbed SynkLoader uses a fake Windows lock screen to steal users’ login passwords before giving attackers remote access to corporate networks. The modular malware combines Python, PowerShell, C#, and C++ components, with many payloads executed only in memory …</description>
+  </item>
+  <item>
+    <title>Alibaba spotted using WebAudio fingerprinting for user tracking</title>
+    <link>https://cyberinsider.com/alibaba-spotted-using-webaudio-fingerprinting-for-user-tracking/</link>
+    <guid isPermaLink="true">https://cyberinsider.com/alibaba-spotted-using-webaudio-fingerprinting-for-user-tracking/</guid>
+    <pubDate>Fri, 21 Aug 2026 09:28:14 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Alibaba is facing scrutiny over its use of WebAudio fingerprinting, a browser-tracking technique that can help distinguish users by measuring subtle differences in how their devices process audio. The technique attracted attention after fingerprinting code running on Alibaba repo…</description>
+  </item>
+  <item>
+    <title>Rust Supply Chain Attack Linked to North Korean Hackers</title>
+    <link>https://www.securityweek.com/rust-supply-chain-attack-linked-to-north-korean-hackers/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/rust-supply-chain-attack-linked-to-north-korean-hackers/</guid>
+    <pubDate>Fri, 21 Aug 2026 09:23:18 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Hackers pushed a poisoned arrayref version that added a dependency to fetch a malicious payload from a remote server. The post Rust Supply Chain Attack Linked to North Korean Hackers appeared first on SecurityWeek .</description>
   </item>
   <item>
     <title>The invisible passenger in your car</title>
@@ -1542,70 +1606,6 @@
     <pubDate>Wed, 19 Aug 2026 17:13:26 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>This is Part 3 of the AI-ready SOC series ( Part 1 , Part 2 ), and it is focused on validating readiness for pillars #1 (SOC Data Foundations) and #4 (Modern SOC Technology Stack). Specifically, it is about the audit I promised in Part 2 : “The ‘API or Die’ Data Audit: You need t…</description>
-  </item>
-  <item>
-    <title>The AI Was the Route In</title>
-    <link>https://www.youtube.com/shorts/m9SQK6l-aQo</link>
-    <guid isPermaLink="true">https://www.youtube.com/shorts/m9SQK6l-aQo</guid>
-    <pubDate>Wed, 19 Aug 2026 17:00:07 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Several recent security incidents and research demonstrations involve attackers manipulating AI assistants and connected systems that already have legitimate access to organizational data or infrastructure. The AI doesn&#x27;t always have to be the target. If an assistant can read log…</description>
-  </item>
-  <item>
-    <title>NSA, FBI warns of hackers using AI-generated tools in attacks on critical infrastructure technology</title>
-    <link>https://therecord.media/nsa-fbi-warns-of-hackers-using-ai-generated-tools-critical-infrastructure</link>
-    <guid isPermaLink="true">https://therecord.media/nsa-fbi-warns-of-hackers-using-ai-generated-tools-critical-infrastructure</guid>
-    <pubDate>Wed, 19 Aug 2026 17:58:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The National Security Agency (NSA), FBI and other federal agencies said the campaign is targeting Siemens S7 Series PLCs and was being fueled by “AI-assisted development” alongside exploitation of known vulnerabilities.</description>
-  </item>
-  <item>
-    <title>US warns of AI-powered attacks on Siemens PLCs in critical infrastructure</title>
-    <link>https://www.bleepingcomputer.com/news/security/us-warns-of-ai-powered-attacks-on-siemens-plcs-in-critical-infrastructure/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/us-warns-of-ai-powered-attacks-on-siemens-plcs-in-critical-infrastructure/</guid>
-    <pubDate>Wed, 19 Aug 2026 13:50:01 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>U.S. cybersecurity agencies warn that threat actors are using AI-generated scripts to exploit Siemens S7 Series programmable logic controllers (PLCs) in U.S. critical infrastructure. [...]</description>
-  </item>
-  <item>
-    <title>OpenAI Pauses Frontier RL Training as It Tightens Defenses Against Unsafe AI Behavior</title>
-    <link>https://thehackernews.com/2026/08/openai-pauses-frontier-rl-training-as.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/08/openai-pauses-frontier-rl-training-as.html</guid>
-    <pubDate>Wed, 19 Aug 2026 23:36:44 +0530</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>OpenAI on Tuesday revealed that it paused reinforcement learning (RL) training for its latest artificial intelligence (AI) models for two weeks while it shored up additional defenses and increased the scope of its monitoring to avert another Hugging Face-like incident. &quot;As models…</description>
-  </item>
-  <item>
-    <title>Hackers hiding in plain sight.</title>
-    <link>https://thecyberwire.com/podcasts/daily-podcast/2168/notes</link>
-    <guid isPermaLink="true">https://thecyberwire.com/podcasts/daily-podcast/2168/notes</guid>
-    <pubDate>Wed, 19 Aug 2026 18:19:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Medusa’s reach grows. Cl0p expands its victim list. The DOJ charges 17 alleged Iranian hackers. CISA sounds the alarm on four exploited vulnerabilities. TWINLOOT hides in plain sight inside Microsoft 365. Maria Varmazis shares the latest from the space-cyber realm as Ukraine stri…</description>
-  </item>
-  <item>
-    <title>Sakura Internet hack exposes data of up to 1.36 million accounts</title>
-    <link>https://www.bleepingcomputer.com/news/security/sakura-internet-hack-exposes-data-of-up-to-136-million-accounts/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/sakura-internet-hack-exposes-data-of-up-to-136-million-accounts/</guid>
-    <pubDate>Wed, 19 Aug 2026 16:53:38 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Japanese cloud and data center service provider Sakura Internet disclosed that hackers accessed its sales management system, where customer contract and membership information is stored. [...]</description>
-  </item>
-  <item>
-    <title>Healthtech firm CareCloud data breach impacts 3.7 million patients</title>
-    <link>https://www.bleepingcomputer.com/news/security/healthtech-firm-carecloud-data-breach-impacts-37-million-patients/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/healthtech-firm-carecloud-data-breach-impacts-37-million-patients/</guid>
-    <pubDate>Wed, 19 Aug 2026 16:07:12 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>U.S. healthcare IT company CareCloud disclosed that the data breach incident it suffered earlier this year has impacted more than 3.7 million individuals. [...]</description>
-  </item>
-  <item>
-    <title>Microsoft fixes known issue causing Windows Defender crashes</title>
-    <link>https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-known-issue-causing-windows-defender-crashes/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-known-issue-causing-windows-defender-crashes/</guid>
-    <pubDate>Wed, 19 Aug 2026 07:14:28 -0400</pubDate>
-    <category>Security Bulletins</category>
-    <description>Microsoft has resolved a bug that caused Windows Defender to crash after a recent security update, resulting in 0xc0000005 access violation errors on some affected systems. [...]</description>
   </item>
   </channel>
 </rss>
