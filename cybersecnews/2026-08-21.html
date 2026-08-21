@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>matlock.ca // THREAT INTELLIGENCE — 2026-08-21</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/">MATLOCK<span class="dot">.</span>CA</a>
+  <nav class="primary">
+    <a href="/">Home</a>
+    <a href="/claudeblog/">Walkthroughs</a>
+    <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
+    <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="/cybersecnews/feed.xml">RSS</a>
+  </nav>
+</header>
+
+<nav class="subnav">
+  <span class="nav-label">// JUMP</span>
+<a href="archive.html">Archive</a>
+<a href="index.html" class="active">Today</a>
+<a href="2026-08-20.html">Yesterday</a>
+<a href="2026-08-19.html">19 Aug</a>
+<a href="2026-08-18.html">18 Aug</a>
+<a href="2026-08-17.html">17 Aug</a>
+<a href="2026-08-16.html">16 Aug</a>
+<a href="2026-08-15.html">15 Aug</a>
+
+</nav>
+<main class="container wide">
+
+    <div class="stats-bar">
+      <div class="stat"><span class="stat-value">8</span><span class="stat-label">Articles</span></div>
+      <div class="stat"><span class="stat-value">4</span><span class="stat-label">Categories</span></div>
+      <div class="stat"><span class="stat-value">2026-08-21</span><span class="stat-label">Date</span></div>
+    </div>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
+    </div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="nsa warns ai exploits target power and water, android malware leaks data via nearby phones, ransomware's sweet spot" data-date="2026-08-21"><span class="headline-date">21 Aug <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/nsa-warns-ai-exploits-target-power-and-water-android-malware-leaks-data-via-nearby-phones-ransomwares-sweet-spot" target="_blank" rel="noopener">NSA warns AI exploits target power and water, Android malware leaks data via nearby phones, ransomware's sweet spot</a><span class="article-summary">NSA Warns AI-Generated Exploits Target US Critical Infrastructure + New Android Malware "Manic" + Ransomware's Mid-Market Focus In this episode of Cybersecurity Today, sponsored by NordLayer, the NSA and FBI warn of an active campaign using AI-generated exploit tools to probe US …</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="risky bulletin: us warns of ai-assisted attacks against siemens plcs" data-date="2026-08-21"><span class="headline-date">21 Aug</span><span class="headline-body"><a class="headline-title" href="https://risky.biz/RBNEWS603/" target="_blank" rel="noopener">Risky Bulletin: US warns of AI-assisted attacks against Siemens PLCs</a><span class="article-summary">The US warns of AI-aided attacks against Siemens PLCs, hackers breach Latvia’s road traffic agency, a new hacking tool enrolls an attacker’s passkey to your account, and academics find source code overlaps between Geedge devices and China’s Great Firewall</span></span><span class="headline-source">RISKY.BIZ</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="rust supply chain attack puts build-time malware in crates with 245 million downloads" data-date="2026-08-21"><span class="headline-date">21 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/08/rust-supply-chain-attack-puts-build.html" target="_blank" rel="noopener">Rust Supply Chain Attack Puts Build-Time Malware in Crates with 245 Million Downloads</a><span class="article-summary">The Rust Project has deleted malicious versions of three widely used Rust crates from crates.io after a compromised maintainer account published releases that added a typosquatted dependency whose build script downloaded and executed a remote payload during compilation. The affec…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="suspected russian hackers abuse google oauth and whatsapp linking to hijack accounts" data-date="2026-08-21"><span class="headline-date">21 Aug</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/08/suspected-russian-hackers-abuse-google.html" target="_blank" rel="noopener">Suspected Russian Hackers Abuse Google OAuth and WhatsApp Linking to Hijack Accounts</a><span class="article-summary">Three distinct suspected Russian cyber espionage threat clusters have been observed leveraging legitimate authentication flows to single out individuals working in academia, aerospace and defense, governments, and think tanks across Europe, as well as academia and think tanks wit…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="isc stormcast for friday, august 21st, 2026 https://isc.sans.edu/podcastdetail/10062, (fri, aug 21st)" data-date="2026-08-21"><span class="headline-date">21 Aug</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/33270" target="_blank" rel="noopener">ISC Stormcast For Friday, August 21st, 2026 https://isc.sans.edu/podcastdetail/10062, (Fri, Aug 21st)</a><span class="article-summary">(c) SANS Internet Storm Center. https://isc.sans.edu Creative Commons Attribution-Noncommercial 3.0 United States License.</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">3</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="calling on cyber pros to help defend city hall" data-date="2026-08-21"><span class="headline-date">21 Aug</span><span class="headline-body"><a class="headline-title" href="https://www.darkreading.com/cyber-risk/calling-on-cyber-pros-to-help-city-hall" target="_blank" rel="noopener">Calling on Cyber Pros to Help Defend City Hall</a><span class="article-summary">Government agencies with smaller budgets need support — and here's how you can help.</span></span><span class="headline-source">DARKREADING.COM</span></div>
+<div class="headline" data-title="even moar powershell, looking at entra logins - the good, the bad and the password sprays, (fri, aug 21st)" data-date="2026-08-21"><span class="headline-date">21 Aug</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/33268" target="_blank" rel="noopener">Even MOAR Powershell, looking at Entra logins - the good, the bad and the password sprays, (Fri, Aug 21st)</a><span class="article-summary">One thing that folks never seem to do after "going to the CLOOOOUUUUD" is to look at their logs, logs that they would have checked daily when things were on premise. &#xd; One log that really bears looking at is the log of successful and failed logins. the call for that is: &#xd;</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="who got missed in the mfa rollout&amp;#x3f; more powershell &amp;#x2b; graph &amp;#x2b; entra scripting&amp;#x21;, (fri, aug 21st)" data-date="2026-08-21"><span class="headline-date">21 Aug</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/33272" target="_blank" rel="noopener">Who Got Missed in the MFA Rollout&amp;#x3f; More Powershell &amp;#x2b; Graph &amp;#x2b; Entra scripting&amp;#x21;, (Fri, Aug 21st)</a><span class="article-summary">In every MFA rollout, there will come a time where you think you are closing in on "done", and some automation to list what&&#x23&#x3b;x26&#x3b;&#x23&#x3b;39&#x3b;s left would be handy. Something quicker than scrolling through the web interface through thousands of accounts ... &…</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+  </div>
+</div>
+
+</main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
+<footer class="site-footer">
+  threat intelligence // 85 sources // generated 2026-08-21 00:07<span class="blink"></span>
+</footer>
+</body>
+</html>
