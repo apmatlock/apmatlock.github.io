@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 24 Aug 2026 08:07:59 -0300</lastBuildDate>
+    <lastBuildDate>Mon, 24 Aug 2026 09:07:06 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Microsoft patches perfect-ten Entra ID flaw, Defender driver deletes Defender at boot, Malware turns cars into proxy botnet</title>
@@ -78,6 +78,30 @@
     <pubDate>Mon, 24 Aug 2026 06:45:12 -0400</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>The Cybersecurity and Infrastructure Security Agency (CISA) has ordered U.S. government agencies to patch an actively exploited vulnerability in Zimbra Collaboration Suite (ZCS) within three days. [...]</description>
+  </item>
+  <item>
+    <title>Windows Defender’s own driver can leave systems defenseless</title>
+    <link>https://www.csoonline.com/article/4212929/windows-defenders-own-driver-can-leave-systems-defenseless.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4212929/windows-defenders-own-driver-can-leave-systems-defenseless.html</guid>
+    <pubDate>Mon, 24 Aug 2026 11:47:59 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>A Microsoft-signed Windows Defender remediation driver can be repurposed into a kernel-level “operation engine” capable of deleting files, modifying the registry and neutralizing security controls, according to new research from Check Point Research (CPR). The technique does not …</description>
+  </item>
+  <item>
+    <title>Cybersecurity job ads demanding AI skills double in a year</title>
+    <link>https://www.helpnetsecurity.com/2026/08/24/cybersecurity-job-ads-ai-skills-research/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/08/24/cybersecurity-job-ads-ai-skills-research/</guid>
+    <pubDate>Mon, 24 Aug 2026 11:53:54 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Job postings asking for AI skills in cybersecurity have doubled in a single year in G7 countries according to new research from the Cisco-founded AI Workforce Consortium. Analysis from recruitment firms Cornerstone and Indeed covering 24 months, from April 2024 to March 2026, spa…</description>
+  </item>
+  <item>
+    <title>ShinyHunters provided no real proof they hacked ReliaQuest– because they didn’t get anywhere: ReliaQuest</title>
+    <link>https://databreaches.net/2026/08/24/shinyhunters-provided-no-real-proof-they-hacked-reliaquest-because-they-didnt-get-anywhere-reliaquest/</link>
+    <guid isPermaLink="true">https://databreaches.net/2026/08/24/shinyhunters-provided-no-real-proof-they-hacked-reliaquest-because-they-didnt-get-anywhere-reliaquest/</guid>
+    <pubDate>Mon, 24 Aug 2026 11:36:42 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Yesterday, DataBreaches reported that ShinyHunters had added ReliaQuest to its dedicated leak site, but without any substantive proof — only a few screenshots showing access to a user account on reliaquest.okta[.]com/enduser/settings. ReliaQuest did not reply to DataBreaches’ ema…</description>
   </item>
   <item>
     <title>Microsoft shares temporary fix for Windows 11 gaming issues</title>
@@ -208,6 +232,14 @@
     <description>Juan Manuel Gouveia-Aguilera has been sentenced to 8 years in prison for his role in an ATM jackpotting scheme that caused millions in losses. The post Venezuelan Gets Record Federal Prison Term for ATM Jackpotting appeared first on SecurityWeek .</description>
   </item>
   <item>
+    <title>91 Vulnerabilities Patched in Spring Application Framework</title>
+    <link>https://www.securityweek.com/91-vulnerabilities-patched-in-spring-application-framework/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/91-vulnerabilities-patched-in-spring-application-framework/</guid>
+    <pubDate>Mon, 24 Aug 2026 11:58:28 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>More than 200 vulnerabilities have been patched to date this year, compared to only 16 in 2025 and 22 in 2024. The post 91 Vulnerabilities Patched in Spring Application Framework appeared first on SecurityWeek .</description>
+  </item>
+  <item>
     <title>A week in security (August 17 – August 23)</title>
     <link>https://www.malwarebytes.com/blog/news/2026/08/a-week-in-security-august-17-august-23</link>
     <guid isPermaLink="true">https://www.malwarebytes.com/blog/news/2026/08/a-week-in-security-august-17-august-23</guid>
@@ -222,6 +254,14 @@
     <pubDate>Mon, 24 Aug 2026 08:52:52 +0000</pubDate>
     <category>Cyber Threat Landscape</category>
     <description>Slovakia warns that vulnerable speed cameras could expose vehicle data, enable remote access and provide attackers with a foothold into public networks. Slovakia’s National Security Authority, NBÚ, recently issued a warning about several road speed cameras, calling them a signifi…</description>
+  </item>
+  <item>
+    <title>Tracking PavinLoader across ClickFix and fake download campaigns</title>
+    <link>https://www.malwarebytes.com/blog/threat-intel/2026/08/tracking-pavinloader-across-clickfix-and-fake-download-campaigns</link>
+    <guid isPermaLink="true">https://www.malwarebytes.com/blog/threat-intel/2026/08/tracking-pavinloader-across-clickfix-and-fake-download-campaigns</guid>
+    <pubDate>Mon, 24 Aug 2026 11:43:19 +0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>We found PavinLoader being used across ClickFix, fake software, and RenPy campaigns to deliver Amatera Stealer and other malware.</description>
   </item>
   <item>
     <title>Sponsored: Passkeys won’t stop authorisation phishing</title>
@@ -1566,46 +1606,6 @@
     <pubDate>Thu, 20 Aug 2026 11:17:21 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>AWS has detailed an approach for propagating user authorization context through AI agents, allowing access controls to be enforced by infrastructure and downstream services rather than relying on the agent itself. Customers using Amazon Bedrock AgentCore can build AI agents that …</description>
-  </item>
-  <item>
-    <title>Atlassian, Splunk Patch Dozens of Critical, High-Severity Vulnerabilities</title>
-    <link>https://www.securityweek.com/atlassian-splunk-patch-dozens-of-critical-high-severity-vulnerabilities/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/atlassian-splunk-patch-dozens-of-critical-high-severity-vulnerabilities/</guid>
-    <pubDate>Thu, 20 Aug 2026 12:24:53 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The flaws could be exploited to execute arbitrary code, access sensitive information, and elevate privileges. The post Atlassian, Splunk Patch Dozens of Critical, High-Severity Vulnerabilities appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>MLflow Vulnerability Exploited for Cloud Credential Theft</title>
-    <link>https://www.securityweek.com/mlflow-vulnerability-exploited-for-cloud-credential-theft/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/mlflow-vulnerability-exploited-for-cloud-credential-theft/</guid>
-    <pubDate>Thu, 20 Aug 2026 12:05:55 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The critical-severity flaw allows attackers to send HTTP requests to internal endpoints and extract sensitive information. The post MLflow Vulnerability Exploited for Cloud Credential Theft appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>CDN Tsunami Attack Abuses HTTP/3 Translation for Up to 350x DoS Amplification</title>
-    <link>https://thehackernews.com/2026/08/cdn-tsunami-attack-abuses-http3.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/08/cdn-tsunami-attack-abuses-http3.html</guid>
-    <pubDate>Thu, 20 Aug 2026 17:09:35 +0530</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Cybersecurity researchers have disclosed two denial-of-service (DoS) attacks that exploit how major content delivery networks (CDNs) convert client-facing HTTP/3 traffic into HTTP/1.1 requests to the websites they front, amplifying a low-bandwidth request stream by up to 350x aga…</description>
-  </item>
-  <item>
-    <title>The push to designate AI as the next critical infrastructure sector</title>
-    <link>https://cyberscoop.com/ai-critical-infrastructure-designation-cisa-report/</link>
-    <guid isPermaLink="true">https://cyberscoop.com/ai-critical-infrastructure-designation-cisa-report/</guid>
-    <pubDate>Thu, 20 Aug 2026 13:31:17 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The designation would unlock a range of federal services, tools and resources for an industry that policymakers view as increasingly tied to national and economic security. The post The push to designate AI as the next critical infrastructure sector appeared first on CyberScoop .</description>
-  </item>
-  <item>
-    <title>BTR Reforged: Weaponizing Defender’s Remediation Driver as a Kernel Operation Primitive</title>
-    <link>https://research.checkpoint.com/2026/btr-reforged-weaponizing-defenders-remediation-driver-as-a-kernel-operation-primitive/</link>
-    <guid isPermaLink="true">https://research.checkpoint.com/2026/btr-reforged-weaponizing-defenders-remediation-driver-as-a-kernel-operation-primitive/</guid>
-    <pubDate>Thu, 20 Aug 2026 13:07:13 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Research by: Jiří Vinopal (@vinopaljiri) Abstract What if a trusted security component could be repurposed into an attacker-controlled kernel primitive? What if a signed Microsoft remediation driver could be instructed to execute arbitrary file and registry operations from Ring 0…</description>
   </item>
   </channel>
 </rss>
