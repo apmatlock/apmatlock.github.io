@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 01 Sep 2026 14:07:18 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 01 Sep 2026 15:07:10 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Weekly Threat Bulletin – September 2nd, 2026</title>
@@ -54,6 +54,14 @@
     <pubDate>Tue, 01 Sep 2026 12:07:54 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Tracked as CVE-2026-0768, the security defect allows unauthenticated attackers to execute arbitrary Python code remotely. The post Hackers Start Exploiting Critical Langflow Vulnerability appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>Critical Langflow flaw exploited to steal OpenAI and AWS keys</title>
+    <link>https://www.bleepingcomputer.com/news/security/critical-langflow-flaw-exploited-to-steal-openai-and-aws-keys/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/critical-langflow-flaw-exploited-to-steal-openai-and-aws-keys/</guid>
+    <pubDate>Tue, 01 Sep 2026 13:54:22 -0400</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Threat actors are exploiting an unauthenticated remote code execution vulnerability (CVE-2026-0768) in Langflow, an open-source framework for building AI applications, to steal credentials, tokens, and keys. [...]</description>
   </item>
   <item>
     <title>Bot detection arrives in CrowdSec 1.8.0, along with two DoS fixes</title>
@@ -340,6 +348,14 @@
     <link>https://cyber.gc.ca/en/alerts-advisories/webpros-security-advisory-av26-866</link>
     <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/webpros-security-advisory-av26-866</guid>
     <pubDate>Tue, 01 Sep 2026 11:02:29 -0000</pubDate>
+    <category>Security Advisories</category>
+    <description></description>
+  </item>
+  <item>
+    <title>JFrog security advisory (AV26-867)</title>
+    <link>https://cyber.gc.ca/en/alerts-advisories/jfrog-security-advisory-av26-867</link>
+    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/jfrog-security-advisory-av26-867</guid>
+    <pubDate>Tue, 01 Sep 2026 15:02:28 -0000</pubDate>
     <category>Security Advisories</category>
     <description></description>
   </item>
@@ -662,6 +678,14 @@
     <pubDate>Tue, 01 Sep 2026 16:07:14 +0000</pubDate>
     <category>Infosec News</category>
     <description>A fake GTA 6 leak is using wallet-draining code to steal cryptocurrency, tokens, and NFTs from eager fans.</description>
+  </item>
+  <item>
+    <title>What’s the Scam?</title>
+    <link>https://www.schneier.com/blog/archives/2026/09/whats-the-scam.html</link>
+    <guid isPermaLink="true">https://www.schneier.com/blog/archives/2026/09/whats-the-scam.html</guid>
+    <pubDate>Tue, 01 Sep 2026 17:36:13 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>To subscribe to my monthly email newsletter, you have to enter your information on the webpage, and then reply to an automatically generated email. This is, of course, to prevent people from subscribing addresses other than their own. Starting last weekend, I have been receiving …</description>
   </item>
   <item>
     <title>CISA Adds Two Known Exploited Vulnerabilities to Catalog</title>
@@ -1582,30 +1606,6 @@
     <pubDate>Mon, 31 Aug 2026 20:00:34 +0000</pubDate>
     <category>Infosec News</category>
     <description>One of my internet-exposed inference honeypots was discovered, relabeled with sought-after model names, and incorporated into infrastructure apparently used to provide &quot;free&quot; LLM backends. It then received a real coding-agent session &amp;&amp;#x23&amp;#x3b;x26&amp;#x3b;&amp;#x23&amp;#x3b;xe2&amp;#x3b;&amp;&amp;#x2…</description>
-  </item>
-  <item>
-    <title>&#x27;TerminalFix&#x27; Campaign Weaponizes PowerShell for Enterprise Attacks</title>
-    <link>https://www.darkreading.com/threat-intelligence/terminalfix-campaign-weaponizes-powershell-enterprise-attacks</link>
-    <guid isPermaLink="true">https://www.darkreading.com/threat-intelligence/terminalfix-campaign-weaponizes-powershell-enterprise-attacks</guid>
-    <pubDate>Mon, 31 Aug 2026 20:25:36 +0000</pubDate>
-    <category>Infosec News</category>
-    <description>The ClickFix-style campaign features a sophisticated, multistage attack chain that includes reverse tunnels into victim organizations&#x27; networks.</description>
-  </item>
-  <item>
-    <title>TerminalFix Uses Fake Cloudflare CAPTCHAs to Deploy Reverse-Tunnel Backdoor</title>
-    <link>https://thehackernews.com/2026/08/terminalfix-uses-fake-cloudflare.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/08/terminalfix-uses-fake-cloudflare.html</guid>
-    <pubDate>Sun, 30 Aug 2026 13:06:33 +0530</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Microsoft has disclosed details of a new ClickFix variant, dubbed TerminalFix, that aims to trick users into running a malicious command in Windows Terminal or PowerShell. &quot;While traditional ClickFix campaigns direct victims to the Windows Run dialog, TerminalFix campaigns apply …</description>
-  </item>
-  <item>
-    <title>Closing the space-cyber workforce gap.</title>
-    <link>https://thecyberwire.com/podcasts/tminus-space-cyber-briefing/722/notes</link>
-    <guid isPermaLink="true">https://thecyberwire.com/podcasts/tminus-space-cyber-briefing/722/notes</guid>
-    <pubDate>Sun, 30 Aug 2026 05:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Despite the space sector&#x27;s consistent growth and greater importance as a critical infrastructure sector, finding cybersecurity talent is still proving to be a challenge. Host Maria Varmazis and ⁠Nick Cohen⁠, Principal Engineer at the ⁠Aerospace Corporation⁠, sat down to discuss t…</description>
   </item>
   </channel>
 </rss>
