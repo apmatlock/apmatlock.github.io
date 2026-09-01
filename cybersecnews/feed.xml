@@ -5,8 +5,24 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 01 Sep 2026 01:07:20 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 01 Sep 2026 02:07:16 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Bot detection arrives in CrowdSec 1.8.0, along with two DoS fixes</title>
+    <link>https://www.helpnetsecurity.com/2026/09/01/crowdsec-1-8-0-bot-detection/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/01/crowdsec-1-8-0-bot-detection/</guid>
+    <pubDate>Tue, 01 Sep 2026 05:04:35 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Failed SSH logins pile up in an auth log, and a scanner walks a website looking for exposed admin paths. CrowdSec reads log sources and HTTP requests, works out which addresses are misbehaving, and hands the block to a separate remediation component sitting in front of the servic…</description>
+  </item>
+  <item>
+    <title>NIS2 compliance: Fixing IAM and access control before the 2026 audit</title>
+    <link>https://www.helpnetsecurity.com/2026/09/01/nis2-credential-compliance-before-audit/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/01/nis2-credential-compliance-before-audit/</guid>
+    <pubDate>Tue, 01 Sep 2026 05:00:08 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>The NIS2 Directive places direct obligations on organizations across supply chain risk management, incident reporting, and board-level accountability. October brings a new wave of legally binding deadlines across the EU, as member states move from transposition into enforcement. …</description>
+  </item>
   <item>
     <title>ISC Stormcast For Tuesday, September 1st, 2026 https://isc.sans.edu/podcastdetail/10076, (Tue, Sep 1st)</title>
     <link>https://isc.sans.edu/diary/rss/33302</link>
@@ -22,6 +38,14 @@
     <pubDate>Tue, 01 Sep 2026 04:00:30 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Security Engineer, PSO Google &amp;#124; USA &amp;#124; On-site &amp;#8211; View job details As a Security Engineer, you will provide technical guidance to customers adopting Google Cloud Platform, helping them navigate their cloud journey with the Professional Services team. The role includ…</description>
+  </item>
+  <item>
+    <title>What your vendor says about PQC tells you if they are ready</title>
+    <link>https://www.helpnetsecurity.com/2026/09/01/yaakov-stein-allot-telecom-pqc-migration/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/01/yaakov-stein-allot-telecom-pqc-migration/</guid>
+    <pubDate>Tue, 01 Sep 2026 04:30:41 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>In this interview with Help Net Security, Dr. Yaakov Stein, VP CTO of Allot, discusses what post-quantum readiness looks like inside a mobile network. The discussion covers which operator traffic stays sensitive for years, including subscriber identity mappings, billing records a…</description>
   </item>
   <item>
     <title>Guildma (Astaroth) malware infection from Brazilian Portuguese email, (Tue, Sep 1st)</title>
@@ -1579,30 +1603,6 @@
     <title>Chromium: CVE-2026-78942 Incorrect reference resolution in Loader</title>
     <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-78942</link>
     <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-78942</guid>
-    <pubDate>Fri, 28 Aug 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2026) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium: CVE-2026-78943 Improper input validation in Editing</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-78943</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-78943</guid>
-    <pubDate>Fri, 28 Aug 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2026) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium: CVE-2026-78944 Use after free in DevTools</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-78944</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-78944</guid>
-    <pubDate>Fri, 28 Aug 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2026) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium: CVE-2026-78945 Use after free in Views</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-78945</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-78945</guid>
     <pubDate>Fri, 28 Aug 2026 07:00:00 -0700</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2026) for more information.</description>
