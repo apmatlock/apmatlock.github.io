@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 01 Sep 2026 23:03:03 -0300</lastBuildDate>
+    <lastBuildDate>Wed, 02 Sep 2026 00:03:01 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>22,000 Exchange servers open to hijack, 700 rogue AI agents swarmed Hugging Face, AI threatens global finance</title>
@@ -32,6 +32,14 @@
     <description>Learning from the OpenAI-Hugging Face fiasco, as well as from recent revelations about its own model, Anthropic is revamping its security and alignment practices. The company has established controls that flag when a model attempts to break out of a sandbox or successfully access…</description>
   </item>
   <item>
+    <title>Risky Business #851 -- Agents are just ones and zeros, and tigers are just atoms</title>
+    <link>https://risky.biz/RB851/</link>
+    <guid isPermaLink="true">https://risky.biz/RB851/</guid>
+    <pubDate>Wed, 02 Sep 2026 12:22:32 +1000</pubDate>
+    <category>Security Advisories</category>
+    <description>On this week’s show Patrick Gray and James Wilson are joined by guest co-host The Grugq to talk through the week’s news, including: Two alleged TeamPCP hackers got arrested in Australia The White House has a plan to boost security for water facilities, but we can’t see it working…</description>
+  </item>
+  <item>
     <title>ISC Stormcast For Wednesday, September 2nd, 2026 https://isc.sans.edu/podcastdetail/10078, (Wed, Sep 2nd)</title>
     <link>https://isc.sans.edu/diary/rss/33304</link>
     <guid isPermaLink="true">https://isc.sans.edu/diary/rss/33304</guid>
@@ -46,6 +54,14 @@
     <pubDate>Wed, 02 Sep 2026 18:05:29 +0000</pubDate>
     <category>Infosec News</category>
     <description>These are the top threats you should know about this week.</description>
+  </item>
+  <item>
+    <title>Risky Bulletin: BGP hijack delivers malicious Virtualizor updates</title>
+    <link>https://risky.biz/RBNEWS608/</link>
+    <guid isPermaLink="true">https://risky.biz/RBNEWS608/</guid>
+    <pubDate>Wed, 02 Sep 2026 12:46:34 +1000</pubDate>
+    <category>Infosec News</category>
+    <description>A BGP hijack delivered malicious Virtualizor updates, the White House launches Project Watershed 250, Indian authorities take down a Telegram doxing bot, and Composer packages deliver iOS badness.</description>
   </item>
   <item>
     <title>PaperCut Exploitation Escalates to Active Intrusions</title>
@@ -422,6 +438,14 @@
     <pubDate>Tue, 01 Sep 2026 22:00:09 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>“Click-fix” attacks use social engineering to convince victims to execute malicious commands themselves. One technique disguises the instructions behind a fake Cloudflare CAPTCHA and tells the user to open PowerShell or Terminal and paste a command. The attacker doesn&#x27;t necessari…</description>
+  </item>
+  <item>
+    <title>SN 1094: AI Patching Shortcomings - Should You Trust AI-Generated Code?</title>
+    <link>https://twit.tv/shows/security-now/episodes/1094</link>
+    <guid isPermaLink="true">https://twit.tv/shows/security-now/episodes/1094</guid>
+    <pubDate>Tue, 01 Sep 2026 19:10:31 -0700</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>AI-generated code is flooding the industry, but researchers reveal that almost half of it contains critical vulnerabilities. This week, we unpack what happens when the race for automation outpaces security best practices. A possible means for preventing prompt injection abuse. Cl…</description>
   </item>
   <item>
     <title>Microsoft nudges enterprise security closer to its passwordless future. But ‘123456’ will survive.</title>
@@ -1582,30 +1606,6 @@
     <pubDate>Mon, 31 Aug 2026 12:11:58 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>The AI giant is logging customers out of their accounts and removing payment data to prevent unauthorized Claude usage. The post Anthropic Warns Claude Users of Infostealer Malware Infections appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Judge Says Pentagon’s Measures Against Anthropic Were ‘Illegal and Baseless’</title>
-    <link>https://www.securityweek.com/judge-says-pentagons-measures-against-anthropic-were-illegal-and-baseless/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/judge-says-pentagons-measures-against-anthropic-were-illegal-and-baseless/</guid>
-    <pubDate>Mon, 31 Aug 2026 09:07:01 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The ruling is part of Anthropic&#x27;s legal battle against the Pentagon after the government labeled the company as a supply chain risk earlier this year. The post Judge Says Pentagon&amp;#8217;s Measures Against Anthropic Were &amp;#8216;Illegal and Baseless&amp;#8217; appeared first on Securit…</description>
-  </item>
-  <item>
-    <title>AWS Console Private Access can block sign-ins to personal accounts</title>
-    <link>https://www.helpnetsecurity.com/2026/08/31/amazon-aws-console-private-access/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/08/31/amazon-aws-console-private-access/</guid>
-    <pubDate>Mon, 31 Aug 2026 11:57:21 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The AWS Management Console now loads inside a network with no path to the public internet. Console Private Access became generally available on August 28 for virtual private clouds, the isolated networks customers run inside AWS, that have no internet connectivity at all. Authent…</description>
-  </item>
-  <item>
-    <title>Debian developers rejected an LLM ban and left disclosure voluntary</title>
-    <link>https://www.helpnetsecurity.com/2026/08/31/debian-linux-llm-policy/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/08/31/debian-linux-llm-policy/</guid>
-    <pubDate>Mon, 31 Aug 2026 08:08:47 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>A maintainer reading a merge request can&amp;#8217;t tell whether a person or a model wrote the diff, and nobody has to say. Debian developers voted on that through August 28, and Kurt Roeckx, the project secretary, announced the result: the winning option encourages contributors to …</description>
   </item>
   </channel>
 </rss>
