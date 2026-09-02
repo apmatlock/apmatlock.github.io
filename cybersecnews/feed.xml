@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 02 Sep 2026 01:03:01 -0300</lastBuildDate>
+    <lastBuildDate>Wed, 02 Sep 2026 02:02:59 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>22,000 Exchange servers open to hijack, 700 rogue AI agents swarmed Hugging Face, AI threatens global finance</title>
@@ -32,6 +32,14 @@
     <description>Learning from the OpenAI-Hugging Face fiasco, as well as from recent revelations about its own model, Anthropic is revamping its security and alignment practices. The company has established controls that flag when a model attempts to break out of a sandbox or successfully access…</description>
   </item>
   <item>
+    <title>Open-source secrets scanning tool Sift hunts credentials in Microsoft 365, Slack, and Jira</title>
+    <link>https://www.helpnetsecurity.com/2026/09/02/sift-open-source-secret-scanning/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/02/sift-open-source-secret-scanning/</guid>
+    <pubDate>Wed, 02 Sep 2026 05:00:25 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Sift is a free, open-source command line tool that searches for passwords, API keys, and other sensitive data across the places a company keeps its work: local disks, Windows file shares, an entire Active Directory domain, SharePoint, OneDrive, Teams channel files, Slack messages…</description>
+  </item>
+  <item>
     <title>Risky Business #851 -- Agents are just ones and zeros, and tigers are just atoms</title>
     <link>https://risky.biz/RB851/</link>
     <guid isPermaLink="true">https://risky.biz/RB851/</guid>
@@ -46,6 +54,30 @@
     <pubDate>Wed, 02 Sep 2026 02:00:02 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>(c) SANS Internet Storm Center. https://isc.sans.edu Creative Commons Attribution-Noncommercial 3.0 United States License.</description>
+  </item>
+  <item>
+    <title>Anthropic’s Enterprise Frontier Safeguards lets your Claude logs stay in your cloud</title>
+    <link>https://www.helpnetsecurity.com/2026/09/02/anthropic-enterprise-frontier-safeguards/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/02/anthropic-enterprise-frontier-safeguards/</guid>
+    <pubDate>Wed, 02 Sep 2026 04:30:59 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Eight members of the Analysis and Resilience Center for Systemic Risk, a group whose roster includes the CISOs of Goldman Sachs, Morgan Stanley, Citi, Bank of America, and Wells Fargo, spent months working with Anthropic on a question their examiners care about more than benchmar…</description>
+  </item>
+  <item>
+    <title>An AI CAPTCHA solver talked itself out of the right answer</title>
+    <link>https://www.helpnetsecurity.com/2026/09/02/ai-captcha-solver-research/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/02/ai-captcha-solver-research/</guid>
+    <pubDate>Wed, 02 Sep 2026 04:00:48 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>You have probably spent a few seconds of your life turning a picture until it lines up. Some sites, instead of asking you to tick a box, show you a circular chunk of a photo that has been spun around, and you drag it until the inside matches the ring around it. Simple enough. Ann…</description>
+  </item>
+  <item>
+    <title>How to Build a Marketing Strategy AI Cannot Commoditize with Brian Reed of Corsha</title>
+    <link>https://thecyberwire.com/podcasts/breaking-through-in-cybersecurity-marketing/227/notes</link>
+    <guid isPermaLink="true">https://thecyberwire.com/podcasts/breaking-through-in-cybersecurity-marketing/227/notes</guid>
+    <pubDate>Wed, 02 Sep 2026 05:00:00 +0000</pubDate>
+    <category>Podcasts</category>
+    <description>Brian Reed has been a CMO six times. He&#x27;s also watched AI flatten marketing for the past two years and has said so out loud, including in a manifesto he published called AI is Flattening Marketing: Cue the Return of Mad Men. On this CyberCMO Confidential episode, Brian, Gianna, a…</description>
   </item>
   <item>
     <title>Weekly Threat Bulletin – September 2nd, 2026</title>
@@ -1574,38 +1606,6 @@
     <pubDate>Mon, 31 Aug 2026 10:57:44 -0400</pubDate>
     <category>Threat Intelligence</category>
     <description>An actor known as Fire Ant has expanded its reach into trusted environments, with unique tooling and stealth.</description>
-  </item>
-  <item>
-    <title>Breaking the Seal: Static Deobfuscation of JSCeal’s Compiled V8 Bytecode</title>
-    <link>https://research.checkpoint.com/2026/breaking-the-seal-static-deobfuscation-of-jsceals-compiled-v8-bytecode/</link>
-    <guid isPermaLink="true">https://research.checkpoint.com/2026/breaking-the-seal-static-deobfuscation-of-jsceals-compiled-v8-bytecode/</guid>
-    <pubDate>Mon, 31 Aug 2026 13:38:28 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Research by:&amp;#160;hasherezade Key Points Introduction JSCeal is a stealer delivered as compiled V8 bytecode (.jsc) and executed by a bundled Node.js runtime, targeting cryptocurrency applications (other vendors also tag it with the names WEEVILPROXY or MeadowLocust). Its campaign…</description>
-  </item>
-  <item>
-    <title>Spring Ring: An Inside Look at Voice Phishing Campaigns in Microsoft Teams</title>
-    <link>https://unit42.paloaltonetworks.com/spring-ring-voice-phishing-campaigns/</link>
-    <guid isPermaLink="true">https://unit42.paloaltonetworks.com/spring-ring-voice-phishing-campaigns/</guid>
-    <pubDate>Mon, 31 Aug 2026 10:00:36 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Learn how the Spring Ring campaign abuses Microsoft Teams and voice phishing to deploy malware and target enterprise domain controllers. The post Spring Ring: An Inside Look at Voice Phishing Campaigns in Microsoft Teams appeared first on Unit 42 .</description>
-  </item>
-  <item>
-    <title>EU puts ChatGPT, Reddit, and Roblox under stricter DSA rules</title>
-    <link>https://cyberinsider.com/eu-puts-chatgpt-reddit-and-roblox-under-stricter-dsa-rules/</link>
-    <guid isPermaLink="true">https://cyberinsider.com/eu-puts-chatgpt-reddit-and-roblox-under-stricter-dsa-rules/</guid>
-    <pubDate>Mon, 31 Aug 2026 14:43:51 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The European Commission has designated ChatGPT, Reddit, and Roblox as services subject to the strictest requirements of the EU’s Digital Services Act (DSA) after each reported reaching at least 45 million monthly users in the European Union. Under the designations announced today…</description>
-  </item>
-  <item>
-    <title>Anthropic Warns Claude Users of Infostealer Malware Infections</title>
-    <link>https://www.securityweek.com/anthropic-warns-claude-users-of-infostealer-malware-infections/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/anthropic-warns-claude-users-of-infostealer-malware-infections/</guid>
-    <pubDate>Mon, 31 Aug 2026 12:11:58 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The AI giant is logging customers out of their accounts and removing payment data to prevent unauthorized Claude usage. The post Anthropic Warns Claude Users of Infostealer Malware Infections appeared first on SecurityWeek .</description>
   </item>
   </channel>
 </rss>
