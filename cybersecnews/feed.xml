@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 02 Sep 2026 04:03:02 -0300</lastBuildDate>
+    <lastBuildDate>Wed, 02 Sep 2026 05:02:58 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>22,000 Exchange servers open to hijack, 700 rogue AI agents swarmed Hugging Face, AI threatens global finance</title>
@@ -22,6 +22,30 @@
     <pubDate>Wed, 02 Sep 2026 05:04:52 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>The vulnerabilities CVE-2026-83549 and CVE-2026-83548 can be chained for unauthenticated remote code execution. The post SonicWall Warns of Two SMA1000 Zero-Days Exploited in Attacks appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>Researchers Use Claude to Port Pre-Auth RCE Exploit From One PLC Model to Another</title>
+    <link>https://thehackernews.com/2026/09/researchers-use-claude-to-port-pre-auth.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/09/researchers-use-claude-to-port-pre-auth.html</guid>
+    <pubDate>Wed, 02 Sep 2026 13:17:13 +0530</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Forescout Research - Vedere Labs said it used Anthropic&#x27;s Claude to port a working pre-authentication remote code execution (RCE) exploit from one WAGO programmable logic controller (PLC) to another, executing attacker-supplied ARM shellcode on live hardware. The exploit targets&amp;…</description>
+  </item>
+  <item>
+    <title>Attackers Exploit Critical Switchvox Flaw to Deploy Reverse Shells Without Credentials</title>
+    <link>https://thehackernews.com/2026/09/attackers-exploit-critical-switchvox.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/09/attackers-exploit-critical-switchvox.html</guid>
+    <pubDate>Wed, 02 Sep 2026 12:38:50 +0530</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Threat actors are exploiting a severe security vulnerability in Sangoma Switchvox, an enterprise VoIP platform, that could allow unauthenticated remote code execution. The vulnerability in question is CVE-2026-9586 (CVSS score: 9.3), a critical unauthenticated SQL injection vulne…</description>
+  </item>
+  <item>
+    <title>Hackers Target Langflow in CVE-2026-0768 Attacks</title>
+    <link>https://securityaffairs.com/198270/hacking/hackers-target-langflow-in-cve-2026-0768-attacks.html</link>
+    <guid isPermaLink="true">https://securityaffairs.com/198270/hacking/hackers-target-langflow-in-cve-2026-0768-attacks.html</guid>
+    <pubDate>Wed, 02 Sep 2026 07:58:46 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Hackers are exploiting a critical Langflow flaw that lets unauthenticated attackers remotely execute Python code on vulnerable systems. Hackers have started exploiting a critical vulnerability, tracked as CVE-2026-0768 (CVSS score of 9.8), in the AI-focused low-code platform Lang…</description>
   </item>
   <item>
     <title>Old, Unpatched Flaws Give Attackers Access to Philippines Nuclear Agency</title>
@@ -62,6 +86,22 @@
     <pubDate>Wed, 02 Sep 2026 06:29:25 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Hannes Mühleisen and Mark Raasveldt started as AWS employees. The two built DuckDB, an analytical database that runs inside your process instead of on a server somebody has to administer. If you ship anything on top of DuckDB, your license does not change. Amazon did not buy the …</description>
+  </item>
+  <item>
+    <title>Authorities Turn Sality&#x27;s P2P Network Against Itself, Cutting Off New Malware Payloads</title>
+    <link>https://thehackernews.com/2026/09/authorities-turn-salitys-p2p-network.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/09/authorities-turn-salitys-p2p-network.html</guid>
+    <pubDate>Wed, 02 Sep 2026 12:26:30 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>The U.S. Department of Justice (DoJ) on Tuesday announced the takedown of a long-standing peer-to-peer (P2P) botnet known as Sality as part of a coordinated law enforcement operation. The effort was undertaken on August 31, 2026, by authorities from the U.S., Bulgaria, Hungary, a…</description>
+  </item>
+  <item>
+    <title>Sality botnet infrastructure dismantled in joint global takedown</title>
+    <link>https://www.bleepingcomputer.com/news/security/sality-botnet-infrastructure-dismantled-in-joint-global-takedown/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/sality-botnet-infrastructure-dismantled-in-joint-global-takedown/</guid>
+    <pubDate>Wed, 02 Sep 2026 04:00:43 -0400</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>International law enforcement agencies and private partners have seized Sality malware infrastructure in a joint action aiming to disrupt and take down the peer-to-peer (P2P) botnet. [...]</description>
   </item>
   <item>
     <title>Risky Business #851 -- Agents are just ones and zeros, and tigers are just atoms</title>
@@ -1566,46 +1606,6 @@
     <pubDate>Mon, 31 Aug 2026 12:15:00 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>Security teams must treat autonomous agents as highly privileged identities. The post What the Hugging Face Incident Teaches Security Leaders About AI Agent Access appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Boston Scientific Still Recovering From Cyberattack</title>
-    <link>https://www.securityweek.com/boston-scientific-still-recovering-from-cyberattack/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/boston-scientific-still-recovering-from-cyberattack/</guid>
-    <pubDate>Mon, 31 Aug 2026 10:50:57 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>The company has called in CrowdStrike and others to investigate the attack that caused global network disruption. The post Boston Scientific Still Recovering From Cyberattack appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Extortion Group Claims Manchester Airports Group Data Breach</title>
-    <link>https://www.securityweek.com/extortion-group-claims-manchester-airports-group-data-breach/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/extortion-group-claims-manchester-airports-group-data-breach/</guid>
-    <pubDate>Mon, 31 Aug 2026 10:29:10 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>FulcrumSec says it stole over 80 GB of data from Manchester Airports Group and plans to leak it online. The post Extortion Group Claims Manchester Airports Group Data Breach appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Berlin Won’t Pay Extortion Group Claiming Data Theft</title>
-    <link>https://www.securityweek.com/berlin-wont-pay-extortion-group-claiming-data-theft/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/berlin-wont-pay-extortion-group-claiming-data-theft/</guid>
-    <pubDate>Mon, 31 Aug 2026 08:49:36 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>The Rhysida ransomware group has claimed the exfiltration of over 5TB of data, including personal information and credentials. The post Berlin Won’t Pay Extortion Group Claiming Data Theft appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Anthropic locks out Claude users after infostealers hijack login sessions</title>
-    <link>https://www.helpnetsecurity.com/2026/08/31/claude-accounts-compromised-through-infostealer/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/08/31/claude-accounts-compromised-through-infostealer/</guid>
-    <pubDate>Mon, 31 Aug 2026 11:30:47 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>Anthropic has started locking users out of their Claude accounts due to their login sessions having been compromised through infostealer malware. &amp;#8220;The malware identified in this campaign so far include Vidar, Lumma (LummaC2), StealC, RedLine and Acreed on Windows, and Atomi…</description>
-  </item>
-  <item>
-    <title>Hackers claim millions of patient records stolen during data breach at healthcare giant McKesson</title>
-    <link>https://techcrunch.com/2026/08/31/hackers-claim-millions-of-patient-records-stolen-during-data-breach-at-healthcare-giant-mckesson/</link>
-    <guid isPermaLink="true">https://techcrunch.com/2026/08/31/hackers-claim-millions-of-patient-records-stolen-during-data-breach-at-healthcare-giant-mckesson/</guid>
-    <pubDate>Mon, 31 Aug 2026 18:10:09 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>The company, which distributes medicines and medical devices to hospitals and healthcare practices across the U.S., said it was hacked and expects intermittent service degradation.</description>
   </item>
   </channel>
 </rss>
