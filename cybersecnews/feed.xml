@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 07 Sep 2026 11:03:49 -0300</lastBuildDate>
+    <lastBuildDate>Mon, 07 Sep 2026 12:03:44 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Back-to-back N-able bugs send admins on a patching spree</title>
@@ -216,6 +216,22 @@
     <description>Online maths learning platform Mathspace disclosed over the weekend that attackers stole data from more than 1 million students, staff, and parents after breaching its Metabase internal reporting system. [...]</description>
   </item>
   <item>
+    <title>Hackers exploit RouterOS flaws to hijack MikroTik devices without authentication</title>
+    <link>https://www.helpnetsecurity.com/2026/09/07/mikrotik-routeros-ssh-vulnerabilities-exploited/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/07/mikrotik-routeros-ssh-vulnerabilities-exploited/</guid>
+    <pubDate>Mon, 07 Sep 2026 14:07:20 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Attackers are exploiting a chain of RouterOS vulnerabilities to hijack MikroTik devices with SSH open to the internet, CERT Polska found. CERT Polska, Poland&amp;#8217;s national CSIRT team, have discovered six vulnerabilities in RouterOS and coordinated their disclosure with MikroTi…</description>
+  </item>
+  <item>
+    <title>Chaotic Eclipse Released A PoC For NVIDIA GreenSection Memory Corruption Zero-Day</title>
+    <link>https://securityaffairs.com/198589/hacking/chaotic-eclipse-released-a-poc-for-nvidia-greensection-memory-corruption-zero-day.html</link>
+    <guid isPermaLink="true">https://securityaffairs.com/198589/hacking/chaotic-eclipse-released-a-poc-for-nvidia-greensection-memory-corruption-zero-day.html</guid>
+    <pubDate>Mon, 07 Sep 2026 13:42:58 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Chaotic Eclipse released GreenSection, a PoC exploit for an Nvidia GreenSection Memory Corruption Zero-Day Security researcher Chaotic Eclipse, also known as INFINITE NIGHTMARE, MSNightmare and Nightmare-Eclipse, released a new zero-day exploit targeting Nvidia. The researcher na…</description>
+  </item>
+  <item>
     <title>Berlin Ransomware Leak Exposes State Secrets</title>
     <link>https://securityaffairs.com/198545/cyber-crime/berlin-ransomware-leak-exposes-state-secrets.html</link>
     <guid isPermaLink="true">https://securityaffairs.com/198545/cyber-crime/berlin-ransomware-leak-exposes-state-secrets.html</guid>
@@ -358,6 +374,22 @@
     <pubDate>Mon, 07 Sep 2026 12:12:08 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>The stealthy toolkit embeds a backdoor in HAProxy and targets automotive and media organizations in South Korea for long-term surveillance. The post North Korean Hackers Deploy New Linux Espionage Toolkit appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>Block Agents or Make Them Ask</title>
+    <link>https://www.youtube.com/shorts/ykC5R-G_gVM</link>
+    <guid isPermaLink="true">https://www.youtube.com/shorts/ykC5R-G_gVM</guid>
+    <pubDate>Mon, 07 Sep 2026 14:00:25 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>AI agent policies can do more than simply allow or block an action. They can require the agent to ask the user for explicit approval before proceeding. That creates a human decision point inside the agent’s workflow. The agent can identify what it wants to do, but the action does…</description>
+  </item>
+  <item>
+    <title>LG Smart TVs found scanning home networks for nearby devices</title>
+    <link>https://cyberinsider.com/lg-smart-tvs-found-scanning-home-networks-for-nearby-devices/</link>
+    <guid isPermaLink="true">https://cyberinsider.com/lg-smart-tvs-found-scanning-home-networks-for-nearby-devices/</guid>
+    <pubDate>Mon, 07 Sep 2026 14:12:22 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Researchers investigating LG smart TVs found that the devices repeatedly scan local networks for nearby hardware, identifying phones, computers, smartwatches, printers, network equipment, thermostats, and other connected devices. The Gamers Nexus investigation also found extensiv…</description>
   </item>
   <item>
     <title>A week in security (August 31 – September 6)</title>
@@ -1572,38 +1604,6 @@
     <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-84328</link>
     <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-84328</guid>
     <pubDate>Thu, 03 Sep 2026 16:58:31 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2026) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium: CVE-2026-84331 Incorrect authorization in Actor</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-84331</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-84331</guid>
-    <pubDate>Thu, 03 Sep 2026 16:58:39 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2026) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium: CVE-2026-84334 Incorrect authorization in Chromoting</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-84334</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-84334</guid>
-    <pubDate>Thu, 03 Sep 2026 16:58:47 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2026) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium: CVE-2026-84335 Incorrect authorization in TabStrip</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-84335</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-84335</guid>
-    <pubDate>Thu, 03 Sep 2026 16:58:50 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2026) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium: CVE-2026-84347 Use after free in WebRTC</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-84347</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-84347</guid>
-    <pubDate>Thu, 03 Sep 2026 16:58:53 -0700</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2026) for more information.</description>
   </item>
