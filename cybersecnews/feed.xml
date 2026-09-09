@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 09 Sep 2026 12:03:45 -0300</lastBuildDate>
+    <lastBuildDate>Wed, 09 Sep 2026 13:04:00 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Cisco bundles fixes for multiple vulnerabilities, some critical, into one patch</title>
@@ -86,6 +86,14 @@
     <pubDate>Wed, 09 Sep 2026 13:47:16 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Google patched 230 Chrome flaws, including an actively exploited V8 bug that could let attackers run arbitrary code through a crafted HTML page. Google released a Chrome update fixing 230 security vulnerabilities, including one already exploited in the wild tracked as CVE-2026-87…</description>
+  </item>
+  <item>
+    <title>Chromium: CVE-2026-85046 Type confusion in V8</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-85046</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-85046</guid>
+    <pubDate>Wed, 09 Sep 2026 15:09:50 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2026) for more information. Google is aware that an exploit for CVE-2026-85046 exists i…</description>
   </item>
   <item>
     <title>Microsoft patches record 966 flaws, Cybercriminals return $265 million in Bitcoin</title>
@@ -352,12 +360,36 @@
     <description>TL;DR Introduction Default printer configurations are common to find in internal infrastructure engagements. These configurations are usually insecure, exposing outdated protocols like SNMPv1 and web interfaces without requiring authentication. For an unauthenticated, internal at…</description>
   </item>
   <item>
+    <title>Veradigm warns of patient data breach after ransomware gang claims attack</title>
+    <link>https://www.bleepingcomputer.com/news/security/veradigm-discloses-patient-data-breach-after-gentlemen-gang-claims-attack/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/veradigm-discloses-patient-data-breach-after-gentlemen-gang-claims-attack/</guid>
+    <pubDate>Wed, 09 Sep 2026 11:31:23 -0400</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Healthcare technology company Veradigm disclosed a data breach after a cybersecurity incident at one of its third-party vendors exposed patients&#x27; personal data. [...]</description>
+  </item>
+  <item>
+    <title>Credentialed Pre-Port Discovery: Don&#x27;t Probe the Host, Ask it</title>
+    <link>https://www.rapid7.com/blog/post/pt-credentialed-pre-port-discovery-asking-host</link>
+    <guid isPermaLink="true">https://www.rapid7.com/blog/post/pt-credentialed-pre-port-discovery-asking-host</guid>
+    <pubDate>Wed, 09 Sep 2026 15:16:34 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>If your scan engine already holds credentials for a host, it can ask that host which ports are open instead of probing for them. Every scan begins with the same question: which ports on this host are open? Everything after it, from identifying services to checking for vulnerabili…</description>
+  </item>
+  <item>
     <title>ICS Patch Tuesday: Schneider Electric, Siemens Fix Critical Flaws</title>
     <link>https://www.securityweek.com/ics-patch-tuesday-schneider-electric-siemens-fix-critical-flaws/</link>
     <guid isPermaLink="true">https://www.securityweek.com/ics-patch-tuesday-schneider-electric-siemens-fix-critical-flaws/</guid>
     <pubDate>Wed, 09 Sep 2026 10:49:30 +0000</pubDate>
     <category>Security Bulletins</category>
     <description>AVEVA and Rockwell Automation also released patches for vulnerabilities affecting industrial control system products. The post ICS Patch Tuesday: Schneider Electric, Siemens Fix Critical Flaws appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>Patch Tuesday notes: Microsoft sets another record.</title>
+    <link>https://thecyberwire.com/newsletters/daily-briefing/15/172</link>
+    <guid isPermaLink="true">https://thecyberwire.com/newsletters/daily-briefing/15/172</guid>
+    <pubDate>Wed, 09 Sep 2026 16:00:00 +0000</pubDate>
+    <category>Security Bulletins</category>
+    <description>New ClickFix technique targets browsers. Business news: NetSPI and Synack to merge.</description>
   </item>
   <item>
     <title>Chinese AI firms use industrial-scale distillation to copy US models</title>
@@ -396,6 +428,22 @@
     <link>https://cyber.gc.ca/en/alerts-advisories/commvault-security-advisory-av26-899</link>
     <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/commvault-security-advisory-av26-899</guid>
     <pubDate>Wed, 09 Sep 2026 12:02:55 -0000</pubDate>
+    <category>Security Advisories</category>
+    <description></description>
+  </item>
+  <item>
+    <title>MISP security advisory (AV26-901)</title>
+    <link>https://cyber.gc.ca/en/alerts-advisories/misp-security-advisory-av26-901</link>
+    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/misp-security-advisory-av26-901</guid>
+    <pubDate>Wed, 09 Sep 2026 13:02:56 -0000</pubDate>
+    <category>Security Advisories</category>
+    <description></description>
+  </item>
+  <item>
+    <title>NVIDIA security advisory (AV26-900)</title>
+    <link>https://cyber.gc.ca/en/alerts-advisories/nvidia-security-advisory-av26-900</link>
+    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/nvidia-security-advisory-av26-900</guid>
+    <pubDate>Wed, 09 Sep 2026 13:02:56 -0000</pubDate>
     <category>Security Advisories</category>
     <description></description>
   </item>
@@ -454,6 +502,14 @@
     <pubDate>Wed, 09 Sep 2026 19:53:55 +0530</pubDate>
     <category>Incident Reporting</category>
     <description>Cybercriminals are hijacking artificial intelligence (AI) user accounts via information stealer logs to create &quot;stolen keys&quot; that grant illicit access to tools from model providers like Google, Anthropic, and others.&amp;nbsp; Information stealers like Lumma Stealer or Vidar are equi…</description>
+  </item>
+  <item>
+    <title>FBI cyber chief worries private sector not sharing enough cyber threat information</title>
+    <link>https://cyberscoop.com/fbi-cyber-division-private-sector-threat-sharing/</link>
+    <guid isPermaLink="true">https://cyberscoop.com/fbi-cyber-division-private-sector-threat-sharing/</guid>
+    <pubDate>Wed, 09 Sep 2026 15:05:19 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>Brett Leatherman said that industry has the wrong idea about what the FBI does with the data it collects during incidents, which is used to help victims and investigations alike. The post FBI cyber chief worries private sector not sharing enough cyber threat information appeared …</description>
   </item>
   <item>
     <title>ISC Stormcast For Wednesday, September 9th, 2026 https://isc.sans.edu/podcastdetail/10086, (Wed, Sep 9th)</title>
@@ -584,6 +640,14 @@
     <description>The critical, unauthenticated bugs allow attackers to bypass authentication and proxy a user’s browser traffic. The post Fortinet Patches Critical Vulnerabilities in FortiMonitorOnSight, Chrome Extension appeared first on SecurityWeek .</description>
   </item>
   <item>
+    <title>New FBI cyber strategy promises increase in adversary disruptions</title>
+    <link>https://www.cybersecuritydive.com/news/fbi-cybersecurity-strategy-disruptions-information-sharing/829913/</link>
+    <guid isPermaLink="true">https://www.cybersecuritydive.com/news/fbi-cybersecurity-strategy-disruptions-information-sharing/829913/</guid>
+    <pubDate>Wed, 09 Sep 2026 10:42:02 -0400</pubDate>
+    <category>Threat Intelligence</category>
+    <description>The document also focuses on helping victims, reflecting the bureau&amp;rsquo;s attempt to encourage more companies to share information with it.</description>
+  </item>
+  <item>
     <title>F5 BIG-IP APM Malware Injects a PHP Web Shell Into Memory, Evading Disk Scans</title>
     <link>https://thehackernews.com/2026/09/f5-big-ip-apm-malware-injects-php-web.html</link>
     <guid isPermaLink="true">https://thehackernews.com/2026/09/f5-big-ip-apm-malware-injects-php-web.html</guid>
@@ -694,6 +758,30 @@
     <pubDate>Wed, 09 Sep 2026 15:00:00 +0000</pubDate>
     <category>Infosec News</category>
     <description>The hacking tool, built using a combination of AI models, is effective against Android and iOS devices</description>
+  </item>
+  <item>
+    <title>More than 100,000 fake stores are out to steal your card details</title>
+    <link>https://www.malwarebytes.com/blog/scams/2026/09/more-than-100000-fake-stores-are-out-to-steal-your-card-details</link>
+    <guid isPermaLink="true">https://www.malwarebytes.com/blog/scams/2026/09/more-than-100000-fake-stores-are-out-to-steal-your-card-details</guid>
+    <pubDate>Wed, 09 Sep 2026 15:02:53 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>DoppelCart’s fake stores copy real retailers and steal shoppers’ card details and one-time bank confirmation codes.</description>
+  </item>
+  <item>
+    <title>FBI puts its cyber strategy on paper</title>
+    <link>https://therecord.media/fbi-releases-first-public-cybersecurity-strategy</link>
+    <guid isPermaLink="true">https://therecord.media/fbi-releases-first-public-cybersecurity-strategy</guid>
+    <pubDate>Wed, 09 Sep 2026 15:37:00 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>The first public cybersecurity strategy issued by the FBI &quot;directs our teams, our field offices, our global presence&quot; to align their efforts on countering malicious hackers and cybercrime groups, senior official Brett Leatherman says.</description>
+  </item>
+  <item>
+    <title>Identity-Based AI Attack Threatens Security of Enterprise Data</title>
+    <link>https://www.darkreading.com/threat-intelligence/identity-based-ai-attack-security-enterprise-data</link>
+    <guid isPermaLink="true">https://www.darkreading.com/threat-intelligence/identity-based-ai-attack-security-enterprise-data</guid>
+    <pubDate>Wed, 09 Sep 2026 14:39:44 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>&amp;quot;Workflow identity hijacking&amp;quot; can bypass standard security controls and hijack an organization&#x27;s data by sending a basic request through an unauthenticated entry point.</description>
   </item>
   <item>
     <title>StyleSmuggler (CVE-2026-75650): Frequently asked questions about Adobe Commerce and Magento zero-day</title>
@@ -1518,94 +1606,6 @@
     <pubDate>Tue, 08 Sep 2026 19:18:16 +0530</pubDate>
     <category>Threat Intelligence</category>
     <description>Threat actors are continuing to leverage artificial intelligence (AI) to streamline their operations, with one financially motivated hacking group employing an autonomous, multi-agent attack framework to carry out a large-scale credential harvesting campaign within six hours. Goo…</description>
-  </item>
-  <item>
-    <title>Threat actors move toward multi-agent AI frameworks.</title>
-    <link>https://thecyberwire.com/newsletters/daily-briefing/15/171</link>
-    <guid isPermaLink="true">https://thecyberwire.com/newsletters/daily-briefing/15/171</guid>
-    <pubDate>Tue, 08 Sep 2026 16:00:00 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>N-able issues emergency fix for maximum-severity flaw. Stealthy DPRK toolkit targets South Korean organizations.</description>
-  </item>
-  <item>
-    <title>Don’t let AI distract from cybersecurity basics, officials and executives warn</title>
-    <link>https://www.cybersecuritydive.com/news/ai-cybersecurity-basics-billington/829777/</link>
-    <guid isPermaLink="true">https://www.cybersecuritydive.com/news/ai-cybersecurity-basics-billington/829777/</guid>
-    <pubDate>Tue, 08 Sep 2026 10:05:44 -0400</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Simple attacks remain far more consequential than anything AI is doing, government and industry leaders said.</description>
-  </item>
-  <item>
-    <title>Cylake Raises $245 Million Ahead of Cybersecurity Platform Beta</title>
-    <link>https://www.securityweek.com/cylake-raises-245-million-ahead-of-cybersecurity-platform-beta/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/cylake-raises-245-million-ahead-of-cybersecurity-platform-beta/</guid>
-    <pubDate>Tue, 08 Sep 2026 15:21:01 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The startup founded by Palo Alto Networks’ Nir Zuk has raised $290 million to build an AI-native security platform for highly regulated organizations that cannot rely on the public cloud. The post Cylake Raises $245 Million Ahead of Cybersecurity Platform Beta appeared first on S…</description>
-  </item>
-  <item>
-    <title>Slim Spider Steals Crypto Custody Secrets From Brazilian Financial Institution</title>
-    <link>https://thehackernews.com/2026/09/slim-spider-steals-crypto-custody.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/09/slim-spider-steals-crypto-custody.html</guid>
-    <pubDate>Tue, 08 Sep 2026 21:50:23 +0530</pubDate>
-    <category>Threat Intelligence</category>
-    <description>A previously undocumented financially motivated threat actor has been linked to attacks targeting Brazilian financial institutions since at least March 2026. Cybersecurity company CrowdStrike is tracking the Brazil-based activity cluster under the name Slim Spider. &quot;The adversary…</description>
-  </item>
-  <item>
-    <title>The Hidden Instructions That Can Hijack AI Agents</title>
-    <link>https://www.securityweek.com/the-hidden-instructions-that-can-hijack-ai-agents/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/the-hidden-instructions-that-can-hijack-ai-agents/</guid>
-    <pubDate>Tue, 08 Sep 2026 17:00:00 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Malicious prompts concealed in documents, metadata, emails, images and code can manipulate autonomous agents into taking dangerous actions. The post The Hidden Instructions That Can Hijack AI Agents appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Hackers Return $263 Million Stolen From Liquid Network</title>
-    <link>https://www.securityweek.com/hackers-return-263-million-stolen-from-liquid-network/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/hackers-return-263-million-stolen-from-liquid-network/</guid>
-    <pubDate>Tue, 08 Sep 2026 16:35:54 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Alleged ‘white-hat’ hackers drained $320 million from Liquid’s federation wallet, demanding a bug fix. The post Hackers Return $263 Million Stolen From Liquid Network appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>ClickFix Campaigns Abuse Legitimate Services for Persistent Access</title>
-    <link>https://www.darkreading.com/endpoint-security/clickfix-campaigns-legitimate-services-persistent-access</link>
-    <guid isPermaLink="true">https://www.darkreading.com/endpoint-security/clickfix-campaigns-legitimate-services-persistent-access</guid>
-    <pubDate>Tue, 08 Sep 2026 17:25:37 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Two separate attacks demonstrate how threat actors are finding new ways to compromise organizations by using the popular social engineering tactic.</description>
-  </item>
-  <item>
-    <title>Why federal cyber defense demands an offense-driven mindset</title>
-    <link>https://cyberscoop.com/offense-driven-federal-cyber-defense/</link>
-    <guid isPermaLink="true">https://cyberscoop.com/offense-driven-federal-cyber-defense/</guid>
-    <pubDate>Tue, 08 Sep 2026 18:30:00 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Static checklists and annual penetration tests leave agencies with dangerous blind spots. True resilience requires moving from reactive attestation to continuous, automated validation. The post Why federal cyber defense demands an offense-driven mindset appeared first on CyberSco…</description>
-  </item>
-  <item>
-    <title>CIA official touts agency’s Cyber Mission Center in capture of Venezuela’s Maduro</title>
-    <link>https://therecord.media/cia-cyber-operations-maduro-capture-venezuela</link>
-    <guid isPermaLink="true">https://therecord.media/cia-cyber-operations-maduro-capture-venezuela</guid>
-    <pubDate>Tue, 08 Sep 2026 19:46:00 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>A &quot;flawless&quot; performance by the CIA&#x27;s Cyber Mission Center contributed to the capture of Venezuelan President Nicolás Maduro in January, agency Deputy Director Michael Ellis says.</description>
-  </item>
-  <item>
-    <title>CIA’s Michael Ellis says cyber intelligence is changing how the agency operates</title>
-    <link>https://cyberscoop.com/cia-cyber-operations-operation-absolute-resolve-michael-ellis-billington-cybersecurity/</link>
-    <guid isPermaLink="true">https://cyberscoop.com/cia-cyber-operations-operation-absolute-resolve-michael-ellis-billington-cybersecurity/</guid>
-    <pubDate>Tue, 08 Sep 2026 19:49:14 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The deputy director cited Operation Absolute Resolve as evidence that cyber teams have become central to CIA missions. The post CIA’s Michael Ellis says cyber intelligence is changing how the agency operates appeared first on CyberScoop .</description>
-  </item>
-  <item>
-    <title>Russian national extradited to US for alleged involvement in bank-account takeover scheme</title>
-    <link>https://cyberscoop.com/russian-national-extradited-bank-account-takeover-sergei-filimonov/</link>
-    <guid isPermaLink="true">https://cyberscoop.com/russian-national-extradited-bank-account-takeover-sergei-filimonov/</guid>
-    <pubDate>Tue, 08 Sep 2026 20:32:03 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Authorities accuse the 36-year-old and co-conspirators of collecting more than 5,000 victim login credentials to various banks. The post Russian national extradited to US for alleged involvement in bank-account takeover scheme appeared first on CyberScoop .</description>
   </item>
   </channel>
 </rss>
