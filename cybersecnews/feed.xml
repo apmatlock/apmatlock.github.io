@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 09 Sep 2026 01:03:50 -0300</lastBuildDate>
+    <lastBuildDate>Wed, 09 Sep 2026 02:03:49 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Cisco bundles fixes for multiple vulnerabilities, some critical, into one patch</title>
@@ -24,6 +24,14 @@
     <description>Possibly wormable bugs and two zero-day holes highlight the almost 1,000 fixes issued today by Microsoft in its September Patch Tuesday release . The 964 vulnerabilities, another record since Microsoft began using AI in the middle of the year to find holes, require customer actio…</description>
   </item>
   <item>
+    <title>N-able N-central Pre-Auth RCE Flaw Exploited in the Wild</title>
+    <link>https://thehackernews.com/2026/09/n-able-n-central-pre-auth-rce-flaw.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/09/n-able-n-central-pre-auth-rce-flaw.html</guid>
+    <pubDate>Wed, 09 Sep 2026 09:57:51 +0530</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>The U.S. Cybersecurity and Infrastructure Security Agency (CISA) on Tuesday added a maximum-severity security flaw impacting N-able N-central to its Known Exploited Vulnerabilities (KEV) catalog, requiring Federal Civilian Executive Branch (FCEB) agencies to apply the fixes by Se…</description>
+  </item>
+  <item>
     <title>Microsoft patches record 966 flaws, Cybercriminals return $265 million in Bitcoin</title>
     <link>https://cybersecuritytoday.libsyn.com/microsoft-patches-record-966-flaws-cybercriminals-return-265-million-in-bitcoin</link>
     <guid isPermaLink="true">https://cybersecuritytoday.libsyn.com/microsoft-patches-record-966-flaws-cybercriminals-return-265-million-in-bitcoin</guid>
@@ -32,12 +40,44 @@
     <description>Microsoft&#x27;s Record 966-Fix Patch Tuesday, Liquid Network Bitcoin Returned (Mostly), and Five Eyes&#x27; Back-to-Basics Warning Cybersecurity Today host David Shipley reports Microsoft&#x27;s largest Patch Tuesday ever with 966 vulnerability fixes (plus 204 earlier cloud-service fixes), inc…</description>
   </item>
   <item>
+    <title>BleachBit 6.0.4 fixes secure wiping that skipped clusters on Windows</title>
+    <link>https://www.helpnetsecurity.com/2026/09/09/bleachbit-6-0-4-released/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/09/bleachbit-6-0-4-released/</guid>
+    <pubDate>Wed, 09 Sep 2026 04:00:38 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>The open source cleaner BleachBit reached version 6.0.4 this week, erasing caches, browser traces, and files on Windows, Linux, and now macOS. If you shredded a sensitive file on Windows with an earlier build, parts of it may still sit on the disk where the wipe missed. Fragmenta…</description>
+  </item>
+  <item>
+    <title>The Other Side of the PR Pitch with Pulitzer Prize Winner Yael Grauer</title>
+    <link>https://thecyberwire.com/podcasts/breaking-through-in-cybersecurity-marketing/228/notes</link>
+    <guid isPermaLink="true">https://thecyberwire.com/podcasts/breaking-through-in-cybersecurity-marketing/228/notes</guid>
+    <pubDate>Wed, 09 Sep 2026 05:00:00 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>Yael Grauer won a Pulitzer and got laid off in the same year. She is a freelance investigative reporter covering cybersecurity, privacy, and surveillance. She sat down with Gianna to talk about what companies get wrong when journalists come knocking, why lying in that moment make…</description>
+  </item>
+  <item>
+    <title>What breach and attack simulation needs to become in the AI era</title>
+    <link>https://www.helpnetsecurity.com/2026/09/09/picus-security-autonomous-breach-attack-simulation/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/09/picus-security-autonomous-breach-attack-simulation/</guid>
+    <pubDate>Wed, 09 Sep 2026 04:30:05 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>Breach and attack simulation (BAS) has always had a supply chain. Somebody has to read the threat report, pull out the techniques, and turn them into something that will actually run against your controls. That somebody has always been a human red team. Up until a few months ago,…</description>
+  </item>
+  <item>
     <title>ISC Stormcast For Wednesday, September 9th, 2026 https://isc.sans.edu/podcastdetail/10086, (Wed, Sep 9th)</title>
     <link>https://isc.sans.edu/diary/rss/33322</link>
     <guid isPermaLink="true">https://isc.sans.edu/diary/rss/33322</guid>
     <pubDate>Wed, 09 Sep 2026 02:00:02 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>(c) SANS Internet Storm Center. https://isc.sans.edu Creative Commons Attribution-Noncommercial 3.0 United States License.</description>
+  </item>
+  <item>
+    <title>AWS spent years rebuilding its routing control plane without taking the network down</title>
+    <link>https://www.helpnetsecurity.com/2026/09/09/aws-routing-control-plane-network/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/09/aws-routing-control-plane-network/</guid>
+    <pubDate>Wed, 09 Sep 2026 04:52:14 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Every AWS API call, CloudFront video stream, and Route 53 lookup crosses the same infrastructure, which AWS calls its border network. It now runs on a routing system rebuilt from scratch over several years. The system that tells traffic where to go The scale AWS reports, current …</description>
   </item>
   <item>
     <title>Weekly Threat Bulletin – September 9th, 2026</title>
@@ -1566,46 +1606,6 @@
     <pubDate>Mon, 07 Sep 2026 12:00:00 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>The ransomware group’s published dataset reportedly includes Berlin state employee data, as well as highly sensitive emergency plans</description>
-  </item>
-  <item>
-    <title>OpenAI Agents Hijack Another Victim Website</title>
-    <link>https://www.securityweek.com/openai-agents-hijack-another-victim-website/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/openai-agents-hijack-another-victim-website/</guid>
-    <pubDate>Mon, 07 Sep 2026 12:03:04 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>OpenAI agents made 15,000–18,000 autonomous edits to a German wiki over three months, evading moderation and echoing tactics seen in the Hugging Face breach. The post OpenAI Agents Hijack Another Victim Website appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Trezor data breach impact now reaches 81,000 customers</title>
-    <link>https://www.bleepingcomputer.com/news/security/trezor-data-breach-impact-now-reaches-81-000-customers/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/trezor-data-breach-impact-now-reaches-81-000-customers/</guid>
-    <pubDate>Mon, 07 Sep 2026 08:16:32 -0400</pubDate>
-    <category>Incident Reporting</category>
-    <description>Cryptocurrency hardware wallet maker Trezor says an August data breach at its shipping and logistics provider, ShipMonk, affects an additional 67,000 U.S. customers. [...]</description>
-  </item>
-  <item>
-    <title>Sponsored: Authentik is rethinking PAM for AI agents</title>
-    <link>https://risky.biz/RBNEWSSI143/</link>
-    <guid isPermaLink="true">https://risky.biz/RBNEWSSI143/</guid>
-    <pubDate>Mon, 07 Sep 2026 06:09:32 +1000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>In this Risky Business sponsored interview, James Wilson chats with Authentik Security CEO Fletcher Heisler about how AI is driving a need for privileged access management to adapt. Fletcher explains Authentik’s approach: each agent has its own identity, begins with no permission…</description>
-  </item>
-  <item>
-    <title>Zero trust AI agents demand a different kind of security</title>
-    <link>https://www.helpnetsecurity.com/2026/09/07/chris-webber-teleport-zero-trust-ai-agents/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/07/chris-webber-teleport-zero-trust-ai-agents/</guid>
-    <pubDate>Mon, 07 Sep 2026 05:00:25 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>In this interview, Chris Webber, VP, Product Marketing at Teleport, explains why zero trust principles need to change for AI agents. He covers how agents act fast, unpredictably, and continuously, and why old ideas like least privilege and point-in-time verification fall short. W…</description>
-  </item>
-  <item>
-    <title>18 ways to check whether data can be trusted for AI</title>
-    <link>https://www.helpnetsecurity.com/2026/09/07/etsi-ai-data-quality-metrics/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/07/etsi-ai-data-quality-metrics/</guid>
-    <pubDate>Mon, 07 Sep 2026 04:30:27 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>ETSI has published TR 104 180, a technical report that defines 18 metrics for measuring data quality, giving companies a way to check whether their data is good enough for AI before they use it. The report defines each metric and includes the formulas needed to calculate it. The …</description>
   </item>
   </channel>
 </rss>
