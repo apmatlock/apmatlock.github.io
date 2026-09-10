@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 10 Sep 2026 14:03:57 -0300</lastBuildDate>
+    <lastBuildDate>Thu, 10 Sep 2026 15:03:39 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>U.S. CISA adds Microsoft Windows, N-able N-central, and Adobe flaws to its Known Exploited Vulnerabilities catalog</title>
@@ -62,6 +62,14 @@
     <pubDate>Thu, 10 Sep 2026 12:20:21 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Tracked as CVE-2026-19490, the authentication bypass flaw has been exploited in the wild since at least September 3. The post Critical NetScaler Vulnerability Exploited in Attacks appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>VU#687587: AOMEI Backupper amwrtdrv.sys local privilege escalation vulnerability allows arbitrary writes to physical disks</title>
+    <link>https://kb.cert.org/vuls/id/687587</link>
+    <guid isPermaLink="true">https://kb.cert.org/vuls/id/687587</guid>
+    <pubDate>Thu, 10 Sep 2026 17:46:33 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Overview An incorrect permissions assignment vulnerability in the amwrtdrv.sys kernel driver, included with AOMEI Backupper 8.4.0, allows an unprivileged local user to perform arbitrary writes to the physical disk. When Secure Boot is disabled, this can be leveraged to execute ar…</description>
   </item>
   <item>
     <title>Love, lies, and a fake 49er.</title>
@@ -408,6 +416,14 @@
     <description>Meanwhile, the agency is finalizing an incident-reporting regulation and setting up a new industry coordination structure.</description>
   </item>
   <item>
+    <title>WebPros security advisory (AV26-908)</title>
+    <link>https://cyber.gc.ca/en/alerts-advisories/webpros-security-advisory-av26-908</link>
+    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/webpros-security-advisory-av26-908</guid>
+    <pubDate>Thu, 10 Sep 2026 15:02:32 -0000</pubDate>
+    <category>Security Advisories</category>
+    <description></description>
+  </item>
+  <item>
     <title>Srsly Risky Biz: America&#x27;s drivers licence breach is a national security disaster</title>
     <link>https://risky.biz/SRB183/</link>
     <guid isPermaLink="true">https://risky.biz/SRB183/</guid>
@@ -646,6 +662,22 @@
     <pubDate>Thu, 10 Sep 2026 16:00:09 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Google turned on a transfer feature in Android that moves passwords and passkeys straight from one password manager to another, with no file to download along the way. You start it from inside the app you are switching to, and Google says the data moves between the apps in a few …</description>
+  </item>
+  <item>
+    <title>Detect and disrupt AI-themed attacks with Microsoft Defender</title>
+    <link>https://www.microsoft.com/en-us/security/blog/2026/09/10/detect-and-disrupt-ai-themed-attacks-with-microsoft-defender/</link>
+    <guid isPermaLink="true">https://www.microsoft.com/en-us/security/blog/2026/09/10/detect-and-disrupt-ai-themed-attacks-with-microsoft-defender/</guid>
+    <pubDate>Thu, 10 Sep 2026 16:00:00 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>See how Microsoft Defender detects and disrupts AI-themed phishing, malware, and multi-stage attacks across the attack chain. The post Detect and disrupt AI-themed attacks with Microsoft Defender appeared first on Microsoft Security Blog .</description>
+  </item>
+  <item>
+    <title>Group of Bipartisan Lawmakers Ask US Government to Ban Several Hack-for-Hire Firms</title>
+    <link>https://citizenlab.ca/group-of-bipartisan-lawmakers-ask-us-government-to-ban-several-hack-for-hire-firms/</link>
+    <guid isPermaLink="true">https://citizenlab.ca/group-of-bipartisan-lawmakers-ask-us-government-to-ban-several-hack-for-hire-firms/</guid>
+    <pubDate>Thu, 10 Sep 2026 17:19:03 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>U.S. lawmakers call for sanctions on hack-for-hire companies, citing Citizen Lab report. The post Group of Bipartisan Lawmakers Ask US Government to Ban Several Hack-for-Hire Firms appeared first on The Citizen Lab .</description>
   </item>
   <item>
     <title>Wiz achieves GovRAMP High Authorization</title>
@@ -1574,38 +1606,6 @@
     <pubDate>Wed, 09 Sep 2026 13:00:00 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>The remarks, to both CyberScoop and at the Billington CyberSecurity Summit, dovetail with the release of a new bureau cyber strategy. The post FBI officials say AI is bolstering adversaries, emphasizing need to focus on cyber basics, patching appeared first on CyberScoop .</description>
-  </item>
-  <item>
-    <title>Meta Launches Personal AI Agent, Muse, Emphasizes Safety and Privacy</title>
-    <link>https://www.securityweek.com/meta-launches-personal-ai-agent-muse-emphasizes-safety-and-privacy/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/meta-launches-personal-ai-agent-muse-emphasizes-safety-and-privacy/</guid>
-    <pubDate>Wed, 09 Sep 2026 12:00:00 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Muse runs on a dedicated, secure virtual machine that houses both the agent and the user’s data. The post Meta Launches Personal AI Agent, Muse, Emphasizes Safety and Privacy appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Orchid Security targets AI agent risk with drift detection and kill switches</title>
-    <link>https://www.helpnetsecurity.com/2026/09/09/orchid-security-ai-agents-application-level-kill-switches/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/09/orchid-security-ai-agents-application-level-kill-switches/</guid>
-    <pubDate>Wed, 09 Sep 2026 13:29:17 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Orchid Security has announced identity drift detection and application-level kill switches for AI agents. They can complete authorized objectives beyond their initial privilege level within seconds. AI agents do not need to “break” security controls or workflow guardrails. AI age…</description>
-  </item>
-  <item>
-    <title>AI Is Reshaping Tech Acquisitions</title>
-    <link>https://www.youtube.com/shorts/IPqyUJGA-yA</link>
-    <guid isPermaLink="true">https://www.youtube.com/shorts/IPqyUJGA-yA</guid>
-    <pubDate>Wed, 09 Sep 2026 14:00:34 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The technology market is seeing significant acquisition activity and consolidation. One hypothesis is that AI is disrupting traditional fundraising, making it harder for some companies to secure new capital. Companies that cannot raise money may increasingly have to consider acqu…</description>
-  </item>
-  <item>
-    <title>Fortinet Patches Critical Vulnerabilities in FortiMonitorOnSight, Chrome Extension</title>
-    <link>https://www.securityweek.com/fortinet-patches-critical-vulnerabilities-in-fortimonitoronsight-chrome-extension/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/fortinet-patches-critical-vulnerabilities-in-fortimonitoronsight-chrome-extension/</guid>
-    <pubDate>Wed, 09 Sep 2026 14:33:52 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The critical, unauthenticated bugs allow attackers to bypass authentication and proxy a user’s browser traffic. The post Fortinet Patches Critical Vulnerabilities in FortiMonitorOnSight, Chrome Extension appeared first on SecurityWeek .</description>
   </item>
   </channel>
 </rss>
