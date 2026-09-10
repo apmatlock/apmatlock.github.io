@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 10 Sep 2026 07:03:00 -0300</lastBuildDate>
+    <lastBuildDate>Thu, 10 Sep 2026 08:02:59 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>U.S. CISA adds Microsoft Windows, N-able N-central, and Adobe flaws to its Known Exploited Vulnerabilities catalog</title>
@@ -22,6 +22,14 @@
     <pubDate>Thu, 10 Sep 2026 06:33:36 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>The high-severity, unauthenticated vulnerability tracked as CVE-2025-25249 was patched in January 2026. The post Fortinet Code Execution Flaw Exploited in PivotC2 RAT Attacks appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>Organizations Warned of Cisco Secure FMC Exploitation</title>
+    <link>https://www.securityweek.com/organizations-warned-of-cisco-secure-fmc-exploitation/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/organizations-warned-of-cisco-secure-fmc-exploitation/</guid>
+    <pubDate>Thu, 10 Sep 2026 10:06:20 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Cisco and CISA have flagged exploitation of CVE-2026-20079, a vulnerability disclosed in March 2026. The post Organizations Warned of Cisco Secure FMC Exploitation appeared first on SecurityWeek .</description>
   </item>
   <item>
     <title>Love, lies, and a fake 49er.</title>
@@ -112,6 +120,46 @@
     <description>Apple has introduced Apple Reference Image, an opt-in feature designed to verify the authenticity of photos taken with iPhone 18 Pro models. Apple Reference Image provides users with an unalterable reference photo, visually confirming what the sensor saw at the moment of capture.…</description>
   </item>
   <item>
+    <title>AIs Compress Exploit Timeline</title>
+    <link>https://www.schneier.com/blog/archives/2026/09/ais-compress-exploit-timeline.html</link>
+    <guid isPermaLink="true">https://www.schneier.com/blog/archives/2026/09/ais-compress-exploit-timeline.html</guid>
+    <pubDate>Thu, 10 Sep 2026 10:40:35 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Give an AI agent a mere rumor of an exploit, and it&amp;#8217;s enough for them to find it. What&amp;#8217;s worse, I found I could use my own agents to find the exploit just by knowing roughly what it was about and so could have been exploiting it well before the public patch was availa…</description>
+  </item>
+  <item>
+    <title>The Machine With Many Faces: Post-Exploitation Identity Misuse in SPIFFE/SPIRE</title>
+    <link>https://unit42.paloaltonetworks.com/kubernetes-spiffe-spire-identity-spoofing/</link>
+    <guid isPermaLink="true">https://unit42.paloaltonetworks.com/kubernetes-spiffe-spire-identity-spoofing/</guid>
+    <pubDate>Thu, 10 Sep 2026 10:00:43 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Learn how root access on a compromised K8s node allows attackers to utilize SPIFFE/SPIRE metadata to spoof and harvest co-located workload identities. The post The Machine With Many Faces: Post-Exploitation Identity Misuse in SPIFFE/SPIRE appeared first on Unit 42 .</description>
+  </item>
+  <item>
+    <title>Surfshark says hackers accessed internal engineering server</title>
+    <link>https://cyberinsider.com/surfshark-says-hackers-accessed-internal-engineering-server/</link>
+    <guid isPermaLink="true">https://cyberinsider.com/surfshark-says-hackers-accessed-internal-engineering-server/</guid>
+    <pubDate>Thu, 10 Sep 2026 10:08:42 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Surfshark has disclosed a security incident in which an improperly configured internal test server was exposed to the internet and accessed by an unauthorized third party. The VPN provider says the breach did not affect customer data, VPN traffic, production systems, apps, or bro…</description>
+  </item>
+  <item>
+    <title>Scytale expands vendor risk management with AI-powered TPRM tools</title>
+    <link>https://www.helpnetsecurity.com/2026/09/10/scytale-ai-third-party-risk-management-capabilities/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/10/scytale-ai-third-party-risk-management-capabilities/</guid>
+    <pubDate>Thu, 10 Sep 2026 10:22:01 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Scytale has announced the launch of their latest AI-powered third-party risk management (TPRM) capabilities within its Vendors module. The release further extends vendor risk management from a periodic review exercise into a continuously updated vendor risk intelligence engine, g…</description>
+  </item>
+  <item>
+    <title>WordPress adds automated security checks to block risky plugin releases</title>
+    <link>https://www.helpnetsecurity.com/2026/09/10/wordpress-automated-plugin-security-review/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/10/wordpress-automated-plugin-security-review/</guid>
+    <pubDate>Thu, 10 Sep 2026 10:06:31 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>WordPress’ automated security review will now assess every plugin release before it is distributed through the WordPress.org update API. Releases considered a potential security risk will be blocked automatically. “A plugin can be secure today and introduce a vulnerability, or ma…</description>
+  </item>
+  <item>
     <title>Microsoft fixes bug that wiped Windows desktop settings</title>
     <link>https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-bug-that-wiped-windows-desktop-settings/</link>
     <guid isPermaLink="true">https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-bug-that-wiped-windows-desktop-settings/</guid>
@@ -150,6 +198,30 @@
     <pubDate>Thu, 10 Sep 2026 08:45:00 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>Anthropic has found a fourth case of its model accessing third-party systems without authorization</description>
+  </item>
+  <item>
+    <title>The longitude problem: In the AI era, detection is won on facts, not guesses</title>
+    <link>https://www.csoonline.com/article/4220266/the-longitude-problem-in-the-ai-era-detection-is-won-on-facts-not-guesses.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4220266/the-longitude-problem-in-the-ai-era-detection-is-won-on-facts-not-guesses.html</guid>
+    <pubDate>Thu, 10 Sep 2026 10:00:00 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>For most of the age of sail, a captain could find his latitude in minutes and could not find his longitude at all. Latitude you could read off the sun. Longitude, your position east to west, offered no such trick. Three weeks into the Atlantic, a navigator knew how far north he w…</description>
+  </item>
+  <item>
+    <title>Sporting goods chain Hibbett discloses employee data breach</title>
+    <link>https://cyberinsider.com/sporting-goods-chain-hibbett-discloses-employee-data-breach/</link>
+    <guid isPermaLink="true">https://cyberinsider.com/sporting-goods-chain-hibbett-discloses-employee-data-breach/</guid>
+    <pubDate>Thu, 10 Sep 2026 10:46:37 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>Hibbett Retail, Inc. is notifying employees that an unknown third party gained unauthorized access to its systems and may have acquired files containing personnel records during an April 2026 security incident. The company said in a breach notification dated September 8, 2026, th…</description>
+  </item>
+  <item>
+    <title>A New Claude ‘s Sandbox Failure Shows How AI Can Rationalize Real-World Harm</title>
+    <link>https://securityaffairs.com/198814/hacking/a-new-claude-s-sandbox-failure-shows-how-ai-can-rationalize-real-world-harm.html</link>
+    <guid isPermaLink="true">https://securityaffairs.com/198814/hacking/a-new-claude-s-sandbox-failure-shows-how-ai-can-rationalize-real-world-harm.html</guid>
+    <pubDate>Thu, 10 Sep 2026 09:21:36 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>Claude models compromised real systems during misconfigured security tests, exposing a worrying mix of flawed reasoning, harmful actions and weak safeguards. Anthropic just published one of the more uncomfortable self-assessments a major AI lab has released this year. The company…</description>
   </item>
   <item>
     <title>Is a closed or an open AI model more trustworthy?</title>
@@ -192,6 +264,14 @@
     <description>A phishing campaign routes victims through genuine Microsoft OAuth and Teams infrastructure before showing them a fake login page built entirely inside their own browser, according to researchers at Barracuda. “Instead of delivering a phishing page from a web server, the maliciou…</description>
   </item>
   <item>
+    <title>ISC Stormcast For Thursday, September 10th, 2026 https://isc.sans.edu/podcastdetail/10088, (Thu, Sep 10th)</title>
+    <link>https://isc.sans.edu/diary/rss/33328</link>
+    <guid isPermaLink="true">https://isc.sans.edu/diary/rss/33328</guid>
+    <pubDate>Thu, 10 Sep 2026 10:10:11 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>(c) SANS Internet Storm Center. https://isc.sans.edu Creative Commons Attribution-Noncommercial 3.0 United States License.</description>
+  </item>
+  <item>
     <title>Addressing the social media algorithms.</title>
     <link>https://thecyberwire.com/podcasts/caveat/324/notes</link>
     <guid isPermaLink="true">https://thecyberwire.com/podcasts/caveat/324/notes</guid>
@@ -214,6 +294,22 @@
     <pubDate>Thu, 10 Sep 2026 13:21:38 -0000</pubDate>
     <category>Infosec News</category>
     <description></description>
+  </item>
+  <item>
+    <title>Copyright scammers get Instagram accounts suspended and demand payment</title>
+    <link>https://www.malwarebytes.com/blog/scams/2026/09/copyright-scammers-get-instagram-accounts-suspended-and-demand-payment</link>
+    <guid isPermaLink="true">https://www.malwarebytes.com/blog/scams/2026/09/copyright-scammers-get-instagram-accounts-suspended-and-demand-payment</guid>
+    <pubDate>Thu, 10 Sep 2026 09:59:35 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>Scammers are filing fraudulent copyright complaints to suspend Instagram accounts, then demanding payment to withdraw them.</description>
+  </item>
+  <item>
+    <title>Clearview AI Is Testing an AI Tool That Would Let Cops Unearth Your Life Online</title>
+    <link>https://www.wired.com/story/clearview-ai-is-testing-an-ai-tool-that-lets-cops-instantly-unearth-your-online-activity/</link>
+    <guid isPermaLink="true">https://www.wired.com/story/clearview-ai-is-testing-an-ai-tool-that-lets-cops-instantly-unearth-your-online-activity/</guid>
+    <pubDate>Thu, 10 Sep 2026 10:00:00 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>InquiryIQ, a previously unreported prototype, tested a model from xAI, maker of Grok, to surface associates, social accounts, and other information about people identified through Clearview.</description>
   </item>
   <item>
     <title>Cisco bundles fixes for multiple vulnerabilities, some critical, into one patch</title>
@@ -1510,102 +1606,6 @@
     <pubDate>Tue, 08 Sep 2026 09:49:16 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Attackers are exploiting critical RouterOS flaws to take control of routers with SSH exposed to the internet.</description>
-  </item>
-  <item>
-    <title>25 Years After 9/11: The CIA&#x27;s First Moments Behind Enemy Lines in Afghanistan</title>
-    <link>https://thecyberwire.com/podcasts/spycast/749/notes</link>
-    <guid isPermaLink="true">https://thecyberwire.com/podcasts/spycast/749/notes</guid>
-    <pubDate>Tue, 08 Sep 2026 11:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Retired Colonel Justin Sapp was a Green Beret detailed to the CIA after the September 11th terrorist attacks. He was part of Team Alpha, the first eight Americans to drop behind enemy lines into the mountains of Afghanistan. At 29, Justin was its youngest member. There was no tim…</description>
-  </item>
-  <item>
-    <title>N-able Patches Critical Zero-Day in N-central</title>
-    <link>https://www.securityweek.com/n-able-patches-critical-zero-day-in-n-central/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/n-able-patches-critical-zero-day-in-n-central/</guid>
-    <pubDate>Tue, 08 Sep 2026 10:37:58 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Administrators are advised to check their deployments for newly created user accounts they don’t recognize. The post N-able Patches Critical Zero-Day in N-central appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>North Korea-linked Hackers Hide a Backdoor Inside HAProxy</title>
-    <link>https://securityaffairs.com/198656/apt/north-korea-linked-hackers-hide-a-backdoor-inside-haproxy.html</link>
-    <guid isPermaLink="true">https://securityaffairs.com/198656/apt/north-korea-linked-hackers-hide-a-backdoor-inside-haproxy.html</guid>
-    <pubDate>Tue, 08 Sep 2026 09:11:01 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>North Korea-linked hackers hid a backdoor inside HAProxy, masking C2 traffic and stealing data while keeping the load balancer working normally. North Korean-linked hackers found a genuinely clever hiding spot for their malware: inside the actual source code of HAProxy, the load …</description>
-  </item>
-  <item>
-    <title>Party’s over for scammers who went on spending spree after $240M bitcoin theft</title>
-    <link>https://databreaches.net/2026/09/08/partys-over-for-scammers-who-went-on-spending-spree-after-240m-bitcoin-theft/</link>
-    <guid isPermaLink="true">https://databreaches.net/2026/09/08/partys-over-for-scammers-who-went-on-spending-spree-after-240m-bitcoin-theft/</guid>
-    <pubDate>Tue, 08 Sep 2026 11:32:13 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Michael Kunzelman of the AP reports: They pulled off one of the largest cryptocurrency thefts in U.S. history, duping a stranger out of bitcoin worth over $240 million. They tried to hide their digital fingerprints, carrying out a sophisticated scheme to launder the proceeds. And…</description>
-  </item>
-  <item>
-    <title>Threat actors are giving AI agents a bigger role in cyberattacks</title>
-    <link>https://www.helpnetsecurity.com/2026/09/08/ai-agents-cyberattacks-automation-google-research/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/08/ai-agents-cyberattacks-automation-google-research/</guid>
-    <pubDate>Tue, 08 Sep 2026 13:44:07 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>AI agents are automating parts of cyberattacks with less human involvement, including vulnerability scanning, credential harvesting, and troubleshooting, according to Google Threat Intelligence Group’s Q3 2026 AI Threat Tracker. (Source: Google) The report draws on Mandiant incid…</description>
-  </item>
-  <item>
-    <title>Mars Security brings threat intelligence to detection in real time</title>
-    <link>https://www.helpnetsecurity.com/2026/09/08/mars-security-real-time-intel-based-detection/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/08/mars-security-real-time-intel-based-detection/</guid>
-    <pubDate>Tue, 08 Sep 2026 13:43:18 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Mars Security has announced Real-Time Intel-Based Detection, a capability that turns newly published threat intelligence into validated, ready-to-deploy detection rules within minutes of release. Built by former offensive operators, the new capability converts advisories from CIS…</description>
-  </item>
-  <item>
-    <title>“Zero-click” WeChat worm could hijack accounts and spread via a single call</title>
-    <link>https://www.helpnetsecurity.com/2026/09/08/wechat-weworm-vulnerability-exploit-account-hijacking/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/08/wechat-weworm-vulnerability-exploit-account-hijacking/</guid>
-    <pubDate>Tue, 08 Sep 2026 13:40:21 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Researchers with security company Calif have discovered, weaponized, and privately reported to Tencent a critical vulnerability that allowed them to create &amp;#8220;WeWorm&amp;#8221;, a worm that spreads via WeChat calls without any user interaction. During its rampage, the WeWorm comp…</description>
-  </item>
-  <item>
-    <title>Everett, Massachusetts, closes City Hall after cybersecurity incident</title>
-    <link>https://databreaches.net/2026/09/08/everett-massachusetts-closes-city-hall-after-cybersecurity-incident/</link>
-    <guid isPermaLink="true">https://databreaches.net/2026/09/08/everett-massachusetts-closes-city-hall-after-cybersecurity-incident/</guid>
-    <pubDate>Tue, 08 Sep 2026 13:51:57 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>DysruptionHub reports: Everett, Massachusetts, closed City Hall to the public Tuesday after a cybersecurity incident affected its internal network and technology systems, shifting most essential employees to another municipal building. The city said in a Monday announcement that …</description>
-  </item>
-  <item>
-    <title>SAP warns of maximum severity &#x27;OVERPASS&#x27; kernel vulnerability</title>
-    <link>https://www.bleepingcomputer.com/news/security/sap-warns-of-maximum-severity-overpass-kernel-vulnerability/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/sap-warns-of-maximum-severity-overpass-kernel-vulnerability/</guid>
-    <pubDate>Tue, 08 Sep 2026 10:55:20 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>SAP has addressed 20 vulnerabilities across multiple products in its September 2026 security updates, including a maximum-severity memory corruption flaw in the SAP Kernel code. [...]</description>
-  </item>
-  <item>
-    <title>OpenAI says GPT-6 Astra can find zero-days, but is also harder to monitor</title>
-    <link>https://www.bleepingcomputer.com/news/artificial-intelligence/openai-says-gpt-6-astra-can-find-zero-days-but-is-also-harder-to-monitor/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/artificial-intelligence/openai-says-gpt-6-astra-can-find-zero-days-but-is-also-harder-to-monitor/</guid>
-    <pubDate>Tue, 08 Sep 2026 10:40:32 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>OpenAI confirmed that GPT-6 Astra is the first model it has broadly deployed to reach the &quot;Critical level&quot; for cybersecurity capabilities. [...]</description>
-  </item>
-  <item>
-    <title>SAP Patches Critical Extended Passport Processing Vulnerability</title>
-    <link>https://www.securityweek.com/sap-patches-critical-extended-passport-processing-vulnerability/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/sap-patches-critical-extended-passport-processing-vulnerability/</guid>
-    <pubDate>Tue, 08 Sep 2026 14:55:06 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Affecting the SAP kernel code, the flaw allows unauthenticated, remote attackers to run arbitrary commands, recover secrets, and modify data. The post SAP Patches Critical Extended Passport Processing Vulnerability appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>The US military just turned off ad tracking on its phones. Maybe you should too</title>
-    <link>https://www.bitdefender.com/en-us/blog/hotforsecurity/us-military-turned-off-ad-tracking-phones</link>
-    <guid isPermaLink="true">https://www.bitdefender.com/en-us/blog/hotforsecurity/us-military-turned-off-ad-tracking-phones</guid>
-    <pubDate>Tue, 08 Sep 2026 15:33:07 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Location data sold by the ad industry has reportedly helped adversaries target US troops. The Pentagon has responded by switching off ad tracking on its devices - and you can do the same on yours. Read more in my article on the Hot for Security blog.</description>
   </item>
   </channel>
 </rss>
