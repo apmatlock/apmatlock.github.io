@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 09 Sep 2026 20:03:54 -0300</lastBuildDate>
+    <lastBuildDate>Wed, 09 Sep 2026 21:02:58 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Cisco bundles fixes for multiple vulnerabilities, some critical, into one patch</title>
@@ -480,6 +480,14 @@
     <description>An analysis of Project Glasswing findings shows only a fraction have reached disclosure, and an even smaller number have been fixed.</description>
   </item>
   <item>
+    <title>CO: Cyberattack damages files at Salida School District in Colorado</title>
+    <link>https://databreaches.net/2026/09/09/co-cyberattack-damages-files-at-salida-school-district-in-colorado/</link>
+    <guid isPermaLink="true">https://databreaches.net/2026/09/09/co-cyberattack-damages-files-at-salida-school-district-in-colorado/</guid>
+    <pubDate>Wed, 09 Sep 2026 23:55:56 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>DysruptionHub reports: A cyberattack forced Salida School District in Colorado to shut down its network June 29, damaging locally stored files and disrupting administrative operations, the district said. The attack began about 6:30 a.m. and was detected two hours later, according…</description>
+  </item>
+  <item>
     <title>ICS Patch Tuesday: Schneider Electric, Siemens Fix Critical Flaws</title>
     <link>https://www.securityweek.com/ics-patch-tuesday-schneider-electric-siemens-fix-critical-flaws/</link>
     <guid isPermaLink="true">https://www.securityweek.com/ics-patch-tuesday-schneider-electric-siemens-fix-critical-flaws/</guid>
@@ -712,6 +720,14 @@
     <description>Healthcare company AdaptHealth has confirmed that data of 4.1 million people was exposed in a cyberattack discovered in July that was attributed to the ShinyHunters threat group. [...]</description>
   </item>
   <item>
+    <title>Smashing Security podcast #484: How websites are tracking you with silence</title>
+    <link>https://grahamcluley.com/smashing-security-podcast-484/</link>
+    <guid isPermaLink="true">https://grahamcluley.com/smashing-security-podcast-484/</guid>
+    <pubDate>Wed, 09 Sep 2026 23:05:54 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>When a chap called Matt noticed his Bluetooth headphones wouldn&#x27;t switch to his phone, he was surprised to realise the reason was a single AliExpress webpage sitting open in his browser - playing nothing at all, at zero volume. And yet somehow his hardware could hear it. Audio fi…</description>
+  </item>
+  <item>
     <title>ISC Stormcast For Wednesday, September 9th, 2026 https://isc.sans.edu/podcastdetail/10086, (Wed, Sep 9th)</title>
     <link>https://isc.sans.edu/diary/rss/33322</link>
     <guid isPermaLink="true">https://isc.sans.edu/diary/rss/33322</guid>
@@ -910,6 +926,14 @@
     <pubDate>Wed, 09 Sep 2026 21:30:00 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Microsoft introduces the Cloud Web Applications Threat Matrix, a MITRE ATT&amp;#038;CK-aligned framework that helps defenders understand, prioritize, and mitigate threats to cloud-hosted web apps and serverless platforms. The post Threat Matrix: Mapping threats across cloud web appli…</description>
+  </item>
+  <item>
+    <title>OpenSSL’s new alpha build speeds up post-quantum crypto</title>
+    <link>https://www.helpnetsecurity.com/2026/09/10/openssl-4-1-0-alpha1-released/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/10/openssl-4-1-0-alpha1-released/</guid>
+    <pubDate>Wed, 09 Sep 2026 22:15:28 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>The OpenSSL project released the first alpha of OpenSSL 4.1.0, giving developers an early look at a version built for encrypted communication over unreliable connections and faster post-quantum cryptography. This marks the opening test build for a version still months from genera…</description>
   </item>
   <item>
     <title>F5 BIG-IP APM Malware Injects a PHP Web Shell Into Memory, Evading Disk Scans</title>
@@ -1582,30 +1606,6 @@
     <pubDate>Tue, 08 Sep 2026 08:41:53 +0000</pubDate>
     <category>Security Advisories</category>
     <description>Jellyfin shipped version 12.0 of its media server. Several of the security fixes in it block requests built to reach files outside the folders the server is supposed to hand out. The rest of the security work touches first-run setup, plugin installs, parental controls, and the we…</description>
-  </item>
-  <item>
-    <title>IT Help Desk Impersonation Lets Hackers Bypass MFA</title>
-    <link>https://securityaffairs.com/198634/cyber-crime/it-help-desk-impersonation-lets-hackers-bypass-mfa.html</link>
-    <guid isPermaLink="true">https://securityaffairs.com/198634/cyber-crime/it-help-desk-impersonation-lets-hackers-bypass-mfa.html</guid>
-    <pubDate>Tue, 08 Sep 2026 07:41:27 +0000</pubDate>
-    <category>Security Advisories</category>
-    <description>Attackers bypass endpoint security by posing as IT staff, stealing Microsoft 365 sessions, draining SaaS data and demanding extortion. Forget installing malware because today’s extortionists just pick up the phone instead of writing code. A widespread threat cluster tracked as PR…</description>
-  </item>
-  <item>
-    <title>FreeIPA Flaw Chain Lets Anonymous Clients Create Reusable Administrator Credentials</title>
-    <link>https://thehackernews.com/2026/09/freeipa-flaw-chain-lets-anonymous.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/09/freeipa-flaw-chain-lets-anonymous.html</guid>
-    <pubDate>Tue, 08 Sep 2026 16:52:07 +0530</pubDate>
-    <category>Security Advisories</category>
-    <description>A flaw in FreeIPA lets a client that has never logged in create a Kerberos identity of its own choosing in the directory and end up in the administrators group, Red Hat says. FreeIPA is the system that determines who may log in across a Linux domain and maintains all identities i…</description>
-  </item>
-  <item>
-    <title>Adobe security advisory (AV26-888)</title>
-    <link>https://cyber.gc.ca/en/alerts-advisories/adobe-security-advisory-av26-888</link>
-    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/adobe-security-advisory-av26-888</guid>
-    <pubDate>Tue, 08 Sep 2026 12:02:55 -0000</pubDate>
-    <category>Security Advisories</category>
-    <description></description>
   </item>
   </channel>
 </rss>
