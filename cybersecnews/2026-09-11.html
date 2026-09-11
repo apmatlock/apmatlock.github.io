@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>matlock.ca // THREAT INTELLIGENCE — 2026-09-11</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="alternate" type="application/rss+xml" title="THREAT INTELLIGENCE" href="https://matlock.ca/cybersecnews/feed.xml">
+
+<script>
+  let _activeHours = null;
+
+  function toggleSection(headerEl) {
+    const sec = headerEl.closest('.cat-section');
+    sec.classList.toggle('collapsed');
+    headerEl.querySelector('.section-toggle').textContent =
+      sec.classList.contains('collapsed') ? '[+]' : '[−]';
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.remove('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[−]';
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.cat-section').forEach(s => {
+      s.classList.add('collapsed');
+      const t = s.querySelector('.section-toggle');
+      if (t) t.textContent = '[+]';
+    });
+  }
+
+  function applyFilters() {
+    const inp = document.getElementById('searchInput');
+    const qLow = inp ? inp.value.trim().toLowerCase() : '';
+    const now = Date.now();
+
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      let visible = 0;
+      sec.querySelectorAll('.headline').forEach(row => {
+        const titleOk = !qLow || (row.dataset.title || '').includes(qLow);
+        let timeOk = true;
+        if (_activeHours) {
+          const d = row.dataset.date;
+          timeOk = d ? new Date(d + 'T23:59:59').getTime() >= now - _activeHours * 3600000 : false;
+        }
+        const show = titleOk && timeOk;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (qLow || _activeHours) {
+        sec.style.display = visible > 0 ? '' : 'none';
+        if (visible > 0 && qLow && sec.classList.contains('collapsed')) {
+          sec.classList.remove('collapsed');
+          const t = sec.querySelector('.section-toggle');
+          if (t) t.textContent = '[−]';
+        }
+      } else {
+        sec.style.display = '';
+      }
+    });
+  }
+
+  function filterTime(hours, btn) {
+    _activeHours = hours;
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('jumpTopBtn');
+    if (btn) btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+</script>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/">MATLOCK<span class="dot">.</span>CA</a>
+  <nav class="primary">
+    <a href="/">Home</a>
+    <a href="/claudeblog/">Walkthroughs</a>
+    <a href="/cybersecnews/index.html" class="current">Threat Intel</a>
+    <a href="/blog/">Blog</a>
+    <a href="https://www.linkedin.com/in/paulmatlock/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="/cybersecnews/feed.xml">RSS</a>
+  </nav>
+</header>
+
+<nav class="subnav">
+  <span class="nav-label">// JUMP</span>
+<a href="archive.html">Archive</a>
+<a href="index.html" class="active">Today</a>
+<a href="2026-09-10.html">Yesterday</a>
+<a href="2026-09-09.html">9 Sep</a>
+<a href="2026-09-08.html">8 Sep</a>
+<a href="2026-09-07.html">7 Sep</a>
+<a href="2026-09-06.html">6 Sep</a>
+<a href="2026-09-05.html">5 Sep</a>
+
+</nav>
+<main class="container wide">
+
+    <div class="stats-bar">
+      <div class="stat"><span class="stat-value">42</span><span class="stat-label">Articles</span></div>
+      <div class="stat"><span class="stat-value">8</span><span class="stat-label">Categories</span></div>
+      <div class="stat"><span class="stat-value">2026-09-11</span><span class="stat-label">Date</span></div>
+    </div>
+    <div class="search-wrap">
+      <label for="searchInput">// SEARCH</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="filter articles by title..." autocomplete="off" oninput="applyFilters()">
+      <button class="time-filter-btn" onclick="expandAll()">EXPAND ALL</button>
+      <button class="time-filter-btn" onclick="collapseAll()">COLLAPSE ALL</button>
+    </div>
+<div class="cat-section" id="cat-common-vulnerabilities-and-exposures">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,102,0,0.6);" onclick="toggleSection(this)">🐛 COMMON VULNERABILITIES AND EXPOSURES <span class="filter-count">7</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="al26-020 - vulnerabilities impacting mikrotik routeros - cve-2026-67276, cve-2026-67277 and cve-2026-86060" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyber.gc.ca/en/alerts-advisories/al26-020-vulnerabilities-impacting-mikrotik-routeros-cve-2026-67276-cve-2026-67277-cve-2026-86060" target="_blank" rel="noopener">AL26-020 - Vulnerabilities Impacting MikroTik RouterOS - CVE-2026-67276, CVE-2026-67277 and CVE-2026-86060</a></span><span class="headline-source">CYBER.GC.CA</span></div>
+<div class="headline" data-title="cisco fmc flaws exploited to steal credentials and deploy qilin ransomware" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/09/cisco-fmc-flaws-exploited-to-steal.html" target="_blank" rel="noopener">Cisco FMC Flaws Exploited to Steal Credentials and Deploy Qilin Ransomware</a><span class="article-summary">Cisco has revealed that three distinct threat clusters linked to ransomware and state-sponsored attacks have been exploiting two recently patched Secure Firewall Management Center (FMC) vulnerabilities. The attacks leverage CVE-2026-20079 (CVSS score: 10.0), an authentication byp…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="attackers are weaponizing the gap between chromium fixes and chrome patches" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4220939/attackers-are-weaponizing-the-gap-between-chromium-fixes-and-chrome-patches.html" target="_blank" rel="noopener">Attackers are weaponizing the gap between Chromium fixes and Chrome patches</a><span class="article-summary">A new exploit kit is revealing the perils of the “patch later” mentality. According to the Proofpoint Threat Research team , espionage-motivated threat actors are using a new malicious toolkit to chain together four separate Chrome browser and Microsoft Windows vulnerabilities to…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="[remote] cve-2026-80428 unauthenticated php object injection via shibboleth - ilias &lt; 9.22, 10.0 &lt; 10.10, 11.0 &lt; 11.3 - rce" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.exploit-db.com/exploits/52682" target="_blank" rel="noopener">[remote] CVE-2026-80428 Unauthenticated PHP Object Injection via Shibboleth - ILIAS &lt; 9.22, 10.0 &lt; 10.10, 11.0 &lt; 11.3 - RCE</a><span class="article-summary">CVE-2026-80428 Unauthenticated PHP Object Injection via Shibboleth - ILIAS < 9.22, 10.0 < 10.10, 11.0 < 11.3 - RCE</span></span><span class="headline-source">EXPLOIT-DB.COM</span></div>
+<div class="headline" data-title="gitlab urges users to patch max severity path traversal flaw" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/gitlab-urges-users-to-patch-max-severity-path-traversal-flaw/" target="_blank" rel="noopener">GitLab urges users to patch max severity path traversal flaw</a><span class="article-summary">GitLab urged users on Thursday to patch their servers immediately against a maximum-severity path traversal vulnerability tracked as CVE-2026-85706. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="check point patches critical vpn vulnerabilities" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/check-point-patches-critical-vpn-vulnerabilities/" target="_blank" rel="noopener">Check Point Patches Critical VPN Vulnerabilities</a><span class="article-summary">Tracked as CVE-2026-85102 and CVE-2026-85103, the flaws could be exploited for remote code execution. The post Check Point Patches Critical VPN Vulnerabilities appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="attackers exploit critical cisco fmc flaw to deploy qilin ransomware" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/198884/cyber-crime/attackers-exploit-critical-cisco-fmc-flaw-to-deploy-qilin-ransomware.html" target="_blank" rel="noopener">Attackers Exploit Critical Cisco FMC Flaw to deploy Qilin ransomware</a><span class="article-summary">Three threat groups are exploiting two Cisco FMC flaws to steal credentials, gain root access and deploy Qilin ransomware. Cisco Talos says three separate threat groups are exploiting two recently patched Secure Firewall Management Center (FMC) flaws. The main target is CVE-2026-…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-vulnerability-disclosure">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,140,0,0.5);" onclick="toggleSection(this)">⚠️ VULNERABILITY DISCLOSURE <span class="filter-count">16</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="shieldcrash zero-day breaks microsoft's newest patch, ai agents compromise 440 school print servers, fortinet's 92-day streak ends" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://cybersecuritytoday.libsyn.com/shieldcrash-zero-day-breaks-microsofts-newest-patch-ai-agents-compromise-440-school-print-servers-fortinets-92-day-streak-ends" target="_blank" rel="noopener">ShieldCrash zero-day breaks Microsoft's newest patch, AI agents compromise 440 school print servers, Fortinet's 92-day streak ends</a><span class="article-summary">Defender Patch Broken in 24 Hours, AI Agents Hit Papercut Servers, FTC Rolls Back Health App Breach Rules Microsoft patched a Defender zero day, but a day later researcher Nightmare Eclipse released "ShieldCrash," a new exploit that bypasses the ShieldBreak fix, itself a bypass o…</span></span><span class="headline-source">CYBERSECURITYTODAY.LIBSYN.COM</span></div>
+<div class="headline" data-title="china-linked unc3569 exploited sogou input method flaw to deploy grayrabbit backdoor" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/09/china-linked-unc3569-exploited-sogou.html" target="_blank" rel="noopener">China-Linked UNC3569 Exploited Sogou Input Method Flaw to Deploy GRAYRABBIT Backdoor</a><span class="article-summary">A China-linked hacking group exploited a flaw in Sogou Input Method, one of the most widely used tools for typing Chinese characters on Windows, to install a backdoor on victims' computers, security company Gen Digital said in&nbsp;research published Thursday. The attack started …</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="papercut replaces emergency patches with fixes for two actively exploited flaws" data-date="2026-09-11"><span class="headline-date">11 Sep <span class="kev-badge">KEV</span></span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/09/papercut-replaces-emergency-patches.html" target="_blank" rel="noopener">PaperCut Replaces Emergency Patches With Fixes for Two Actively Exploited Flaws</a><span class="article-summary">PaperCut on Thursday released a new security maintenance release that replaces all previously published emergency patches that were pushed to address two security flaws that have come under active exploitation. The software development company said PaperCut NG/MF versions 26.0.5,…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+<div class="headline" data-title="how ai and cybersecurity are reshaping servicenow" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4220438/how-ai-and-cybersecurity-are-reshaping-servicenow-2.html" target="_blank" rel="noopener">How AI and cybersecurity are reshaping ServiceNow</a><span class="article-summary">The once stable era of IT service management (ITSM) has entered a period of disruption and uncertainty. At least if you’re an investor or enterprise customer with an interest in ITSM giant ServiceNow, the signals over recent months have been hard to ignore. Last year, the categor…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="attackers use passkey-themed scams to hijack microsoft 365 accounts" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4221110/attackers-use-passkey-themed-scams-to-hijack-microsoft-365-accounts.html" target="_blank" rel="noopener">Attackers use passkey-themed scams to hijack Microsoft 365 accounts</a><span class="article-summary">Attackers are using passkey-themed social engineering to trick employees into giving them access to their Microsoft accounts. Microsoft Security Research said it has been tracking active cloud intrusions since May in which attackers impersonated IT helpdesk staff, told employees …</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="google’s early access is creating a blind spot for malicious apps" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.csoonline.com/article/4221068/googles-early-access-is-creating-a-blind-spot-for-malicious-apps.html" target="_blank" rel="noopener">Google’s Early Access is creating a blind spot for malicious apps</a><span class="article-summary">Google’s Early Access program is meant to give developers a place to release unfinished apps, gather feedback and handle bugs before a full launch. But new research from Bitdefender Labs suggests the feature may also be giving potentially deceptive applications an unusual advanta…</span></span><span class="headline-source">CSOONLINE.COM</span></div>
+<div class="headline" data-title="kiteworks acquires bonfy.ai to fill the ai gap in data governance" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/kiteworks-acquires-bonfy-ai-to-fill-the-ai-gap-in-data-governance/" target="_blank" rel="noopener">Kiteworks Acquires Bonfy.AI to Fill the AI Gap in Data Governance</a><span class="article-summary">Financials have not been disclosed, but the estimated cost is in the tens of millions of dollars. The post Kiteworks Acquires Bonfy.AI to Fill the AI Gap in Data Governance appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="papercut flaws exploited in ai-powered attacks" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/papercut-flaws-exploited-in-ai-powered-attacks/" target="_blank" rel="noopener">PaperCut Flaws Exploited in AI-Powered Attacks</a><span class="article-summary">A Russian threat actor used AI to build, test, and deploy exploits against hundreds of organizations worldwide. The post PaperCut Flaws Exploited in AI-Powered Attacks appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="indonesia hit by android banking app-cloning campaign" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.darkreading.com/mobile-security/indonesia-android-banking-app-cloning-campaign" target="_blank" rel="noopener">Indonesia Hit by Android Banking App-Cloning Campaign</a><span class="article-summary">The GoldFactory threat group exploits the Android Work Profile feature to deliver the Gigabud Trojan, while Mantax Otax spreads separately.</span></span><span class="headline-source">DARKREADING.COM</span></div>
+<div class="headline" data-title="ai agents exploited papercut flaws to breach 395 organizations" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/09/11/ai-agents-papercut-ng-mf-attack-campaign/" target="_blank" rel="noopener">AI agents exploited PaperCut flaws to breach 395 organizations</a><span class="article-summary">A threat actor built a working exploit for PaperCut print management software, then handed the job of breaking into hundreds of organizations to AI agents that did most of the work on their own, according to GreyNoise. The result was at least 440 compromised PaperCut instances ac…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="automox mitigation worklets cut endpoint exposure to unpatchable flaws" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/09/11/automox-mitigation-worklet-pipeline/" target="_blank" rel="noopener">Automox Mitigation Worklets cut endpoint exposure to unpatchable flaws</a><span class="article-summary">Automox has announced its AI-speed Mitigation Worklet Pipeline, which automates mitigation to reduce risk from the increased volume and velocity of frontier-model AI vulnerabilities. Now the time from vulnerability disclosure to exposure mitigation is shortened from days or weeks…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="companies may be measuring phishing resilience the wrong way" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/09/11/pistachio-employee-phishing-risk-report/" target="_blank" rel="noopener">Companies may be measuring phishing resilience the wrong way</a><span class="article-summary">Companies that judge phishing simulation programs by how often employees click simulated attack emails may be overlooking more important indicators of cyber resilience, according to Pistachio’s Phishing Behaviour Report 2026. Examples of difficult simulations (Source: Pistachio) …</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="ai is changing what salesforce security needs to govern" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/09/11/withsecure-salesforce-ai-trust-governance-paper/" target="_blank" rel="noopener">AI is changing what Salesforce security needs to govern</a><span class="article-summary">Existing security and governance practices have largely focused on identities, permissions, access, configurations and controls. WithSecure’s Navigating Trust in the Modern Salesforce Ecosystem paper says Salesforce environments also require organizations to understand what infor…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="new infosec products of the week: september 11, 2026" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/09/11/new-infosec-products-of-the-week-september-11-2026/" target="_blank" rel="noopener">New infosec products of the week: September 11, 2026</a><span class="article-summary">Here’s a look at the most interesting products from the past week, featuring releases from Akeyless, Orchid Security, Scytale, and Securin. Securin Platform helps security teams prove when attack paths are closed Securin has announced the general availability of the Securin Platf…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="risky bulletin: anthropic agents went hacking again" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://risky.biz/RBNEWS612/" target="_blank" rel="noopener">Risky Bulletin: Anthropic agents went hacking again</a><span class="article-summary">Anthropic agents went hacking again, South Korea increases its data breach fines, Apple notifies three Turkish ministers of mercenary spyware attacks, and CISA is ready to hire 250 staff.</span></span><span class="headline-source">RISKY.BIZ</span></div>
+<div class="headline" data-title="uk council attack linked to mass exploitation of sonicwall flaw" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://securityaffairs.com/198864/hacking/uk-council-attack-linked-to-mass-exploitation-of-sonicwall-flaw.html" target="_blank" rel="noopener">UK Council Attack Linked to Mass Exploitation of SonicWall Flaw</a><span class="article-summary">A critical SonicWall flaw was rapidly weaponized, with a UK Council attack linked to a campaign that exposed credentials and enabled Active Directory theft. On July 17, 2026, the Borough Council of King&#8217;s Lynn and West Norfolk announced it had detected a cyberattack affecti…</span></span><span class="headline-source">SECURITYAFFAIRS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-bulletins">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(255,170,0,0.5);" onclick="toggleSection(this)">📋 SECURITY BULLETINS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="microsoft fixes teams, outlook launch failures on arm windows pcs" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-teams-outlook-launch-failures-on-arm-windows-pcs/" target="_blank" rel="noopener">Microsoft fixes Teams, Outlook launch failures on ARM Windows PCs</a><span class="article-summary">Microsoft has fixed a bug that prevented Teams and Outlook from launching on ARM-based Windows devices after installing updates released since the August 2026 Patch Tuesday. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="ubuntu 24.04.5 lts release patches security bugs across ten flavors" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/09/11/ubuntu-24-04-5-lts-released/" target="_blank" rel="noopener">Ubuntu 24.04.5 LTS release patches security bugs across ten flavors</a><span class="article-summary">Canonical shipped Ubuntu 24.04.5 LTS, bundling security updates and fixes for high-severity bugs into new installation media for the &#8220;Noble Numbat&#8221; release. Anyone installing fresh now gets those corrections baked in from the start, cutting the batch of updates that w…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-security-advisories">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(204,170,0,0.5);" onclick="toggleSection(this)">📢 SECURITY ADVISORIES <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="attackers chain jfrog artifactory flaws to gain admin control and plant backdoors" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://thehackernews.com/2026/09/attackers-chain-jfrog-artifactory-flaws.html" target="_blank" rel="noopener">Attackers Chain JFrog Artifactory Flaws to Gain Admin Control and Plant Backdoors</a><span class="article-summary">Attackers have chained two flaws in JFrog Artifactory, the repository that software build pipelines pull from, to take administrator control of self-hosted servers and plant backdoors, cloud security company Wiz&nbsp;said in a report. Wiz saw the attacks between August 15 and Sep…</span></span><span class="headline-source">THEHACKERNEWS.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-incident-reporting">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(221,68,68,0.5);" onclick="toggleSection(this)">🔥 INCIDENT REPORTING <span class="filter-count">5</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="trezor: 347,000 users targeted in phishing attacks after brevo breach" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/trezor-347-000-users-targeted-in-phishing-attacks-after-brevo-breach/" target="_blank" rel="noopener">Trezor: 347,000 users targeted in phishing attacks after Brevo breach</a><span class="article-summary">Trezor has revealed that phishing attacks against its customers earlier this week targeted 347,000 email addresses and affected 2,500 users who clicked an embedded malicious link. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="conti ransomware gang member sentenced to 4 years in prison" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.bleepingcomputer.com/news/security/conti-ransomware-gang-member-sentenced-to-four-years-in-prison/" target="_blank" rel="noopener">Conti ransomware gang member sentenced to 4 years in prison</a><span class="article-summary">A Ukrainian national has been sentenced to four years in prison for his role in Conti ransomware attacks between 2021 and 2022. [...]</span></span><span class="headline-source">BLEEPINGCOMPUTER.COM</span></div>
+<div class="headline" data-title="ukrainian conti ransomware developer sentenced to 4 years in us prison" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/ukrainian-conti-ransomware-developer-sentenced-to-4-years-in-us-prison/" target="_blank" rel="noopener">Ukrainian Conti Ransomware Developer Sentenced to 4 Years in US Prison</a><span class="article-summary">Oleksii Oleksiyovych Lytvynenko has been sentenced to 4 years in prison after he was arrested in Ireland in 2023. The post Ukrainian Conti Ransomware Developer Sentenced to 4 Years in US Prison appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="idscan confirms breach after 153 million driver’s licenses leak on dark web" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/09/11/idscan-net-data-breach-153-million-drivers-licenses/" target="_blank" rel="noopener">IDScan confirms breach after 153 million driver’s licenses leak on dark web</a><span class="article-summary">Days after reports linked IDScan to a dark web database holding more than 153 million driver&#8217;s license scans, the identity verification company has confirmed hackers accessed customer data stored on its cloud platform. The Louisiana-based firm, which processes ID checks for…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="building a ransomware decision tree before the call comes in" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/09/11/ransomware-decision-tree-video/" target="_blank" rel="noopener">Building a ransomware decision tree before the call comes in</a><span class="article-summary">In this Help Net Security video, Kerri Shafer-Page, VP of Incident Response at Arctic Wolf, walks through the ransomware decision tree in this video. She covers four areas where decisions need settling in advance, starting with containment. Someone has to know the network well en…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-threat-intelligence">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(170,68,221,0.5);" onclick="toggleSection(this)">🕵️ THREAT INTELLIGENCE <span class="filter-count">8</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="cliff stoll’s def con talk" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.schneier.com/blog/archives/2026/09/cliff-stolls-def-con-talk.html" target="_blank" rel="noopener">Cliff Stoll’s DEF CON Talk</a><span class="article-summary">In August, Cliff Stoll gave a talk at DEF CON, remembering the wily hacker he stalked forty years ago. Great fun.</span></span><span class="headline-source">SCHNEIER.COM</span></div>
+<div class="headline" data-title="isc stormcast for friday, september 11th, 2026 https://isc.sans.edu/podcastdetail/10090, (fri, sep 11th)" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://isc.sans.edu/diary/rss/33330" target="_blank" rel="noopener">ISC Stormcast For Friday, September 11th, 2026 https://isc.sans.edu/podcastdetail/10090, (Fri, Sep 11th)</a><span class="article-summary">(c) SANS Internet Storm Center. https://isc.sans.edu Creative Commons Attribution-Noncommercial 3.0 United States License.</span></span><span class="headline-source">ISC.SANS.EDU</span></div>
+<div class="headline" data-title="android now allows easy transfer of passwords and passkeys between password managers" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyberinsider.com/android-now-allows-easy-transfer-of-passwords-and-passkeys-between-password-managers/" target="_blank" rel="noopener">Android now allows easy transfer of passwords and passkeys between password managers</a><span class="article-summary">Google has introduced a new Android feature that allows users to transfer passwords and passkeys directly between supported password managers without exporting sensitive credentials to files. The new transfer mechanism is designed to make switching password managers both easier a…</span></span><span class="headline-source">CYBERINSIDER.COM</span></div>
+<div class="headline" data-title="mullvad warns of new android vpn leak as grapheneos works on fix" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://cyberinsider.com/mullvad-warns-of-new-android-vpn-leak-as-grapheneos-works-on-fix/" target="_blank" rel="noopener">Mullvad warns of new Android VPN leak as GrapheneOS works on fix</a><span class="article-summary">Mullvad has warned about a newly documented Android flaw that allows ordinary apps to send traffic outside an active VPN tunnel, potentially exposing a user’s real IP address even when Android’s “Block connections without VPN” protection is enabled. The issue was discovered by so…</span></span><span class="headline-source">CYBERINSIDER.COM</span></div>
+<div class="headline" data-title="surfshark systems targeted by hackers" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/surfshark-systems-targeted-by-hackers/" target="_blank" rel="noopener">Surfshark Systems Targeted by Hackers</a><span class="article-summary">A misconfigured test server containing engineering material, including internal configurations, was accessed by threat actors. The post Surfshark Systems Targeted by Hackers appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="anthropic says russian hackers used claude ai to automate malware evasion" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.securityweek.com/anthropic-says-russian-hackers-used-claude-ai-to-automate-malware-evasion/" target="_blank" rel="noopener">Anthropic Says Russian Hackers Used Claude AI to Automate Malware Evasion</a><span class="article-summary">Anthropic reveals how criminal groups are increasingly targeting AI vendors' own infrastructure, including to steal a pre-release Claude model. The post Anthropic Says Russian Hackers Used Claude AI to Automate Malware Evasion appeared first on SecurityWeek .</span></span><span class="headline-source">SECURITYWEEK.COM</span></div>
+<div class="headline" data-title="kiteworks expands runtime data governance with bonfy.ai acquisition" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/09/11/kiteworks-bonfy-ai-acquisition/" target="_blank" rel="noopener">Kiteworks expands runtime data governance with Bonfy.AI acquisition</a><span class="article-summary">Kiteworks has acquired Bonfy.AI, extending runtime data governance across its control plane. The acquisition enables organizations to govern data exchanges as they happen, whether initiated by a person, machine, or autonomous agent. The acquisition addresses a structural gap in h…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+<div class="headline" data-title="getting a stranger’s phone kicked off the cellular network costs a few dollars" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.helpnetsecurity.com/2026/09/11/cellular-network-lost-phone-reporting/" target="_blank" rel="noopener">Getting a stranger’s phone kicked off the cellular network costs a few dollars</a><span class="article-summary">Researchers at Michigan State University and three partner schools bought a Samsung Galaxy Z Fold 7, copied the identification number printed on the sealed box, and reported the phone to its carrier as lost. Then they opened the box and set the phone up the way a launch-day buyer…</span></span><span class="headline-source">HELPNETSECURITY.COM</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-podcasts">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(85,170,204,0.5);" onclick="toggleSection(this)">🎙️ PODCASTS <span class="filter-count">1</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="snake oilers: watchtowr, xbow and coreview" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://risky.biz/SNAKEOILERS24PT1/" target="_blank" rel="noopener">Snake Oilers: watchTowr, XBOW and CoreView</a><span class="article-summary">In this edition of the Snake Oilers podcast three vendors stop by to pitch the audience on their products: watchTowr: We’re all familiar with watchTowr’s research, but what do they actually do? XBOW: The AI pentesting company pitches its approach CoreView: Your M365 tenant is pro…</span></span><span class="headline-source">RISKY.BIZ</span></div>
+  </div>
+</div>
+<div class="cat-section" id="cat-infosec-news">
+  <div class="section-title cat-section-header" style="border-left:4px solid rgba(122,68,34,0.4);" onclick="toggleSection(this)">📡 INFOSEC NEWS <span class="filter-count">2</span><span class="section-toggle">[−]</span></div>
+  <div class="cat-section-body headlines">
+<div class="headline" data-title="the us and mexico announce they’re teaming up against drones" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.wired.com/story/us-and-mexico-announce-teaming-up-against-drones/" target="_blank" rel="noopener">The US and Mexico Announce They’re Teaming Up Against Drones</a><span class="article-summary">The new joint operation uses laser-based technology capable of detecting, tracking, and disabling commercial drones linked to human and drug trafficking.</span></span><span class="headline-source">WIRED.COM</span></div>
+<div class="headline" data-title="most organizations skip permissions reviews before deploying ai tools" data-date="2026-09-11"><span class="headline-date">11 Sep</span><span class="headline-body"><a class="headline-title" href="https://www.infosecurity-magazine.com/news/organizations-skip-permissions-ai/" target="_blank" rel="noopener">Most Organizations Skip Permissions Reviews Before Deploying AI Tools</a><span class="article-summary">A new Syskit study has shown that only 43% of organizations with AI agents deployed in Microsoft 365 environments completed a permission review before doing so</span></span><span class="headline-source">INFOSECURITY-MAGAZINE.COM</span></div>
+  </div>
+</div>
+
+</main>
+<button class="jump-top-btn" id="jumpTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; TOP</button>
+<footer class="site-footer">
+  threat intelligence // 85 sources // generated 2026-09-11 09:03<span class="blink"></span>
+</footer>
+</body>
+</html>
