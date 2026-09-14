@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 14 Sep 2026 07:03:43 -0300</lastBuildDate>
+    <lastBuildDate>Mon, 14 Sep 2026 08:03:39 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>Google Doc Sidebar Sends Mac and Windows Users Down Different Paths to Malware</title>
@@ -14,6 +14,14 @@
     <pubDate>Tue, 15 Sep 2026 13:00:00 +0000</pubDate>
     <category>Cyber Threat Landscape</category>
     <description>A single X DM split into two malware chains: AMOS stealer on Mac, NetSupport Manager on Windows, see the Huntress SOC analyst breakdown.</description>
+  </item>
+  <item>
+    <title>CVE-2026-85706: Critical GitLab Path Traversal Exploited in the Wild</title>
+    <link>https://www.rapid7.com/blog/post/etr-cve-2026-85706-critical-gitlab-path-traversal-exploited-in-the-wild</link>
+    <guid isPermaLink="true">https://www.rapid7.com/blog/post/etr-cve-2026-85706-critical-gitlab-path-traversal-exploited-in-the-wild</guid>
+    <pubDate>Mon, 14 Sep 2026 10:02:57 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Overview On September 10, 2026, GitLab published a critical patch release for GitLab Community Edition (CE) and Enterprise Edition (EE). The release addresses CVE-2026-85706 , a critical path traversal vulnerability ( CWE-22 ) in the repository commits API with a CVSSv3.1 score o…</description>
   </item>
   <item>
     <title>ShinyHunters breaches Florida DMV, OpenAI agents flood code repository with malware, Airlines dodge paying for cyber delays</title>
@@ -136,6 +144,14 @@
     <description>The vulnerabilities can allow attackers to bypass authentication and elevate their privileges to administrator. The post Three JFrog Artifactory Flaws Exploited for Backdoor Deployment appeared first on SecurityWeek .</description>
   </item>
   <item>
+    <title>Dutch NCSC Warns: Critical Check Point VPN Flaws Put Networks at Risk</title>
+    <link>https://securityaffairs.com/199015/security/dutch-ncsc-warns-critical-check-point-vpn-flaws-put-networks-at-risk.html</link>
+    <guid isPermaLink="true">https://securityaffairs.com/199015/security/dutch-ncsc-warns-critical-check-point-vpn-flaws-put-networks-at-risk.html</guid>
+    <pubDate>Mon, 14 Sep 2026 09:43:29 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Two critical Check Point VPN flaws score 9.8 and could enable remote code execution. Patch now and restrict VPN access before exploitation begins. The Dutch NCSC warns that two critical vulnerabilities in Check Point VPN products, both rated CVSS score of 9.8, could soon be activ…</description>
+  </item>
+  <item>
     <title>Microsoft: September updates break audio on some Windows PCs</title>
     <link>https://www.bleepingcomputer.com/news/microsoft/microsoft-september-updates-break-audio-on-some-windows-pcs/</link>
     <guid isPermaLink="true">https://www.bleepingcomputer.com/news/microsoft/microsoft-september-updates-break-audio-on-some-windows-pcs/</guid>
@@ -190,6 +206,30 @@
     <pubDate>Mon, 14 Sep 2026 08:08:04 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>WhatsApp is building a per-chat setting that keeps a conversation on a single phone. The setting, called Restricted Chat, sits in the Android beta distributed through Google Play as version 2.26.36.5, and it stops the app from syncing a chosen conversation to linked devices. Swit…</description>
+  </item>
+  <item>
+    <title>Unmasking Cloud Identities: From Behavioral Clustering to Automated Detection</title>
+    <link>https://unit42.paloaltonetworks.com/behavioral-clustering-map-to-cloud-identities/</link>
+    <guid isPermaLink="true">https://unit42.paloaltonetworks.com/behavioral-clustering-map-to-cloud-identities/</guid>
+    <pubDate>Mon, 14 Sep 2026 10:00:01 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>We designed a behavioral clustering model to map cloud identity roles from audit logs, enabling continuous threat detection using standard SQL queries. The post Unmasking Cloud Identities: From Behavioral Clustering to Automated Detection appeared first on Unit 42 .</description>
+  </item>
+  <item>
+    <title>CISOs Race to Control AI Agents Without Destroying Their Value</title>
+    <link>https://www.securityweek.com/cisos-race-to-control-ai-agents-without-destroying-their-value/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/cisos-race-to-control-ai-agents-without-destroying-their-value/</guid>
+    <pubDate>Mon, 14 Sep 2026 10:30:00 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Security leaders are struggling to modernize cyber hygiene and prevent over-privileged agents from causing unintended harm. The post CISOs Race to Control AI Agents Without Destroying Their Value appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>Airrived adds Agentic Observability to track AI agent actions and risks</title>
+    <link>https://www.helpnetsecurity.com/2026/09/14/airrived-agentic-observability-expansion/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/14/airrived-agentic-observability-expansion/</guid>
+    <pubDate>Mon, 14 Sep 2026 10:51:32 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Airrived will reveal Agentic Observability, a major expansion of its enterprise Agentic OS built to give organizations end-to-end visibility into how AI agents behave, from the moment enterprise data enters the platform, through agent reasoning and execution, to the final busines…</description>
   </item>
   <item>
     <title>A week in security (September 7 – September 13)</title>
@@ -1566,46 +1606,6 @@
     <pubDate>Thu, 10 Sep 2026 17:46:33 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Overview An incorrect permissions assignment vulnerability in the amwrtdrv.sys kernel driver, included with AOMEI Backupper 8.4.0, allows an unprivileged local user to perform arbitrary writes to the physical disk. When Secure Boot is disabled, this can be leveraged to execute ar…</description>
-  </item>
-  <item>
-    <title>Artifactory Under Attack: In-the-Wild Exploitation of CVE-2026-42016, CVE-2026-42018 &amp; CVE-2026-82329</title>
-    <link>https://www.wiz.io/blog/artifactory-under-attack-in-the-wild-exploitation-of-cve-2026-42016-cve-2026-4201</link>
-    <guid isPermaLink="true">https://www.wiz.io/blog/artifactory-under-attack-in-the-wild-exploitation-of-cve-2026-42016-cve-2026-4201</guid>
-    <pubDate>Thu, 10 Sep 2026 19:04:00 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Wiz Research has identified active, in-the-wild exploitation of three critical and high-severity vulnerabilities impacting JFrog Artifactory (CVE-2026-42016, CVE-2026-42018 &amp; CVE-2026-82329). Attackers are chaining these vulnerabilities to bypass authentication and gain administr…</description>
-  </item>
-  <item>
-    <title>Love, lies, and a fake 49er.</title>
-    <link>https://thecyberwire.com/podcasts/hacking-humans/402/notes</link>
-    <guid isPermaLink="true">https://thecyberwire.com/podcasts/hacking-humans/402/notes</guid>
-    <pubDate>Thu, 10 Sep 2026 05:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>This week, hosts of N2K CyberWire ⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠Maria Varmazis⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠ and⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠ ⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠⁠Dave Bittn…</description>
-  </item>
-  <item>
-    <title>AI adoption brings new security headaches for already stretched CISOs</title>
-    <link>https://www.helpnetsecurity.com/2026/09/10/proofpoint-ciso-ai-security-risks-report/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/10/proofpoint-ciso-ai-security-risks-report/</guid>
-    <pubDate>Thu, 10 Sep 2026 04:30:14 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>CISOs are taking on AI governance without a matching increase in resources or expertise, adding to an already broad remit spanning data protection, identity, resilience and compliance, according to Proofpoint’s 2026 Voice of the CISO report. The Al mandate expands faster than res…</description>
-  </item>
-  <item>
-    <title>EU Cyber Resilience Act to Enforce New Reporting Requirements</title>
-    <link>https://www.darkreading.com/cybersecurity-operations/eu-cyber-resilience-act-reporting-requirements</link>
-    <guid isPermaLink="true">https://www.darkreading.com/cybersecurity-operations/eu-cyber-resilience-act-reporting-requirements</guid>
-    <pubDate>Thu, 10 Sep 2026 07:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Starting Friday, businesses operating in the EU will have just 24 hours to notify the government any time they discover serious product security incidents.</description>
-  </item>
-  <item>
-    <title>Four Nation-State Actors Used the Same Chrome Zero-Day Exploit Kit Within 12 Days</title>
-    <link>https://securityaffairs.com/198783/apt/four-nation-state-actors-used-the-same-chrome-zero-day-exploit-kit-within-12-days.html</link>
-    <guid isPermaLink="true">https://securityaffairs.com/198783/apt/four-nation-state-actors-used-the-same-chrome-zero-day-exploit-kit-within-12-days.html</guid>
-    <pubDate>Thu, 10 Sep 2026 05:35:04 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Four espionage groups used the BlueMoon Chrome+Windows exploit kit within 12 days. Researchers suspect AI development. Proofpoint published a detailed analysis of a Chrome-and-Windows exploit kit it tracks as BlueMoon that four nation-state actors adopted within roughly two weeks…</description>
   </item>
   </channel>
 </rss>
