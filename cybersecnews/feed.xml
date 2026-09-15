@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 15 Sep 2026 02:03:50 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 15 Sep 2026 03:03:44 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>A maximum severity GitLab flaw could turn your CI/CD server into an attacker’s treasure trove</title>
@@ -16,12 +16,28 @@
     <description>Yet another security vulnerability has been discovered in GitLab infrastructure, this one a perfect 10 in severity. CVE-2026-85706 , the second flaw GitLab has disclosed in just a month, is a maximum-severity vulnerability that allows attackers to read arbitrary files in a single…</description>
   </item>
   <item>
+    <title>Root RCE Zero-Day in Cisco Secure Email Gateway Under Active Exploitation</title>
+    <link>https://www.securityweek.com/root-rce-zero-day-in-cisco-secure-email-gateway-under-active-exploitation/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/root-rce-zero-day-in-cisco-secure-email-gateway-under-active-exploitation/</guid>
+    <pubDate>Tue, 15 Sep 2026 05:18:51 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>An unauthenticated attacker can exploit CVE-2026-76461 to execute arbitrary commands on the underlying OS with root privileges. The post Root RCE Zero-Day in Cisco Secure Email Gateway Under Active Exploitation appeared first on SecurityWeek .</description>
+  </item>
+  <item>
     <title>Homebrew 7.0.0 is out, here’s what changed for security</title>
     <link>https://www.helpnetsecurity.com/2026/09/15/homebrew-7-0-0-security-open-source/</link>
     <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/15/homebrew-7-0-0-security-open-source/</guid>
     <pubDate>Tue, 15 Sep 2026 00:47:06 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>Homebrew installs command-line software and desktop applications from the terminal on macOS and Linux, and Mac developers use it to set up their machines. On Sunday the project shipped version 7.0.0 and closed eight security advisories with it. The most serious of them let unsign…</description>
+  </item>
+  <item>
+    <title>Your employees are already using AI tools you never approved</title>
+    <link>https://www.helpnetsecurity.com/2026/09/15/onetrust-enterprise-ai-governance-trends-report/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/15/onetrust-enterprise-ai-governance-trends-report/</guid>
+    <pubDate>Tue, 15 Sep 2026 05:00:19 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Seventy-four percent of respondents report departmental or scaled AI adoption at their organizations, including within individual teams or departments, across business functions, and as part of processes and operations, according to the latest OneTrust 2026 AI-Ready Governance Re…</description>
   </item>
   <item>
     <title>Supreme Court denies Trump request to allow USPS mail ballot changes</title>
@@ -46,6 +62,14 @@
     <pubDate>Tue, 15 Sep 2026 04:30:42 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Auditors are using AI in their daily work, and their departments have mostly left them to figure it out alone. 93% of audit leaders and auditors report some level of AI use, while 15% say their department has deployed formal use cases and runs them routinely in audits, according …</description>
+  </item>
+  <item>
+    <title>Product showcase: mSecure makes one vault do more than remember passwords</title>
+    <link>https://www.helpnetsecurity.com/2026/09/15/product-showcase-msecure-password-manager/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/15/product-showcase-msecure-password-manager/</guid>
+    <pubDate>Tue, 15 Sep 2026 05:30:02 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>mSecure is a password manager and data vault for storing credentials and other sensitive information. It is available for iOS, Android, macOS, and Windows, with data synchronization across supported devices. The app uses AES-256 encryption and a zero-knowledge architecture. The c…</description>
   </item>
   <item>
     <title>Google Doc Sidebar Sends Mac and Windows Users Down Different Paths to Malware</title>
@@ -1580,30 +1604,6 @@
     <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-87574</link>
     <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-87574</guid>
     <pubDate>Mon, 14 Sep 2026 17:53:51 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2026) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium CVE-2026-87575: Incorrect authorization in Loader</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-87575</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-87575</guid>
-    <pubDate>Mon, 14 Sep 2026 17:53:52 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2026) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium CVE-2026-87577: Incorrect authorization in Isolated</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-87577</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-87577</guid>
-    <pubDate>Mon, 14 Sep 2026 17:53:53 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2026) for more information.</description>
-  </item>
-  <item>
-    <title>Chromium CVE-2026-87578: Use after free in Receiver</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-87578</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-87578</guid>
-    <pubDate>Mon, 14 Sep 2026 17:53:55 -0700</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>This CVE was assigned by Chrome. Microsoft Edge (Chromium-based) ingests Chromium, which addresses this vulnerability. Please see [Google Chrome Releases](https://chromereleases.googleblog.com/2026) for more information.</description>
   </item>
