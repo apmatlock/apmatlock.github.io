@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 17 Sep 2026 10:03:53 -0300</lastBuildDate>
+    <lastBuildDate>Thu, 17 Sep 2026 11:03:57 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>U.S. CISA adds Acronis Backup, Cisco ISE, and Google Pixel flaws to its Known Exploited Vulnerabilities catalog</title>
@@ -22,6 +22,14 @@
     <pubDate>Thu, 17 Sep 2026 10:24:08 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Two days after it warned customers about an actively exploited email gateway zero-day, Cisco confirmed one more flaw is being targeted: CVE-2026-76460, an authentication bypass bug in an API of Cisco Identity Services Engine (ISE). About CVE-2026-76460 Cisco ISE is an identity-ba…</description>
+  </item>
+  <item>
+    <title>Critical Unbound DNSSEC Validator Flaw Could Allow RCE via a Malicious DNS Zone</title>
+    <link>https://thehackernews.com/2026/09/critical-unbound-dnssec-validator-flaw.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/09/critical-unbound-dnssec-validator-flaw.html</guid>
+    <pubDate>Thu, 17 Sep 2026 18:00:00 +0530</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Every release of the Unbound DNS resolver before 1.26.1 has a critical heap overflow in its DNSSEC validator, maintainer NLnet Labs said in an&amp;nbsp;advisory&amp;nbsp;on Wednesday. An attacker who controls a malicious zone and queries a vulnerable resolver can trigger it, enabling rem…</description>
   </item>
   <item>
     <title>AI is adding to the review load on open-source projects, many of them thinly funded</title>
@@ -144,6 +152,46 @@
     <description>Six months ago, a hacktivist announced that they had accessed and acquired 8.3 million tips submitted on supposedly anonymous tip lines and platforms used by schools, communities, Crime Stoppers organizations, law enforcement, and the military. Six months later, individuals affec…</description>
   </item>
   <item>
+    <title>Can You Prove a New CVE Is Exploitable Before Attackers Do? Learn How in This Webinar</title>
+    <link>https://thehackernews.com/2026/09/can-you-prove-new-cve-is-exploitable.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/09/can-you-prove-new-cve-is-exploitable.html</guid>
+    <pubDate>Thu, 17 Sep 2026 17:20:00 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>A new CVE drops. Your scanner finds it. The severity score looks ugly. But that still does not answer the question that matters: Can it actually be exploited in your environment? Mythos-class AI is compressing the time between disclosure and working exploitation, while many secur…</description>
+  </item>
+  <item>
+    <title>CISO&#x27;s Expert Guide to Agentic Pentesting for Websites</title>
+    <link>https://thehackernews.com/2026/09/cisos-expert-guide-to-agentic.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/09/cisos-expert-guide-to-agentic.html</guid>
+    <pubDate>Thu, 17 Sep 2026 16:20:53 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Attackers now weaponize new vulnerabilities in about five days (Mandiant, part of Google Cloud). The median organization takes 43 days to patch one (Verizon DBIR 2026). A new free guide explains how autonomous AI agents are closing that gap, and what security leaders must demand …</description>
+  </item>
+  <item>
+    <title>Congress eyes new support for Cyber Command after recent suicide deaths</title>
+    <link>https://therecord.media/congress-eyes-support-for-cyber-command-suicide-deaths</link>
+    <guid isPermaLink="true">https://therecord.media/congress-eyes-support-for-cyber-command-suicide-deaths</guid>
+    <pubDate>Thu, 17 Sep 2026 13:32:00 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Congressional sources say they view the deaths of U.S. Cyber Command personnel as an inflection point, especially as the Pentagon’s appetite for cyber capabilities grows following successful contributions to high-profile missions against Iran and Venezuela.</description>
+  </item>
+  <item>
+    <title>Iranian strikes on AWS facilities left customer data beyond recovery in Bahrain, UAE</title>
+    <link>https://www.helpnetsecurity.com/2026/09/17/aws-middle-east-outage-permanent-data-loss-bahrain-uae/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/17/aws-middle-east-outage-permanent-data-loss-bahrain-uae/</guid>
+    <pubDate>Thu, 17 Sep 2026 13:12:47 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Six months after Iranian drone strikes tore through its Middle East infrastructure, Amazon Web Services (AWS) has acknowledged the permanent loss of customer data in Bahrain and the UAE. In two updates posted September 15, AWS said it can no longer recover customer data and resou…</description>
+  </item>
+  <item>
+    <title>Download: The IT leader’s guide to AI code sprawl</title>
+    <link>https://www.helpnetsecurity.com/2026/09/17/tines-ai-code-sprawl-guide/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/17/tines-ai-code-sprawl-guide/</guid>
+    <pubDate>Thu, 17 Sep 2026 13:00:28 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>AI hasn&amp;#8217;t just made building faster, it&amp;#8217;s made everyone a builder. Across every department, employees are shipping apps, agents and automations using AI tools, often without knowing they&amp;#8217;ve created something that needs governing at all. The result: AI code spraw…</description>
+  </item>
+  <item>
     <title>Microsoft shares workaround for Windows domain login issues</title>
     <link>https://www.bleepingcomputer.com/news/microsoft/microsoft-releases-workaround-for-windows-domain-login-authentication-issues/</link>
     <guid isPermaLink="true">https://www.bleepingcomputer.com/news/microsoft/microsoft-releases-workaround-for-windows-domain-login-authentication-issues/</guid>
@@ -182,6 +230,22 @@
     <pubDate>Thu, 17 Sep 2026 13:00:00 +0000</pubDate>
     <category>Security Advisories</category>
     <description>The company plans to expand into continuous cybersecurity, offering security testing across applications and infrastructure. The post Comp AI Raises $34 Million for AI-Native Compliance and Security appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>Self-modifying AI agents expose a blind spot in enterprise security</title>
+    <link>https://www.csoonline.com/article/4223334/self-modifying-ai-agents-expose-a-blind-spot-in-enterprise-security.html</link>
+    <guid isPermaLink="true">https://www.csoonline.com/article/4223334/self-modifying-ai-agents-expose-a-blind-spot-in-enterprise-security.html</guid>
+    <pubDate>Thu, 17 Sep 2026 13:32:52 +0000</pubDate>
+    <category>Security Advisories</category>
+    <description>As debate over AI safety intensifies, new research is drawing attention to a more immediate risk for enterprises: AI agents that can alter the models they rely on while carrying out routine tasks. Researchers at AI security firm Irregular asked a coding agent to solve a software …</description>
+  </item>
+  <item>
+    <title>CISA Urges Critical Infrastructure to Plant Decoys Inside Networks</title>
+    <link>https://www.infosecurity-magazine.com/news/cisa-critical-infrastructure-cyber/</link>
+    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/cisa-critical-infrastructure-cyber/</guid>
+    <pubDate>Thu, 17 Sep 2026 14:00:00 +0000</pubDate>
+    <category>Security Advisories</category>
+    <description>CISA released guidance on using cyber decoys to detect &amp; disrupt malicious activity inside networks</description>
   </item>
   <item>
     <title>AI Agent Carries Out Multi-Stage Data Theft Attack</title>
@@ -230,6 +294,22 @@
     <pubDate>Thu, 17 Sep 2026 12:29:26 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>Druva has announced new capabilities for Druva Identity Resilience alongside the launch of Ransomware Detection, a new feature fueled by a proprietary AI threat pipeline. Powered by Dru MetaGraph, the new offerings use behavioral intelligence and built-in validation to turn suspi…</description>
+  </item>
+  <item>
+    <title>Hackers claim breach of Russian election systems days before parliamentary vote</title>
+    <link>https://therecord.media/russia-election-hackers-breach</link>
+    <guid isPermaLink="true">https://therecord.media/russia-election-hackers-breach</guid>
+    <pubDate>Thu, 17 Sep 2026 13:45:00 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>An anonymous hacking group claimed to have broken into computer systems connected to Russia’s election infrastructure just days before the country begins voting for a new parliament.</description>
+  </item>
+  <item>
+    <title>Revolut Data Breach: 5 Months, 680 High-Profile Accounts, $3M Ransom</title>
+    <link>https://www.securityweek.com/revolut-data-breach-5-months-680-high-profile-accounts-3m-ransom/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/revolut-data-breach-5-months-680-high-profile-accounts-3m-ransom/</guid>
+    <pubDate>Thu, 17 Sep 2026 13:57:41 +0000</pubDate>
+    <category>Incident Reporting</category>
+    <description>Revolut allegedly fed customer information to hackers impersonating an Italian government agency for five months. The post Revolut Data Breach: 5 Months, 680 High-Profile Accounts, $3M Ransom appeared first on SecurityWeek .</description>
   </item>
   <item>
     <title>ISC Stormcast For Thursday, September 17th, 2026 https://isc.sans.edu/podcastdetail/10098, (Thu, Sep 17th)</title>
@@ -336,6 +416,30 @@
     <description>Google’s Agent Anomaly Detection is a reasoning-based oversight and audit layer for autonomous agents deployed on Agent Runtime in the Gemini Enterprise Agent Platform and built with the Agent Development Kit (ADK) for Python 1.2 or later. Google recommends ADK 2.1.0 or later. It…</description>
   </item>
   <item>
+    <title>China-Aligned FamousSparrow Deploys SparroWocky Backdoor Across Latin America</title>
+    <link>https://thehackernews.com/2026/09/china-aligned-famoussparrow-deploys.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/09/china-aligned-famoussparrow-deploys.html</guid>
+    <pubDate>Thu, 17 Sep 2026 15:35:45 +0530</pubDate>
+    <category>Threat Intelligence</category>
+    <description>The China-aligned state-sponsored threat actor known as FamousSparrow has been observed deploying a previously unreported backdoor called SparroWocky in attacks targeting multiple countries in Latin America since at least August 2025. &quot;SparroWocky is a modular, C++ backdoor,&quot; ESE…</description>
+  </item>
+  <item>
+    <title>Authorities seize popular, long-running DDoS-for-hire service domains</title>
+    <link>https://cyberscoop.com/fbi-seizes-nightmarestresser-ddos-for-hire-domains/</link>
+    <guid isPermaLink="true">https://cyberscoop.com/fbi-seizes-nightmarestresser-ddos-for-hire-domains/</guid>
+    <pubDate>Thu, 17 Sep 2026 13:37:23 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Cybercriminals used NightmareStresser to launch hundreds of thousands of DDoS attacks since at least 2022. Threat actors behind the operation claimed links to Russia. The post Authorities seize popular, long-running DDoS-for-hire service domains appeared first on CyberScoop .</description>
+  </item>
+  <item>
+    <title>A fake ChatGPT billing email is after your OpenAI password</title>
+    <link>https://www.helpnetsecurity.com/2026/09/17/chatgpt-phishing-email-openai-password/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/17/chatgpt-phishing-email-openai-password/</guid>
+    <pubDate>Thu, 17 Sep 2026 13:01:40 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>A fake ChatGPT billing email is steering users to a copy of the OpenAI login page that keeps whatever username and password they type. Josh Varden of Cofense&amp;#8217;s Phishing Defense Center traced the email&amp;#8217;s payment button through a Google redirect to the attacker&amp;#8217;s …</description>
+  </item>
+  <item>
     <title>New Chinese-Made ‘RatHat’ Android Malware Leverages AI to Steal Financial Data</title>
     <link>https://www.infosecurity-magazine.com/news/rathat-android-malware-ai-steal/</link>
     <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/rathat-android-malware-ai-steal/</guid>
@@ -398,6 +502,14 @@
     <pubDate>Thu, 17 Sep 2026 11:35:13 +0000</pubDate>
     <category>Infosec News</category>
     <description>The DOJ seized domains behind NightmareStresser, a DDoS-for-hire service tied to hundreds of thousands of attacks since 2022, as part of Operation PowerOFF. Renting a DDoS attack used to be as easy as renting a movie. Pick a target, pay a few dollars, watch the site go dark. The …</description>
+  </item>
+  <item>
+    <title>Windows 11 24H2 Home and Pro reach end of support in October</title>
+    <link>https://www.bleepingcomputer.com/news/microsoft/windows-11-24h2-home-and-pro-reach-end-of-support-in-october/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/microsoft/windows-11-24h2-home-and-pro-reach-end-of-support-in-october/</guid>
+    <pubDate>Thu, 17 Sep 2026 09:09:09 -0400</pubDate>
+    <category>Infosec News</category>
+    <description>Microsoft reminded customers this week that devices running Windows 11 24H2 Home and Pro editions will stop receiving updates next month. [...]</description>
   </item>
   <item>
     <title>CISA Adds One Known Exploited Vulnerability to Catalog</title>
@@ -1491,118 +1603,6 @@
     <title>CVE-2026-68841 Windows NTFS Elevation of Privilege Vulnerability</title>
     <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68841</link>
     <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68841</guid>
-    <pubDate>Tue, 15 Sep 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Updated an acknowledgement. This is an informational change only.</description>
-  </item>
-  <item>
-    <title>CVE-2026-68847 Connected User Experiences and Telemetry Elevation of Privilege Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68847</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-68847</guid>
-    <pubDate>Tue, 15 Sep 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Updated an acknowledgement. This is an informational change only.</description>
-  </item>
-  <item>
-    <title>CVE-2026-69406 Windows Kernel Information Disclosure Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-69406</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-69406</guid>
-    <pubDate>Tue, 15 Sep 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Updated an acknowledgement. This is an informational change only.</description>
-  </item>
-  <item>
-    <title>CVE-2026-69608 Microsoft Windows Search Component Elevation of Privilege Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-69608</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-69608</guid>
-    <pubDate>Tue, 15 Sep 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Updated an acknowledgement. This is an informational change only.</description>
-  </item>
-  <item>
-    <title>CVE-2026-69605 Microsoft Install Service Elevation of Privilege Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-69605</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-69605</guid>
-    <pubDate>Tue, 15 Sep 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Updated an acknowledgement. This is an informational change only.</description>
-  </item>
-  <item>
-    <title>CVE-2026-78517 Microsoft Office Word Remote Code Execution Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-78517</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-78517</guid>
-    <pubDate>Tue, 15 Sep 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Updated an acknowledgement. This is an informational change only.</description>
-  </item>
-  <item>
-    <title>CVE-2026-80075 Windows Work Folders Elevation of Privilege Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-80075</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-80075</guid>
-    <pubDate>Tue, 15 Sep 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Updated an acknowledgement. This is an informational change only.</description>
-  </item>
-  <item>
-    <title>CVE-2026-80097 Microsoft Authenticator Elevation of Privilege Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-80097</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-80097</guid>
-    <pubDate>Tue, 15 Sep 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Corrected fix build number. Informational change only.</description>
-  </item>
-  <item>
-    <title>CVE-2026-81355 Virtual Hard Disk (VHD) Miniport Driver Remote Code Execution Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-81355</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-81355</guid>
-    <pubDate>Tue, 15 Sep 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Updated an acknowledgement. This is an informational change only.</description>
-  </item>
-  <item>
-    <title>CVE-2026-69486 Microsoft Edge (Chromium-based) Remote Code Execution Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-69486</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-69486</guid>
-    <pubDate>Tue, 15 Sep 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Heap-based buffer overflow in Microsoft Edge (Chromium-based) allows an unauthorized attacker to execute code over a network.</description>
-  </item>
-  <item>
-    <title>CVE-2026-69286 Windows USB Audio Class Driver Information Disclosure Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-69286</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-69286</guid>
-    <pubDate>Tue, 15 Sep 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Updated an acknowledgement. This is an informational change only.</description>
-  </item>
-  <item>
-    <title>CVE-2026-69314 Windows Device Association Broker Service Elevation of Privilege Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-69314</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-69314</guid>
-    <pubDate>Tue, 15 Sep 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Updated an acknowledgement. This is an informational change only.</description>
-  </item>
-  <item>
-    <title>CVE-2026-69321 Windows Power Dependency Coordinator Tampering Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-69321</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-69321</guid>
-    <pubDate>Tue, 15 Sep 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Updated an acknowledgement. This is an informational change only.</description>
-  </item>
-  <item>
-    <title>CVE-2026-69416 Windows DHCP Server Denial of Service Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-69416</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-69416</guid>
-    <pubDate>Tue, 15 Sep 2026 07:00:00 -0700</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Updated an acknowledgement. This is an informational change only.</description>
-  </item>
-  <item>
-    <title>CVE-2026-69619 Windows exFAT File System Elevation of Privilege Vulnerability</title>
-    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-69619</link>
-    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-69619</guid>
     <pubDate>Tue, 15 Sep 2026 07:00:00 -0700</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Updated an acknowledgement. This is an informational change only.</description>
