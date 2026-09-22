@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 22 Sep 2026 08:04:06 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 22 Sep 2026 09:03:50 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>U.S. CISA adds Zyxel flaw to its Known Exploited Vulnerabilities catalog</title>
@@ -38,6 +38,22 @@
     <pubDate>Tue, 22 Sep 2026 10:42:54 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>A Chinese-speaking threat actor has exploited a vulnerability (CVE-2026-7273) in unpatched ZyXEL GS1900 Smart Managed Switches and has exfiltrated sensitive data from 996 devices across 48 countries, GreyNoise reported on Monday. The affected switches are predominantly located in…</description>
+  </item>
+  <item>
+    <title>New Linux Kernel Flaw Gives ARM64 KVM Guests Read-Write Access to Host Memory</title>
+    <link>https://thehackernews.com/2026/09/new-linux-kernel-flaw-gives-arm64-kvm.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/09/new-linux-kernel-flaw-gives-arm64-kvm.html</guid>
+    <pubDate>Tue, 22 Sep 2026 17:08:40 +0530</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>A new flaw in the Linux kernel&#x27;s KVM virtualization code for ARM64 processors can leave a freed piece of host memory exposed to a guest virtual machine on hosts with nested virtualization enabled. The bug, tracked as&amp;nbsp;CVE-2026-89775, allows a guest to read and write host kern…</description>
+  </item>
+  <item>
+    <title>SharePoint Flaw Initially Listed as Spoofing by Microsoft Enables Authenticated RCE</title>
+    <link>https://thehackernews.com/2026/09/sharepoint-flaw-initially-listed-as.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/09/sharepoint-flaw-initially-listed-as.html</guid>
+    <pubDate>Tue, 22 Sep 2026 16:47:41 +0530</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>A SharePoint Server vulnerability that Microsoft initially classified as a spoofing flaw with a CVSS score of 6.5 actually enables authenticated remote code execution, according to&amp;nbsp;full technical details&amp;nbsp;published today by Viettel Cyber Security researcher Dinh Ho Anh K…</description>
   </item>
   <item>
     <title>Gemini broke into 3 companies, but Google kept it quiet because ‘no damage was done’</title>
@@ -142,6 +158,46 @@
     <pubDate>Tue, 22 Sep 2026 10:13:28 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>A Veeam Agent flaw lets local users gain SYSTEM privileges. A public PoC is available, raising the risk of exploitation on shared Windows systems. If you&amp;#8217;re running Veeam Agent on a Windows endpoint with more than one local user, now&amp;#8217;s the time to check the version, n…</description>
+  </item>
+  <item>
+    <title>DORA Year Two: Can Your SOC Actually See the Attack?</title>
+    <link>https://thehackernews.com/2026/09/dora-year-two-can-your-soc-actually-see.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/09/dora-year-two-can-your-soc-actually-see.html</guid>
+    <pubDate>Tue, 22 Sep 2026 17:15:00 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>When the Digital Operational Resilience Act (DORA) became enforceable across the European Union in January 2025, it triggered an administrative sprint. Financial entities spent the first year establishing risk governance, assessing third-party service providers, updating contract…</description>
+  </item>
+  <item>
+    <title>Meta’s Muse AI assistant has a zero-day that can turn it into a Mac backdoor</title>
+    <link>https://www.malwarebytes.com/blog/bugs/2026/09/metas-muse-ai-assistant-has-a-zero-day-that-can-turn-it-into-a-mac-backdoor</link>
+    <guid isPermaLink="true">https://www.malwarebytes.com/blog/bugs/2026/09/metas-muse-ai-assistant-has-a-zero-day-that-can-turn-it-into-a-mac-backdoor</guid>
+    <pubDate>Tue, 22 Sep 2026 10:53:06 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>A simple terminal command can hijack Muse and use its extensive permissions to spy on Mac users and control their connected accounts.</description>
+  </item>
+  <item>
+    <title>ZTE SmartLife flaws allows account takeover without reset code</title>
+    <link>https://cyberinsider.com/zte-smartlife-flaws-allows-account-takeover-without-reset-code/</link>
+    <guid isPermaLink="true">https://cyberinsider.com/zte-smartlife-flaws-allows-account-takeover-without-reset-code/</guid>
+    <pubDate>Tue, 22 Sep 2026 11:29:21 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Security researcher Mina Nageh Salama disclosed a chain of vulnerabilities in ZTE’s SmartLife platform that lets attackers take over user accounts by resetting passwords without a verification code. ZTE confirmed four flaws, issued CVE identifiers, and said it fully patched the v…</description>
+  </item>
+  <item>
+    <title>Recent ZyXEL Switch Vulnerability Exploited by Chinese Hackers</title>
+    <link>https://www.securityweek.com/recent-zyxel-switch-vulnerability-exploited-by-chinese-hackers/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/recent-zyxel-switch-vulnerability-exploited-by-chinese-hackers/</guid>
+    <pubDate>Tue, 22 Sep 2026 11:55:20 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>A Chinese threat actor has exploited the bug to exfiltrate sensitive information from nearly 1,000 ZyXEL switches. The post Recent ZyXEL Switch Vulnerability Exploited by Chinese Hackers appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>The next intellectual property thief may sound like your CEO</title>
+    <link>https://www.helpnetsecurity.com/2026/09/22/csc-online-intellectual-property-risk-report/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/22/csc-online-intellectual-property-risk-report/</guid>
+    <pubDate>Tue, 22 Sep 2026 12:00:05 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Impersonation, phishing and domain-name abuse are the most concerning types of online intellectual property infringement, according to CSC’s The State of Online IP Risk 2026 report. Internet and branded content, online marketplaces and paid search were the channels most frequentl…</description>
   </item>
   <item>
     <title>Passwork NIS2 efficiency guide: Save your team hours before the 2026 audit</title>
@@ -272,12 +328,44 @@
     <description>SpyCloud’s study found 1,787 of the approximately 10,000 U.S. organizations had it, including one infected device that saved logins for 167 utility metering tenants. The post Another worry for water systems: infostealer exposure appeared first on CyberScoop .</description>
   </item>
   <item>
+    <title>GPT-6 Astra Breaks an Old Enigma Message</title>
+    <link>https://www.schneier.com/blog/archives/2026/09/gpt-6-astra-breaks-an-old-enigma-message.html</link>
+    <guid isPermaLink="true">https://www.schneier.com/blog/archives/2026/09/gpt-6-astra-breaks-an-old-enigma-message.html</guid>
+    <pubDate>Tue, 22 Sep 2026 11:02:45 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>This is pretty amazing: However, the most astonishing thing about this break is that the GPT­6 Astra did it entirely on its own. Carter Leffer only directed GPT­6 Astra to see if it could break any of the unbroken Enigma messages published on the Crypto Cellar Research web page. …</description>
+  </item>
+  <item>
+    <title>Malicious B-tree NPM Package Accumulates Millions of Downloads</title>
+    <link>https://www.securityweek.com/malicious-b-tree-npm-package-accumulates-millions-of-downloads/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/malicious-b-tree-npm-package-accumulates-millions-of-downloads/</guid>
+    <pubDate>Tue, 22 Sep 2026 11:33:59 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Posing as the legitimate sorted-btree package, indexed-btree hides a malware trigger in its prototype method. The post Malicious B-tree NPM Package Accumulates Millions of Downloads appeared first on SecurityWeek .</description>
+  </item>
+  <item>
     <title>A New Tool Found Malware That’s Guided by an AI Hive Mind—No Humans in Sight</title>
     <link>https://www.wired.com/story/a-tool-for-tracking-ai-integrated-malware-uncovered-an-autonomous-command-system/</link>
     <guid isPermaLink="true">https://www.wired.com/story/a-tool-for-tracking-ai-integrated-malware-uncovered-an-autonomous-command-system/</guid>
     <pubDate>Tue, 22 Sep 2026 10:00:00 +0000</pubDate>
     <category>Cyber Threat Landscape</category>
     <description>Cisco Talos researchers created a new framework for identifying malware and hacking tools that rely on AI chatbots—and quickly discovered something unusual.</description>
+  </item>
+  <item>
+    <title>The Closed Quorum: Inside the first reported autonomous AI C2 implant</title>
+    <link>https://blog.talosintelligence.com/the-closed-quorum-inside-the-first-reported-autonomous-ai-c2-implant/</link>
+    <guid isPermaLink="true">https://blog.talosintelligence.com/the-closed-quorum-inside-the-first-reported-autonomous-ai-c2-implant/</guid>
+    <pubDate>Tue, 22 Sep 2026 10:00:58 +0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>CLOSEDQUORUM, a malware binary discovered through Cisco Talos’ CAIRN project, exhibits fully autonomous command and control (C2). It represents a shift in effort displacement for attackers, in which expanding portions of the attack chain can be executed without operator involveme…</description>
+  </item>
+  <item>
+    <title>Introducing CAIRN: Frontier tracking for AI-integrated malware</title>
+    <link>https://blog.talosintelligence.com/introducing-cairn-frontier-tracking-for-ai-integrated-malware/</link>
+    <guid isPermaLink="true">https://blog.talosintelligence.com/introducing-cairn-frontier-tracking-for-ai-integrated-malware/</guid>
+    <pubDate>Tue, 22 Sep 2026 10:00:25 +0000</pubDate>
+    <category>Cyber Threat Landscape</category>
+    <description>Talos is releasing CAIRN, a research toolkit for hunting, classifying, and tracking emerging AI-integrated malware.</description>
   </item>
   <item>
     <title>Between Two Nerds: Real-time cyber defence</title>
@@ -302,6 +390,22 @@
     <pubDate>Tue, 22 Sep 2026 10:30:00 +0000</pubDate>
     <category>Infosec News</category>
     <description>Akamai report warns of increase in bot traffic, API threats, chatbot leaks and other AI-related threats</description>
+  </item>
+  <item>
+    <title>Network Segmentation Failures Are Expanding the Corporate Attack Surface</title>
+    <link>https://www.infosecurity-magazine.com/news/segmentation-failures-expanding/</link>
+    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/segmentation-failures-expanding/</guid>
+    <pubDate>Tue, 22 Sep 2026 12:00:00 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>Forescout warns that incomplete network segmentation is widening the potential blast radius of attacks</description>
+  </item>
+  <item>
+    <title>More Than a Third of Industrial Orgs See Cybersecurity Risk as a Top Obstacle to Growth, Study Finds</title>
+    <link>https://www.darkreading.com/cyber-risk/third-industrial-orgs-see-cybersecurity-risk-top-obstacle</link>
+    <guid isPermaLink="true">https://www.darkreading.com/cyber-risk/third-industrial-orgs-see-cybersecurity-risk-top-obstacle</guid>
+    <pubDate>Tue, 22 Sep 2026 12:00:00 +0000</pubDate>
+    <category>Infosec News</category>
+    <description>Industrial companies are increasing cybersecurity investment as connected operations, AI adoption, and IT/OT convergence expand operational risk.</description>
   </item>
   <item>
     <title>CVE-2026-68825 Windows Bind Filter Driver Elevation of Privilege Vulnerability</title>
@@ -1502,110 +1606,6 @@
     <pubDate>Fri, 18 Sep 2026 12:00:00 +0000</pubDate>
     <category>CISA KEV</category>
     <description>CISA has added two new vulnerabilities to its Known Exploited Vulnerabilities (KEV) Catalog , based on evidence of active exploitation. CVE-2025-39964 Linux Kernel Race Condition Vulnerability CVE-2026-53266 Linux Kernel Out-of-Bounds Write Vulnerability These types of vulnerabil…</description>
-  </item>
-  <item>
-    <title>Critical Orkes Conductor Vulnerability Exploited in Attacks</title>
-    <link>https://www.securityweek.com/critical-orkes-conductor-vulnerability-exploited-in-attacks/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/critical-orkes-conductor-vulnerability-exploited-in-attacks/</guid>
-    <pubDate>Fri, 18 Sep 2026 08:42:18 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>CVE-2026-58138 is an unauthenticated remote code execution vulnerability that attackers can exploit via inline workflow definitions. The post Critical Orkes Conductor Vulnerability Exploited in Attacks appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Check Point Fixes Critical CVE-2026-91843 Allowing Root Code Execution</title>
-    <link>https://securityaffairs.com/199279/security/check-point-fixes-critical-cve-2026-91843-allowing-root-code-execution.html</link>
-    <guid isPermaLink="true">https://securityaffairs.com/199279/security/check-point-fixes-critical-cve-2026-91843-allowing-root-code-execution.html</guid>
-    <pubDate>Fri, 18 Sep 2026 07:52:41 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Check Point fixed CVE-2026-91843, a critical flaw that could let attackers run code as root on Security Management and Log Servers with no login needed. Check Point addressed CVE-2026-91843 (CVSS score of 9.8), a critical vulnerability in its Security Management and Log Servers. …</description>
-  </item>
-  <item>
-    <title>Microsoft Patches CVSS 10.0 Azure AI Foundry Flaw Enabling Unauthorized Privilege Escalation</title>
-    <link>https://thehackernews.com/2026/09/microsoft-patches-cvss-100-azure-ai.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/09/microsoft-patches-cvss-100-azure-ai.html</guid>
-    <pubDate>Fri, 18 Sep 2026 18:17:04 +0530</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>Microsoft has released fixes for a maximum-severity security flaw in Azure AI Foundry that could be exploited to achieve privilege escalation. No customer action is required. The vulnerability, tracked as CVE-2026-85889, carries a CVSS score of 10.0. &quot;Missing authentication for c…</description>
-  </item>
-  <item>
-    <title>CISA is ending its monthly vulnerability bulletin</title>
-    <link>https://www.csoonline.com/article/4223933/cisa-is-ending-its-monthly-vulnerability-bulletin.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4223933/cisa-is-ending-its-monthly-vulnerability-bulletin.html</guid>
-    <pubDate>Fri, 18 Sep 2026 16:52:04 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>The rise in AI-generated security threats may just have generated one casualty: the death of the weekly bulletin of security threats from the US Cybersecurity Infrastructure and Security Agency (CISA). The agency will discontinue its weekly bulletin of known vulnerabilities from …</description>
-  </item>
-  <item>
-    <title>Cisco Zero-Day Highlights API Endpoint Authentication Issues</title>
-    <link>https://www.darkreading.com/vulnerabilities-threats/cisco-zero-day-api-endpoint-authentication-issues</link>
-    <guid isPermaLink="true">https://www.darkreading.com/vulnerabilities-threats/cisco-zero-day-api-endpoint-authentication-issues</guid>
-    <pubDate>Fri, 18 Sep 2026 19:26:47 +0000</pubDate>
-    <category>Common Vulnerabilities and Exposures</category>
-    <description>The authentication bypass flaw CVE-2026-76460 impacts Cisco&#x27;s Identity Services Engine (ISE) and received a maximum 10 out of 10 CVSS score.</description>
-  </item>
-  <item>
-    <title>OpenAI models steal credentials and lie, Microsoft writes AI rules it can&#x27;t enforce, Congress punts AI safety to 2027</title>
-    <link>https://cybersecuritytoday.libsyn.com/openai-models-steal-credentials-and-lie-microsoft-writes-ai-rules-it-cant-enforce-congress-punts-ai-safety-to-2027</link>
-    <guid isPermaLink="true">https://cybersecuritytoday.libsyn.com/openai-models-steal-credentials-and-lie-microsoft-writes-ai-rules-it-cant-enforce-congress-punts-ai-safety-to-2027</guid>
-    <pubDate>Fri, 18 Sep 2026 00:30:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>OpenAI Models Self-Jailbreak &amp; Leak Data, Microsoft&#x27;s &quot;Humanist AI&quot; Promise, Windows Patch Tuesday Fallout, and AI Laws Delayed Host David Shipley covers reports that OpenAI disclosed six recent incidents of internal models exhibiting concerning behavior—writing jailbreak instruc…</description>
-  </item>
-  <item>
-    <title>98% of fraudulent hires have company credentials by the time they’re caught</title>
-    <link>https://www.helpnetsecurity.com/2026/09/18/hypr-hiring-fraud-detection-report/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/18/hypr-hiring-fraud-detection-report/</guid>
-    <pubDate>Fri, 18 Sep 2026 05:00:51 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>A 90-day period between hiring and onboarding is creating a blind spot in enterprise identity security, according to HYPR’s State of HR Identity Fraud Detection report. “Adversaries no longer need to breach a network when they can pass a remote interview and receive authentic cre…</description>
-  </item>
-  <item>
-    <title>Check Point, Kaspersky, Tanium Patch Product Vulnerabilities</title>
-    <link>https://www.securityweek.com/check-point-kaspersky-tanium-patch-product-vulnerabilities/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/check-point-kaspersky-tanium-patch-product-vulnerabilities/</guid>
-    <pubDate>Fri, 18 Sep 2026 07:14:04 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Check Point Security Management and Log Servers are affected by a critical vulnerability that can allow remote code execution with root privileges. The post Check Point, Kaspersky, Tanium Patch Product Vulnerabilities appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Strong fundamentals make next-gen security possible</title>
-    <link>https://www.csoonline.com/article/4223032/strong-fundamentals-make-next-gen-security-possible.html</link>
-    <guid isPermaLink="true">https://www.csoonline.com/article/4223032/strong-fundamentals-make-next-gen-security-possible.html</guid>
-    <pubDate>Fri, 18 Sep 2026 08:25:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Risk management has always been a difficult job, but the current threat landscape has taken the challenge to a new level. I’ve spent years leading cybersecurity efforts at large enterprises, including Hyatt and United Airlines, and in that time I’ve seen cybercriminals grow incre…</description>
-  </item>
-  <item>
-    <title>Fake parcel delivery messages steal your card and bank details</title>
-    <link>https://www.malwarebytes.com/blog/scams/2026/09/fake-parcel-delivery-messages-steal-your-card-and-bank-details</link>
-    <guid isPermaLink="true">https://www.malwarebytes.com/blog/scams/2026/09/fake-parcel-delivery-messages-steal-your-card-and-bank-details</guid>
-    <pubDate>Fri, 18 Sep 2026 07:44:22 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Parcel delivery phishing messages impersonate familiar couriers and use small fees or promised refunds to steal personal and financial information.</description>
-  </item>
-  <item>
-    <title>Arcjet brings security controls and audit trails to AI agents</title>
-    <link>https://www.helpnetsecurity.com/2026/09/18/arcjet-agent-runtime-security/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/18/arcjet-agent-runtime-security/</guid>
-    <pubDate>Fri, 18 Sep 2026 08:55:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Arcjet has launched agent runtime security, a new product that helps engineering teams secure the AI agents they are building while giving security teams the governance and compliance evidence they need. Arcjet brings observability, enforcement, and audit capabilities across agen…</description>
-  </item>
-  <item>
-    <title>Zero-click RCE vulnerability hit four major AI coding agents, two remain unpatched</title>
-    <link>https://www.helpnetsecurity.com/2026/09/18/plugin4shell-ai-coding-agents-vulnerability/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/18/plugin4shell-ai-coding-agents-vulnerability/</guid>
-    <pubDate>Fri, 18 Sep 2026 08:49:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Four major AI coding agents, Claude Code, Codex, GitHub Copilot and Gemini CLI, all share the same zero-click RCE vulnerability, one that could give an attacker the same reach into a company&amp;#8217;s systems and data as the employee running the agent, according to AIR. &amp;#8220;It i…</description>
-  </item>
-  <item>
-    <title>CISA Upgrades Vulnerability Reporting Platform with More Automation</title>
-    <link>https://www.infosecurity-magazine.com/news/cisa-upgrades-vulnerability/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/cisa-upgrades-vulnerability/</guid>
-    <pubDate>Fri, 18 Sep 2026 10:00:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The US cybersecurity agency is moving to a new vulnerability coordination platform called VINCE-NT</description>
   </item>
   </channel>
 </rss>
