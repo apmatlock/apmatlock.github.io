@@ -5,8 +5,16 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 23 Sep 2026 04:03:11 -0300</lastBuildDate>
+    <lastBuildDate>Wed, 23 Sep 2026 05:03:38 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Chromium CVE-2026-87536: Use after free in V8</title>
+    <link>https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-87536</link>
+    <guid isPermaLink="true">https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-87536</guid>
+    <pubDate>Wed, 23 Sep 2026 01:42:58 -0700</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Information published.</description>
+  </item>
   <item>
     <title>AI malware just removed the human from the attack loop</title>
     <link>https://www.csoonline.com/article/4225264/ai-malware-just-removed-the-human-from-the-attack-loop.html</link>
@@ -38,6 +46,30 @@
     <pubDate>Wed, 23 Sep 2026 06:14:03 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>The critical-severity flaw could allow unauthenticated attackers to upload and execute arbitrary scripts. The post Check Point Patches Exploited Management Server Zero-Day appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>Critical Next.js ImageResponse Flaw Can Lead to Server Code Execution via Crafted SVG Input</title>
+    <link>https://thehackernews.com/2026/09/critical-nextjs-imageresponse-flaw-can.html</link>
+    <guid isPermaLink="true">https://thehackernews.com/2026/09/critical-nextjs-imageresponse-flaw-can.html</guid>
+    <pubDate>Wed, 23 Sep 2026 12:34:40 +0530</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>A new security vulnerability in Next.js could allow attackers to run code on a server via&amp;nbsp;ImageResponse, the feature that generates Open Graph and other social preview images, Vercel said. The risk applies when an app puts values an attacker controls, such as text read from …</description>
+  </item>
+  <item>
+    <title>F5 patches BIG-IP APM zero-day flaw exploited in RCE attacks</title>
+    <link>https://www.bleepingcomputer.com/news/security/f5-warns-of-big-ip-apm-remote-code-execution-zero-day-exploited-in-attacks/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/f5-warns-of-big-ip-apm-remote-code-execution-zero-day-exploited-in-attacks/</guid>
+    <pubDate>Wed, 23 Sep 2026 03:17:23 -0400</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>F5 has released security updates to address a critical BIG-IP APM zero-day vulnerability being exploited in remote code execution attacks. [...]</description>
+  </item>
+  <item>
+    <title>Critical F5 BIG-IP Vulnerability Exploited as Zero-Day</title>
+    <link>https://www.securityweek.com/critical-f5-big-ip-vulnerability-exploited-as-zero-day/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/critical-f5-big-ip-vulnerability-exploited-as-zero-day/</guid>
+    <pubDate>Wed, 23 Sep 2026 07:34:18 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>Unauthenticated attackers could send malicious traffic to BIG-IP to achieve remote code execution. The post Critical F5 BIG-IP Vulnerability Exploited as Zero-Day appeared first on SecurityWeek .</description>
   </item>
   <item>
     <title>Amazon Slams the door on Meta&#x27;s Muse AI Agent</title>
@@ -102,6 +134,14 @@
     <pubDate>Wed, 23 Sep 2026 05:00:48 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Scamwise is a free scam-checking service from Savi that examines suspicious messages, emails, websites, phone numbers, images, and real-world situations for signs of fraud. The service works in any web browser on desktop, mobile, or tablet, with no account required. Scamwise is i…</description>
+  </item>
+  <item>
+    <title>ShinyHunters Claims FBI Hack, Demands Retraction of Threat Report</title>
+    <link>https://www.securityweek.com/shinyhunters-claims-fbi-hack-demands-retraction-of-threat-report/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/shinyhunters-claims-fbi-hack-demands-retraction-of-threat-report/</guid>
+    <pubDate>Wed, 23 Sep 2026 07:13:49 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>The cybercrime group is unhappy with its description in an FBI report and threatens to leak stolen information. The post ShinyHunters Claims FBI Hack, Demands Retraction of Threat Report appeared first on SecurityWeek .</description>
   </item>
   <item>
     <title>Weekly Threat Bulletin – September 23rd, 2026</title>
@@ -1566,46 +1606,6 @@
     <pubDate>Mon, 21 Sep 2026 09:00:00 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>Every identity-compromise runbook I have written, read or inherited has the same step near the top: revoke the tokens. Reset the password, kill the sessions, invalidate the refresh tokens, then go hunting. It is the right instinct. Against adversary-in-the-middle phishing, where …</description>
-  </item>
-  <item>
-    <title>Group Policy hijacked: PAYLOAD ransomware weaponizes Active Directory GPO</title>
-    <link>https://securelist.com/tr/payload-ransomware-via-group-policy/121335/</link>
-    <guid isPermaLink="true">https://securelist.com/tr/payload-ransomware-via-group-policy/121335/</guid>
-    <pubDate>Mon, 21 Sep 2026 10:00:40 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>Kaspersky GERT experts dive into the technical incident analysis of PAYLOAD ransomware: an encryptionless, binary-less operation that abused Active Directory mechanisms for managing Group Policy Objects.</description>
-  </item>
-  <item>
-    <title>Experts Alarmed Over Gyazo’s Breach of 490 Million Metadata Records</title>
-    <link>https://www.infosecurity-magazine.com/news/experts-gyazos-breach-490-million/</link>
-    <guid isPermaLink="true">https://www.infosecurity-magazine.com/news/experts-gyazos-breach-490-million/</guid>
-    <pubDate>Mon, 21 Sep 2026 09:30:00 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>A breach at image-sharing service Gyazo on September 11 affected over 23 million customers</description>
-  </item>
-  <item>
-    <title>ShinyHunters hacks rival extortion gang and takes over its dark web site</title>
-    <link>https://www.malwarebytes.com/blog/news/2026/09/shinyhunters-hacks-rival-extortion-gang-and-takes-over-its-dark-web-site</link>
-    <guid isPermaLink="true">https://www.malwarebytes.com/blog/news/2026/09/shinyhunters-hacks-rival-extortion-gang-and-takes-over-its-dark-web-site</guid>
-    <pubDate>Mon, 21 Sep 2026 10:17:09 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>Hackers hacked the hackers as a feud between two cybercrime groups escalated, leaving ShinyHunters with the upper hand over rival Clop.</description>
-  </item>
-  <item>
-    <title>US and China Discuss Alerting Each Other to AI National Security Threats</title>
-    <link>https://www.wired.com/story/us-and-china-discuss-alerting-each-other-to-ai-national-security-threats/</link>
-    <guid isPermaLink="true">https://www.wired.com/story/us-and-china-discuss-alerting-each-other-to-ai-national-security-threats/</guid>
-    <pubDate>Mon, 21 Sep 2026 10:34:43 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>Officials discussed setting up a mechanism for the two countries to notify each other of AI incidents which could threaten national security.</description>
-  </item>
-  <item>
-    <title>From Exposure to Lockdown: How AWS Neutralizes Compromised IAM Credentials through Managed Policies</title>
-    <link>https://unit42.paloaltonetworks.com/detecting-exposed-aws-iam-credentials/</link>
-    <guid isPermaLink="true">https://unit42.paloaltonetworks.com/detecting-exposed-aws-iam-credentials/</guid>
-    <pubDate>Mon, 21 Sep 2026 10:00:13 +0000</pubDate>
-    <category>Incident Reporting</category>
-    <description>We explore how AWS neutralizes exposed IAM credentials using managed policies, detailing GitHub secret scanning and CloudTrail monitoring strategies. The post From Exposure to Lockdown: How AWS Neutralizes Compromised IAM Credentials through Managed Policies appeared first on Uni…</description>
   </item>
   </channel>
 </rss>
