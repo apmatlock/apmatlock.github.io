@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 23 Sep 2026 15:03:15 -0300</lastBuildDate>
+    <lastBuildDate>Wed, 23 Sep 2026 16:03:15 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>CVE-2026-94127: Critical Unauthenticated RCE in F5 BIG-IP APM</title>
@@ -86,6 +86,30 @@
     <pubDate>Wed, 23 Sep 2026 17:41:05 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>Overview Cinnamon&#x27;s Kotaemon (all versions up to v0.12.0) multi‑user chat interface does not verify conversation ownership when loading a conversation. Any authenticated user can read, delete, rename, or overwrite another user’s conversation data by supplying the correct ID. This…</description>
+  </item>
+  <item>
+    <title>VU#273940: Enterprise Access Management EAM does not rotate RSA keys</title>
+    <link>https://kb.cert.org/vuls/id/273940</link>
+    <guid isPermaLink="true">https://kb.cert.org/vuls/id/273940</guid>
+    <pubDate>Wed, 23 Sep 2026 18:22:53 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Overview Imprivata Enterprise Access Management (EAM), an authentication and single sign-on platform for enterprise and clinical environments, contains a vulnerability in versions 26.2.6 and below. The product provides no supported mechanism to rotate its RSA key pair after deplo…</description>
+  </item>
+  <item>
+    <title>Hackers start exploiting critical WordPress flaw for code execution</title>
+    <link>https://www.bleepingcomputer.com/news/security/hackers-start-exploiting-critical-wordpress-flaw-for-code-execution/</link>
+    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/hackers-start-exploiting-critical-wordpress-flaw-for-code-execution/</guid>
+    <pubDate>Wed, 23 Sep 2026 14:31:22 -0400</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Threat actors have moved from probing WordPress sites vulnerable to CVE-2026-87902 to exploiting the flaw to write files to disk that execute shell commands when accessed. [...]</description>
+  </item>
+  <item>
+    <title>F5 BIG-IP APM Zero-Day Exploited in Zero-Day RCE Attacks</title>
+    <link>https://securityaffairs.com/199619/security/f5-big-ip-apm-zero-day-exploited-in-zero-day-rce-attacks.html</link>
+    <guid isPermaLink="true">https://securityaffairs.com/199619/security/f5-big-ip-apm-zero-day-exploited-in-zero-day-rce-attacks.html</guid>
+    <pubDate>Wed, 23 Sep 2026 18:12:15 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>F5 warns of a critical BIG-IP APM zero-day, CVE-2026-94127, allowing remote code execution. Attackers are already exploiting it. F5 has released emergency security updates for a critical vulnerability, tracked as CVE-2026-94127 (CVSS score of 9.8), in BIG-IP Access Policy Manager…</description>
   </item>
   <item>
     <title>AI malware just removed the human from the attack loop</title>
@@ -320,6 +344,14 @@
     <description>Plugin4Shell affected plugin installation mechanisms in several AI coding tools. Air Security says the flaw could allow an attacker to bypass the expected plugin version and install something else. The incident is a reminder that AI products still depend on ordinary software comp…</description>
   </item>
   <item>
+    <title>Pentagon cyber chief: The demand far exceeds supply</title>
+    <link>https://cyberscoop.com/pentagon-cyber-operations-demand-exceeds-supply-defensetalks-2026/</link>
+    <guid isPermaLink="true">https://cyberscoop.com/pentagon-cyber-operations-demand-exceeds-supply-defensetalks-2026/</guid>
+    <pubDate>Wed, 23 Sep 2026 18:10:42 +0000</pubDate>
+    <category>Vulnerability Disclosure</category>
+    <description>At DefenseTalks on Tuesday, Katie Sutton said the Pentagon now receives far more requests to use cyber operations than its forces can fulfill, eight years after gaining that authority. The post Pentagon cyber chief: The demand far exceeds supply appeared first on CyberScoop .</description>
+  </item>
+  <item>
     <title>Microsoft: September Windows updates break Always On VPN connections</title>
     <link>https://www.bleepingcomputer.com/news/microsoft/microsoft-september-2026-windows-updates-break-always-on-vpn-connections/</link>
     <guid isPermaLink="true">https://www.bleepingcomputer.com/news/microsoft/microsoft-september-2026-windows-updates-break-always-on-vpn-connections/</guid>
@@ -404,6 +436,22 @@
     <link>https://cyber.gc.ca/en/alerts-advisories/adobe-security-advisory-av26-953</link>
     <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/adobe-security-advisory-av26-953</guid>
     <pubDate>Wed, 23 Sep 2026 15:02:16 -0000</pubDate>
+    <category>Security Advisories</category>
+    <description></description>
+  </item>
+  <item>
+    <title>MikroTik security advisory (AV26-958)</title>
+    <link>https://cyber.gc.ca/en/alerts-advisories/mikrotik-security-advisory-av26-958</link>
+    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/mikrotik-security-advisory-av26-958</guid>
+    <pubDate>Wed, 23 Sep 2026 16:02:16 -0000</pubDate>
+    <category>Security Advisories</category>
+    <description></description>
+  </item>
+  <item>
+    <title>NVIDIA security advisory (AV26-957)</title>
+    <link>https://cyber.gc.ca/en/alerts-advisories/nvidia-security-advisory-av26-957</link>
+    <guid isPermaLink="true">https://cyber.gc.ca/en/alerts-advisories/nvidia-security-advisory-av26-957</guid>
+    <pubDate>Wed, 23 Sep 2026 16:02:16 -0000</pubDate>
     <category>Security Advisories</category>
     <description></description>
   </item>
@@ -542,6 +590,14 @@
     <pubDate>Wed, 23 Sep 2026 17:10:19 +0000</pubDate>
     <category>Incident Reporting</category>
     <description>The Armenian national was extradited from Ukraine to the United States last year and pleaded guilty to cybercrimes in July. The post Ryuk ransomware operator sentenced to 2 years in prison appeared first on CyberScoop .</description>
+  </item>
+  <item>
+    <title>FBI probes cyberattack tied to third-party jobs portal</title>
+    <link>https://www.cybersecuritydive.com/news/fbi-hack-shinyhunters-jobs-portal/831175/</link>
+    <guid isPermaLink="true">https://www.cybersecuritydive.com/news/fbi-hack-shinyhunters-jobs-portal/831175/</guid>
+    <pubDate>Wed, 23 Sep 2026 14:28:00 -0400</pubDate>
+    <category>Incident Reporting</category>
+    <description>The potentially serious breach highlights the supply chain risks facing even the most sophisticated organizations.</description>
   </item>
   <item>
     <title>ISC Stormcast For Wednesday, September 23rd, 2026 https://isc.sans.edu/podcastdetail/10106, (Wed, Sep 23rd)</title>
@@ -750,6 +806,14 @@
     <pubDate>Wed, 23 Sep 2026 16:00:00 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>We are announcing ISOC in Microsoft Defender: a foundation built for agentic security that brings leading solutions for SIEM and threat protection together. The post Reimagining the SOC for the agentic era in Microsoft Defender appeared first on Microsoft Security Blog .</description>
+  </item>
+  <item>
+    <title>Worries About an AI Internet Takeover Gain New Urgency Among Doomsday Scenarios</title>
+    <link>https://www.securityweek.com/worries-about-an-ai-internet-takeover-gain-new-urgency-among-doomsday-scenarios/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/worries-about-an-ai-internet-takeover-gain-new-urgency-among-doomsday-scenarios/</guid>
+    <pubDate>Wed, 23 Sep 2026 18:05:58 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>The idea that AI could break away and work toward its own agenda is looking increasingly plausible to researchers and experts. The post Worries About an AI Internet Takeover Gain New Urgency Among Doomsday Scenarios appeared first on SecurityWeek .</description>
   </item>
   <item>
     <title>Fake LastPass on GitHub Led to an Infostealer That Killed 145 Security Tools</title>
@@ -1542,70 +1606,6 @@
     <pubDate>Tue, 22 Sep 2026 08:37:06 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>The US, Japan, Germany and Australia have published a joint report detailing the scope of North Korea’s WaterPlum campaign. The post Japan Dismantles First North Korean Laptop Farm as US and Allies Detail Wider Scheme appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Scammers use genuine Google sign-ins to sell costly, unverified AI subscriptions</title>
-    <link>https://www.helpnetsecurity.com/2026/09/22/fake-ai-subscription-sites-google-sign-in/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/22/fake-ai-subscription-sites-google-sign-in/</guid>
-    <pubDate>Tue, 22 Sep 2026 08:54:30 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Scammers are using a $249 website toolkit to sell unverified AI subscriptions worth up to $2,000 a year, and a genuine Google sign-in screen is what makes the sites convincing. Malwarebytes found more than 100 websites built this way, all tied to the same toolkit and closely rela…</description>
-  </item>
-  <item>
-    <title>SideCopy Broadens India Targeting to Academia With ReverseRAT Spear-Phishing</title>
-    <link>https://thehackernews.com/2026/09/sidecopy-broadens-india-targeting-to.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/09/sidecopy-broadens-india-targeting-to.html</guid>
-    <pubDate>Tue, 22 Sep 2026 13:22:03 +0530</pubDate>
-    <category>Threat Intelligence</category>
-    <description>The threat actor known as SideCopy has been observed using spear-phishing lures to target academic institutions in India, expanding their strategic focus beyond government entities. &quot;SideCopy campaign operations typically initiate through spear-phishing campaigns that leverage th…</description>
-  </item>
-  <item>
-    <title>Malicious npm Package indexed-btree Hid Its Loader in Runtime Code Before Removal</title>
-    <link>https://thehackernews.com/2026/09/malicious-npm-package-indexed-btree-hid.html</link>
-    <guid isPermaLink="true">https://thehackernews.com/2026/09/malicious-npm-package-indexed-btree-hid.html</guid>
-    <pubDate>Tue, 22 Sep 2026 15:08:18 +0530</pubDate>
-    <category>Threat Intelligence</category>
-    <description>A malicious npm package named &quot;indexed-btree&quot; has been observed hiding its malicious behavior within application code rather than using lifecycle scripts, indicating that threat actors are likely shifting tactics in response to recent security controls. &quot;Indexed-btree is a malici…</description>
-  </item>
-  <item>
-    <title>Another worry for water systems: infostealer exposure</title>
-    <link>https://cyberscoop.com/spycloud-study-water-utilities-infostealer-exposure/</link>
-    <guid isPermaLink="true">https://cyberscoop.com/spycloud-study-water-utilities-infostealer-exposure/</guid>
-    <pubDate>Tue, 22 Sep 2026 10:00:00 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>SpyCloud’s study found 1,787 of the approximately 10,000 U.S. organizations had it, including one infected device that saved logins for 167 utility metering tenants. The post Another worry for water systems: infostealer exposure appeared first on CyberScoop .</description>
-  </item>
-  <item>
-    <title>GPT-6 Astra Breaks an Old Enigma Message</title>
-    <link>https://www.schneier.com/blog/archives/2026/09/gpt-6-astra-breaks-an-old-enigma-message.html</link>
-    <guid isPermaLink="true">https://www.schneier.com/blog/archives/2026/09/gpt-6-astra-breaks-an-old-enigma-message.html</guid>
-    <pubDate>Tue, 22 Sep 2026 11:02:45 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>This is pretty amazing: However, the most astonishing thing about this break is that the GPT­6 Astra did it entirely on its own. Carter Leffer only directed GPT­6 Astra to see if it could break any of the unbroken Enigma messages published on the Crypto Cellar Research web page. …</description>
-  </item>
-  <item>
-    <title>Malicious B-tree NPM Package Accumulates Millions of Downloads</title>
-    <link>https://www.securityweek.com/malicious-b-tree-npm-package-accumulates-millions-of-downloads/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/malicious-b-tree-npm-package-accumulates-millions-of-downloads/</guid>
-    <pubDate>Tue, 22 Sep 2026 11:33:59 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Posing as the legitimate sorted-btree package, indexed-btree hides a malware trigger in its prototype method. The post Malicious B-tree NPM Package Accumulates Millions of Downloads appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Only 13% of OT Network Segments Are Fully Isolated: Analysis</title>
-    <link>https://www.securityweek.com/only-13-of-ot-network-segments-are-fully-isolated-analysis/</link>
-    <guid isPermaLink="true">https://www.securityweek.com/only-13-of-ot-network-segments-are-fully-isolated-analysis/</guid>
-    <pubDate>Tue, 22 Sep 2026 12:24:30 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Forescout’s new network segmentation research shows that OT and medical devices often share network segments with other enterprise assets. The post Only 13% of OT Network Segments Are Fully Isolated: Analysis appeared first on SecurityWeek .</description>
-  </item>
-  <item>
-    <title>Brief hijack makes Elsevier domains redirect to LAPSUS$ “Chapter II” page</title>
-    <link>https://www.helpnetsecurity.com/2026/09/22/elsevier-domains-hijack-lapsus/</link>
-    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/22/elsevier-domains-hijack-lapsus/</guid>
-    <pubDate>Tue, 22 Sep 2026 13:46:45 +0000</pubDate>
-    <category>Threat Intelligence</category>
-    <description>Three domains / web portals belonging to Dutch academic publishing company Elsevier have been redirecting users to a page branded &amp;#8220;LAPSUS$ GROUP, Chapter II,&amp;#8221; carrying a signed statement that taunted the FBI and counted down to a future victim. According to Cloudskope…</description>
   </item>
   </channel>
 </rss>
