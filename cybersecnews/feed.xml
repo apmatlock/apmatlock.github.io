@@ -5,7 +5,7 @@
     <link>https://matlock.ca/cybersecnews/</link>
     <description>Cybersecurity news aggregated from 85 sources</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 23 Sep 2026 07:03:14 -0300</lastBuildDate>
+    <lastBuildDate>Wed, 23 Sep 2026 08:03:14 -0300</lastBuildDate>
     <atom:link href="https://matlock.ca/cybersecnews/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>CVE-2026-94127: Critical Unauthenticated RCE in F5 BIG-IP APM</title>
@@ -54,6 +54,14 @@
     <pubDate>Wed, 23 Sep 2026 09:01:45 +0000</pubDate>
     <category>Common Vulnerabilities and Exposures</category>
     <description>WordPress released version 7.1.2 to fix a critical flaw that lets an unauthenticated attacker make the software load a PHP file of the attacker&amp;#8217;s choosing from outside the site&amp;#8217;s active theme folders. On sites where the server and the active theme meet certain conditi…</description>
+  </item>
+  <item>
+    <title>Attackers hit Check Point Management Servers and Spark firewalls, F5 BIG-IP APM instances</title>
+    <link>https://www.helpnetsecurity.com/2026/09/23/check-point-f5-big-ip-apm-zero-days-targeted/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/23/check-point-f5-big-ip-apm-zero-days-targeted/</guid>
+    <pubDate>Wed, 23 Sep 2026 10:22:52 +0000</pubDate>
+    <category>Common Vulnerabilities and Exposures</category>
+    <description>Check Point Software has released emergency fixes for a critical Check Point Management Server vulnerability (CVE-2026-93616) that has been exploited as far back as July 23, 2026. The company also confirmed that a pre-authentication remote code execution (RCE) vulnerability (CVE-…</description>
   </item>
   <item>
     <title>AI malware just removed the human from the attack loop</title>
@@ -262,6 +270,30 @@
     <pubDate>Wed, 23 Sep 2026 10:00:00 +0000</pubDate>
     <category>Threat Intelligence</category>
     <description>Emerging from stealth with $16 million in pre-seed funding, Outerlimit offers a decentralized authorization layer designed to discover, observe, and block harmful autonomous AI actions. The post Outerlimit Raises $16 Million to Stop Rogue AI Agents From Causing Harm appeared firs…</description>
+  </item>
+  <item>
+    <title>Chrome 154 Patches 108 Vulnerabilities</title>
+    <link>https://www.securityweek.com/chrome-154-patches-108-vulnerabilities/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/chrome-154-patches-108-vulnerabilities/</guid>
+    <pubDate>Wed, 23 Sep 2026 10:36:07 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>The browser update resolves several critical-severity memory safety and memory corruption flaws. The post Chrome 154 Patches 108 Vulnerabilities appeared first on SecurityWeek .</description>
+  </item>
+  <item>
+    <title>A Look at AI Doomsday Scenarios That Researchers Say Could Put Humanity at Risk</title>
+    <link>https://www.securityweek.com/a-look-at-ai-doomsday-scenarios-that-researchers-say-could-put-humanity-at-risk/</link>
+    <guid isPermaLink="true">https://www.securityweek.com/a-look-at-ai-doomsday-scenarios-that-researchers-say-could-put-humanity-at-risk/</guid>
+    <pubDate>Wed, 23 Sep 2026 10:20:36 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>Debates over the plausibility of these doomsday scenarios have heated up since several executives endorsed slowing the technology’s development for safety reasons. The post A Look at AI Doomsday Scenarios That Researchers Say Could Put Humanity at Risk appeared first on SecurityW…</description>
+  </item>
+  <item>
+    <title>GPT-6 Sol and Luna arrive with 50% lower API prices</title>
+    <link>https://www.helpnetsecurity.com/2026/09/23/gpt-6-sol-luna-lower-api-prices/</link>
+    <guid isPermaLink="true">https://www.helpnetsecurity.com/2026/09/23/gpt-6-sol-luna-lower-api-prices/</guid>
+    <pubDate>Wed, 23 Sep 2026 10:08:26 +0000</pubDate>
+    <category>Threat Intelligence</category>
+    <description>OpenAI has expanded GPT-6 with the GPT-6 Sol and GPT-6 Luna models. Both are available in ChatGPT Work and Codex for Plus, Pro, Business, Enterprise, and Edu users. Free and Go users can access GPT-6 Luna in the desktop app. The models are not yet available in Chat. OpenAI API us…</description>
   </item>
   <item>
     <title>Fake LastPass on GitHub Led to an Infostealer That Killed 145 Security Tools</title>
@@ -1574,38 +1606,6 @@
     <pubDate>Mon, 21 Sep 2026 16:05:51 +0000</pubDate>
     <category>Vulnerability Disclosure</category>
     <description>After the exit of around 1,000 CISA workers, legislation from three top House Democrats orders a force structure assessment like that more common to military branches. The post Dems seek top-to-bottom assessment of CISA workforce appeared first on CyberScoop .</description>
-  </item>
-  <item>
-    <title>WordPress Click2Shell flaw enables RCE after one admin click</title>
-    <link>https://cyberinsider.com/wordpress-click2shell-flaw-enables-rce-after-one-admin-click/</link>
-    <guid isPermaLink="true">https://cyberinsider.com/wordpress-click2shell-flaw-enables-rce-after-one-admin-click/</guid>
-    <pubDate>Mon, 21 Sep 2026 16:09:19 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>WordPress has patched a vulnerability dubbed Click2Shell that could allow an attacker to silently install a theme and execute PHP code on the targeted website. The attack does not require the threat actor to have a WordPress account, but it does require a logged-in administrator …</description>
-  </item>
-  <item>
-    <title>WordPress Click2Shell flaw lets hackers execute PHP on the server</title>
-    <link>https://www.bleepingcomputer.com/news/security/wordpress-click2shell-flaw-lets-hackers-execute-php-on-the-server/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/wordpress-click2shell-flaw-lets-hackers-execute-php-on-the-server/</guid>
-    <pubDate>Mon, 21 Sep 2026 14:23:11 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Technical details and a proof-of-concept exploit have been published for a new WordPress cross-site request forgery (CSRF) vulnerability dubbed &#x27;Click2Shell&#x27; that affects the platform&#x27;s Core component. [...]</description>
-  </item>
-  <item>
-    <title>A very real-world AI test.</title>
-    <link>https://thecyberwire.com/podcasts/daily-podcast/2640/notes</link>
-    <guid isPermaLink="true">https://thecyberwire.com/podcasts/daily-podcast/2640/notes</guid>
-    <pubDate>Mon, 21 Sep 2026 20:30:00 +0000</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>Google confirms unauthorized access by Gemini. AI’s growing power outpaces its defenses. Hackers target Colorado water utilities. Georgia weighs voting-system security. ShinyHunters hijacks Clop’s leak site. FamousSparrow spies across Latin America. CrowdSec loses source code. Ne…</description>
-  </item>
-  <item>
-    <title>CISA alerts of active exploitation of three Linux kernel flaws</title>
-    <link>https://www.bleepingcomputer.com/news/security/cisa-alerts-of-active-exploitation-of-three-linux-kernel-flaws/</link>
-    <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/cisa-alerts-of-active-exploitation-of-three-linux-kernel-flaws/</guid>
-    <pubDate>Mon, 21 Sep 2026 16:12:17 -0400</pubDate>
-    <category>Vulnerability Disclosure</category>
-    <description>The U.S. Cybersecurity and Infrastructure Security Agency (CISA) is warning that hackers are exploiting three Linux kernel vulnerabilities, one of them rated critical. [...]</description>
   </item>
   </channel>
 </rss>
